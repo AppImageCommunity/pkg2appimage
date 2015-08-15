@@ -6,7 +6,9 @@ wget https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssist
 
 ls -lh
 
-find .
+ls -lh /dev/fuse
+which fusermount
+fusermount
 
 chmod a+x ./AppImageAssistant 
-sudo ./AppImageAssistant
+./AppImageAssistant
