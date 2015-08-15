@@ -2,7 +2,7 @@
 
 ls -lh .
 
-wget https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant
+wget -c https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant
 
 ls -lh
 
