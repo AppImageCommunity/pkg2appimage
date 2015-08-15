@@ -9,4 +9,4 @@ ls -lh
 find .
 
 chmod a+x ./AppImageAssistant 
-./AppImageAssistant
+sudo ./AppImageAssistant
