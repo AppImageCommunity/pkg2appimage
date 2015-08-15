@@ -3,7 +3,7 @@
 # Based on https://github.com/smessmer/travis-utils/blob/master/run_with_fuse.sh
 
 # Install fuse
-sudo apt-get install -qq libfuse-dev pkg-config fuse user-mode-linux
+sudo apt-get install -qq libfuse-dev pkg-config fuse user-mode-linux slirp
 sudo mknod /dev/fuse c 10 229
 sudo chmod 666 /dev/fuse
 
