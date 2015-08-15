@@ -1,4 +1,6 @@
 
 sudo: required
 script:
-  - bash ./run_with_fuse.sh
+  - wget https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant
+  - chmod a+x AppImageAssistant 
+  - bash ./run_with_fuse.sh ./AppImageAssistant
