@@ -17,6 +17,12 @@ cat > umltest.inner.sh <<EOF
    export PATH="$PATH"
    set -e
    insmod /usr/lib/uml/modules/\`uname -r\`/kernel/fs/fuse/fuse.ko
+   
+   # Set up TCP/UDP network access
+   ifconfig lo up
+   ifconfig eth0 10.0.2.15
+   ip route add default via 10.0.2.1
+
    cd "$CURDIR"
    $@
 )
