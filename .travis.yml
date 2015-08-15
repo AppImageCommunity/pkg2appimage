@@ -1,4 +1,4 @@
 
 sudo: required
 script:
-  - bash ./run_with_fuse.sh
+  - bash ./run_with_fuse.sh ./script.sh
