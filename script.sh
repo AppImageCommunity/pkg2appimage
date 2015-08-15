@@ -13,5 +13,4 @@ fusermount
 chmod a+x ./AppImageAssistant 
 ./AppImageAssistant
 
-sudo apt-get -y install strace
-sudo strace -f ./AppImageAssistant 
+strace -f ./AppImageAssistant 
