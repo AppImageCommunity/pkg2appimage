@@ -3,8 +3,7 @@
 set +e
 
 VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
-OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/$VERSION/deb/x86_64/LibreOffice_$VERSION_Linux_x86-64_deb.tar.gz"
-
+OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
 mkdir -p ./ooo/ooo.AppDir
 cd ./ooo
 
