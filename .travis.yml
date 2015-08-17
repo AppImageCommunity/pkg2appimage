@@ -1,4 +1,6 @@
+language: c
 sudo: true
-build:
+notifications: false
+script:
   - bash -x recipes/libreoffice.sh
   - find .
