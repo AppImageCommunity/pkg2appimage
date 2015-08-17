@@ -2,7 +2,9 @@
 
 set +e
 
-sudo apt-get install xorriso # TODO: Replace with something that does not need sudo
+# Install dependencies
+sudo apt-get update
+sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
 
 VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
 OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
@@ -44,10 +46,6 @@ xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.A
 ./AppImageAssistant.AppDir/package ./ooo.AppDir/ ooo.AppImage
 
 ls -lh ./ooo.AppImage
-
-# Install dependencies
-sudo apt-get update
-sudo apt-get -y install python-requests
 
 # Upload
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
