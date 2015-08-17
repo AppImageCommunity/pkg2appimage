@@ -2,6 +2,8 @@
 
 set +e
 
+sudo apt-get install xorriso # TODO: Replace with something that does not need sudo
+
 VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
 OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
 mkdir -p ./ooo/ooo.AppDir
@@ -38,5 +40,5 @@ cd ..
 # (64-bit)
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
 
-chmod a+x ./AppImageAssistant*
-./AppImageAssistant* ./ooo.AppDir/ ooo.AppImage
+xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
+./AppImageAssistant.AppDir/package ./ooo.AppDir/ ooo.AppImage
