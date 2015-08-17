@@ -1,3 +1,4 @@
-script:
+sudo: true
+build:
   - bash -x recipes/libreoffice.sh
   - find .
