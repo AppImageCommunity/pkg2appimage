@@ -48,6 +48,7 @@ xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.A
 ls -lh ./ooo.AppImage
 
 # Upload
+cd ..
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
 python travis2github.py ./ooo.AppImage
