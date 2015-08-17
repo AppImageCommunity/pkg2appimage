@@ -1,3 +1,3 @@
 script:
-  - bash recipes/libreoffice.sh
+  - bash -x recipes/libreoffice.sh
   - find .
