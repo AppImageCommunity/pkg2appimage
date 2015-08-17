@@ -1,6 +1,3 @@
-
-sudo: required
 script:
-  - wget -c https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant
-  - chmod a+x *.sh
-  - ./run_with_fuse.sh ./script.sh
+  - bash recipes/libreoffice.sh
+  - find .
