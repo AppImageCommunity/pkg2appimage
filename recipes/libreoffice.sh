@@ -39,9 +39,6 @@ chmod a+x ./AppRun
 
 cd ..
 
-# (64-bit)
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
-
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
 ./AppImageAssistant.AppDir/package ./ooo.AppDir/ ooo.AppImage
 
