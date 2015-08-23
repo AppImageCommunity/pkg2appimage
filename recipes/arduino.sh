@@ -24,11 +24,17 @@ sed -i -e 's|FULL_PATH/||g' arduino.desktop
 
 cd ..
 
+# Figure out $VERSION
+VER=$(grep -r ARDUINO $APP.AppDir/revisions.txt | head -n 1 | cut -d " " -f 2)
+HOUR=$(cat $APP.AppDir/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' | sed -e 's|:||g')
+VERSION=$VER"_"$HOUR
+echo $VERSION
+
 # (64-bit)
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP.AppImage
+./AppImageAssistant.AppDir/package ./$APP.AppDir/ "$APP_$VERSION.AppImage"
 
 ls -lh ./$APP.AppImage
 
