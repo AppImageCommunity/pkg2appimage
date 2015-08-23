@@ -24,6 +24,9 @@ sed -i -e 's|FULL_PATH/||g' arduino.desktop
 
 cd ..
 
+# (64-bit)
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
+
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
 ./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP.AppImage
 
