@@ -6,17 +6,18 @@ set +e
 sudo apt-get update
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
 
+APP=LibreOffice
 VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
 OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
-mkdir -p ./ooo/ooo.AppDir
-cd ./ooo
+mkdir -p ./$APP/$APP.AppDir
+cd ./$APP
 
 wget -c "$OOODOWNLOADLINK"
 
 tar xfvz *.tar.gz
 # rm *.tar.gz
 
-cd ooo.AppDir/
+cd $APP.AppDir/
 
 find ../ -name *.deb -exec dpkg -x \{\} . \;
 
@@ -40,12 +41,12 @@ chmod a+x ./AppRun
 cd ..
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-./AppImageAssistant.AppDir/package ./ooo.AppDir/ ooo.AppImage
+./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP_$VERSION.AppImage
 
-ls -lh ./ooo.AppImage
+ls -lh ./$APP_$VERSION.AppImage
 
 # Upload
 cd ..
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py ./ooo.AppImage
+python travis2github.py ./$APP_$VERSION.AppImage
