@@ -42,4 +42,4 @@ ls -lh ./$APP.AppImage
 cd ..
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py ./$APP.AppImage
+python travis2github.py "$APP_$VERSION.AppImage
