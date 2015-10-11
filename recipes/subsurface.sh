@@ -5,7 +5,7 @@ set +e
 # Install dependencies
 
 # This is an ugly hack for partial updating of build environment
-sudo sed -i 's/trusty/vivid/g' /etc/apt/sources.list
+sudo sed -i 's/precise/vivid/g' /etc/apt/sources.list
 
 # sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
 sudo apt-get update -qq
