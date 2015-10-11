@@ -52,14 +52,16 @@ cp ./subsurface/subsurface.desktop $APP.AppDir/
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/usr\|^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
-cd ..
+cd -
 
 # TODO: Bundle other Qt runtime dependencies into the AppDir
 
 find $APP.AppDir/
 
 # Figure out $VERSION
-#...
+GITVERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v//')
+GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
+VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
 # (64-bit)
