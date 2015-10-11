@@ -42,7 +42,7 @@ cd ./$APP
 
 git clone git://subsurface-divelog.org/subsurface
 bash -x ./subsurface/scripts/build.sh
-find . -name "*subsurface$"
+find .
 
 # Move build products into the AppDir
 rm -rf install-root/include
