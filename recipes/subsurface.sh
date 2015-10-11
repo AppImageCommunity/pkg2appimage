@@ -3,8 +3,16 @@
 set +e
 
 # Install dependencies
+
+# Backport cmake
+# This will create a local backport and install it. Substitute almost any other package that has a newer DSC available.
+sudo aptitude install devscripts
+dget -x -u http://archive.ubuntu.com/ubuntu/pool/main/c/cmake/cmake_2.8.12.2-0ubuntu3.dsc
+sudo aptitude build-dep cmake
+cd cmake* && fakeroot dpkg-buildpackage -d
+sudo dpkg -i ../cmake*deb
+
 sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
-sudo add-apt-repository --yes ppa:george-edison55/cmake-3.x # for newer cmake
 sudo apt-get update -qq
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
 sudo apt-get -y install git g++ make autoconf libtool cmake pkg-config \
@@ -22,7 +30,9 @@ cd ./$APP
 git clone git://subsurface-divelog.org/subsurface
 ./subsurface/scripts/build.sh
 
+rm -rf install-root/include
 find install-root/
+mv install-root $APP.AppDir/usr
 
 cd $APP.AppDir/
 
