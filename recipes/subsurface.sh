@@ -4,7 +4,7 @@ set +e
 
 # Install dependencies
 sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
-sudo add-apt-repository ppa:george-edison55/cmake-3.x # for newer cmake
+sudo add-apt-repository --yes ppa:george-edison55/cmake-3.x # for newer cmake
 sudo apt-get update -qq
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
 sudo apt-get -y install git g++ make autoconf libtool cmake pkg-config \
