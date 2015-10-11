@@ -53,7 +53,8 @@ cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
-lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/usr\|^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
+lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 cd -
 
 # TODO: Bundle other Qt runtime dependencies into the AppDir
@@ -66,8 +67,7 @@ GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
-# (64-bit)
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant" # (64-bit)
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
 ./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION".AppImage"
