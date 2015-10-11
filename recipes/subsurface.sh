@@ -8,6 +8,7 @@ set +e
 wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz
 tar zxvf cmake-2.8.12.2.tar.gz
 cd cmake-2.8.12.2
+./bootstrap
 make
 sudo make install
 
