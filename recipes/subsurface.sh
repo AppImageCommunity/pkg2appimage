@@ -48,6 +48,7 @@ find .
 rm -rf install-root/include
 mv install-root $APP.AppDir/usr
 cp ./subsurface/subsurface.desktop $APP.AppDir/
+cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
