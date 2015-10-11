@@ -18,9 +18,19 @@ libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
 qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
 qtconnectivity5-dev qtbase5-dev
 
+find /usr/lib/x86_64-linux-gnu/pkgconfig/
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH
+#export Qt5Core_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/
+#export Qt5Xml_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Xml/
+#export Qt5Network_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Network/
+#export Qt5Test_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Test/
+#Qt5Script_DIR
+#Qt5Widgets_DIR
+#Qt5Quick_DIR
+#Qt5WebKitWidgets_DIR
+#Qt5Svg_DIR
+#...
 
-export Qt5Core_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/
- 
 APP=Subsurface
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
