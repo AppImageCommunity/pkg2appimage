@@ -11,7 +11,7 @@ sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
 
 # sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
 sudo apt-get update -qq
-sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
+sudo apt-get -y install python-requests xorriso p7zip # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
 libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev 
