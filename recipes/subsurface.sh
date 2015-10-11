@@ -18,7 +18,7 @@ libusb-1.0-0-dev \
 qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
 libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
 qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
-qtconnectivity5-dev qtbase5-dev
+qtconnectivity5-dev qtbase5-dev	qtdeclarative5-dev
 
 find /usr/lib/x86_64-linux-gnu/pkgconfig/
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH
