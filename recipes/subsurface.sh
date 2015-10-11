@@ -6,9 +6,9 @@ set +e
 
 # Backport cmake
 # This will create a local backport and install it. Substitute almost any other package that has a newer DSC available.
-sudo apt-get -y install devscripts dget
+sudo apt-get -y install devscripts
 dget -x -u http://archive.ubuntu.com/ubuntu/pool/main/c/cmake/cmake_2.8.12.2-0ubuntu3.dsc
-sudo aptitude build-dep cmake
+sudo apt-get build-dep cmake
 cd cmake* && fakeroot dpkg-buildpackage -d
 sudo dpkg -i ../cmake*deb
 
