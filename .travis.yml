@@ -1,4 +1,5 @@
 language: c
+compiler: clang
 sudo: true
 notifications: false
 script:
