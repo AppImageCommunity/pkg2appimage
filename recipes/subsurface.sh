@@ -40,6 +40,7 @@ cd ./$APP
 
 git clone git://subsurface-divelog.org/subsurface
 ./subsurface/scripts/build.sh
+make VERBOSE=1
 
 rm -rf install-root/include
 find install-root/
