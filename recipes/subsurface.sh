@@ -47,6 +47,7 @@ find .
 # Move build products into the AppDir
 rm -rf install-root/include
 mv install-root $APP.AppDir/usr
+cp ./subsurface/build/subsurface $APP.AppDir/usr/bin
 cp ./subsurface/subsurface.desktop $APP.AppDir/
 cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 
