@@ -1,6 +1,4 @@
-#!/bin/bash -x
-
-set +e
+#!/bin/bash
 
 # Install dependencies
 
@@ -32,13 +30,18 @@ cd ./subsurface/build/
 make VERBOSE=1
 cd -
 
+# Move build products into the AppDir
 rm -rf install-root/include
-find install-root/
 mv install-root $APP.AppDir/usr
 
+# Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
-
+lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/usr\|^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 cd ..
+
+# TODO: Bundle other Qt runtime dependencies into the AppDir
+
+find $APP.AppDir/
 
 # Figure out $VERSION
 #...
