@@ -47,6 +47,7 @@ find . -name "*subsurface$"
 # Move build products into the AppDir
 rm -rf install-root/include
 mv install-root $APP.AppDir/usr
+cp ./subsurface/subsurface.desktop $APP.AppDir/
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
