@@ -28,13 +28,11 @@ wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55
 wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_addons.7z
 wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtscript.gcc_64/5.5.0-0qt5_qtscript.7z
 wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
-wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtscript.gcc_64/5.5.0-0qt5_qtscript.7z
 7z x *_essentials.7z > /dev/null
 7z x *icu-linux-*.7z > /dev/null
 7z x *_addons.7z > /dev/null
 7z x *_qtscript.7z > /dev/null
 7z x *_qtlocation.7z > /dev/null
-7z x *_qtscript.7z > /dev/null # Actually just a runtime dependency; needed  bundling into AppDir below
 export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
 export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
 find $PWD/5.5/gcc_64/lib/
