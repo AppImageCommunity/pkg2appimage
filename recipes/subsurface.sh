@@ -66,6 +66,10 @@ cp -r ../../5.5/gcc_64/plugins/sensors usr/bin
 cp -r ../../5.5/gcc_64/plugins/xcbglintegrations usr/bin
 lddtree usr/bin/subsurface
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
+# FIXME: For whatever strange reason these are not caught by the above
+cp /usr/lib64/libssl.so.1.0.0 usr/lib
+cp /usr/lib64/libcrypto.so.1.0.0 usr/lib
+cp ../../5.5/gcc_64/lib/libQt5Script.so.5
 cd -
 find $APP.AppDir/
 
