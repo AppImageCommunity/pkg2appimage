@@ -7,7 +7,7 @@ set +e
 # This is an ugly hack for partial updating of build environment
 # sudo sed -i 's/precise/vivid/g' /etc/apt/sources.list
 
-sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+#sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
 
 # sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
 sudo apt-get update -qq
@@ -28,7 +28,10 @@ wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_54/qt.54
 7z x 5.4.1-0qt5_essentials.7z > /dev/null
 7z x 5.4.1-0icu_53_1_ubuntu_11_10_64.7z > /dev/null
 
-export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH
+ls
+export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.4/gcc_64/bin/:$PATH
+
+#export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH
 
 APP=Subsurface
 mkdir -p ./$APP/$APP.AppDir
