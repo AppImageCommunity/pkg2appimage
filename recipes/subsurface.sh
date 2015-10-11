@@ -16,6 +16,9 @@ libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-de
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get -qq update
 sudo apt-get -qq install g++-4.8
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+g++ --version
+which g++
 
 # Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
 wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
@@ -24,10 +27,12 @@ wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55
 wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2icu-linux-g++-Rhel6.6-x64.7z
 wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_addons.7z
 wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtscript.gcc_64/5.5.0-0qt5_qtscript.7z
+wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
 7z x *_essentials.7z > /dev/null
 7z x *icu-linux-*.7z > /dev/null
 7z x *_addons.7z > /dev/null
 7z x *_qtscript.7z > /dev/null
+7z x *_qtlocation.7z > /dev/null
 export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
 export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
 
