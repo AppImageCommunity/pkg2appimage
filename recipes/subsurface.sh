@@ -57,12 +57,10 @@ cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
 chmod a+x AppRun
+cp -r ../../5.5/gcc_64/plugins usr/bin/ # FIXME: How to find out which subset is really needed?
 lddtree usr/bin/subsurface
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 cd -
-
-# TODO: Bundle other Qt runtime dependencies into the AppDir
-
 find $APP.AppDir/
 
 # Figure out $VERSION
