@@ -4,14 +4,13 @@ set +e
 
 # Install dependencies
 
-# Backport cmake
-# This will create a local backport and install it. Substitute almost any other package that has a newer DSC available.
-sudo apt-get update -qq
-sudo apt-get -y install devscripts
-dget -x -u http://archive.ubuntu.com/ubuntu/pool/main/c/cmake/cmake_2.8.12.2-0ubuntu3.dsc
-sudo apt-get build-dep cmake
-cd cmake* && fakeroot dpkg-buildpackage -d
-sudo dpkg -i ../cmake*deb
+# Needs newer cmake
+wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz
+tar zxvf cmake-2.8.12.2.tar.gz
+cd cmake-2.8.12.2
+./bootstrap –prefix=/usr/local –qt-gui 2>&1 | tee Cmake2.8.12.2bootstrap.log
+make 2>&1 | tee Cmake2.8.12.2Make.log
+sudo make install 2>&1 | tee Cmake2.8.12.2MakeInstall.log
 
 sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
 sudo apt-get update -qq
