@@ -8,14 +8,13 @@ set +e
 wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz
 tar zxvf cmake-2.8.12.2.tar.gz
 cd cmake-2.8.12.2
-./bootstrap –prefix=/usr/local –qt-gui 2>&1 | tee Cmake2.8.12.2bootstrap.log
-make 2>&1 | tee Cmake2.8.12.2Make.log
-sudo make install 2>&1 | tee Cmake2.8.12.2MakeInstall.log
+make
+sudo make install
 
 sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
 sudo apt-get update -qq
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
-sudo apt-get -y install git g++ make autoconf libtool cmake pkg-config \
+sudo apt-get -y install git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
 libusb-1.0-0-dev \
 qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
