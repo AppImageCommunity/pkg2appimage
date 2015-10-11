@@ -4,18 +4,13 @@ set +e
 
 # Install dependencies
 
-# Needs newer cmake
-wget http://www.cmake.org/files/v2.8/cmake-2.8.12.2.tar.gz
-tar zxvf cmake-2.8.12.2.tar.gz
-cd cmake-2.8.12.2
-./bootstrap
-make
-sudo make install
+# This is an ugly hack for partial updating of build environment
+sudo sed -i 's/trusty/vivid/g' /etc/apt/sources.list
 
-sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
+# sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa # for newer Qt
 sudo apt-get update -qq
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
-sudo apt-get -y install git g++ make autoconf libtool pkg-config \
+sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
 libusb-1.0-0-dev \
 qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
