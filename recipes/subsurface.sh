@@ -55,16 +55,15 @@ cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
 chmod a+x AppRun
-# cp -r ../../5.5/gcc_64/plugins usr/bin/ # FIXME: How to find out which subset is really needed? I did it with strace
-mkdir -p usr/plugins
-cp -r ../../5.5/gcc_64/plugins/bearer usr/plugins
-cp -r ../../5.5/gcc_64/plugins/iconengines usr/plugins
-cp -r ../../5.5/gcc_64/plugins/imageformats usr/plugins
-cp -r ../../5.5/gcc_64/plugins/platforminputcontexts usr/plugins
-cp -r ../../5.5/gcc_64/plugins/platforms usr/plugins
-cp -r ../../5.5/gcc_64/plugins/platformthemes usr/plugins
-cp -r ../../5.5/gcc_64/plugins/sensors usr/plugins
-cp -r ../../5.5/gcc_64/plugins/xcbglintegrations usr/plugins
+# FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
+cp -r ../../5.5/gcc_64/plugins/bearer usr/bin
+cp -r ../../5.5/gcc_64/plugins/iconengines usr/bin
+cp -r ../../5.5/gcc_64/plugins/imageformats usr/bin
+cp -r ../../5.5/gcc_64/plugins/platforminputcontexts usr/bin
+cp -r ../../5.5/gcc_64/plugins/platforms usr/bin
+cp -r ../../5.5/gcc_64/plugins/platformthemes usr/bin
+cp -r ../../5.5/gcc_64/plugins/sensors usr/bin
+cp -r ../../5.5/gcc_64/plugins/xcbglintegrations usr/bin
 lddtree usr/bin/subsurface
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 cd -
