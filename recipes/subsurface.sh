@@ -12,6 +12,11 @@ sudo apt-get -y install python-requests xorriso p7zip-full # TODO: Replace with 
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev 
 
+# Install newer gcc since qtserialbluetooth.cpp cannot be compiled with the stock gcc 4.6.3
+sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+sudo apt-get -qq update
+sudo apt-get -qq install g++-4.8
+
 # Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
 wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
 tar xf cmake-3.2.2-Linux-x86_64.tar.gz
