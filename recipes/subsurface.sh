@@ -3,7 +3,8 @@
 set +e
 
 # Install dependencies
-sudo apt-get update
+sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+sudo apt-get update -qq
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
 sudo apt-get -y install git g++ make autoconf libtool cmake pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
