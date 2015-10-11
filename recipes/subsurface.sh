@@ -53,6 +53,7 @@ cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
+chmod a+x AppRun
 lddtree usr/bin/subsurface
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 cd -
