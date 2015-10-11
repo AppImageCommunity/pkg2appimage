@@ -14,24 +14,21 @@ sudo apt-get update -qq
 sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
-libusb-1.0-0-dev \
-qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
-libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
-qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
-qtconnectivity5-dev qtbase5-dev	qtdeclarative5-dev
+libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev 
 
-find /usr/lib/x86_64-linux-gnu/pkgconfig/
+# Install CMake 3.2.2
+wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
+tar xf cmake-3.2.2-Linux-x86_64.tar.gz
+
+# Install Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
+wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_54/qt.54.gcc_64/5.4.1-0qt5_essentials.7z
+wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_54/qt.54.gcc_64/5.4.1-0qt5_essentials.7z.sha1
+wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_54/qt.54.gcc_64/5.4.1-0icu_53_1_ubuntu_11_10_64.7z
+wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_54/qt.54.gcc_64/5.4.1-0icu_53_1_ubuntu_11_10_64.7z.sha1
+7z x 5.4.1-0qt5_essentials.7z > /dev/null
+7z x 5.4.1-0icu_53_1_ubuntu_11_10_64.7z > /dev/null
+
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH
-#export Qt5Core_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Core/
-#export Qt5Xml_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Xml/
-#export Qt5Network_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Network/
-#export Qt5Test_DIR=/usr/lib/x86_64-linux-gnu/cmake/Qt5Test/
-#Qt5Script_DIR
-#Qt5Widgets_DIR
-#Qt5Quick_DIR
-#Qt5WebKitWidgets_DIR
-#Qt5Svg_DIR
-#...
 
 APP=Subsurface
 mkdir -p ./$APP/$APP.AppDir
