@@ -42,7 +42,6 @@ cd ./$APP
 
 git clone git://subsurface-divelog.org/subsurface
 bash -x ./subsurface/scripts/build.sh
-find .
 
 # Move build products into the AppDir
 rm -rf install-root/include
@@ -54,6 +53,7 @@ cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
+lddtree usr/bin/subsurface
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 cd -
 
