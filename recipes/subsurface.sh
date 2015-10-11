@@ -70,7 +70,7 @@ echo $VERSION
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-./AppImageAssistant.AppDir/package ./$APP.AppDir/ "$APP_$VERSION.AppImage"
+./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP_$VERSION.AppImage
 
 ls -lh ./$APP.AppImage
 
