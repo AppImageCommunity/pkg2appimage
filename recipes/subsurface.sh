@@ -18,7 +18,7 @@ wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55
 7z x *_essentials.7z > /dev/null
 7z x *icu-linux-*.7z > /dev/null
 7z x *_addons.7z > /dev/null
-export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.4/gcc_64/bin/:$PATH
+export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH
 
 APP=Subsurface
 mkdir -p ./$APP/$APP.AppDir
