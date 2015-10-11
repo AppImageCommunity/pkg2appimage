@@ -2,5 +2,5 @@ language: c
 sudo: true
 notifications: false
 script:
-  - bash -x recipes/libreoffice.sh
+  - bash -x recipes/subsurface.sh
   - find .
