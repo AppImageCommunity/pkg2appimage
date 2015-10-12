@@ -83,8 +83,8 @@ find /lib -name libgcrypt.so.11 -exec cp {} usr/lib \;
 find /lib -name libselinux.so.1 -exec cp {} usr/lib \;
 find /usr/lib -name libcurl.so.4 -exec cp {} usr/lib \;
 cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # Bundle Qt libraries; delete the extraneous ones below
-rm usr/lib/cmake
-rm usr/lib/grantlee
+rm -r usr/lib/cmake
+rm -r usr/lib/grantlee
 rm usr/lib/libdivecomputer.a
 rm usr/lib/libdivecomputer.la
 rm usr/lib/libGrantlee_Templates.so
