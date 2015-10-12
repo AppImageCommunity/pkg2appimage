@@ -74,6 +74,7 @@ cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # FIXME: Might be too much
 cp ../../5.5/gcc_64/lib/libicu* usr/lib
 find /usr/lib -name libssh2.so.1 -exec cp {} usr/lib \;
+find /usr/lib -name libgcrypt.so.11 -exec cp {} usr/lib \;
 rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
 cd -
 find $APP.AppDir/
