@@ -53,6 +53,12 @@ cp ./subsurface/build/subsurface $APP.AppDir/usr/bin
 cp ./subsurface/subsurface.desktop $APP.AppDir/
 cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 
+# Populate usr/share; app seems to pick up things from there
+mkdir -p $APP.AppDir/usr/share/subsurface/data/
+echo "############ Copy from here"
+find .
+echo "############ Copy from here"
+
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
@@ -71,10 +77,40 @@ lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | x
 # FIXME: For whatever strange reason these are not caught by the above; are they coming from the plugins?
 cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 usr/lib
 cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 usr/lib
-cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # FIXME: Might be too much
 cp -a ../../5.5/gcc_64/lib/libicu* usr/lib
 find /usr/lib -name libssh2.so.1 -exec cp {} usr/lib \;
 find /lib -name libgcrypt.so.11 -exec cp {} usr/lib \;
+find /lib -name libselinux.so.1 -exec cp {} usr/lib \;
+find /usr/lib -name libcurl.so.4 -exec cp {} usr/lib \;
+cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # Bundle Qt libraries; delete the extraneous ones below
+rm usr/lib/cmake
+rm usr/lib/grantlee
+rm usr/lib/libdivecomputer.a
+rm usr/lib/libdivecomputer.la
+rm usr/lib/libGrantlee_Templates.so
+rm usr/lib/libGrantlee_TextDocument.so
+rm usr/lib/libGrantlee_TextDocument.so.5
+rm usr/lib/libGrantlee_TextDocument.so.5.0.0
+rm usr/lib/libQt5CLucene.so.5
+rm usr/lib/libQt5DesignerComponents.so.5
+rm usr/lib/libQt5Designer.so.5
+rm usr/lib/libQt5Help.so.5
+rm usr/lib/libQt5Location.so.5
+rm usr/lib/libQt5MultimediaQuick_p.so.5
+rm usr/lib/libQt5Multimedia.so.5
+rm usr/lib/libQt5MultimediaWidgets.so.5
+rm usr/lib/libQt5Nfc.so.5
+rm usr/lib/libQt5QuickParticles.so.5
+rm usr/lib/libQt5QuickTest.so.5
+rm usr/lib/libQt5QuickWidgets.so.5
+rm usr/lib/libQt5ScriptTools.so.5
+rm usr/lib/libQt5SerialPort.so.5
+rm usr/lib/libQt5Test.so.5
+rm usr/lib/libQt5WebSockets.so.5
+rm usr/lib/libQt5X11Extras.so.5
+rm usr/lib/libQt5XmlPatterns.so.5
+rm usr/lib/libssrfmarblewidget.so
+
 rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
 cd -
 find $APP.AppDir/
