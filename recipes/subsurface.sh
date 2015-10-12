@@ -75,6 +75,7 @@ cp ../../5.5/gcc_64/lib/libQt5Script.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Sensors.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5XcbQpa.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Positioning.so.5 usr/lib
+cp ../../5.5/gcc_64/lib/libQt5WebChannel.so.5 usr/lib
 cd -
 find $APP.AppDir/
 
