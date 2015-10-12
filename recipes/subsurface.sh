@@ -81,6 +81,7 @@ cp ../../5.5/gcc_64/lib/libQt5Sql.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Qml.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Quick.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5OpenGL.so.5 usr/lib
+cp ../../5.5/gcc_64/lib/libicu* usr/lib
 cp -L /usr/lib/x86_64-linux-gnu/libssh2.so.1 usr/lib
 rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
 cd -
