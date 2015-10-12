@@ -73,6 +73,7 @@ cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 usr/lib
 cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Script.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Sensors.so.5 usr/lib
+cp ../../5.5/gcc_64/lib/libQt5XcbQpa.so.5 usr/lib
 cd -
 find $APP.AppDir/
 
