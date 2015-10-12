@@ -71,7 +71,7 @@ lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | x
 # FIXME: For whatever strange reason these are not caught by the above; are they coming from the plugins?
 cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 usr/lib
 cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 usr/lib
-cp -a ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # FIXME: Might be too much
+cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # FIXME: Might be too much
 cp -a ../../5.5/gcc_64/lib/libicu* usr/lib
 find /usr/lib -name libssh2.so.1 -exec cp {} usr/lib \;
 find /lib -name libgcrypt.so.11 -exec cp {} usr/lib \;
