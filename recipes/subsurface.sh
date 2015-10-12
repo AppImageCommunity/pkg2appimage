@@ -77,7 +77,9 @@ cp ../../5.5/gcc_64/lib/libQt5XcbQpa.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Positioning.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5WebChannel.so.5 usr/lib
 cp ../../5.5/gcc_64/lib/libQt5Xml.so.5 usr/lib
-rm usr/lib/libstdc* usr/lib/libgobject*
+cp ../../5.5/gcc_64/lib/libQt5Sql.so.5 usr/lib
+cp ../../5.5/gcc_64/lib/libQt5Qml.so.5 usr/lib
+rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
 cd -
 find $APP.AppDir/
 
