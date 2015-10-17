@@ -7,6 +7,10 @@
 # to run the app plus a small executable header that mounts the image and runs the app on the target system.
 # See http://portablelinuxapps.org/docs/1.0/AppImageKit.pdf for more information.
 
+# Known to work on:
+# Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
+# Antergos - antergos-2014.08.07-x86_64.iso
+
 # Install dependencies
 
 sudo apt-get update -qq
