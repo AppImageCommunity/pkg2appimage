@@ -9,6 +9,7 @@
 
 # Resulting AppImage is known to work on:
 # CentOS Linux 7 (Core) - CentOS-7.0-1406-x86_64-GnomeLive.iso
+# CentOS Linux release 7.1.1503 (Core) - CentOS-7-x86_64-LiveGNOME-1503.iso
 # Ubuntu 15.04 (Vivid Vervet) - ubuntu-15.04-desktop-amd64.iso
 # Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
 # Antergos - antergos-2014.08.07-x86_64.iso
