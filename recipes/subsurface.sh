@@ -127,8 +127,9 @@ rm usr/lib/libQt5WebSockets.so.5
 rm usr/lib/libQt5X11Extras.so.5
 rm usr/lib/libQt5XmlPatterns.so.5
 rm usr/lib/libssrfmarblewidget.so
-
+rm usr/lib/subsurface
 rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
+strip usr/bin/* usr/lib/*
 cd -
 find $APP.AppDir/
 
