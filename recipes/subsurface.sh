@@ -82,7 +82,7 @@ find /usr/lib -name libssh2.so.1 -exec cp {} usr/lib \;
 find /lib -name libgcrypt.so.11 -exec cp {} usr/lib \;
 find /lib -name libselinux.so.1 -exec cp {} usr/lib \;
 find /usr/lib -name libcurl.so.4 -exec cp {} usr/lib \;
-find /lib -name libselinux.so.1 -exec cp {} usr/lib \; # Needed e.g., for Arch/Antergos
+find /lib -name libselinux.so.1 -exec cp {} usr/lib \; # Needed e.g., for Arch/Antergos (better would be to compile w/o it)
 cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # Bundle Qt libraries; delete the extraneous ones below
 rm -r usr/lib/cmake
 rm -r usr/lib/grantlee
