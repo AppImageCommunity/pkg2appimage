@@ -84,6 +84,7 @@ find /lib -name libselinux.so.1 -exec cp {} usr/lib \;
 find /usr/lib -name libcurl.so.4 -exec cp {} usr/lib \;
 find /lib -name libselinux.so.1 -exec cp {} usr/lib \; # Needed e.g., for Arch/Antergos (better would be to compile w/o it)
 find /usr/lib -name librtmp.so.0 -exec cp {} usr/lib \; # Needed e.g., for Arch/Antergos
+find /usr/lib -name libtasn1.so.3 -exec cp {} usr/lib \; # Needed e.g., for Fedora 22
 find /usr/lib -name libgnutls.so.26 -exec cp {} usr/lib \; # Needed by librtmp.so.0
 cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # Bundle Qt libraries; delete the extraneous ones below
 rm -r usr/lib/cmake
