@@ -12,6 +12,7 @@
 # CentOS Linux release 7.1.1503 (Core) - CentOS-7-x86_64-LiveGNOME-1503.iso
 # Ubuntu 15.04 (Vivid Vervet) - ubuntu-15.04-desktop-amd64.iso
 # Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
+# openSUSE Tumbleweed (20151012) - openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso
 # Antergos - antergos-2014.08.07-x86_64.iso
 # elementary OS 0.3 Freya - elementary_OS_0.3_freya_amd64.iso
 
