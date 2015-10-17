@@ -55,6 +55,9 @@ cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 
 # Populate usr/share; app seems to pick up things from there
 mkdir -p $APP.AppDir/usr/share/subsurface/data/
+cp -r ./subsurface/build/Documentation $APP.AppDir/usr/share/subsurface/
+cp -r ./subsurface/marbledata/maps $APP.AppDir/usr/share/subsurface/data/
+cp -r ./subsurface/marbledata/bitmaps $APP.AppDir/usr/share/subsurface/data/
 echo "############ Copy from here"
 find .
 echo "############ Copy from here"
