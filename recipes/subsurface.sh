@@ -7,7 +7,8 @@
 # to run the app plus a small executable header that mounts the image and runs the app on the target system.
 # See http://portablelinuxapps.org/docs/1.0/AppImageKit.pdf for more information.
 
-# Known to work on:
+# Resulting AppImage is known to work on:
+# Ubuntu 15.04 (Vivid Vervet) - ubuntu-15.04-desktop-amd64.iso
 # Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
 # Antergos - antergos-2014.08.07-x86_64.iso
 # elementary OS 0.3 Freya - elementary_OS_0.3_freya_amd64.iso
@@ -136,12 +137,12 @@ echo $VERSION
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant" # (64-bit)
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION".AppImage"
+./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION"_x86_64.AppImage"
 
-ls -lh ./$APP"_"$VERSION".AppImage"
+ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 
 # Upload
 cd ..
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py ./$APP/$APP"_"$VERSION".AppImage"
+python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
