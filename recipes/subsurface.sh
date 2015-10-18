@@ -80,6 +80,7 @@ mkdir -p $APP.AppDir/usr/share/subsurface/data/
 cp -Lr ./subsurface/build/Documentation $APP.AppDir/usr/share/subsurface/
 cp -Lr ./subsurface/marbledata/maps $APP.AppDir/usr/share/subsurface/data/
 cp -Lr ./subsurface/marbledata/bitmaps $APP.AppDir/usr/share/subsurface/data/
+cp -Lr ./subsurface/printing_templates  $APP.AppDir/usr/share/subsurface/
 mkdir -p $APP.AppDir/usr/share/subsurface/translations
 cp -Lr ./subsurface/build/translations/*.qm $APP.AppDir/usr/share/subsurface/translations/
 
