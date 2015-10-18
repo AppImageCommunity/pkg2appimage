@@ -39,7 +39,7 @@ tar xf cmake-3.2.2-Linux-x86_64.tar.gz
 # Quick and dirty way to download the latest Qt - is there an official one?
 QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55
 wget "$QT_URL/Updates.xml"
-QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qt5_qtscript.7z qt5_qtlocation.7z"
+QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qt5_qtscript.7z qt5_qtlocation.7z qt5_qtpositioning.7z"
 for QTPACKAGE in $QTPACKAGES; do
   unset NAME V1 V2
   NAME=$(grep -Pzo "(?s)$QTPACKAGE" Updates.xml | head -n 1)
