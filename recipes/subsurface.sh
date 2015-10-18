@@ -20,7 +20,7 @@
 # Install dependencies
 
 sudo apt-get update -qq
-sudo apt-get -y install python-requests xorriso p7zip-full pax-utils # TODO: Replace with something that does not need sudo
+sudo apt-get -y install python-requests xorriso p7zip-full pax-utils imagemagick # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev 
 
@@ -62,6 +62,7 @@ mv install-root $APP.AppDir/usr
 cp ./subsurface/build/subsurface $APP.AppDir/usr/bin
 cp ./subsurface/subsurface.desktop $APP.AppDir/
 cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
+mogrify -resize 64x64 $APP.AppDir/subsurface-icon.png
 
 # Populate usr/share; app seems to pick up things from there
 mkdir -p $APP.AppDir/usr/share/subsurface/data/
