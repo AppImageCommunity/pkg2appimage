@@ -155,7 +155,7 @@ GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant" # (64-bit)
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/2/AppImageAssistant" # (64-bit)
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
 ./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION"_x86_64.AppImage"
