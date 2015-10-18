@@ -46,6 +46,7 @@ for QTPACKAGE in $QTPACKAGES; do
   V1=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Name>" | tail -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
   V2=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Version>" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
   case $NAME in
+    *icu-*) wget "$QT_URL/"$V1"/"$V2$NAME;;
     *qt5_*) wget "$QT_URL/"$V1"/"$V2$NAME;;
     *) wget "$QT_URL/"$V1"/"$V2"qt5_"$NAME;;
   esac
