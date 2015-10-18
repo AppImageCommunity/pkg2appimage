@@ -68,6 +68,9 @@ mkdir -p $APP.AppDir/usr/share/subsurface/data/
 cp -Lr ./subsurface/build/Documentation $APP.AppDir/usr/share/subsurface/
 cp -Lr ./subsurface/marbledata/maps $APP.AppDir/usr/share/subsurface/data/
 cp -Lr ./subsurface/marbledata/bitmaps $APP.AppDir/usr/share/subsurface/data/
+mkdir -p $APP.AppDir/usr/share/subsurface/translations
+cp -Lr ./subsurface/build/translations/*.qm $APP.AppDir/usr/share/subsurface/translations/
+
 echo "############ Copy from here"
 find .
 echo "############ Copy from here"
