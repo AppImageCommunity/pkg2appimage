@@ -39,17 +39,13 @@ tar xf cmake-3.2.2-Linux-x86_64.tar.gz
 # Quick and dirty way to download the latest Qt - is there an official one?
 QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55
 wget "$QT_URL/Updates.xml"
-QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qtscript.7z qtlocation.7z"
+QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qt5_qtscript.7z qt5_qtlocation.7z"
 for QTPACKAGE in $QTPACKAGES; do
   unset NAME V1 V2
   NAME=$(grep -Pzo "(?s)$QTPACKAGE" Updates.xml | head -n 1)
   V1=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Name>" | tail -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
   V2=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Version>" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
-  case $NAME in
-    *icu-*) wget "$QT_URL/"$V1"/"$V2$NAME;;
-    *qt5_*) wget "$QT_URL/"$V1"/"$V2$NAME;;
-    *) wget "$QT_URL/"$V1"/"$V2"qt5_"$NAME;;
-  esac
+  wget "$QT_URL/"$V1"/"$V2$NAME
 done
 
 # wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_essentials.7z
