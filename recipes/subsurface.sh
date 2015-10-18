@@ -35,11 +35,27 @@ which g++
 # Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
 wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
 tar xf cmake-3.2.2-Linux-x86_64.tar.gz
-wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_essentials.7z
-wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2icu-linux-g++-Rhel6.6-x64.7z
-wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_addons.7z
-wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtscript.gcc_64/5.5.0-0qt5_qtscript.7z
-wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
+
+# Quick and dirty parsing of version information in order to get the latest Qt
+wget "http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/Updates.xml"
+QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qtscript.7z qtlocation.7z"
+for QTPACKAGE in $QTPACKAGES; do
+  unset NAME V1 V2
+  NAME=$(grep -Pzo "(?s)$QTPACKAGE" Updates.xml | head -n 1)
+  V1=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Name>" | tail -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
+  V2=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Version>" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
+  case $NAME in
+    *qt5_*) wget "http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/"$V1"/"$V2$NAME;;
+    *) wget "http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/"$V1"/"$V2"qt5_"$NAME;;
+  esac
+done
+
+# wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_essentials.7z
+# wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2icu-linux-g++-Rhel6.6-x64.7z
+# wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_addons.7z
+# wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtscript.gcc_64/5.5.0-0qt5_qtscript.7z
+# wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
+
 7z x *_essentials.7z > /dev/null
 7z x *icu-linux-*.7z > /dev/null
 7z x *_addons.7z > /dev/null
