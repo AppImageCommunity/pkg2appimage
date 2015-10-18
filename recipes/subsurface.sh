@@ -117,12 +117,9 @@ find /usr/lib -name libtasn1.so.3 -exec cp {} usr/lib \; # Needed e.g., for Fedo
 find /usr/lib -name libgnutls.so.26 -exec cp {} usr/lib \; # Needed by librtmp.so.0
 cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # Bundle Qt libraries; delete the extraneous ones below
 rm -r usr/lib/cmake
-rm -r usr/lib/grantlee
 rm usr/lib/libdivecomputer.a
 rm usr/lib/libdivecomputer.la
-rm usr/lib/libGrantlee_Templates.so
 rm usr/lib/libGrantlee_TextDocument.so
-rm usr/lib/libGrantlee_TextDocument.so.5
 rm usr/lib/libGrantlee_TextDocument.so.5.0.0
 rm usr/lib/libQt5CLucene.so.5
 rm usr/lib/libQt5DesignerComponents.so.5
