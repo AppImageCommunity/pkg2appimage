@@ -19,7 +19,7 @@
 
 # Install dependencies
 
-sudo apt-get update -qq
+sudo apt-get update -qq # Make sure universe is enabled
 sudo apt-get -y install python-requests xorriso p7zip-full pax-utils imagemagick # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev 
@@ -160,7 +160,7 @@ xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.A
 ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 
 # Upload
-cd ..
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+# cd ..
+# wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+# wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+# python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
