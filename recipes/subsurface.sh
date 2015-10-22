@@ -152,15 +152,15 @@ GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
+# Convert the AppDir into an AppImage
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/2/AppImageAssistant" # (64-bit)
-
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
 ./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION"_x86_64.AppImage"
 
 ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 
-# Upload
-# cd ..
-# wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
-# wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-# python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+# Upload from travis-ci to GitHub Releases
+cd ..
+wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
