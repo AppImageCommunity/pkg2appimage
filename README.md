@@ -79,3 +79,21 @@ AppImage to the rescue. The AppImage format is a standardized format for packagi
 10. Do not require root
 
 I would welcome people writing applications to pick this up as an easy way to provide nightly builds that run (almost) everywhere and leave no traces in the base operating system. Some upstream projects like [Glade](https://github.com/GNOME/glade/tree/master/build/linux), [Gstreamer](http://lists.freedesktop.org/archives/gstreamer-bugs/2014-May/124914.html), and [Pitivi](http://pitivi.ecchi.ca/bundles/) have been building AppImages. There are more [sophisticated](http://0pointer.net/blog/revisiting-how-we-put-together-linux-systems.html) [approaches](https://wiki.gnome.org/Projects/SandboxedApps) in the works, which I welcome, but in the meantime here is something reasonably simple, universal, and robust that works today.
+
+## Screenshots
+
+Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
+
+![fedora](https://cloud.githubusercontent.com/assets/2480569/10559493/0e837b86-74f2-11e5-94e1-56f901c51f6e.png)
+
+CentOS Linux 7 (Core) - CentOS-7.0-1406-x86_64-GnomeLive.iso
+
+![centos](https://cloud.githubusercontent.com/assets/2480569/10559404/919d607e-74f0-11e5-8816-e9032c25cdcd.png)
+
+Ubuntu 14.04.1 LTS (Trusty Tahr) - ubuntu-14.04.1-desktop-amd64.iso
+
+![ubuntu](https://cloud.githubusercontent.com/assets/2480569/10559436/02930bb2-74f1-11e5-88d0-2f8ce82e8846.png)
+
+openSUSE Tumbleweed (20151012) - openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso
+
+![opensuse](https://cloud.githubusercontent.com/assets/2480569/10559386/f4bdc906-74ef-11e5-87b7-98d9033d1252.png)
