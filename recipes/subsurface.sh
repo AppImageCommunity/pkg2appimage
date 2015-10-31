@@ -148,6 +148,8 @@ strip usr/bin/* usr/lib/*
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
 mkdir -p ./usr/lib/qt5/plugins/
 mv ./usr/lib/grantlee/ ./usr/lib/qt5/plugins/
+# Fix GDK_IS_PIXBUF errors on older distributions
+find /lib -name libpng*.so.* -exec cp {} ./usr/lib/libpng15.so.15 \;
 cd -
 find $APP.AppDir/
 
