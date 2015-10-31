@@ -146,8 +146,8 @@ rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
 strip usr/bin/* usr/lib/*
 # According to http://www.grantlee.org/apidox/using_and_deploying.html
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
-mkdir -p ./usr/lib/qt4/plugins/
-mv ./usr/lib/grantlee/ ./usr/lib/qt4/plugins/
+mkdir -p ./usr/lib/qt5/plugins/
+mv ./usr/lib/grantlee/ ./usr/lib/qt5/plugins/
 cd -
 find $APP.AppDir/
 
