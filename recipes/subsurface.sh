@@ -91,7 +91,7 @@ echo "############ Copy from here"
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun" # (64-bit)
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppRun" # (64-bit)
 chmod a+x AppRun
 # FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
 cp -r ../../5.5/gcc_64/plugins/bearer usr/bin
