@@ -149,7 +149,13 @@ strip usr/bin/* usr/lib/*
 mkdir -p ./usr/lib/qt5/plugins/
 mv ./usr/lib/grantlee/ ./usr/lib/qt5/plugins/
 # Fix GDK_IS_PIXBUF errors on older distributions
-find /lib -name libpng*.so.* -exec cp {} ./usr/lib/libpng15.so.15 \;
+find /lib -name libpng*.so.* -exec cp {} ./usr/lib/libpng16.so.16 \;
+ln -sf ./libpng16.so.16 ./usr/lib/libpng15.so.15 # For Fedora 20
+ln -sf ./libpng16.so.16 ./usr/lib/libpng14.so.14 # Just to be sure
+ln -sf ./libpng16.so.16 ./usr/lib/libpng13.so.13 # Just to be sure
+ln -sf ./libpng16.so.16 ./usr/lib/libpng12.so.12 # Just to be sure
+find /usr/lib -name libfreetype.so.6 -exec cp {} usr/lib \; # For Fedora 20
+ln -sf ./libpng16.so.16 ./usr/lib/libpng12.so.0 # For the bundled libfreetype.so.6
 cd -
 find $APP.AppDir/
 
