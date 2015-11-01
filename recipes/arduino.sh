@@ -34,12 +34,12 @@ echo $VERSION
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-./AppImageAssistant.AppDir/package ./$APP.AppDir/ "$APP_$VERSION.AppImage"
+./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP"_"$VERSION".AppImage"
 
-ls -lh ./$APP.AppImage
+ls -lh ./$APP"_"$VERSION".AppImage"
 
 # Upload
 cd ..
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py "$APP_$VERSION.AppImage
+python travis2github.py $APP"_"$VERSION".AppImage"
