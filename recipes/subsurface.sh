@@ -94,14 +94,15 @@ cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppRun" # (64-bit)
 chmod a+x AppRun
 # FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
-cp -r ../../5.5/gcc_64/plugins/bearer usr/bin
-cp -r ../../5.5/gcc_64/plugins/iconengines usr/bin
-cp -r ../../5.5/gcc_64/plugins/imageformats usr/bin
-cp -r ../../5.5/gcc_64/plugins/platforminputcontexts usr/bin
-cp -r ../../5.5/gcc_64/plugins/platforms usr/bin
-cp -r ../../5.5/gcc_64/plugins/platformthemes usr/bin
-cp -r ../../5.5/gcc_64/plugins/sensors usr/bin
-cp -r ../../5.5/gcc_64/plugins/xcbglintegrations usr/bin
+mkdir -p ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/bearer ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/iconengines ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/imageformats ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/platforminputcontexts ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/platforms ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/platformthemes ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/sensors ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gcc_64/plugins/xcbglintegrations ./usr/lib/qt5/plugins/
 lddtree usr/bin/subsurface
 lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
 # FIXME: For whatever strange reason these are not caught by the above; are they coming from the plugins?
@@ -146,7 +147,6 @@ rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
 strip usr/bin/* usr/lib/*
 # According to http://www.grantlee.org/apidox/using_and_deploying.html
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
-mkdir -p ./usr/lib/qt5/plugins/
 mv ./usr/lib/grantlee/ ./usr/lib/qt5/plugins/
 # Fix GDK_IS_PIXBUF errors on older distributions
 find /lib -name libpng*.so.* -exec cp {} ./usr/lib/libpng16.so.16 \;
