@@ -35,10 +35,12 @@ find ../../opt -name soffice -path *program* -exec ln -s \{\} ./$BINARY \;
 cd ../../
 
 # (64-bit)
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppRun"
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppRun"
 chmod a+x ./AppRun
 
 cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppImageAssistant"
 
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
 ./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP"_"$VERSION".AppImage"
