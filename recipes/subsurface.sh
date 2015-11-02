@@ -23,7 +23,8 @@
 sudo apt-get update -qq # Make sure universe is enabled
 sudo apt-get -y install python-requests xorriso p7zip-full pax-utils imagemagick # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
-libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev 
+libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev \
+mesa-common-dev libgl1-mesa-dev libgstreamer-plugins-base0.10-0 libxcomposite1
 
 # Install newer gcc since qtserialbluetooth.cpp cannot be compiled with the stock gcc 4.6.3
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
