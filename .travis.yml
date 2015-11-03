@@ -2,7 +2,7 @@ language: c
 sudo: true
 notifications: false
 script:
-  - bash -x recipes/subsurface.sh
+  - bash -ex recipes/subsurface.sh
 #deploy:
 #  provider: releases
 #  file_glob: true
