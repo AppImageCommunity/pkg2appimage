@@ -31,8 +31,10 @@ sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get -qq update
 sudo apt-get -qq install g++-4.8
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
-g++ --version
-which g++
+sudo apt-get -qq install gcc-4.8
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
+gcc --version
+which gcc
 
 # Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
 wget --no-check-certificate -c https://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
@@ -67,7 +69,6 @@ mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
 git clone git://subsurface-divelog.org/subsurface
-cc1 --version
 bash -ex ./subsurface/scripts/build.sh
 
 # Move build products into the AppDir
