@@ -104,6 +104,7 @@ cp -r ../../5.5/gcc_64/plugins/platforms ./usr/lib/qt5/plugins/
 cp -r ../../5.5/gcc_64/plugins/platformthemes ./usr/lib/qt5/plugins/
 cp -r ../../5.5/gcc_64/plugins/sensors ./usr/lib/qt5/plugins/
 cp -r ../../5.5/gcc_64/plugins/xcbglintegrations ./usr/lib/qt5/plugins/
+cp -a ../../5.5/gcc_64/lib/libicu* usr/lib
 export LD_LIBRARY_PATH=./usr/lib/:../../5.5/gcc_64/lib/:$LD_LIBRARY_PATH
 ldd usr/bin/subsurface | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
