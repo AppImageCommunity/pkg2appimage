@@ -111,43 +111,43 @@ ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  
 
 # The following are assumed to be part of the base system
 # Segmentation faults can occur if some of these are left in the AppImage
-rm usr/lib/libasn1.so.8
-rm usr/lib/libcom_err.so.2
-rm usr/lib/libcrypt.so.1
-rm usr/lib/libdl.so.2
-rm usr/lib/libexpat.so.1
-rm usr/lib/libfontconfig.so.1
-rm usr/lib/libgcc_s.so.1
-rm usr/lib/libglib-2.0.so.0
-rm usr/lib/libgpg-error.so.0
-rm usr/lib/libgssapi_krb5.so.2
-rm usr/lib/libgssapi.so.3
-rm usr/lib/libhcrypto.so.4
-rm usr/lib/libheimbase.so.1
-rm usr/lib/libheimntlm.so.0
-rm usr/lib/libhx509.so.5
-rm usr/lib/libICE.so.6
-rm usr/lib/libidn.so.11
-rm usr/lib/libk5crypto.so.3
-rm usr/lib/libkeyutils.so.1
-rm usr/lib/libkrb5.so.26
-rm usr/lib/libkrb5.so.3
-rm usr/lib/libkrb5support.so.0
-rm usr/lib/liblber-2.4.so.2
-rm usr/lib/libldap_r-2.4.so.2
-rm usr/lib/libm.so.6
-rm usr/lib/libp11-kit.so.0
-rm usr/lib/libpcre.so.3
-rm usr/lib/libpthread.so.0
-rm usr/lib/libresolv.so.2
-rm usr/lib/libroken.so.18
-rm usr/lib/librt.so.1
-rm usr/lib/libsasl2.so.2
-rm usr/lib/libSM.so.6
-rm usr/lib/libusb-1.0.so.0
-rm usr/lib/libuuid.so.1
-rm usr/lib/libwind.so.0
-rm usr/lib/libz.so.1
+rm usr/lib/libasn1.so.8 || true
+rm usr/lib/libcom_err.so.2 || true
+rm usr/lib/libcrypt.so.1 || true
+rm usr/lib/libdl.so.2 || true
+rm usr/lib/libexpat.so.1 || true
+rm usr/lib/libfontconfig.so.1 || true
+rm usr/lib/libgcc_s.so.1 || true
+rm usr/lib/libglib-2.0.so.0 || true
+rm usr/lib/libgpg-error.so.0 || true
+rm usr/lib/libgssapi_krb5.so.2 || true
+rm usr/lib/libgssapi.so.3 || true
+rm usr/lib/libhcrypto.so.4 || true
+rm usr/lib/libheimbase.so.1 || true
+rm usr/lib/libheimntlm.so.0 || true
+rm usr/lib/libhx509.so.5 || true
+rm usr/lib/libICE.so.6 || true
+rm usr/lib/libidn.so.11 || true
+rm usr/lib/libk5crypto.so.3 || true
+rm usr/lib/libkeyutils.so.1 || true
+rm usr/lib/libkrb5.so.26 || true
+rm usr/lib/libkrb5.so.3 || true
+rm usr/lib/libkrb5support.so.0 || true
+rm usr/lib/liblber-2.4.so.2 || true
+rm usr/lib/libldap_r-2.4.so.2 || true
+rm usr/lib/libm.so.6 || true
+rm usr/lib/libp11-kit.so.0 || true
+rm usr/lib/libpcre.so.3 || true
+rm usr/lib/libpthread.so.0 || true
+rm usr/lib/libresolv.so.2 || true
+rm usr/lib/libroken.so.18 || true
+rm usr/lib/librt.so.1 || true
+rm usr/lib/libsasl2.so.2 || true
+rm usr/lib/libSM.so.6 || true
+rm usr/lib/libusb-1.0.so.0 || true
+rm usr/lib/libuuid.so.1 || true
+rm usr/lib/libwind.so.0 || true
+rm usr/lib/libz.so.1 || true
 
 rm -r usr/lib/cmake
 rm usr/lib/libdivecomputer.a
