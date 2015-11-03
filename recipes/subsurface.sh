@@ -59,6 +59,7 @@ done
 # wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtscript.gcc_64/5.5.0-0qt5_qtscript.7z
 # wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
 
+rm -rf $PWD/5.5/
 find *.7z -exec 7z x {} >/dev/null \;
 
 export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
@@ -69,7 +70,14 @@ APP=Subsurface
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
-git clone git://subsurface-divelog.org/subsurface
+# Get latest subsurface project from git
+if [ ! -d subsurface ] ; then
+  git clone git://subsurface-divelog.org/subsurface
+fi
+cd subsurface/
+git pull --rebase
+cd ..
+
 bash -ex ./subsurface/scripts/build.sh
 
 # Move build products into the AppDir
