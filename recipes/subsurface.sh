@@ -26,13 +26,14 @@ sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev \
 mesa-common-dev libgl1-mesa-dev libgstreamer-plugins-base0.10-0 libxcomposite1
 
-# Install newer gcc since qtserialbluetooth.cpp cannot be compiled with the stock gcc 4.6.3
+# Install newer gcc and g++ since cannot be compiled with the stock 4.6.3
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get -qq update
-sudo apt-get -qq install g++-4.8
+sudo apt-get -qq install g++-4.8 gcc-4.8
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
-sudo apt-get -qq install gcc-4.8
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
+g++ --version
+which g++
 gcc --version
 which gcc
 
