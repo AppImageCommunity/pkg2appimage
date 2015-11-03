@@ -67,7 +67,8 @@ mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
 git clone git://subsurface-divelog.org/subsurface
-bash -x ./subsurface/scripts/build.sh
+cc1 --version
+bash -ex ./subsurface/scripts/build.sh
 
 # Move build products into the AppDir
 rm -rf install-root/include
@@ -86,9 +87,9 @@ cp -Lr ./subsurface/printing_templates  $APP.AppDir/usr/share/subsurface/
 mkdir -p $APP.AppDir/usr/share/subsurface/translations
 cp -Lr ./subsurface/build/translations/*.qm $APP.AppDir/usr/share/subsurface/translations/
 
-echo "############ Copy from here"
-find .
-echo "############ Copy from here"
+# echo "############ Copy from here"
+# find .
+# echo "############ Copy from here"
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
