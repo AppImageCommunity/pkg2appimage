@@ -104,44 +104,14 @@ cp -r ../../5.5/gcc_64/plugins/platforms ./usr/lib/qt5/plugins/
 cp -r ../../5.5/gcc_64/plugins/platformthemes ./usr/lib/qt5/plugins/
 cp -r ../../5.5/gcc_64/plugins/sensors ./usr/lib/qt5/plugins/
 cp -r ../../5.5/gcc_64/plugins/xcbglintegrations ./usr/lib/qt5/plugins/
-lddtree usr/bin/subsurface
-lddtree usr/bin/subsurface | grep "=>" | awk '{print $3}' | grep -ve "^/lib" | xargs -I '{}' cp -v '{}' ./usr/lib
-# FIXME: For whatever strange reason these are not caught by the above; are they coming from the plugins?
-cp /lib/x86_64-linux-gnu/libssl.so.1.0.0 usr/lib
-cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 usr/lib
-cp -a ../../5.5/gcc_64/lib/libicu* usr/lib
-find /usr/lib -name libssh2.so.1 -exec cp {} usr/lib \;
-find /lib -name libgcrypt.so.11 -exec cp {} usr/lib \;
-find /lib -name libselinux.so.1 -exec cp {} usr/lib \;
-find /usr/lib -name libcurl.so.4 -exec cp {} usr/lib \;
-find /lib -name libselinux.so.1 -exec cp {} usr/lib \; # Needed e.g., for Arch/Antergos (better would be to compile w/o it)
-find /usr/lib -name librtmp.so.0 -exec cp {} usr/lib \; # Needed e.g., for Arch/Antergos
-find /usr/lib -name libtasn1.so.3 -exec cp {} usr/lib \; # Needed e.g., for Fedora 22
-find /usr/lib -name libgnutls.so.26 -exec cp {} usr/lib \; # Needed by librtmp.so.0
-cp ../../5.5/gcc_64/lib/libQt5*.so.5 usr/lib # Bundle Qt libraries; delete the extraneous ones below
+export LD_LIBRARY_PATH=./usr/lib/:../../5.5/gcc_64/lib/:$LD_LIBRARY_PATH
+ldd usr/bin/subsurface | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 rm -r usr/lib/cmake
 rm usr/lib/libdivecomputer.a
 rm usr/lib/libdivecomputer.la
 rm usr/lib/libGrantlee_TextDocument.so
 rm usr/lib/libGrantlee_TextDocument.so.5.0.0
-rm usr/lib/libQt5CLucene.so.5
-rm usr/lib/libQt5DesignerComponents.so.5
-rm usr/lib/libQt5Designer.so.5
-rm usr/lib/libQt5Help.so.5
-rm usr/lib/libQt5Location.so.5
-rm usr/lib/libQt5MultimediaQuick_p.so.5
-rm usr/lib/libQt5Multimedia.so.5
-rm usr/lib/libQt5MultimediaWidgets.so.5
-rm usr/lib/libQt5Nfc.so.5
-rm usr/lib/libQt5QuickParticles.so.5
-rm usr/lib/libQt5QuickTest.so.5
-rm usr/lib/libQt5QuickWidgets.so.5
-rm usr/lib/libQt5ScriptTools.so.5
-rm usr/lib/libQt5SerialPort.so.5
-rm usr/lib/libQt5Test.so.5
-rm usr/lib/libQt5WebSockets.so.5
-rm usr/lib/libQt5X11Extras.so.5
-rm usr/lib/libQt5XmlPatterns.so.5
 rm usr/lib/libssrfmarblewidget.so
 rm usr/lib/subsurface
 rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
