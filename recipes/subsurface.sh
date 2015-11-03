@@ -35,7 +35,7 @@ g++ --version
 which g++
 
 # Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
-wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
+wget --no-check-certificate -c http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
 tar xf cmake-3.2.2-Linux-x86_64.tar.gz
 
 # Quick and dirty way to download the latest Qt - is there an official one?
@@ -114,7 +114,7 @@ rm usr/lib/libGrantlee_TextDocument.so
 rm usr/lib/libGrantlee_TextDocument.so.5.0.0
 rm usr/lib/libssrfmarblewidget.so
 rm usr/lib/subsurface
-rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX*
+rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX* usr/lib/libc.so.*
 strip usr/bin/* usr/lib/*
 # According to http://www.grantlee.org/apidox/using_and_deploying.html
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
