@@ -152,15 +152,15 @@ rm usr/lib/libuuid.so.1 || true
 rm usr/lib/libwind.so.0 || true
 rm usr/lib/libz.so.1 || true
 
-rm -r usr/lib/cmake
-rm usr/lib/libdivecomputer.a
-rm usr/lib/libdivecomputer.la
-rm usr/lib/libGrantlee_TextDocument.so
-rm usr/lib/libGrantlee_TextDocument.so.5.0.0
-rm usr/lib/libssrfmarblewidget.so
-rm usr/lib/subsurface
-rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX* usr/lib/libc.so.*
-strip usr/bin/* usr/lib/*
+rm -r usr/lib/cmake || true
+rm usr/lib/libdivecomputer.a || true
+rm usr/lib/libdivecomputer.la || true
+rm usr/lib/libGrantlee_TextDocument.so || true
+rm usr/lib/libGrantlee_TextDocument.so.5.0.0 || true
+rm usr/lib/libssrfmarblewidget.so || true
+rm usr/lib/subsurface || true
+rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX* usr/lib/libc.so.* || true
+strip usr/bin/* usr/lib/* || true
 # According to http://www.grantlee.org/apidox/using_and_deploying.html
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
 mv ./usr/lib/grantlee/ ./usr/lib/qt5/plugins/
