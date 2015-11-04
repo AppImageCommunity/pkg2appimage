@@ -160,6 +160,8 @@ rm usr/lib/libwind.so.0 || true
 rm usr/lib/libz.so.1 || true
 
 rm -r usr/lib/cmake || true
+rm -r usr/lib/pkgconfig || true
+
 rm usr/lib/libdivecomputer.a || true
 rm usr/lib/libdivecomputer.la || true
 rm usr/lib/libdivecomputer.so || true
