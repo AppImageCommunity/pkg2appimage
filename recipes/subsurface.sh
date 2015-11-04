@@ -207,7 +207,7 @@ ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 # Upload from travis-ci to GitHub Releases
 if [ UPLOAD_TO_TRAVIS = "1" ] ; then
 	cd ..
-	wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
-	wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
 	python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
 fi
