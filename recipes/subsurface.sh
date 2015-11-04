@@ -58,7 +58,7 @@ for QTPACKAGE in $QTPACKAGES; do
   NAME=$(grep -Pzo "(?s)$QTPACKAGE" Updates.xml | head -n 1)
   V1=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Name>" | tail -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
   V2=$(grep -Pzo "(?s)<PackageUpdate>.*?<Version>.*?<DownloadableArchives>.*?$QTPACKAGE.*?</PackageUpdate>" Updates.xml | grep "<Version>" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
-  wget "$QT_URL/"$V1"/"$V2$NAME
+  wget -c "$QT_URL/"$V1"/"$V2$NAME
 done
 
 # wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.gcc_64/5.5.0-2qt5_essentials.7z
