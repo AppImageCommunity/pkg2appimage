@@ -20,6 +20,13 @@
 
 # Install dependencies
 
+if [[ "$1" = "-travis" ]] ; then
+	UPLOAD_TO_TRAVIS=1
+	shift
+else
+	UPLOAD_TO_TRAVIS=0
+fi
+
 sudo apt-get update -qq # Make sure universe is enabled
 sudo apt-get -y install python-requests xorriso p7zip-full pax-utils imagemagick # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
@@ -197,7 +204,9 @@ xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.A
 ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 
 # Upload from travis-ci to GitHub Releases
-cd ..
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+if [ UPLOAD_TO_TRAVIS = "1" ] ; then
+	cd ..
+	wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+	wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+	python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+fi
