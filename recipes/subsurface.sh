@@ -20,11 +20,18 @@
 
 # Install dependencies
 
+if [[ "$1" = "-travis" ] ; then
+	UPLOAD_TO_TRAVIS=1
+	shift
+else
+	UPLOAD_TO_TRAVIS=0
+fi
+
 sudo apt-get update -qq # Make sure universe is enabled
 sudo apt-get -y install python-requests xorriso p7zip-full pax-utils imagemagick # TODO: Replace with something that does not need sudo
 sudo apt-get -y install cmake git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev \
-mesa-common-dev libgl1-mesa-dev libgstreamer-plugins-base0.10-0 libxcomposite1
+mesa-common-dev libgl1-mesa-dev libgstreamer-plugins-base0.10-0 libxcomposite1 python-software-properties
 
 # Install newer gcc and g++ since cannot be compiled with the stock 4.6.3
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -197,7 +204,9 @@ xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.A
 ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 
 # Upload from travis-ci to GitHub Releases
-cd ..
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+if [ UPLOAD_TO_TRAVIS = "1" ] ; then
+	cd ..
+	wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+	wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+	python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+fi
