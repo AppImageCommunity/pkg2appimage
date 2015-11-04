@@ -20,7 +20,7 @@ Both bundle not only the application itself, but also the required Qt libraries 
 
 So why not use the same approach as on Windows and OS X, namely, treat the base operating system as a _platform_ on top of which we tun the application we care about. This means that we have to bundle the application with all their dependencies that are _not_ part of the base operating system. Welcome [application bundles](https://blogs.gnome.org/tvb/2013/12/10/application-bundles-for-glade/).
 
-[Here](https://github.com/probonopd/AppImages/releases) is is an AppImage of Subsurface, built from the latest git sources in an [automated process](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.sh). Just download, `chmod a+x`, and run. With 73.3 MB, `Subsurface_4.5.0_x86_64.AppImage` is roughly in line with the binaries for Windows and OS X. With some more hand-tuning, the size could probably be brought further down. So far, the AppImage has been verified to run on
+[Here](https://github.com/probonopd/AppImages/releases) is is an AppImage of Subsurface, built from the latest git sources in an [automated process](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.sh). Just download, `chmod a+x`, and run. At 54.1 MB, `Subsurface_4.5.0_x86_64.AppImage` is roughly in line with the binaries for Windows and OS X. With some more hand-tuning, the size could probably be brought further down. So far, the AppImage has been verified to run on
 * CentOS Linux 7 (Core) - CentOS-7.0-1406-x86_64-GnomeLive.iso
 * CentOS Linux release 7.1.1503 (Core) - CentOS-7-x86_64-LiveGNOME-1503.iso
 * Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
