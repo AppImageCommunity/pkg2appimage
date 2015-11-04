@@ -200,7 +200,9 @@ echo $VERSION
 
 # Convert the AppDir into an AppImage
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppImageAssistant" # (64-bit)
+rm -rf ./AppImageAssistant.AppDir
 xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
+rm -rf ./$APP"_"$VERSION"_x86_64.AppImage"
 ./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION"_x86_64.AppImage"
 
 ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
