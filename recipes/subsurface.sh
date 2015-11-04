@@ -68,7 +68,7 @@ done
 # wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
 
 rm -rf $PWD/5.5/
-find *.7z -exec 7z x {} >/dev/null \;
+find *.7z -exec 7z x -y {} >/dev/null \;
 
 export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
 export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
