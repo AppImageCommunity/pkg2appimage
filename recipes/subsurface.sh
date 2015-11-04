@@ -75,6 +75,7 @@ export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundli
 find $PWD/5.5/gcc_64/lib/
 
 APP=Subsurface
+rm -rf ./$APP/$APP.AppDir
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
