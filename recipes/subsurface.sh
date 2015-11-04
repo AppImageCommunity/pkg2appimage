@@ -87,28 +87,18 @@ cd subsurface/
 git pull --rebase
 cd ..
 
+# this is a bit hackish as the build.sh script isn't setup in
+# the best possible way for us
+mkdir -p $APP.AppDir/usr
+INSTALL_ROOT=$(cd $APP.AppDir/usr; pwd)
+sed -i "s,INSTALL_ROOT=.*,INSTALL_ROOT=$INSTALL_ROOT," ./subsurface/scripts/build.sh
+sed -i "s,cmake -DCMAKE_BUILD_TYPE=Debug.*,cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \\\\," ./subsurface/scripts/build.sh
 bash -ex ./subsurface/scripts/build.sh
+( cd subsurface/build ; make install )
 
-# Move build products into the AppDir
-rm -rf install-root/include
-mv install-root $APP.AppDir/usr
-cp ./subsurface/build/subsurface $APP.AppDir/usr/bin
 cp ./subsurface/subsurface.desktop $APP.AppDir/
 cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 mogrify -resize 64x64 $APP.AppDir/subsurface-icon.png
-
-# Populate usr/share; app seems to pick up things from there
-mkdir -p $APP.AppDir/usr/share/subsurface/data/
-cp -Lr ./subsurface/build/Documentation $APP.AppDir/usr/share/subsurface/
-cp -Lr ./subsurface/marbledata/maps $APP.AppDir/usr/share/subsurface/data/
-cp -Lr ./subsurface/marbledata/bitmaps $APP.AppDir/usr/share/subsurface/data/
-cp -Lr ./subsurface/printing_templates  $APP.AppDir/usr/share/subsurface/
-mkdir -p $APP.AppDir/usr/share/subsurface/translations
-cp -Lr ./subsurface/build/translations/*.qm $APP.AppDir/usr/share/subsurface/translations/
-
-# echo "############ Copy from here"
-# find .
-# echo "############ Copy from here"
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
