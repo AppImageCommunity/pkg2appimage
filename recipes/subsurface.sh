@@ -162,6 +162,9 @@ rm usr/lib/libz.so.1 || true
 rm -r usr/lib/cmake || true
 rm usr/lib/libdivecomputer.a || true
 rm usr/lib/libdivecomputer.la || true
+rm usr/lib/libdivecomputer.so || true
+rm usr/lib/libdivecomputer.so.0 || true
+rm usr/lib/libdivecomputer.so.0.0.0 || true
 rm usr/lib/libGrantlee_TextDocument.so || true
 rm usr/lib/libGrantlee_TextDocument.so.5.0.0 || true
 rm usr/lib/libssrfmarblewidget.so || true
