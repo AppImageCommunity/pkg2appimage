@@ -53,7 +53,7 @@ which g++
 gcc --version
 which gcc
 
-# Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
+# Install CMake 3.2.2 and Qt 5.5.x # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
 if [[ "$ARCH" = "amd64" ]] ; then
 	wget --no-check-certificate -c https://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
 fi
