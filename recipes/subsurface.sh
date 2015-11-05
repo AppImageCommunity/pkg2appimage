@@ -69,6 +69,7 @@ fi
 cd AppImageKit/
 git pull --rebase
 cmake .
+make clean
 make
 cd ..
 
