@@ -18,9 +18,7 @@
 # Antergos - antergos-2014.08.07-x86_64.iso
 # elementary OS 0.3 Freya - elementary_OS_0.3_freya_amd64.iso
 
-# Install dependencies
-
-
+# Determine which architecture should be built
 if [[ "$1" = "i386" ||  "$1" = "amd64" ]] ; then
 	ARCH=$1
 else
@@ -28,6 +26,7 @@ else
 	exit 1
 fi
 
+# Determine whether upload to github-releases should be attempted
 if [[ "$2" = "-travis" ]] ; then
 	UPLOAD_TO_TRAVIS=1
 	shift
@@ -35,6 +34,7 @@ else
 	UPLOAD_TO_TRAVIS=0
 fi
 
+# Install dependencies
 sudo apt-get update -qq # Make sure universe is enabled
 sudo apt-get -y install python-requests p7zip-full pax-utils imagemagick  \
 git g++ make autoconf libtool pkg-config \
@@ -63,7 +63,6 @@ fi
 tar xf cmake-*.tar.gz
 
 # Build AppImageKit
-
 if [ ! -d AppImageKit ] ; then
   git clone https://github.com/probonopd/AppImageKit.git
 fi
