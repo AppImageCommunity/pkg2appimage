@@ -175,6 +175,10 @@ rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX* usr/lib/libc.so.* || true
 
 rm -r usr/include || true
 
+rm usr/bin/universal || true
+rm usr/bin/ostc-fwupdate || true
+rm usr/bin/subsurface.debug || true
+
 strip usr/bin/* usr/lib/* || true
 # According to http://www.grantlee.org/apidox/using_and_deploying.html
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
