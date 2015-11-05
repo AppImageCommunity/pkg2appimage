@@ -21,11 +21,11 @@
 # Install dependencies
 
 
-if [[ "$2" = "-travis" ]] ; then
-	UPLOAD_TO_TRAVIS=1
-	shift
+if [[ "$1" = "i386" ||  "$1" = "amd64" ]] ; then
+	ARCH=$1
 else
-	UPLOAD_TO_TRAVIS=0
+	echo "Call me with either i386 or amd64"
+	exit 1
 fi
 
 if [[ "$2" = "-travis" ]] ; then
@@ -53,12 +53,22 @@ gcc --version
 which gcc
 
 # Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
-wget --no-check-certificate -c https://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
-tar xf cmake-3.2.2-Linux-x86_64.tar.gz
+if [[ "$ARCH" = "amd64" ]] ; then
+	wget --no-check-certificate -c https://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
+fi
+if [[ "$ARCH" = "i386" ]] ; then
+	wget --no-check-certificate -c https://cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
+fi
+tar xf cmake-*.tar.gz
 
 # Quick and dirty way to download the latest Qt - is there an official one?
 rm -f Updates.xml
-QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55
+if [[ "$ARCH" = "amd64" ]] ; then
+	QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55
+fi
+if [[ "$ARCH" = "i386" ]] ; then
+	QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x86/desktop/qt5_55
+fi
 wget "$QT_URL/Updates.xml"
 QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qt5_qtscript.7z qt5_qtlocation.7z qt5_qtpositioning.7z"
 for QTPACKAGE in $QTPACKAGES; do
@@ -78,9 +88,9 @@ done
 rm -rf $PWD/5.5/
 find *.7z -exec 7z x -y {} >/dev/null \;
 
-export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
-export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
-find $PWD/5.5/gcc_64/lib/
+export PATH=$PWD/cmake-*/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
+export LD_LIBRARY_PATH=$PWD/5.5/gc*/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
+find $PWD/5.5/gc*/lib/
 
 APP=Subsurface
 rm -rf ./$APP/$APP.AppDir
