@@ -63,8 +63,12 @@ fi
 tar xf cmake-*.tar.gz
 
 # Build AppImageKit
-git clone https://github.com/probonopd/AppImageKit.git
+
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
 cd AppImageKit/
+git pull --rebase
 cmake .
 make
 cd ..
