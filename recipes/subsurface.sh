@@ -68,7 +68,7 @@ done
 # wget http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55/qt.55.qtlocation.gcc_64/5.5.0-0qt5_qtlocation.7z
 
 rm -rf $PWD/5.5/
-find *.7z -exec 7z x {} >/dev/null \;
+find *.7z -exec 7z x -y {} >/dev/null \;
 
 export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
 export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
@@ -87,28 +87,18 @@ cd subsurface/
 git pull --rebase
 cd ..
 
+# this is a bit hackish as the build.sh script isn't setup in
+# the best possible way for us
+mkdir -p $APP.AppDir/usr
+INSTALL_ROOT=$(cd $APP.AppDir/usr; pwd)
+sed -i "s,INSTALL_ROOT=.*,INSTALL_ROOT=$INSTALL_ROOT," ./subsurface/scripts/build.sh
+sed -i "s,cmake -DCMAKE_BUILD_TYPE=Debug.*,cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \\\\," ./subsurface/scripts/build.sh
 bash -ex ./subsurface/scripts/build.sh
+( cd subsurface/build ; make install )
 
-# Move build products into the AppDir
-rm -rf install-root/include
-mv install-root $APP.AppDir/usr
-cp ./subsurface/build/subsurface $APP.AppDir/usr/bin
 cp ./subsurface/subsurface.desktop $APP.AppDir/
 cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
 mogrify -resize 64x64 $APP.AppDir/subsurface-icon.png
-
-# Populate usr/share; app seems to pick up things from there
-mkdir -p $APP.AppDir/usr/share/subsurface/data/
-cp -Lr ./subsurface/build/Documentation $APP.AppDir/usr/share/subsurface/
-cp -Lr ./subsurface/marbledata/maps $APP.AppDir/usr/share/subsurface/data/
-cp -Lr ./subsurface/marbledata/bitmaps $APP.AppDir/usr/share/subsurface/data/
-cp -Lr ./subsurface/printing_templates  $APP.AppDir/usr/share/subsurface/
-mkdir -p $APP.AppDir/usr/share/subsurface/translations
-cp -Lr ./subsurface/build/translations/*.qm $APP.AppDir/usr/share/subsurface/translations/
-
-# echo "############ Copy from here"
-# find .
-# echo "############ Copy from here"
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
@@ -170,13 +160,25 @@ rm usr/lib/libwind.so.0 || true
 rm usr/lib/libz.so.1 || true
 
 rm -r usr/lib/cmake || true
+rm -r usr/lib/pkgconfig || true
+
 rm usr/lib/libdivecomputer.a || true
 rm usr/lib/libdivecomputer.la || true
+rm usr/lib/libdivecomputer.so || true
+rm usr/lib/libdivecomputer.so.0 || true
+rm usr/lib/libdivecomputer.so.0.0.0 || true
 rm usr/lib/libGrantlee_TextDocument.so || true
 rm usr/lib/libGrantlee_TextDocument.so.5.0.0 || true
 rm usr/lib/libssrfmarblewidget.so || true
 rm usr/lib/subsurface || true
 rm usr/lib/libstdc* usr/lib/libgobject* usr/lib/libX* usr/lib/libc.so.* || true
+
+rm -r usr/include || true
+
+rm usr/bin/universal || true
+rm usr/bin/ostc-fwupdate || true
+rm usr/bin/subsurface.debug || true
+
 strip usr/bin/* usr/lib/* || true
 # According to http://www.grantlee.org/apidox/using_and_deploying.html
 # Grantlee looks for plugins in $QT_PLUGIN_DIR/grantlee/$grantleeversion/
