@@ -20,7 +20,15 @@
 
 # Install dependencies
 
-if [[ "$1" = "-travis" ]] ; then
+
+if [[ "$2" = "-travis" ]] ; then
+	UPLOAD_TO_TRAVIS=1
+	shift
+else
+	UPLOAD_TO_TRAVIS=0
+fi
+
+if [[ "$2" = "-travis" ]] ; then
 	UPLOAD_TO_TRAVIS=1
 	shift
 else
