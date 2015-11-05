@@ -2,7 +2,7 @@ language: c
 sudo: true
 notifications: false
 script:
-  - bash -ex recipes/subsurface.sh -travis
+  - bash -ex recipes/subsurface.sh amd64 -travis
 #deploy:
 #  provider: releases
 #  file_glob: true
