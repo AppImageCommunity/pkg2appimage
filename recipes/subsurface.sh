@@ -159,6 +159,9 @@ rm usr/lib/libuuid.so.1 || true
 rm usr/lib/libwind.so.0 || true
 rm usr/lib/libz.so.1 || true
 
+# These seem to be available on most systems
+rm libffi.so.6 libGL.so.1 libglapi.so.0 libxcb.so.1 libxcb-glx.so.0 || true
+
 rm -r usr/lib/cmake || true
 rm -r usr/lib/pkgconfig || true
 
