@@ -18,6 +18,12 @@
 # Antergos - antergos-2014.08.07-x86_64.iso
 # elementary OS 0.3 Freya - elementary_OS_0.3_freya_amd64.iso
 
+# Halt on errors
+set -e
+
+# Be verbose
+set -x
+
 # Determine which architecture should be built
 if [[ "$1" = "i386" ||  "$1" = "amd64" ]] ; then
 	ARCH=$1
