@@ -59,6 +59,7 @@ if [[ "$ARCH" = "amd64" ]] ; then
 fi
 if [[ "$ARCH" = "i386" ]] ; then
 	wget --no-check-certificate -c https://cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
+	linux32 # Simulate i386 host architecture
 fi
 tar xf cmake-*.tar.gz
 
