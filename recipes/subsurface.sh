@@ -41,7 +41,7 @@ else
 fi
 
 # Enable universe
-grep -r "main universe" /etc/apt/sources.list || sed -i -e "s| main| main universe|g" /etc/apt/sources.list
+grep -r "main universe" /etc/apt/sources.list || sudo sed -i -e "s| main| main universe|g" /etc/apt/sources.list
 
 # Install dependencies
 sudo apt-get update -q # Make sure universe is enabled
