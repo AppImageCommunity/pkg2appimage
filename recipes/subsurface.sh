@@ -213,7 +213,7 @@ rm -rf ./$APP"_"$VERSION"_x86_64.AppImage"
 ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
 
 # Upload from travis-ci to GitHub Releases
-if [ UPLOAD_TO_TRAVIS = "1" ] ; then
+if [ "$UPLOAD_TO_TRAVIS" = "1" ] ; then
 	cd ..
 	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
