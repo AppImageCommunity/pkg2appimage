@@ -100,9 +100,11 @@ done
 rm -rf $PWD/5.5/
 find *.7z -exec 7z x -y {} >/dev/null \;
 
-export PATH=$PWD/cmake-*/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
-export LD_LIBRARY_PATH=$PWD/5.5/gc*/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
-find $PWD/5.5/gc*/lib/
+CMAKE_PATH=$(find $PWD/cmake-*/ -type d | head -n 1)bin
+GCC_PREFIX=$(find $PWD/5.5/gc*/ -type d | head -n 1)
+export PATH=$CMAKE_PATH:$GCC_PREFIX/bin/:$PATH # Needed at compile time to find Qt and cmake
+export LD_LIBRARY_PATH=$GCC_PREFIX/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
+find $GCC_PREFIX/lib/
 
 APP=Subsurface
 rm -rf ./$APP/$APP.AppDir
