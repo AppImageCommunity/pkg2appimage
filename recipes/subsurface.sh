@@ -34,6 +34,9 @@ else
 	UPLOAD_TO_TRAVIS=0
 fi
 
+# Enable universe
+grep -r "main universe" /etc/apt/sources.list || sed -i -e "s| main| main universe|g" /etc/apt/sources.list
+
 # Install dependencies
 sudo apt-get update -qq # Make sure universe is enabled
 sudo apt-get -y install python-requests p7zip-full pax-utils imagemagick  \
