@@ -1,10 +1,11 @@
 # Test AppImage on many distributions
 # using Live CD ISO files
 
+sudo apt-get -y install git unionfs-fuse
+
 git clone https://github.com/probonopd/AppImageKit.git
 cd AppImageKit
 
-sudo apt-get install unionfs-fuse
 cp /usr/bin/unionfs-fuse ./AppImageAssistant.AppDir/unionfs-fuse
 
 rm -r log
