@@ -105,6 +105,7 @@ export PATH=$CMAKE_PATH:$QT_PREFIX/bin/:$PATH # Needed at compile time to find Q
 
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
+  git stash
   git clone https://github.com/probonopd/AppImageKit.git
 fi
 cd AppImageKit/
@@ -121,6 +122,7 @@ cd ./$APP
 
 # Get latest subsurface project from git
 if [ ! -d subsurface ] ; then
+  git stash
   git clone git://subsurface-divelog.org/subsurface
 fi
 cd subsurface/
