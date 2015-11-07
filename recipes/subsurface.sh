@@ -133,6 +133,7 @@ cd ..
 # the best possible way for us
 mkdir -p $APP.AppDir/usr
 INSTALL_ROOT=$(cd $APP.AppDir/usr; pwd)
+sed -i "s|git://subsurface-divelog.org/marble|https://github.com/probonopd/marble.git|g" ./subsurface/scripts/build.sh
 sed -i "s,INSTALL_ROOT=.*,INSTALL_ROOT=$INSTALL_ROOT," ./subsurface/scripts/build.sh
 sed -i "s,cmake -DCMAKE_BUILD_TYPE=Debug.*,cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT .. \\\\," ./subsurface/scripts/build.sh
 bash -ex ./subsurface/scripts/build.sh
