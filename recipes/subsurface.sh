@@ -18,25 +18,43 @@
 # Antergos - antergos-2014.08.07-x86_64.iso
 # elementary OS 0.3 Freya - elementary_OS_0.3_freya_amd64.iso
 
-# Install dependencies
+# Halt on errors
+set -e
 
-if [[ "$1" = "-travis" ]] ; then
+# Be verbose
+set -x
+
+# Determine which architecture should be built
+if [[ "$1" = "i386" ||  "$1" = "amd64" ]] ; then
+	ARCH=$1
+else
+	echo "Call me with either i386 or amd64"
+	exit 1
+fi
+
+# Determine whether upload to github-releases should be attempted
+if [[ "$2" = "-travis" ]] ; then
 	UPLOAD_TO_TRAVIS=1
 	shift
 else
 	UPLOAD_TO_TRAVIS=0
 fi
 
-sudo apt-get update -qq # Make sure universe is enabled
-sudo apt-get -y install python-requests xorriso p7zip-full pax-utils imagemagick  \
+# Enable universe
+grep -r "main universe" /etc/apt/sources.list || sudo sed -i -e "s| main| main universe|g" /etc/apt/sources.list
+
+# Install dependencies
+sudo apt-get update -q # Make sure universe is enabled
+sudo apt-get -y install python-requests p7zip-full pax-utils imagemagick  \
 git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev \
-mesa-common-dev libgl1-mesa-dev libgstreamer-plugins-base0.10-0 libxcomposite1 python-software-properties
+mesa-common-dev libgl1-mesa-dev libgstreamer-plugins-base0.10-0 libxcomposite1 python-software-properties \
+libfuse-dev libglib2.0-dev libc6-dev binutils fuse
 
 # Install newer gcc and g++ since cannot be compiled with the stock 4.6.3
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-sudo apt-get -qq update
-sudo apt-get -qq install g++-4.8 gcc-4.8
+sudo apt-get -q update
+sudo apt-get -q install g++-4.8 gcc-4.8
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
 g++ --version
@@ -44,13 +62,23 @@ which g++
 gcc --version
 which gcc
 
-# Install CMake 3.2.2 and Qt 5.4.1 # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
-wget --no-check-certificate -c https://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
-tar xf cmake-3.2.2-Linux-x86_64.tar.gz
+# Install CMake 3.2.2 and Qt 5.5.x # https://github.com/vlc-qt/examples/blob/master/tools/ci/linux/install.sh
+if [[ "$ARCH" = "amd64" ]] ; then
+	wget --no-check-certificate -c https://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-x86_64.tar.gz
+fi
+if [[ "$ARCH" = "i386" ]] ; then
+	wget --no-check-certificate -c https://cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
+fi
+tar xf cmake-*.tar.gz
 
 # Quick and dirty way to download the latest Qt - is there an official one?
 rm -f Updates.xml
-QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55
+if [[ "$ARCH" = "amd64" ]] ; then
+	QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x64/desktop/qt5_55
+fi
+if [[ "$ARCH" = "i386" ]] ; then
+	QT_URL=http://download.qt.io/online/qtsdkrepository/linux_x86/desktop/qt5_55
+fi
 wget "$QT_URL/Updates.xml"
 QTPACKAGES="qt5_essentials.7z qt5_addons.7z icu-linux-g.*?.7z qt5_qtscript.7z qt5_qtlocation.7z qt5_qtpositioning.7z"
 for QTPACKAGE in $QTPACKAGES; do
@@ -70,9 +98,22 @@ done
 rm -rf $PWD/5.5/
 find *.7z -exec 7z x -y {} >/dev/null \;
 
-export PATH=$PWD/cmake-3.2.2-Linux-x86_64/bin/:$PWD/5.5/gcc_64/bin/:$PATH # Needed at compile time to find Qt and cmake
-export LD_LIBRARY_PATH=$PWD/5.5/gcc_64/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
-find $PWD/5.5/gcc_64/lib/
+CMAKE_PATH=$(find $PWD/cmake-*/ -type d | head -n 1)bin
+QT_PREFIX=$(find $PWD/5.5/gc*/ -type d | head -n 1)
+export LD_LIBRARY_PATH=$QT_PREFIX/lib/:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
+export PATH=$CMAKE_PATH:$QT_PREFIX/bin/:$PATH # Needed at compile time to find Qt and cmake
+
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git stash
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git pull --rebase
+cmake .
+make clean
+make
+cd ..
 
 APP=Subsurface
 rm -rf ./$APP/$APP.AppDir
@@ -81,6 +122,7 @@ cd ./$APP
 
 # Get latest subsurface project from git
 if [ ! -d subsurface ] ; then
+  git stash
   git clone git://subsurface-divelog.org/subsurface
 fi
 cd subsurface/
@@ -102,20 +144,20 @@ mogrify -resize 64x64 $APP.AppDir/subsurface-icon.png
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppRun" # (64-bit)
+cp ../../AppImageKit/AppRun .
 chmod a+x AppRun
 # FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
 mkdir -p ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/bearer ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/iconengines ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/imageformats ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/platforminputcontexts ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/platforms ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/platformthemes ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/sensors ./usr/lib/qt5/plugins/
-cp -r ../../5.5/gcc_64/plugins/xcbglintegrations ./usr/lib/qt5/plugins/
-cp -a ../../5.5/gcc_64/lib/libicu* usr/lib
-export LD_LIBRARY_PATH=./usr/lib/:../../5.5/gcc_64/lib/:$LD_LIBRARY_PATH
+cp -r ../../5.5/gc*/plugins/bearer ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/iconengines ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/imageformats ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/platforminputcontexts ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/platforms ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/platformthemes ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/sensors ./usr/lib/qt5/plugins/
+cp -r ../../5.5/gc*/plugins/xcbglintegrations ./usr/lib/qt5/plugins/
+cp -a ../../5.5/gc*/lib/libicu* usr/lib
+export LD_LIBRARY_PATH=./usr/lib/:../../5.5/gc*/lib/:$LD_LIBRARY_PATH
 ldd usr/bin/subsurface | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
@@ -203,19 +245,23 @@ GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
-# Convert the AppDir into an AppImage
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/3/AppImageAssistant" # (64-bit)
-rm -rf ./AppImageAssistant.AppDir
-xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-rm -rf ./$APP"_"$VERSION"_x86_64.AppImage"
-./AppImageAssistant.AppDir/package ./$APP.AppDir/ ./$APP"_"$VERSION"_x86_64.AppImage"
+if [[ "$ARCH" = "amd64" ]] ; then
+	APPIMAGE=$PWD/$APP"_"$VERSION"_x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i386" ]] ; then
+	APPIMAGE=$PWD/$APP"_"$VERSION"_i386.AppImage"
+fi
 
-ls -lh ./$APP"_"$VERSION"_x86_64.AppImage"
+# Convert the AppDir into an AppImage
+rm -rf $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ $APPIMAGE
+
+ls -lh $APPIMAGE
 
 # Upload from travis-ci to GitHub Releases
 if [ "$UPLOAD_TO_TRAVIS" = "1" ] ; then
 	cd ..
 	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-	python travis2github.py ./$APP/$APP"_"$VERSION"_x86_64.AppImage"
+	python travis2github.py $APPIMAGE
 fi
