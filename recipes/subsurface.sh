@@ -38,7 +38,7 @@ fi
 grep -r "main universe" /etc/apt/sources.list || sed -i -e "s| main| main universe|g" /etc/apt/sources.list
 
 # Install dependencies
-sudo apt-get update -qq # Make sure universe is enabled
+sudo apt-get update -q # Make sure universe is enabled
 sudo apt-get -y install python-requests p7zip-full pax-utils imagemagick  \
 git g++ make autoconf libtool pkg-config \
 libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev libusb-1.0-0-dev libssh2-1-dev libcurl4-openssl-dev \
@@ -47,8 +47,8 @@ libfuse-dev libglib2.0-dev libc6-dev binutils fuse
 
 # Install newer gcc and g++ since cannot be compiled with the stock 4.6.3
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-sudo apt-get -qq update
-sudo apt-get -qq install g++-4.8 gcc-4.8
+sudo apt-get -q update
+sudo apt-get -q install g++-4.8 gcc-4.8
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
 g++ --version
