@@ -10,6 +10,13 @@ set -e
 # Be verbose
 set -x
 
+# Check whether we are running on an Ubuntu-like live system
+if [ ! -e "/isodevice}" ] ; then
+  echo "Not running on an Ubuntu-like live system."
+  echo "Please adjust the paths in this script to your environment."
+  echo "You can also remove the part about using disk images if you do not need it."
+fi
+
 # Determine which architecture should be built
 if [[ "$1" = "i386" ||  "$1" = "amd64" ]] ; then
 	ARCH=$1
