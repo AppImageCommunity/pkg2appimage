@@ -58,7 +58,7 @@ tar xfv *tar.gz || true
 cd -
 
 # schroot into the minimal Ubuntu 12.04.4 system
-sudo apt-get -y install debootstrap schroot
+sudo apt-get --yes --force-yes install debootstrap schroot
 sudo bash -c "cat >/etc/schroot/schroot.conf" <<'EOF'
 [AppImageBuilder32]
 type=directory
@@ -72,13 +72,14 @@ users=$USER
 personality=linux
 EOF
 
-if [[ "$ARCH" = "amd64" ]] ; then
-	sudo schroot -c AppImageBuilder64
-fi
-if [[ "$ARCH" = "i386" ]] ; then
-	sudo schroot -c AppImageBuilder32 
-fi
-cd /root
+cat > /mnt/inside.sh <<EOF
+#!/bin/bash
+
+# Halt on errors
+set -e
+
+# Be verbose
+set -x
 
 # Install dependencies
 apt-get update
@@ -98,3 +99,13 @@ fi
 if [[ "$ARCH" = "i386" ]] ; then
 	linux32 bash -ex AppImages/recipes/subsurface.sh i386
 fi
+EOF
+chmod a+x /mnt/inside.sh
+
+if [[ "$ARCH" = "amd64" ]] ; then
+	sudo schroot -c AppImageBuilder64 /inside.sh
+fi
+if [[ "$ARCH" = "i386" ]] ; then
+	sudo schroot -c AppImageBuilder32 /inside.sh
+fi
+cd /root
