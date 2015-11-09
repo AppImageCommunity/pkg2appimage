@@ -1,8 +1,10 @@
 # AppImages [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages)
 
-Some AppImages (portable Linux apps) generated with travis-ci using [AppImageKit](https://github.com/probonopd/appimagekit)
+This repository contains some recipes to generate AppImages (portable Linux apps) with travis-ci using [AppImageKit](https://github.com/probonopd/appimagekit).
 
 See the [Releases](https://github.com/probonopd/AppImages/releases) tab for downloads. (Note that the build products might be newer than the revision shown there.)
+
+## Motivation
 
 Linus addresses some core issues of Linux on the desktop in his [DebConf 14_ QA with Linus Torvalds talk](https://www.youtube.com/watch?v=5PmHRSeA2c8). At 05:40 Linus highlights application packaging: 
 
