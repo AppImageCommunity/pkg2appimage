@@ -81,6 +81,8 @@ set -e
 # Be verbose
 set -x
 
+cd /root
+
 # Install dependencies
 apt-get update
 apt-get --yes --force-yes install git wget sudo
@@ -108,4 +110,3 @@ fi
 if [[ "$ARCH" = "i386" ]] ; then
 	sudo schroot -c AppImageBuilder32 /inside.sh
 fi
-cd /root
