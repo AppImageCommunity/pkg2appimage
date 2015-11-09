@@ -82,7 +82,7 @@ cd /root
 
 # Install dependencies
 apt-get update
-apt-get -y install git wget sudo
+apt-get --yes --force-yes install git wget sudo
 
 # Get latest AppImages project from git
 if [ ! -d AppImages ] ; then
