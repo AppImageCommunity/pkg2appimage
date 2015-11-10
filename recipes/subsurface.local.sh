@@ -11,7 +11,7 @@ set -e
 set -x
 
 # Check whether we are running on an Ubuntu-like live system
-if [ ! -e "/isodevice}" ] ; then
+if [ ! -e "/isodevice" ] ; then
   echo "Not running on an Ubuntu-like live system."
   echo "Please adjust the paths in this script to your environment."
   echo "You can also remove the part about using disk images if you do not need it."
@@ -53,8 +53,10 @@ fi
 sudo mount "${DISKIMAGE}" /mnt/ -o loop
 sudo chmod -R a+rwx /mnt
 cd /mnt
-wget -c "${UBU}"
-tar xfv *tar.gz || true
+if [ ! -e ./bin/bash ] ; then
+  wget -c "${UBU}"
+  tar xfv *tar.gz || true
+fi
 cd -
 
 # schroot into the minimal Ubuntu 12.04.4 system
