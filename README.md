@@ -38,6 +38,8 @@ But we are also targeting older ones such as
 
 Most likely it will run on others, too - and with some fine-tuning of the [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.sh) (i.e., bundling additional dependencies) even more.
 
+We can also generate AppImages for the 32-bit Intel architecture (and, with some more work, possibly others too).
+
 > And if you don't use shared libraries, getting your package in, like, is just painful. 
 
 "Getting your package in" means that the distribution accepts the package as part of the base operating system. For an application, that might not be desired at all. As long as we can package the application in a way that it seamlessly runs on top of the base operating system. 
@@ -68,7 +70,7 @@ There is a [way around this](https://blogs.gnome.org/tvb/2013/12/14/application-
 
 > So that's my rant. And that's what I really fundamentally think needs to change for Linux to work on the desktop because you can't have applications writers to do fifteen billion different versions.
 
-AppImage to the rescue. The AppImage format is a standardized format for packaging applications in a way that allows them to run on target systems without further modification. The AppImage format (which basically is an ISO that gets mounted when you run the applicaiton) has been created with specific objectives in mind, which are explained in more detail in the [AppImageKit Documentation](http://portablelinuxapps.org/docs/1.0/AppImageKit.pdf):
+AppImage to the rescue. The AppImage format is a standardized format for packaging applications in a way that allows them to run on target systems without further modification. The AppImage format (which basically is an ISO that gets mounted when you run the applicaiton) has been created with specific objectives in mind, which are explained in more detail in the [AppImageKit README](https://github.com/probonopd/AppImageKit/blob/master/README.md):
 
 1. Be Simple
 2. Maintain binary compatibility 
