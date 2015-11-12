@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Subsurface AppImage build script by Simon Peter
-# The purpose of this script is to build the current version of Subsurface (at Qt app) from git, and bundle it
+# The purpose of this script is to build the current version of Subsurface (a Qt app) from git, and bundle it
 # together with all required runtime dependencies that cannot reasonably be expected to be part of the operating
 # system into an AppImage. An AppImage is an ISO file that contains an app and everything that is needed
 # to run the app plus a small executable header that mounts the image and runs the app on the target system.
