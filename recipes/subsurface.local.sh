@@ -3,6 +3,7 @@
 # Build Subsurface AppImage locally without travis-ci 
 # inside a minimal Ubuntu 12.04.4 using schroot; 
 # tested on a Ubuntu 15.10 host system
+# NOTE: This script is outdated, subsurface.centos6.sh is recommended now
 
 # Halt on errors
 set -e
