@@ -80,7 +80,7 @@ yum -y install epel-release
 sudo yum -y install git make autoconf automake libtool \
         libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
         libgit2-devel libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
-        tar gzip which make autoconf automake gstreamer-devel ImageMagick
+        tar gzip which make autoconf automake gstreamer-devel
 
 # Need a newer gcc, getting it from Developer Toolset 2
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
@@ -144,8 +144,7 @@ bash -ex ./subsurface/scripts/build.sh
 ( cd subsurface/build ; make install )
 
 cp ./subsurface/subsurface.desktop $APP.AppDir/
-cp ./subsurface/icons/subsurface-icon.png $APP.AppDir/
-mogrify -resize 64x64 $APP.AppDir/subsurface-icon.png
+cp ./subsurface/icons/subsurface-icon.svg $APP.AppDir/
 
 # Bundle dependency libraries into the AppDir
 cd $APP.AppDir/
