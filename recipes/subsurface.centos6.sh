@@ -79,7 +79,7 @@ yum -y install epel-release
 # Install dependencies
 sudo yum -y install git make autoconf automake libtool \
         libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
-        libgit2-devel libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
+        libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
         tar gzip which make autoconf automake gstreamer-devel
 
 # Need a newer gcc, getting it from Developer Toolset 2
