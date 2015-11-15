@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# NOTE: This script is outdated, subsurface.centos6.sh is recommended now
+
 # Subsurface AppImage build script by Simon Peter
 # The purpose of this script is to build the current version of Subsurface (a Qt app) from git, and bundle it
 # together with all required runtime dependencies that cannot reasonably be expected to be part of the operating
