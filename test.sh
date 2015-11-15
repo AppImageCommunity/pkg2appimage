@@ -4,7 +4,6 @@
 sudo apt-get -y install git unionfs-fuse
 
 git clone https://github.com/probonopd/AppImageKit.git
-cp /usr/bin/unionfs-fuse ./AppImageKit/AppImageAssistant.AppDir/unionfs-fuse
 
 rm -r log
 
