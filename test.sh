@@ -19,4 +19,4 @@ sudo find /isodevice/boot/iso/*i686*iso -exec linux32 ./AppImageKit/AppImageAssi
 # Now have to close every Subsurface instance by hand
 
 # To get a summary
-grep -r SUCCESS log | cut -d " " -f 3 | cut -d "/" -f 5
+grep -r SUCCESS log | cut -d " " -f 3 | cut -d "/" -f 5 | sort | uniq
