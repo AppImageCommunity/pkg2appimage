@@ -1,6 +1,6 @@
 # AppImages [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages)
 
-This repository contains some recipes to generate AppImages (portable Linux apps) with travis-ci using [AppImageKit](https://github.com/probonopd/appimagekit).
+This repository contains some recipes to generate AppImages (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit).
 
 See the [Releases](https://github.com/probonopd/AppImages/releases) tab for downloads. (Note that the build products might be newer than the revision shown there.)
 
@@ -18,27 +18,52 @@ Obviously Linus is talking about [Subsurface](https://subsurface-divelog.org).
 
 Both bundle not only the application itself, but also the required Qt libraries that the application needs to run. Also included are dependency libraries like `libssh2.1.dylib`and `libzip.2.dylib`.
 
-> We basically don't make binaries for Linux. Why? Because binaries for Linux desktop applications is a major f*ing pain in the ass. Right. You don't make binaries for Linux. You make binaries for Fedora 19, Fedora 20, maybe there's even like RHEL 5 from ten years ago, you make binaries for debian stable, or actually you don't make binaries for debian stable because debian stable has libraries that are so old that anything that was built in the last century doesn't work. But you might make binaries for debian... whatever the codename is for unstable. And even that is a major pain because (...) debian has those rules that you are supposed to use shared libraries. Right. 
+> We basically don't make binaries for Linux. Why? Because binaries for Linux desktop applications is a major f*ing pain in the ass. Right. You don't make binaries for Linux. You make binaries for Fedora 19, Fedora 20, maybe there's even like RHEL 5 from ten years ago, you make binaries for debian stable.
 
 So why not use the same approach as on Windows and OS X, namely, treat the base operating system as a _platform_ on top of which we tun the application we care about. This means that we have to bundle the application with all their dependencies that are _not_ part of the base operating system. Welcome [application bundles](https://blogs.gnome.org/tvb/2013/12/10/application-bundles-for-glade/).
 
-[Here](https://github.com/probonopd/AppImages/releases) is is an AppImage of Subsurface, built from the latest git sources in an [automated process](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.sh). Just download, `chmod a+x`, and run. At 54.1 MB, `Subsurface_4.5.0_x86_64.AppImage` is roughly in line with the binaries for Windows and OS X. With some more hand-tuning, the size could probably be brought further down. So far, the AppImage has been verified to run on
-* CentOS Linux 7 (Core) - CentOS-7.0-1406-x86_64-GnomeLive.iso
-* CentOS Linux release 7.1.1503 (Core) - CentOS-7-x86_64-LiveGNOME-1503.iso
-* Fedora 22 (Twenty Two) - Fedora-Live-Workstation-x86_64-22-3.iso
-* Ubuntu 14.04.1 LTS (Trusty Tahr) - ubuntu-14.04.1-desktop-amd64.iso
-* Ubuntu 15.04 (Vivid Vervet) - ubuntu-15.04-desktop-amd64.iso
-* openSUSE Tumbleweed (20151012) - openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso
-* Antergos - antergos-2014.08.07-x86_64.iso
-* elementary OS 0.3 Freya - elementary_OS_0.3_freya_amd64.iso
+[Here](https://github.com/probonopd/AppImages/releases/tag/1) is is an AppImage of Subsurface, built from the latest git sources in a CentOS 6.7 chroot using this [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.centos6.sh). Just download, `chmod a+x`, and run. At 49 MB, the AppImage is roughly in line with the binaries for Windows and OS X. With some more hand-tuning, the size could probably be brought further down. So far, the AppImage has been verified to run on
+ * CentOS-6.7-x86_64-LiveCD.iso
+ * CentOS-7.0-1406-x86_64-GnomeLive.iso
+ * CentOS-7-x86_64-LiveGNOME-1503.iso
+ * Chromixium-1.5-amd64.iso
+ * debian-live-8.2.0-amd64-cinnamon-desktop.iso
+ * debian-live-8.2.0-amd64-gnome-desktop+nonfree.iso
+ * elementary_OS_0.3_freya_amd64.iso
+ * Fedora-Live-Desktop-x86_64-20-1.iso
+ * Fedora-Live-Workstation-x86_64-22-3.iso
+ * Fedora-Live-Workstation-x86_64-23-10.iso
+ * kali-linux-2.0-amd64.iso
+ * trisquel_7.0_amd64.iso
+ * ubuntu-12.04.5-desktop-amd64.iso
+ * ubuntu-14.04.1-desktop-amd64.iso
+ * ubuntu-15.04-desktop-amd64.iso
+ * ubuntu-15.10-desktop-amd64.iso
+ * ubuntu-gnome-15.04-desktop-amd64.iso
+ * ubuntu-gnome-15.10-desktop-amd64.iso
+ * wily-desktop-amd64.iso
+ * xubuntu-15.04-desktop-amd64.iso
 
-But we are also targeting older ones such as
-* Fedora 20 (Heisenbug) - Fedora-Live-Desktop-x86_64-20-1.iso
-* Ubuntu 12.04.5 LTS (Precise Pangolin) - ubuntu-12.04.5-desktop-amd64.iso
+But we also target 32-bit systems like
+ * CentOS-6.4-i386-LiveDVD.iso
+ * CentOS-6.5-i386-LiveCD.iso
+ * CentOS-6.7-i386-LiveCD.iso
+ * debian_7.0.0_wheezy_i386_20130705_binary.hybrid.iso
+ * debian-live-7.5.0-i386-gnome-desktop.iso
+ * Fedora-Live-Design-suite-i686-20-1.iso
+ * Fedora-Live-Desktop-i686-19-1.iso
+ * Fedora-Live-Desktop-i686-20-1.iso
+ * Fedora-Live-Xfce-i686-20-1.iso
+ * kali-linux-1.0.7-i386.iso
+ * tails-i386-1.5.iso
+ * ubuntu-11.04-desktop-i386.iso
+ * ubuntu-12.04.2-desktop-i386.iso
 
-Most likely it will run on others, too - and with some fine-tuning of the [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.sh) (i.e., bundling additional dependencies) even more.
+> Or actually you don't make binaries for debian stable because debian stable has libraries that are so old that anything that was built in the last century doesn't work. But you might make binaries for debian... whatever the codename is for unstable. And even that is a major pain because (...) debian has those rules that you are supposed to use shared libraries. Right. 
 
-We can also generate AppImages for the 32-bit Intel architecture (and, with some more work, possibly others too).
+Note that the AppImage runs not only on debian stable, but even on debian __oldstable__ (which is wheezy at this time).
+
+Most likely it will run on others, too - and with some fine-tuning of the [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.centos6.sh) (i.e., bundling additional dependencies) even more.
 
 > And if you don't use shared libraries, getting your package in, like, is just painful. 
 
