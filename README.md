@@ -34,6 +34,8 @@ So why not use the same approach as on Windows and OS X, namely, treat the base 
  * Fedora-Live-Workstation-x86_64-22-3.iso
  * Fedora-Live-Workstation-x86_64-23-10.iso
  * kali-linux-2.0-amd64.iso
+ * openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso (20151012)
+ * openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso (20151022)
  * trisquel_7.0_amd64.iso
  * ubuntu-12.04.5-desktop-amd64.iso
  * ubuntu-14.04.1-desktop-amd64.iso
@@ -55,6 +57,8 @@ But we also target 32-bit systems like
  * Fedora-Live-Desktop-i686-20-1.iso
  * Fedora-Live-Xfce-i686-20-1.iso
  * kali-linux-1.0.7-i386.iso
+ * openSUSE-13.1-GNOME-Live-i686.iso
+ * openSUSE-Tumbleweed-GNOME-Live-i686-Snapshot20151012-Media.iso (20151012)
  * tails-i386-1.5.iso
  * ubuntu-11.04-desktop-i386.iso
  * ubuntu-12.04.2-desktop-i386.iso
