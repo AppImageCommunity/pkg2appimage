@@ -14,8 +14,15 @@
 # bash -ex ./subsurface.centos6.sh
 
 # Resulting AppImage is known to run on
+# CentOS-7.0-1406-x86_64-GnomeLive.iso
+# CentOS-7-x86_64-LiveGNOME-1503.iso
 # Chromixium-1.5-amd64.iso
 # elementary_OS_0.3_freya_amd64.iso
+# Fedora-Live-Desktop-x86_64-20-1.iso
+# Fedora-Live-Workstation-x86_64-22-3.iso
+# Fedora-Live-Workstation-x86_64-23-10.iso
+# openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso (20151012)
+# openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso (20151022)
 # trisquel_7.0_amd64.iso
 # ubuntu-12.04.5-desktop-amd64.iso
 # ubuntu-14.04.1-desktop-amd64.iso
@@ -25,11 +32,6 @@
 # ubuntu-gnome-15.10-desktop-amd64.iso
 # wily-desktop-amd64.iso
 # xubuntu-15.04-desktop-amd64.iso
-# CentOS-7.0-1406-x86_64-GnomeLive.iso
-# CentOS-7-x86_64-LiveGNOME-1503.iso
-# Fedora-Live-Desktop-x86_64-20-1.iso
-# Fedora-Live-Workstation-x86_64-22-3.iso
-# Fedora-Live-Workstation-x86_64-23-10.iso
 # ==
 # CentOS-6.4-i386-LiveDVD.iso
 # CentOS-6.5-i386-LiveCD.iso
@@ -41,6 +43,8 @@
 # Fedora-Live-Desktop-i686-20-1.iso
 # Fedora-Live-Xfce-i686-20-1.iso
 # kali-linux-1.0.7-i386.iso
+# openSUSE-13.1-GNOME-Live-i686.iso
+# openSUSE-Tumbleweed-GNOME-Live-i686-Snapshot20151012-Media.iso (20151012)
 # tails-i386-1.5.iso
 # ubuntu-11.04-desktop-i386.iso
 # ubuntu-12.04.2-desktop-i386.iso
