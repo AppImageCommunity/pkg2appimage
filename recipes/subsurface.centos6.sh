@@ -51,6 +51,18 @@ set -e
 # Be verbose
 set -x
 
+git_pull_rebase_helper()
+{
+	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
+	if [ "x$GITCLEAN" != "x" ] ; then
+		git stash save
+		git pull --rebase
+		git stash pop
+	else
+		git pull --rebase
+	fi
+}
+
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" ||  "$(arch)" = "x86_64" ]] ; then
 	ARCH=$(arch)
@@ -68,8 +80,7 @@ if [ ! -d AppImages ] ; then
   git clone https://github.com/probonopd/AppImages.git
 fi
 cd AppImages/
-git stash save
-git pull --rebase
+git_pull_rebase_helper
 cd ..
 
 # Enable EPEL repository; needed for recent Qt
@@ -112,8 +123,7 @@ if [ ! -d AppImageKit ] ; then
   git clone https://github.com/probonopd/AppImageKit.git
 fi
 cd AppImageKit/
-git stash save
-git pull --rebase
+git_pull_rebase_helper
 cmake .
 make clean
 make
@@ -129,8 +139,7 @@ if [ ! -d subsurface ] ; then
   git clone git://subsurface-divelog.org/subsurface
 fi
 cd subsurface/
-git stash save
-git pull --rebase
+git_pull_rebase_helper
 cd ..
 
 # this is a bit hackish as the build.sh script isn't setup in
