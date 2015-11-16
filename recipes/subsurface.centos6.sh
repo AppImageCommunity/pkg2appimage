@@ -5,13 +5,13 @@
 # This script is supposed to run inside a CentOS 6 environment. On a Ubuntu host machine, I used
 # the following commands set up a CentOS 6 environment; you can use your own chroot method of choice instead
 # or just boot the CentOS-6.7-$ARCH-LiveCD.iso in a virtual machine and run this script inside there.
-# sudo apt-get install unionfs-fuse
+# sudo apt-get install unionfs-fuse git
 # git clone https://github.com/probonopd/AppImageKit.git
 # cp /usr/bin/unionfs-fuse AppImageKit/AppImageAssistant.AppDir/
 # sudo linux32 ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.7-i386-LiveCD.iso bash
 # or
 # sudo linux64 ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.7-x86_64-LiveCD.iso bash
-# bash -ex ./build-inside-centos-6.sh
+# bash -ex ./subsurface.centos6.sh
 
 # Resulting AppImage is known to run on
 # Chromixium-1.5-amd64.iso
