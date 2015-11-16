@@ -298,10 +298,10 @@ VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
-	APPIMAGE=$PWD/$APP"_"$VERSION"_x86_64.AppImage"
+	APPIMAGE=$PWD/$APP"-"$VERSION"-x86_64.AppImage"
 fi
 if [[ "$ARCH" = "i686" ]] ; then
-	APPIMAGE=$PWD/$APP"_"$VERSION"_i386.AppImage"
+	APPIMAGE=$PWD/$APP"-"$VERSION"-i386.AppImage"
 fi
 
 # Put this script into the AppImage for debugging
