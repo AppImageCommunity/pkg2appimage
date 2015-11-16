@@ -62,7 +62,6 @@ fi
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
-cd /root
 yum -y install git
 
 if [ ! -d AppImages ] ; then
