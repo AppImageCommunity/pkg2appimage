@@ -273,6 +273,12 @@ if [[ "$ARCH" = "i686" ]] ; then
 	cp $(ldconfig -p | grep libgbm.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
 fi
 
+# On openSUSE Qt is picking up the wrong libqxcb.so
+# (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
+# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
+# the current working directory is set to usr/ inside the AppImage before running the app
+cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
 cd -
 find $APP.AppDir/
