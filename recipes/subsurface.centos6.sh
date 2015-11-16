@@ -280,7 +280,7 @@ fi
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
-cd -
+cd ..
 find $APP.AppDir/
 
 # Figure out $VERSION
