@@ -62,7 +62,7 @@ fi
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
-yum -y install git
+sudo yum -y install git
 
 if [ ! -d AppImages ] ; then
   git clone https://github.com/probonopd/AppImages.git
@@ -73,7 +73,7 @@ git pull --rebase
 cd ..
 
 # Enable EPEL repository; needed for recent Qt
-yum -y install epel-release
+sudo yum -y install epel-release
 
 # Install dependencies
 sudo yum -y install git make autoconf automake libtool \
@@ -82,8 +82,8 @@ sudo yum -y install git make autoconf automake libtool \
         tar gzip which make autoconf automake gstreamer-devel
 
 # Need a newer gcc, getting it from Developer Toolset 2
-wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
-yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
+sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 # /opt/rh/devtoolset-2/root/usr/bin/gcc
 # now holds gcc and c++ 4.8.2
 
@@ -98,14 +98,14 @@ fi
 tar xf cmake-*.tar.gz
 
 # EPEL is awesome - fresh Qt5 for old base systems
-yum -y install qt5-qtbase-devel qt5-qtlocation-devel qt5-qtscript-devel qt5-qtwebkit-devel qt5-qtsvg-devel qt5-linguist qt5-qtconnectivity-devel
+sudo yum -y install qt5-qtbase-devel qt5-qtlocation-devel qt5-qtscript-devel qt5-qtwebkit-devel qt5-qtsvg-devel qt5-linguist qt5-qtconnectivity-devel
 
 CMAKE_PATH=$(find $PWD/cmake-*/ -type d | head -n 1)bin
 export LD_LIBRARY_PATH=/opt/rh/devtoolset-2/root/usr/lib:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
 export PATH=/opt/rh/devtoolset-2/root/usr/bin/:$CMAKE_PATH:$PATH # Needed at compile time to find Qt and cmake
 
 # Install AppImageKit build dependencies
-yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
+sudo yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
 
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
