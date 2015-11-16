@@ -51,6 +51,18 @@ set -e
 # Be verbose
 set -x
 
+git_pull_rebase_helper()
+{
+	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
+	if [ "x$GITCLEAN" != "x" ] ; then
+		git stash save
+		git pull --rebase
+		git stash pop
+	else
+		git pull --rebase
+	fi
+}
+
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" ||  "$(arch)" = "x86_64" ]] ; then
 	ARCH=$(arch)
@@ -62,19 +74,17 @@ fi
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
-cd /root
-yum -y install git
+sudo yum -y install git
 
 if [ ! -d AppImages ] ; then
   git clone https://github.com/probonopd/AppImages.git
 fi
 cd AppImages/
-git stash save
-git pull --rebase
+git_pull_rebase_helper
 cd ..
 
 # Enable EPEL repository; needed for recent Qt
-yum -y install epel-release
+sudo yum -y install epel-release
 
 # Install dependencies
 sudo yum -y install git make autoconf automake libtool \
@@ -83,8 +93,8 @@ sudo yum -y install git make autoconf automake libtool \
         tar gzip which make autoconf automake gstreamer-devel
 
 # Need a newer gcc, getting it from Developer Toolset 2
-wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
-yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
+sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 # /opt/rh/devtoolset-2/root/usr/bin/gcc
 # now holds gcc and c++ 4.8.2
 
@@ -99,22 +109,21 @@ fi
 tar xf cmake-*.tar.gz
 
 # EPEL is awesome - fresh Qt5 for old base systems
-yum -y install qt5-qtbase-devel qt5-qtlocation-devel qt5-qtscript-devel qt5-qtwebkit-devel qt5-qtsvg-devel qt5-linguist qt5-qtconnectivity-devel
+sudo yum -y install qt5-qtbase-devel qt5-qtlocation-devel qt5-qtscript-devel qt5-qtwebkit-devel qt5-qtsvg-devel qt5-linguist qt5-qtconnectivity-devel
 
 CMAKE_PATH=$(find $PWD/cmake-*/ -type d | head -n 1)bin
 export LD_LIBRARY_PATH=/opt/rh/devtoolset-2/root/usr/lib:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
 export PATH=/opt/rh/devtoolset-2/root/usr/bin/:$CMAKE_PATH:$PATH # Needed at compile time to find Qt and cmake
 
 # Install AppImageKit build dependencies
-yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
+sudo yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
 
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
   git clone https://github.com/probonopd/AppImageKit.git
 fi
 cd AppImageKit/
-git stash save
-git pull --rebase
+git_pull_rebase_helper
 cmake .
 make clean
 make
@@ -130,8 +139,7 @@ if [ ! -d subsurface ] ; then
   git clone git://subsurface-divelog.org/subsurface
 fi
 cd subsurface/
-git stash save
-git pull --rebase
+git_pull_rebase_helper
 cd ..
 
 # this is a bit hackish as the build.sh script isn't setup in
@@ -280,7 +288,7 @@ fi
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
-cd -
+cd ..
 find $APP.AppDir/
 
 # Figure out $VERSION
@@ -290,10 +298,10 @@ VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
-	APPIMAGE=$PWD/$APP"_"$VERSION"_x86_64.AppImage"
+	APPIMAGE=$PWD/$APP"-"$VERSION"-x86_64.AppImage"
 fi
 if [[ "$ARCH" = "i686" ]] ; then
-	APPIMAGE=$PWD/$APP"_"$VERSION"_i386.AppImage"
+	APPIMAGE=$PWD/$APP"-"$VERSION"-i386.AppImage"
 fi
 
 # Put this script into the AppImage for debugging
