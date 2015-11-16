@@ -14,13 +14,17 @@
 # bash -ex ./subsurface.centos6.sh
 
 # Resulting AppImage is known to run on
+# CentOS-6.7-x86_64-LiveCD.iso
 # CentOS-7.0-1406-x86_64-GnomeLive.iso
 # CentOS-7-x86_64-LiveGNOME-1503.iso
 # Chromixium-1.5-amd64.iso
+# debian-live-8.2.0-amd64-cinnamon-desktop.iso
+# debian-live-8.2.0-amd64-gnome-desktop+nonfree.iso
 # elementary_OS_0.3_freya_amd64.iso
 # Fedora-Live-Desktop-x86_64-20-1.iso
 # Fedora-Live-Workstation-x86_64-22-3.iso
 # Fedora-Live-Workstation-x86_64-23-10.iso
+# kali-linux-2.0-amd64.iso
 # openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso (20151012)
 # openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso (20151022)
 # trisquel_7.0_amd64.iso
