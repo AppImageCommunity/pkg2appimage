@@ -82,7 +82,9 @@ fi
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
-sudo yum -y install git
+if [ -z "$NO_DOWNLOAD" ] ; then
+  sudo yum -y install git
+fi
 
 if [ ! -d AppImages ] ; then
   git clone https://github.com/probonopd/AppImages.git
@@ -91,6 +93,7 @@ cd AppImages/
 git_pull_rebase_helper
 cd ..
 
+if [ -z "$NO_DOWNLOAD" ] ; then
 # Enable EPEL repository; needed for recent Qt
 sudo yum -y install epel-release
 
@@ -118,11 +121,13 @@ tar xf cmake-*.tar.gz
 
 # EPEL is awesome - fresh Qt5 for old base systems
 sudo yum -y install qt5-qtbase-devel qt5-qtlocation-devel qt5-qtscript-devel qt5-qtwebkit-devel qt5-qtsvg-devel qt5-linguist qt5-qtconnectivity-devel
+fi
 
 CMAKE_PATH=$(find $PWD/cmake-*/ -type d | head -n 1)bin
 export LD_LIBRARY_PATH=/opt/rh/devtoolset-2/root/usr/lib:$LD_LIBRARY_PATH # Needed for bundling the libraries into AppDir below
 export PATH=/opt/rh/devtoolset-2/root/usr/bin/:$CMAKE_PATH:$PATH # Needed at compile time to find Qt and cmake
 
+if [ -z "$NO_DOWNLOAD" ] ; then
 # Install AppImageKit build dependencies
 sudo yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
 
@@ -136,6 +141,7 @@ cmake .
 make clean
 make
 cd ..
+fi
 
 APP=Subsurface
 rm -rf ./$APP/$APP.AppDir
