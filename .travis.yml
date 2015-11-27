@@ -5,7 +5,7 @@ notifications: false
 
 before_install:
 - docker pull probonopd/docker-build-subsurface
-- docker probonopd/docker-build-subsurface /bin/bash -ex subsurface.centos6.sh
+- docker run probonopd/docker-build-subsurface /bin/bash -ex subsurface.centos6.sh
 - docker ps -a
 
 script:
