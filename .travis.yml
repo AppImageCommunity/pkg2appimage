@@ -5,10 +5,11 @@ notifications: false
 
 before_install:
 - docker pull probonopd/docker-build-subsurface
-- docker run probonopd/docker-build-subsurface /bin/bash -ex subsurface.centos6.sh
-- docker ps -a
+- docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
 
 script:
 - docker cp $(docker ps -alq):/Subsurface/ .
 - ls -lh Subsurface/
-- find Subsurface/ -name *.AppImage
+-	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+-	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+- python travis2github.py Subsurface/*.AppImage
