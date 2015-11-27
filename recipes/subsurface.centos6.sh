@@ -71,15 +71,15 @@ git_pull_rebase_helper()
 	fi
 }
 
-if [ -z "$NO_DOWNLOAD" ] ; then
-# Enable EPEL repository; needed for recent Qt
-sudo yum -y install epel-release
+export PATH=/bin:$PATH # For CentOS 6
 
-# Install dependencies
-sudo yum -y install git make autoconf automake libtool \
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Enable EPEL repository; needed for recent Qt and
+# install dependencies
+sudo yum -y install epel-release git make autoconf automake libtool \
         libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
         libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
-        tar gzip which make autoconf automake gstreamer-devel mesa-libEGL coreutils grep git wget
+        tar gzip which make autoconf automake gstreamer-devel mesa-libEGL coreutils grep wget
 
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" ||  "$(arch)" = "x86_64" ]] ; then
