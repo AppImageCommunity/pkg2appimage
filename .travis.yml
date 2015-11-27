@@ -9,6 +9,6 @@ before_install:
 - docker ps -a
 
 script:
-- docker cp $(docker ps -alq):/Subsurface/Subsurface-*.AppImage .
-- ls -lh .
-- find /var/ -name *.AppImage
+- docker cp $(docker ps -alq):/Subsurface/ .
+- ls -lh Subsurface/
+- find Subsurface/ -name *.AppImage
