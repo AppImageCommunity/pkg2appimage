@@ -9,13 +9,6 @@ before_install:
 - docker ps -a
 
 script:
-- /bin/bash -ex subsurface.centos6.sh
-
-#deploy:
-#  provider: releases
-#  file_glob: true
-#  api_key:
-#    secure: R3XOxJfGX/+C1+mbHwNb9os+PNQ5x7OlW0FYR335B3J/GkKTEZd9HjJ4+miUs+30H1RfZ29vK4weILU/li64j9gzOp+w0PO3S64kqTeNksrK4JIhrVAjr65wklPF0mcZ6//7dKNpufKy0NrMU4DMO8mPTMzETnQIBE+HSZb6h/9fzT6NEheHylJtNxuEo12QhphD+eP5v7VTestq04IQ6QrIyMDLxVSbYrIoWUciETlmgGM3fOoTAVmx6KbBbZLlDVYBe5sl2Ee/SvqKdv3E9RQNlKO+G3jyonC88/1aqgYnStQFd+y+HSDkhOr3UCRtydJAwXsLGTdKq1Qf3jj+p8kYYPm2QUINzvNwpoqwW6bdwR0ti0B6CFCUB75mb2WfPxhDaypzmh7jp3pbx4QR8pM+cjrnR1QMbQdByOqjF/Imx2JkDUeY4k67hCnLVFnoOK2oLrDJbZe/I8EdmfGhNga/Bb10JSw3R4YQxjJBNH7beXMbq1vjqzY+Gc6/QGOJrTYh8gGBoC/NKlYeAgCimHU48ezZl4hbMSXh+wa1ddXvVAgq4AT/0U43xxvwsP+DiONluO9/eF3uqK7xptOCbFJroJvajM5BPiah2fxttlVCsmQ+a25nq5nxUN1BtxDxF6IEU5LPloWqlLZHsvJMJBK+uLUKlFZeX0mlNdUBi3Y=
-#  file: ${TRAVIS_BUILD_DIR}/Subsurface/Subsurface*.AppImage
-#  on:
-#    tags: true
+- docker cp $(docker ps -alq):/Subsurface/Subsurface-*.AppImage .
+- ls -lh .
+- find /var/ -name *.AppImage
