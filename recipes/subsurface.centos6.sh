@@ -71,7 +71,7 @@ git_pull_rebase_helper()
 	fi
 }
 
-export PATH=/bin:$PATH # For CentOS 6
+export PATH=/bin:/sbin:$PATH # For CentOS 6
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Enable EPEL repository; needed for recent Qt and
