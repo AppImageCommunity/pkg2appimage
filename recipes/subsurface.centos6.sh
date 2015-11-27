@@ -82,8 +82,8 @@ sudo yum -y install epel-release git make autoconf automake libtool \
         tar gzip which make autoconf automake gstreamer-devel mesa-libEGL coreutils grep wget
 
 # Determine which architecture should be built
-if [[ "$(arch)" = "i686" ||  "$(arch)" = "x86_64" ]] ; then
-	ARCH=$(arch)
+if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
+	ARCH=$(/bin/arch)
 else
 	echo "Architecture could not be determined"
 	exit 1
