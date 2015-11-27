@@ -1,8 +1,16 @@
-language: c
-sudo: true
+sudo: required
+services:
+  - docker
 notifications: false
+
+before_install:
+- docker pull probonopd/docker-build-subsurface
+- docker probonopd/docker-build-subsurface /bin/bash -ex subsurface.centos6.sh
+- docker ps -a
+
 script:
-  - bash -ex recipes/subsurface.sh amd64 -travis
+- /bin/bash -ex subsurface.centos6.sh
+
 #deploy:
 #  provider: releases
 #  file_glob: true
