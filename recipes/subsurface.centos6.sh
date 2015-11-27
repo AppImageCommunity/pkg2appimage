@@ -71,6 +71,16 @@ git_pull_rebase_helper()
 	fi
 }
 
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Enable EPEL repository; needed for recent Qt
+sudo yum -y install epel-release
+
+# Install dependencies
+sudo yum -y install git make autoconf automake libtool \
+        libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
+        libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
+        tar gzip which make autoconf automake gstreamer-devel mesa-libEGL coreutils grep git wget
+
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" ||  "$(arch)" = "x86_64" ]] ; then
 	ARCH=$(arch)
@@ -82,26 +92,12 @@ fi
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
-if [ -z "$NO_DOWNLOAD" ] ; then
-  sudo yum -y install git
-fi
-
 if [ ! -d AppImages ] ; then
   git clone https://github.com/probonopd/AppImages.git
 fi
 cd AppImages/
 git_pull_rebase_helper
 cd ..
-
-if [ -z "$NO_DOWNLOAD" ] ; then
-# Enable EPEL repository; needed for recent Qt
-sudo yum -y install epel-release
-
-# Install dependencies
-sudo yum -y install git make autoconf automake libtool \
-        libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
-        libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
-        tar gzip which make autoconf automake gstreamer-devel mesa-libEGL
 
 # Need a newer gcc, getting it from Developer Toolset 2
 sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
