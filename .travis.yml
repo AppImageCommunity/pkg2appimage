@@ -10,7 +10,7 @@ before_install:
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
 - sudo apt-get update -qq
 - sudo apt-get install python-requests -qq
-- find /usr/| grep requests
+- ln -s /usr/lib/python2.7/dist-packages/requests/ .
 - python travis2github.py 
 - docker pull probonopd/docker-build-subsurface
 - # docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
