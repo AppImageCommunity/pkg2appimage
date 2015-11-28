@@ -13,4 +13,5 @@ script:
 - ls -lh Subsurface/
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+- sudo apt-get -y install python-requests
 - python travis2github.py Subsurface/*.AppImage
