@@ -12,8 +12,10 @@ before_install:
 - ln -s /usr/lib/python2.7/dist-packages/six.py /usr/lib/python2.7/dist-packages/requests/ /usr/lib/python2.7/dist-packages/chardet/ /usr/lib/python2.7/dist-packages/urllib3/ .
 
 script:
-- docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
-- #docker run probonopd/docker-build-subsurface /bin/bash -ex /subsurface.centos6.sh
+- # docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
+- wget https://github.com/probonopd/AppImages/raw/master/recipes/subsurface.centos6.sh # Get more recent script than in container
+- docker cp subsurface.centos6.sh probonopd/docker-build-subsurface:/subsurface.centos6.sh # Copy in more recent script
+- docker run probonopd/docker-build-subsurface /bin/bash -ex /subsurface.centos6.sh
 - docker cp $(docker ps -alq):/Subsurface/ .
 - ls -lh Subsurface/
 - python travis2github.py Subsurface/*.AppImage
