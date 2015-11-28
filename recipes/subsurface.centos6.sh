@@ -27,6 +27,7 @@
 # kali-linux-2.0-amd64.iso
 # openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso (20151012)
 # openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso (20151022)
+# tanglu-3.0-gnome-live-amd64.hybrid.iso
 # trisquel_7.0_amd64.iso
 # ubuntu-12.04.5-desktop-amd64.iso
 # ubuntu-14.04.1-desktop-amd64.iso
