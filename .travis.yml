@@ -1,10 +1,11 @@
 sudo: required
 services:
-  - docker
+- docker
 notifications:
-email: false
+- email: false
 
 before_install:
+- # Install prerequisites for travis2github.py uploader
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
 - sudo apt-get update -qq
@@ -12,7 +13,6 @@ before_install:
 - ln -s /usr/lib/python2.7/dist-packages/six.py /usr/lib/python2.7/dist-packages/requests/ /usr/lib/python2.7/dist-packages/chardet/ /usr/lib/python2.7/dist-packages/urllib3/ .
 
 script:
-- # docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
 - wget https://github.com/probonopd/AppImages/raw/master/recipes/subsurface.centos6.sh # Get more recent script than in container
 - docker cp subsurface.centos6.sh probonopd/docker-build-subsurface:/subsurface.centos6.sh # Copy in more recent script
 - docker run probonopd/docker-build-subsurface /bin/bash -ex /subsurface.centos6.sh
