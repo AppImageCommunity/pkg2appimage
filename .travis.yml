@@ -5,7 +5,8 @@ notifications: false
 
 before_install:
 - docker pull probonopd/docker-build-subsurface
-- docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
+- # docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
+- docker run probonopd/docker-build-subsurface /bin/bash -ex /subsurface.centos6.sh
 
 script:
 - docker cp $(docker ps -alq):/Subsurface/ .
