@@ -12,7 +12,7 @@ before_install:
 - sudo apt-get install python-requests  python-chardet -qq
 - find /usr/| grep chardet
 - ln -s /usr/lib/python2.7/dist-packages/requests/ /usr/lib/python2.7/dist-packages/chardet/ .
-- python travis2github.py 
+- python2.7 travis2github.py 
 - docker pull probonopd/docker-build-subsurface
 - # docker run probonopd/docker-build-subsurface /bin/bash -c 'export NO_DOWNLOAD=1 ; bash -ex /subsurface.centos6.sh'
 - docker run probonopd/docker-build-subsurface /bin/bash -ex /subsurface.centos6.sh
