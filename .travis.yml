@@ -1,7 +1,8 @@
 sudo: required
 services:
   - docker
-notifications: false
+notifications:
+email: false
 
 before_install:
 - docker pull probonopd/docker-build-subsurface
