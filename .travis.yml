@@ -14,6 +14,7 @@ before_install:
 
 script:
 - wget https://github.com/probonopd/AppImages/raw/master/recipes/subsurface.centos6.sh # Get more recent script than in container
+- docker pull probonopd/docker-build-subsurface
 - docker cp subsurface.centos6.sh probonopd/docker-build-subsurface:/subsurface.centos6.sh # Copy in more recent script
 - docker run probonopd/docker-build-subsurface /bin/bash -ex /subsurface.centos6.sh
 - docker cp $(docker ps -alq):/Subsurface/ .
