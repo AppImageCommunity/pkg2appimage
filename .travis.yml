@@ -10,6 +10,6 @@ before_install:
 script:
 - docker cp $(docker ps -alq):/Subsurface/ .
 - ls -lh Subsurface/
--	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
--	wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
+- wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
+- wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
 - python travis2github.py Subsurface/*.AppImage
