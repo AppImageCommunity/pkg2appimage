@@ -12,6 +12,8 @@ bash /opt/rh/devtoolset-2/enable
 # http://wiki.scribus.net/canvas/Librevenge
 # For those who always build the latest 1.5.0svn from source for testing, 
 # some new dependencies have been introduced to get the full functionality of 1.5.0.
+# These are coming from http://www.documentliberation.org
+# irc #documentliberation-dev
 
 yum install automake libtool cppunit-devel # for librevenge-0.0.1
 
