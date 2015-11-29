@@ -16,7 +16,14 @@ ln -sf /usr/lib64/ /usr/lib64/lib64
 # http://comments.gmane.org/gmane.comp.mobile.osmocom.sdr/1097
 rpm -ql boost-devel | grep 'cmake$' | xargs rm
 
-export LD_LIBRARY_PATH=/opt/rh/devtoolset-2/root/usr/lib:$LD_LIBRARY_PATH
-export PATH=/opt/rh/devtoolset-2/root/usr/bin/:$PATH
+bash /opt/rh/devtoolset-2/enable
+
+## which gcc
+# /opt/rh/devtoolset-2/root/usr/bin/gcc
 
 cmake .
+
+# "Configuring incomplete, errors occurred!"
+## cat /scribus15/CMakeFiles/CMakeError.log | grep CXX
+# Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+# Compiler: CMAKE_CXX_COMPILER-NOTFOUND 
