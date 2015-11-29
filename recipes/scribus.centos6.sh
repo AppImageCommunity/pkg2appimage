@@ -20,10 +20,10 @@ bash /opt/rh/devtoolset-2/enable
 
 ## which gcc
 # /opt/rh/devtoolset-2/root/usr/bin/gcc
-
-cmake .
-
 # "Configuring incomplete, errors occurred!"
 ## cat /scribus15/CMakeFiles/CMakeError.log | grep CXX
 # Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
 # Compiler: CMAKE_CXX_COMPILER-NOTFOUND 
+
+cmake . -DCMAKE_C_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/gcc -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/g++
+
