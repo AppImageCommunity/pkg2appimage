@@ -5,9 +5,10 @@ sudo yum -y install epel-release
 
 yum -y install subversion cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static
 
-svn co svn://scribus.net/trunk/Scribus scribus15
+# svn co svn://scribus.net/trunk/Scribus scribus15
+svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
 
-cd scribus15/
+cd scribus1*
 
 # Workaround for missing "/usr/lib64/lib64/libboost_date_time.a"
 ln -sf /usr/lib64/ /usr/lib64/lib64
