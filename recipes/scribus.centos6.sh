@@ -62,6 +62,7 @@ cd -
 
 # Fails
 # VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory ########################################
+# also see https://lists.macosforge.org/pipermail/macports-users/2015-September/039218.html
 
 git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
 cd libcdr/
@@ -99,6 +100,8 @@ ls /usr/lib64/lib64 2>/dev/null || ln -sf /usr/lib64/ /usr/lib64/lib64
 # Workaround for missing "/usr/lib64/lib64/libboost_date_time-d.a"
 # http://comments.gmane.org/gmane.comp.mobile.osmocom.sdr/1097
 rpm -ql boost-devel | grep 'cmake$' | xargs rm
+
+ldconfig
 
 # Pass in -DCMAKE_C_COMPILER and -DCMAKE_CXX_COMPILER to prevent CMakeError.log CMAKE_CXX_COMPILER-NOTFOUND 
 cmake . -DCMAKE_C_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/gcc -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/g++
