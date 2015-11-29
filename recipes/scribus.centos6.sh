@@ -27,3 +27,24 @@ bash /opt/rh/devtoolset-2/enable
 
 cmake . -DCMAKE_C_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/gcc -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/g++
 
+exit 0 #################### Teh follwoing is the output I get
+
+Boost Library Found OK
+Building without GraphicksMagick (use -DWANT_GRAPHICSMAGICK=1 to enable)
+-- checking for one of the modules 'libpoppler>=0.19.0;poppler>=0.19.0'
+Poppler NOT found - Disabling support for native PDF import
+-- checking for module 'librevenge-0.0'
+--   package 'librevenge-0.0' not found
+RPATH: lib/scribus/plugins/;
+-- Qt5::CoreQt5::WidgetsQt5::GuiQt5::XmlQt5::NetworkQt5::OpenGL/usr/lib64/libxml2.so/usr/lib64/libz.so
+-- checking for module 'libwpg-0.2'
+--   package 'libwpg-0.2' not found
+-- checking for module 'libmspub-0.0<=0.1'
+--   package 'libmspub-0.0<=0.1' not found
+-- checking for module 'libwpg-0.2'
+--   package 'libwpg-0.2' not found
+-- Building with Scripter 1
+-- No source header files will be installed
+-- /scribus15/resources/translations
+-- The following GUI languages will be installed: 
+-- Configuring incomplete, errors occurred!
