@@ -26,6 +26,10 @@ make
 make install
 cd -
 
+# Workaround for: On CentOS 6, .pc files in /usr/lib/pkgconfig are not recognized
+# However, this is where .pc files get installed when bulding libraries... (FIXME)
+ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
+
 git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
 cd librevenge*
 ./autogen.sh
