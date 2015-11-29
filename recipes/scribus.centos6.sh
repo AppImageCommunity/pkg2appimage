@@ -34,7 +34,7 @@ cmake . -DCMAKE_C_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/gcc -DCMAKE_CXX_COM
 # For those who always build the latest 1.5.0svn from source for testing, 
 # some new dependencies have been introduced to get the full functionality of 1.5.0.
 
-wget http://sourceforge.net/projects/libwpd/files/librevenge/librevenge-0.0.1/librevenge-0.0.1.tar.bz2/download --trust-server-names
+wget http://sourceforge.net/projects/libwpd/files/librevenge/librevenge-0.0.1/librevenge-0.0.1.tar.bz2/download
 tar xf librevenge-0.0.1.tar.bz2
 ./autogen.sh
 
