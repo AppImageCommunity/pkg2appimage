@@ -20,8 +20,8 @@ yum install automake libtool cppunit-devel # for librevenge-0.0.1
 # Upgrade auttoconf to 2.65 for librevenge-0.0.1
 wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
 tar xf autoconf-2.65.tar.bz2 
-cd autoconf-*   
-./configure
+cd autoconf-*
+./configure --prefix=/usr
 make
 make install
 cd -
