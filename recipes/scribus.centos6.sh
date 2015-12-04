@@ -140,3 +140,4 @@ cmake .
 
 make
 
+# ld: cannot find -lpmd-0.0
