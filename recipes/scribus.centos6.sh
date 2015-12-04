@@ -7,7 +7,7 @@ yum -y install subversion cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-q
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
 yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
-bash /opt/rh/devtoolset-2/enable
+. /opt/rh/devtoolset-2/enable
 
 # http://wiki.scribus.net/canvas/Librevenge
 # For those who always build the latest 1.5.0svn from source for testing, 
