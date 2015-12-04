@@ -60,15 +60,15 @@ cd libvisio/
 # VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory
 perl ./src/lib/gentoken.pl src/lib/tokens.txt src/lib/tokens.h src/lib/tokens.gperf
 gperf  --compare-strncmp -C -m 20 src/lib/tokens.gperf | sed -e 's/(char\*)0/(char\*)0, 0/g' > src/lib/tokenhash.h
-make
-make install
-cd -
-
-# Error:
+# Workaround for:
 #  CXX    libvisio_0_1_la-libvisio_xml.lo
 # libvisio_xml.cpp: In function 'int libvisio::{anonymous}::vsdxInputReadFunc(void*, char*, int)':
 # libvisio_xml.cpp:45:48: error: 'memcpy' was not declared in this scope
 #        memcpy(buffer, tmpBuffer, tmpNumBytesRead);
+sed -i -e 's|#include "libvisio_xml.h"|#include "libvisio_xml.h"\n#include <string.h>|g'  ./src/lib/libvisio_xml.cpp
+make
+make install
+cd -
 
 git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
 cd libcdr/
