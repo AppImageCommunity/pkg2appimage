@@ -182,7 +182,7 @@ cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
 
 
 ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
-
+ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
 
@@ -247,7 +247,7 @@ strip usr/bin/* usr/lib/* || true
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp ../AppImageKit/AppRun .
-cp ./usr/share/mimelnk/application/vnd.scribus.desktop .
+cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
 cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 
 cd ..
