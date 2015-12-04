@@ -1,4 +1,6 @@
 # Enter a CentOS 6 chroot (you could use other methods)
+# git clone https://github.com/probonopd/AppImageKit.git
+# ./AppImageKit/build.sh 
 # sudo ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.5-x86_64-LiveCD.iso bash
 
 # Halt on errors
