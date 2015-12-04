@@ -19,6 +19,14 @@ git_pull_rebase_helper()
 	fi
 }
 
+yum -y install epel-release 
+yum -y install subversion cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static
+
+# Newer compiler than what comes with CentOS 6
+wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
+. /opt/rh/devtoolset-2/enable
+
 # Build AppImageKit
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Build AppImageKit
@@ -30,14 +38,6 @@ git_pull_rebase_helper
 ./build.sh
 cd ..
 fi
-
-yum -y install epel-release 
-yum -y install subversion cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static
-
-# Newer compiler than what comes with CentOS 6
-wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
-yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
-. /opt/rh/devtoolset-2/enable
 
 # http://wiki.scribus.net/canvas/Librevenge
 # For those who always build the latest 1.5.0svn from source for testing, 
