@@ -51,7 +51,7 @@ make
 make install
 cd -
 
-yum install gperf
+yum -y install gperf
 git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
 cd libvisio/
 ./autogen.sh
