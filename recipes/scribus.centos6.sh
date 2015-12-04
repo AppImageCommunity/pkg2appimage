@@ -1,5 +1,35 @@
 # Enter a CentOS 6 chroot (you could use other methods)
-sudo ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.5-x86_64-LiveCD.iso bash
+# sudo ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.5-x86_64-LiveCD.iso bash
+
+# Halt on errors
+set -e
+
+# Be verbose
+set -x
+
+git_pull_rebase_helper()
+{
+	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
+	if [ "x$GITCLEAN" != "x" ] ; then
+		git stash save
+		git pull --rebase
+		git stash pop
+	else
+		git pull --rebase
+	fi
+}
+
+# Build AppImageKit
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+./build.sh
+cd ..
+fi
 
 yum -y install epel-release 
 yum -y install subversion cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static
@@ -16,18 +46,6 @@ yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 # irc #documentliberation-dev
 
 yum install automake libtool cppunit-devel # for librevenge-0.0.1
-
-# Build AppImageKit
-if [ -z "$NO_DOWNLOAD" ] ; then
-# Build AppImageKit
-if [ ! -d AppImageKit ] ; then
-  git clone https://github.com/probonopd/AppImageKit.git
-fi
-cd AppImageKit/
-git_pull_rebase_helper
-./build.sh
-cd ..
-fi
 
 # Upgrade auttoconf to 2.65 for librevenge-0.0.1
 wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
