@@ -52,18 +52,23 @@ make install
 cd -
 
 yum -y install gperf
-# Workaround for:
-# VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory
-perl ./src/lib/gentoken.pl src/lib/tokens.txt src/lib/tokens.h src/lib/tokens.gperf
-gperf  --compare-strncmp -C -m 20 src/lib/tokens.gperf | sed -e 's/(char\*)0/(char\*)0, 0/g' > src/lib/tokenhash.h
-
 git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
 cd libvisio/
 ./autogen.sh
 ./configure --prefix=/usr
+# Workaround for:
+# VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory
+perl ./src/lib/gentoken.pl src/lib/tokens.txt src/lib/tokens.h src/lib/tokens.gperf
+gperf  --compare-strncmp -C -m 20 src/lib/tokens.gperf | sed -e 's/(char\*)0/(char\*)0, 0/g' > src/lib/tokenhash.h
 make
 make install
 cd -
+
+# Error:
+#  CXX    libvisio_0_1_la-libvisio_xml.lo
+# libvisio_xml.cpp: In function 'int libvisio::{anonymous}::vsdxInputReadFunc(void*, char*, int)':
+# libvisio_xml.cpp:45:48: error: 'memcpy' was not declared in this scope
+#        memcpy(buffer, tmpBuffer, tmpNumBytesRead);
 
 git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
 cd libcdr/
