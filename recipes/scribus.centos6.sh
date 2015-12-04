@@ -17,6 +17,18 @@ yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 
 yum install automake libtool cppunit-devel # for librevenge-0.0.1
 
+# Build AppImageKit
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+./build.sh
+cd ..
+fi
+
 # Upgrade auttoconf to 2.65 for librevenge-0.0.1
 wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
 tar xf autoconf-2.65.tar.bz2 
@@ -140,6 +152,104 @@ cd scribus1*
 
 ldconfig
 
-cmake .
+mkdir -p /Scribus.AppDir/usr 
+cmake -DWANT_SVNVERSION=1 -DCMAKE_INSTALL_PREFIX:PATH=/Scribus.AppDir/usr .
 
 make
+
+# Install into the AppDir
+make install
+
+cd /Scribus.AppDir
+
+# FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
+mkdir -p ./usr/lib/qt5/plugins/
+
+if [ -e $(dirname /usr/li*/qt5/plugins/bearer) ] ; then
+  PLUGINS=$(dirname /usr/li*/qt5/plugins/bearer)
+else
+  PLUGINS=../../5.5/gc*/plugins/
+fi
+echo $PLUGINS # /usr/lib64/qt5/plugins if build system Qt is found
+cp -r $PLUGINS/bearer ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/iconengines ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/imageformats ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/platforminputcontexts ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/platforms ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/platformthemes ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/sensors ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
+
+
+ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
+
+ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
+
+
+# The following are assumed to be part of the base system
+rm -f usr/lib/libcom_err.so.2 || true
+rm -f usr/lib/libcrypt.so.1 || true
+rm -f usr/lib/libdl.so.2 || true
+rm -f usr/lib/libexpat.so.1 || true
+rm -f usr/lib/libfontconfig.so.1 || true
+rm -f usr/lib/libgcc_s.so.1 || true
+rm -f usr/lib/libglib-2.0.so.0 || true
+rm -f usr/lib/libgpg-error.so.0 || true
+rm -f usr/lib/libgssapi_krb5.so.2 || true
+rm -f usr/lib/libgssapi.so.3 || true
+rm -f usr/lib/libhcrypto.so.4 || true
+rm -f usr/lib/libheimbase.so.1 || true
+rm -f usr/lib/libheimntlm.so.0 || true
+rm -f usr/lib/libhx509.so.5 || true
+rm -f usr/lib/libICE.so.6 || true
+rm -f usr/lib/libidn.so.11 || true
+rm -f usr/lib/libk5crypto.so.3 || true
+rm -f usr/lib/libkeyutils.so.1 || true
+rm -f usr/lib/libkrb5.so.26 || true
+rm -f usr/lib/libkrb5.so.3 || true
+rm -f usr/lib/libkrb5support.so.0 || true
+# rm -f usr/lib/liblber-2.4.so.2 || true # needed for debian wheezy
+# rm -f usr/lib/libldap_r-2.4.so.2 || true # needed for debian wheezy
+rm -f usr/lib/libm.so.6 || true
+rm -f usr/lib/libp11-kit.so.0 || true
+rm -f usr/lib/libpcre.so.3 || true
+rm -f usr/lib/libpthread.so.0 || true
+rm -f usr/lib/libresolv.so.2 || true
+rm -f usr/lib/libroken.so.18 || true
+rm -f usr/lib/librt.so.1 || true
+rm -f usr/lib/libsasl2.so.2 || true
+rm -f usr/lib/libSM.so.6 || true
+rm -f usr/lib/libusb-1.0.so.0 || true
+rm -f usr/lib/libuuid.so.1 || true
+rm -f usr/lib/libwind.so.0 || true
+rm -f usr/lib/libz.so.1 || true
+
+# These seem to be available on most systems but not Ubuntu 11.04
+# rm -f usr/lib/libffi.so.6 usr/lib/libGL.so.1 usr/lib/libglapi.so.0 usr/lib/libxcb.so.1 usr/lib/libxcb-glx.so.0 || true
+
+
+# Delete potentially dangerous libraries
+rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
+# Do NOT delete libX* because otherwise on Ubuntu 11.04:
+# loaded library "Xcursor" malloc.c:3096: sYSMALLOc: Assertion (...) Aborted
+
+# We don't bundle the developer stuff
+rm -rf usr/include || true
+rm -rf usr/lib/cmake || true
+rm -rf usr/lib/pkgconfig || true
+
+strip usr/bin/* usr/lib/* || true
+
+# On openSUSE Qt is picking up the wrong libqxcb.so
+# (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
+# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
+# the current working directory is set to usr/ inside the AppImage before running the app
+cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+
+cp ../AppImageKit/AppRun .
+cp ./usr/share/mimelnk/application/vnd.scribus.desktop .
+cp ./usr/share/scribus/icons/1_5_0/scribus.png .
+
+cd ..
+
+AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ Scribus.AppImage
