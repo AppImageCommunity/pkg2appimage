@@ -109,7 +109,6 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm
 
 ldconfig
 
-# Pass in -DCMAKE_C_COMPILER and -DCMAKE_CXX_COMPILER to prevent CMakeError.log CMAKE_CXX_COMPILER-NOTFOUND 
 cmake . 
 
 # Does not find the libraries we compiled above; why is this?
