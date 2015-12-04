@@ -20,7 +20,7 @@ git_pull_rebase_helper()
 }
 
 yum -y install epel-release 
-yum -y install subversion cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static
+yum -y install git subversion automake libtool cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu-devel
 
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
@@ -44,8 +44,6 @@ fi
 # some new dependencies have been introduced to get the full functionality of 1.5.0.
 # These are coming from http://www.documentliberation.org
 # irc #documentliberation-dev
-
-yum install automake libtool cppunit-devel # for librevenge-0.0.1
 
 # Upgrade auttoconf to 2.65 for librevenge-0.0.1
 wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
@@ -72,7 +70,6 @@ cd -
 
 ldconfig
 
-yum -y install libicu-devel
 git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.git
 cd libmspub/
 ./autogen.sh
@@ -81,7 +78,6 @@ make
 make install
 cd -
 
-yum -y install gperf
 git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
 cd libvisio/
 ./autogen.sh
