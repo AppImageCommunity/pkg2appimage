@@ -197,8 +197,8 @@ cp -r $PLUGINS/sensors ./usr/lib/qt5/plugins/
 cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
 
 
-ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
-ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
+ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
 
