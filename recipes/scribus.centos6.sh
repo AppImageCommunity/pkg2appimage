@@ -267,3 +267,6 @@ cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 cd ..
 
 AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ Scribus.AppImage
+
+# Test the resulting AppImage on my local system
+# sudo /tmp/*/union/AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/Fedora-Live-Workstation-x86_64-22-3.iso /tmp/*/union/Scribus.AppDir/
