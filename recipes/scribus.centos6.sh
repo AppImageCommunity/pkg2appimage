@@ -42,7 +42,7 @@ cd -
 
 ldconfig
 
-yum install libicu-devel
+yum -y install libicu-devel
 git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.git
 cd libmspub/
 ./autogen.sh
