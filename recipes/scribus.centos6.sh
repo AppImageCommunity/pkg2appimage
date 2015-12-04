@@ -110,6 +110,6 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm
 ldconfig
 
 # Pass in -DCMAKE_C_COMPILER and -DCMAKE_CXX_COMPILER to prevent CMakeError.log CMAKE_CXX_COMPILER-NOTFOUND 
-cmake . -DCMAKE_C_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/gcc -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-2/root/usr/bin/g++
+cmake . 
 
-# Does not find the libraries we compiled above; is this because the .so and -a files got installed into /usr/lib rather than /usr/lib64?
+# Does not find the libraries we compiled above; why is this?
