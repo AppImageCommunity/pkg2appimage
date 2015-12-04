@@ -95,10 +95,17 @@ make
 make install
 cd -
 
-svn co svn://scribus.net/trunk/Scribus scribus15
-# svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
-
-cd scribus1*
+# Workaround for:
+# In file included from /scribus15/scribus/third_party/zip/zip.cpp:29:0:
+# /scribus15/scribus/third_party/zip/zip_p.h:65:10: error: 'z_crc_t' does not name a type
+#   typedef z_crc_t crc_t;
+wget http://zlib.net/zlib-1.2.8.tar.gz
+tar xf zlib-1.2.8.tar.gz
+cd zlib-*
+./configure --prefix=/usr
+make
+make install
+cd -
 
 # Workaround for missing "/usr/lib64/lib64/libboost_date_time.a"
 ls /usr/lib64/lib64 2>/dev/null || ln -sf /usr/lib64/ /usr/lib64/lib64
@@ -107,13 +114,22 @@ ls /usr/lib64/lib64 2>/dev/null || ln -sf /usr/lib64/ /usr/lib64/lib64
 # http://comments.gmane.org/gmane.comp.mobile.osmocom.sdr/1097
 rpm -ql boost-devel | grep 'cmake$' | xargs rm
 
+# Workaround for:
+# -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
+# CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:363 (message):
+#   None of the required 'libcairo>=1.10.0;cairo>=1.10.0' found
+rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
+rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
+
+svn co svn://scribus.net/trunk/Scribus scribus15
+# svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
+
+cd scribus1*
+
 ldconfig
 
 cmake . 
 
 # Does not find the libraries we compiled above; why is this?
 
-# -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
-# CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:363 (message):
-#   None of the required 'libcairo>=1.10.0;cairo>=1.10.0' found
-
+make
