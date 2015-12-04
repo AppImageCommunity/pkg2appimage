@@ -132,6 +132,10 @@ sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libcdr-0.1.pc
 sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libmspub-0.1.pc 
 sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libvisio-0.1.pc 
 
+# Workaround for:
+# ld: cannot find -lpmd-0.0
+cp /usr/lib/libpagemaker-0.0.so /usr/lib/libpmd-0.0.so
+
 cd scribus1*
 
 ldconfig
@@ -139,5 +143,3 @@ ldconfig
 cmake .
 
 make
-
-# ld: cannot find -lpmd-0.0
