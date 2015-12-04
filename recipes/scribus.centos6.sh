@@ -52,6 +52,11 @@ make install
 cd -
 
 yum -y install gperf
+# Workaround for:
+# VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory
+perl ./src/lib/gentoken.pl src/lib/tokens.txt src/lib/tokens.h src/lib/tokens.gperf
+gperf  --compare-strncmp -C -m 20 src/lib/tokens.gperf | sed -e 's/(char\*)0/(char\*)0, 0/g' > src/lib/tokenhash.h
+
 git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
 cd libvisio/
 ./autogen.sh
@@ -59,10 +64,6 @@ cd libvisio/
 make
 make install
 cd -
-
-# Fails
-# VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory ########################################
-# also see https://lists.macosforge.org/pipermail/macports-users/2015-September/039218.html
 
 git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
 cd libcdr/
