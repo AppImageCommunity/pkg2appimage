@@ -124,12 +124,19 @@ rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/
 svn co svn://scribus.net/trunk/Scribus scribus15
 # svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
 
+# Workaround for:
+# When cmake oes not find the libraries we compiled above
+# pkg-config --list-all
+# Package 'icu-i18n', required by 'libvisio-0.1', not found
+sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libcdr-0.1.pc 
+sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libmspub-0.1.pc 
+sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libvisio-0.1.pc 
+
 cd scribus1*
 
 ldconfig
 
-cmake . 
-
-# Does not find the libraries we compiled above; why is this?
+cmake .
 
 make
+
