@@ -112,3 +112,8 @@ ldconfig
 cmake . 
 
 # Does not find the libraries we compiled above; why is this?
+
+# -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
+# CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:363 (message):
+#   None of the required 'libcairo>=1.10.0;cairo>=1.10.0' found
+
