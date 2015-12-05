@@ -313,7 +313,8 @@ sed -i -e 's|/lib64|/lib//|g' usr/lib/libpython*
 sed -i -e 's|/lib32|/lib//|g' usr/lib/libpython*
 
 # Bundle Python libraries too
-cp -r /usr/*/python2.6 usr/lib/
+mkdir usr/lib/python2.6
+/usr/li*/python2.6/* usr/lib/python2.6/
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
