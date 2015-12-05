@@ -21,6 +21,7 @@ git_pull_rebase_helper()
 	fi
 }
 
+if [ -z "$NO_DOWNLOAD" ] ; then
 yum -y install epel-release 
 yum -y install git subversion automake libtool cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu-devel
 
@@ -29,8 +30,6 @@ wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d
 yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 . /opt/rh/devtoolset-2/enable
 
-# Build AppImageKit
-if [ -z "$NO_DOWNLOAD" ] ; then
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
   git clone https://github.com/probonopd/AppImageKit.git
@@ -48,13 +47,15 @@ fi
 # irc #documentliberation-dev
 
 # Upgrade auttoconf to 2.65 for librevenge-0.0.1
-wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
-tar xf autoconf-2.65.tar.bz2 
-cd autoconf-*
-./configure --prefix=/usr
-make
-make install
-cd -
+if [ -z "$NO_DOWNLOAD" ] ; then
+  wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
+  tar xf autoconf-2.65.tar.bz2 
+  cd autoconf-*
+  ./configure --prefix=/usr
+  make
+  make install
+  cd -
+fi
 
 # Workaround for: On CentOS 6, .pc files in /usr/lib/pkgconfig are not recognized
 # However, this is where .pc files get installed when bulding libraries... (FIXME)
@@ -62,17 +63,24 @@ cd -
 # between Ubuntu and CentOS 6
 ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
 
-git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
+
+if [ ! -d librevenge ] ; then
+  git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
+fi
 cd librevenge*
+git_pull_rebase_helper
 ./autogen.sh
 ./configure --prefix=/usr
 make
 make install
-cd -
+cd ..
 
 ldconfig
 
-git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.git
+
+if [ ! -d libmspub ] ; then
+  git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.gitcd libmspub/
+fi
 cd libmspub/
 ./autogen.sh
 ./configure --prefix=/usr
@@ -80,8 +88,11 @@ make
 make install
 cd -
 
-git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
+if [ ! -d libvisio ] ; then
+  git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
+fi
 cd libvisio/
+git_pull_rebase_helper
 ./autogen.sh
 ./configure --prefix=/usr
 # Workaround for:
@@ -98,8 +109,11 @@ make
 make install
 cd -
 
-git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
+if [ ! -d libcdr ] ; then
+  git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
+fi
 cd libcdr/
+git_pull_rebase_helper
 ./autogen.sh
 ./configure --prefix=/usr
 make
@@ -107,16 +121,21 @@ make install
 cd -
 
 # yaml is needed for libpagemaker
-wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
-tar -xvzf yaml-0.1.4.tar.gz
+if [ ! -d yaml-0.1.4 ] ; then
+  wget -c http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
+  tar -xvzf yaml-0.1.4.tar.gz
+fi
 cd yaml-0.1.4
 ./configure --prefix=/usr
 make
 make install
 cd -
 
-git clone https://github.com/umanwizard/libpagemaker.git
+if [ ! -d libpagemaker ] ; then
+  git clone https://github.com/umanwizard/libpagemaker.git
+fi
 cd libpagemaker/
+git_pull_rebase_helper
 ./autogen.sh
 ./configure --prefix=/usr
 make
@@ -127,8 +146,10 @@ cd -
 # In file included from /scribus15/scribus/third_party/zip/zip.cpp:29:0:
 # /scribus15/scribus/third_party/zip/zip_p.h:65:10: error: 'z_crc_t' does not name a type
 #   typedef z_crc_t crc_t;
-wget http://zlib.net/zlib-1.2.8.tar.gz
-tar xf zlib-1.2.8.tar.gz
+if [ ! -d zlib-1.2.8 ] ; then
+  wget http://zlib.net/zlib-1.2.8.tar.gz
+  tar xf zlib-1.2.8.tar.gz
+fi
 cd zlib-*
 ./configure --prefix=/usr
 make
@@ -136,7 +157,9 @@ make install
 cd -
 
 # Workaround for missing "/usr/lib64/lib64/libboost_date_time.a"
-ls /usr/lib64/lib64 2>/dev/null || ln -sf /usr/lib64/ /usr/lib64/lib64
+if [ ! -e /usr/lib64/lib64 ] ; then
+  ls /usr/lib64/lib64 2>/dev/null || ln -sf /usr/lib64/ /usr/lib64/lib64
+fi
 
 # Workaround for missing "/usr/lib64/lib64/libboost_date_time-d.a"
 # http://comments.gmane.org/gmane.comp.mobile.osmocom.sdr/1097
@@ -146,8 +169,10 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm
 # -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
 # CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:363 (message):
 #   None of the required 'libcairo>=1.10.0;cairo>=1.10.0' found
-rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
-rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
+if [ -z "$NO_DOWNLOAD" ] ; then
+  rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
+  rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
+fi
 
 svn co svn://scribus.net/trunk/Scribus scribus15
 # svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
@@ -168,6 +193,7 @@ cd scribus1*
 
 ldconfig
 
+rm -rf /Scribus.AppDir/ || true
 mkdir -p /Scribus.AppDir/usr 
 cmake -DWANT_SVNVERSION=1 -DCMAKE_INSTALL_PREFIX:PATH=/Scribus.AppDir/usr .
 
@@ -196,22 +222,11 @@ cp -r $PLUGINS/platformthemes ./usr/lib/qt5/plugins/
 cp -r $PLUGINS/sensors ./usr/lib/qt5/plugins/
 cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
 
-cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
-cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
-cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
-# Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
-# This application failed to start because it could not find or load the Qt platform plugin "xcb".
-# Setting export QT_DEBUG_PLUGINS=1 revealed the cause.
-# QLibraryPrivate::loadPlugin failed on "/usr/lib64/qt5/plugins/platforms/libqxcb.so" : 
-# "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
-# Which means that we have to copy libEGL.so.1 in too
-cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
-cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
-cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
 
-ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
-ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
+ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
+
 
 # The following are assumed to be part of the base system
 rm -f usr/lib/libcom_err.so.2 || true
@@ -254,6 +269,7 @@ rm -f usr/lib/libz.so.1 || true
 # These seem to be available on most systems but not Ubuntu 11.04
 # rm -f usr/lib/libffi.so.6 usr/lib/libGL.so.1 usr/lib/libglapi.so.0 usr/lib/libxcb.so.1 usr/lib/libxcb-glx.so.0 || true
 
+
 # Delete potentially dangerous libraries
 rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
 # Do NOT delete libX* because otherwise on Ubuntu 11.04:
@@ -271,9 +287,6 @@ strip usr/bin/* usr/lib/* || true
 # Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
 # the current working directory is set to usr/ inside the AppImage before running the app
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
-# Since we set /Scribus.AppDir as the prefix, we need to patch it away too (FIXME)
-# Probably it would be better to use /app as a prefix because it has the same length for all apps
-cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|././././././././././|g' {} \; ; cd ..
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
