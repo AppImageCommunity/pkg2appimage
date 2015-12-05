@@ -198,7 +198,15 @@ cd scribus1*
 ldconfig
 
 rm -rf /Scribus.AppDir/ || true
-mkdir -p /Scribus.AppDir/usr 
+mkdir -p /Scribus.AppDir/usr
+
+# Workaround for:
+# pathForIcon: Unable to load icon ./share/scribus/icons/1_5_1/AppIcon.png: File not found
+mkdir -p Scribus.AppDir/usr/share/scribus/icons/1_5_1
+cd Scribus.AppDir/usr/share/scribus/icons/
+ln -s 1_5_1 1_5_0
+cd -
+
 cmake -DWANT_SVNVERSION=1 -DCMAKE_INSTALL_PREFIX:PATH=/Scribus.AppDir/usr .
 
 make
