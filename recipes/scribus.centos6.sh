@@ -9,6 +9,9 @@ set -e
 # Be verbose
 set -x
 
+# Now we are inside CentOS 6
+grep -r "CentOS release 6" /etc/redhat-release || exit 1
+
 git_pull_rebase_helper()
 {
 	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
