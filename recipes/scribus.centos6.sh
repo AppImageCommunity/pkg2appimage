@@ -311,8 +311,21 @@ cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 
 cd ..
 
-rm -f Scribus.AppImage || true
-AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ Scribus.AppImage
+APP=Scribus
+VERSION=$(svn info scribus1* |grep Revision: | cut -c11-)
+ARCH=$(arch)
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$PWD/$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$PWD/$APP"-"$VERSION"-i386.AppImage"
+fi
+
+mkdir -p out
+
+rm -f out/Scribus.AppImage || true
+AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ out/$APPIMAGE
 
 # Test the resulting AppImage on my local system
 # sudo /tmp/*/union/AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/Fedora-Live-Workstation-x86_64-22-3.iso /tmp/*/union/Scribus.AppDir/
