@@ -23,7 +23,7 @@ git_pull_rebase_helper()
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 yum -y install epel-release 
-yum -y install wget tar bzip2 git libtool subversion automake libtool cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu-devel
+yum -y install wget tar bzip2 git libtool which subversion automake libtool cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu-devel
 
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
@@ -67,17 +67,12 @@ fi
 # between Ubuntu and CentOS 6
 ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
 
-# Check libtoolize
-rpm -qf /usr/bin/libtoolize
-libtoolize --version
-ls -lh /usr/bin/libtoolize
-
 if [ ! -d librevenge ] ; then
   git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
 fi
 cd librevenge*
 git_pull_rebase_helper
-bash -x ./autogen.sh
+./autogen.sh
 ./configure --prefix=/usr
 make
 make install
