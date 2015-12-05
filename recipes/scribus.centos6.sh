@@ -76,7 +76,7 @@ if [ ! -d librevenge ] ; then
 fi
 cd librevenge*
 git_pull_rebase_helper
-./autogen.sh
+bash -x ./autogen.sh
 ./configure --prefix=/usr
 make
 make install
