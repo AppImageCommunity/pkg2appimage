@@ -305,9 +305,15 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|./././././././.
 
 # On openSUSE Qt is picking up the wrong libqxcb.so
 # (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
-# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
-# the current working directory is set to usr/ inside the AppImage before running the app
-cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+# Also, Scribus and the embedded Python have hardcoded /usr which we patch away
+cd usr/ ; find . -type f -exec sed -i -e 's|/usr|././|g' {} \; ; cd ..
+
+# libpython has /usr and /lib64 in separate strings, hence patch that too
+sed -i -e 's|/lib64|/lib//|g' usr/lib/libpython*
+sed -i -e 's|/lib32|/lib//|g' usr/lib/libpython*
+
+# Bundle Python libraries too
+cp -r /usr/*/python2.6 usr/lib/
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
