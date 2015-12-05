@@ -311,7 +311,7 @@ cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 
 cd ..
 
-rm Scribus.AppImage || true
+rm -f Scribus.AppImage || true
 AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ Scribus.AppImage
 
 # Test the resulting AppImage on my local system
