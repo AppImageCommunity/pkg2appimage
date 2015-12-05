@@ -222,11 +222,26 @@ cp -r $PLUGINS/platformthemes ./usr/lib/qt5/plugins/
 cp -r $PLUGINS/sensors ./usr/lib/qt5/plugins/
 cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
 
+cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+# Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
+# This application failed to start because it could not find or load the Qt platform plugin "xcb".
+# Setting export QT_DEBUG_PLUGINS=1 revealed the cause.
+# QLibraryPrivate::loadPlugin failed on "/usr/lib64/qt5/plugins/platforms/libqxcb.so" : 
+# "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
+# Which means that we have to copy libEGL.so.1 in too
+cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
+cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
+cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
+
+ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
 ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
 ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
-
 
 # The following are assumed to be part of the base system
 rm -f usr/lib/libcom_err.so.2 || true
@@ -269,7 +284,6 @@ rm -f usr/lib/libz.so.1 || true
 # These seem to be available on most systems but not Ubuntu 11.04
 # rm -f usr/lib/libffi.so.6 usr/lib/libGL.so.1 usr/lib/libglapi.so.0 usr/lib/libxcb.so.1 usr/lib/libxcb-glx.so.0 || true
 
-
 # Delete potentially dangerous libraries
 rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
 # Do NOT delete libX* because otherwise on Ubuntu 11.04:
@@ -287,6 +301,9 @@ strip usr/bin/* usr/lib/* || true
 # Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
 # the current working directory is set to usr/ inside the AppImage before running the app
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+# Since we set /Scribus.AppDir as the prefix, we need to patch it away too (FIXME)
+# Probably it would be better to use /app as a prefix because it has the same length for all apps
+cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|././././././././././|g' {} \; ; cd ..
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
