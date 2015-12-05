@@ -70,6 +70,8 @@ ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
 # Check libtoolize
 rpm -qf /usr/bin/libtoolize
 libtoolize --version
+which libtoolize
+ls -lh /usr/bin/libtoolize
 
 if [ ! -d librevenge ] ; then
   git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
