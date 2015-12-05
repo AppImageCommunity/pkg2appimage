@@ -28,7 +28,6 @@ yum -y install git subversion automake libtool cppunit-devel cmake qt5-qtbase-gu
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
 yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
-. /opt/rh/devtoolset-2/enable
 
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
@@ -39,6 +38,11 @@ git_pull_rebase_helper
 ./build.sh
 cd ..
 fi
+
+# Workaround for:
+# /usr/lib/librevenge-stream-0.0.so: undefined reference to `std::__detail::_List_node_base::_M_hook(std::__detail::_List_node_base*)'
+# Use the new compiler
+. /opt/rh/devtoolset-2/enable
 
 # http://wiki.scribus.net/canvas/Librevenge
 # For those who always build the latest 1.5.0svn from source for testing, 
