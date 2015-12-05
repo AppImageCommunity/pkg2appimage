@@ -167,7 +167,7 @@ fi
 
 # Workaround for missing "/usr/lib64/lib64/libboost_date_time-d.a"
 # http://comments.gmane.org/gmane.comp.mobile.osmocom.sdr/1097
-rpm -ql boost-devel | grep 'cmake$' | xargs rm
+rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 
 # Workaround for:
 # -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
