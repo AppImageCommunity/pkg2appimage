@@ -309,12 +309,13 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|./././././././.
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr|././|g' {} \; ; cd ..
 
 # libpython has /usr and /lib64 in separate strings, hence patch that too
-sed -i -e 's|/lib64|/lib//|g' usr/lib/libpython*
-sed -i -e 's|/lib32|/lib//|g' usr/lib/libpython*
+sed -i -e 's|lib64/|lib/./|g' usr/lib/libpython*
+sed -i -e 's|lib32/|lib/./|g' usr/lib/libpython*
 
 # Bundle Python libraries too
 mkdir usr/lib/python2.6
-/usr/li*/python2.6/* usr/lib/python2.6/
+cp -rf /usr/lib64/python2.6/* usr/lib/python2.6/ || true
+cp -rf /usr/lib32/python2.6/* usr/lib/python2.6/ || true
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
