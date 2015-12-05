@@ -1,0 +1,343 @@
+# Enter a CentOS 6 chroot (you could use other methods)
+# git clone https://github.com/probonopd/AppImageKit.git
+# ./AppImageKit/build.sh 
+# sudo ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.5-x86_64-LiveCD.iso bash
+
+# Halt on errors
+set -e
+
+# Be verbose
+set -x
+
+git_pull_rebase_helper()
+{
+	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
+	if [ "x$GITCLEAN" != "x" ] ; then
+		git stash save
+		git pull --rebase
+		git stash pop
+	else
+		git pull --rebase
+	fi
+}
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+yum -y install epel-release 
+yum -y install git subversion automake libtool cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu-devel
+
+# Newer compiler than what comes with CentOS 6
+wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
+
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+./build.sh
+cd ..
+fi
+
+# Workaround for:
+# /usr/lib/librevenge-stream-0.0.so: undefined reference to `std::__detail::_List_node_base::_M_hook(std::__detail::_List_node_base*)'
+# Use the new compiler
+. /opt/rh/devtoolset-2/enable
+
+# http://wiki.scribus.net/canvas/Librevenge
+# For those who always build the latest 1.5.0svn from source for testing, 
+# some new dependencies have been introduced to get the full functionality of 1.5.0.
+# These are coming from http://www.documentliberation.org
+# irc #documentliberation-dev
+
+# Upgrade auttoconf to 2.65 for librevenge-0.0.1
+if [ -z "$NO_DOWNLOAD" ] ; then
+  wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
+  tar xf autoconf-2.65.tar.bz2 
+  cd autoconf-*
+  ./configure --prefix=/usr
+  make
+  make install
+  cd -
+fi
+
+# Workaround for: On CentOS 6, .pc files in /usr/lib/pkgconfig are not recognized
+# However, this is where .pc files get installed when bulding libraries... (FIXME)
+# I found this by comparing the output of librevenge's "make install" command
+# between Ubuntu and CentOS 6
+ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
+
+
+if [ ! -d librevenge ] ; then
+  git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
+fi
+cd librevenge*
+git_pull_rebase_helper
+./autogen.sh
+./configure --prefix=/usr
+make
+make install
+cd ..
+
+ldconfig
+
+
+if [ ! -d libmspub ] ; then
+  git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.gitcd libmspub/
+fi
+cd libmspub/
+./autogen.sh
+./configure --prefix=/usr
+make
+make install
+cd -
+
+if [ ! -d libvisio ] ; then
+  git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
+fi
+cd libvisio/
+git_pull_rebase_helper
+./autogen.sh
+./configure --prefix=/usr
+# Workaround for:
+# VSDXMLTokenMap.h:14:20: error: tokens.h: No such file or directory
+perl ./src/lib/gentoken.pl src/lib/tokens.txt src/lib/tokens.h src/lib/tokens.gperf
+gperf  --compare-strncmp -C -m 20 src/lib/tokens.gperf | sed -e 's/(char\*)0/(char\*)0, 0/g' > src/lib/tokenhash.h
+# Workaround for:
+#  CXX    libvisio_0_1_la-libvisio_xml.lo
+# libvisio_xml.cpp: In function 'int libvisio::{anonymous}::vsdxInputReadFunc(void*, char*, int)':
+# libvisio_xml.cpp:45:48: error: 'memcpy' was not declared in this scope
+#        memcpy(buffer, tmpBuffer, tmpNumBytesRead);
+sed -i -e 's|#include "libvisio_xml.h"|#include "libvisio_xml.h"\n#include <string.h>|g'  ./src/lib/libvisio_xml.cpp
+make
+make install
+cd -
+
+if [ ! -d libcdr ] ; then
+  git clone http://anongit.freedesktop.org/git/libreoffice/libcdr.git
+fi
+cd libcdr/
+git_pull_rebase_helper
+./autogen.sh
+./configure --prefix=/usr
+make
+make install
+cd -
+
+# yaml is needed for libpagemaker
+if [ ! -d yaml-0.1.4 ] ; then
+  wget -c http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
+  tar -xvzf yaml-0.1.4.tar.gz
+fi
+cd yaml-0.1.4
+./configure --prefix=/usr
+make
+make install
+cd -
+
+if [ ! -d libpagemaker ] ; then
+  git clone https://github.com/umanwizard/libpagemaker.git
+fi
+cd libpagemaker/
+git_pull_rebase_helper
+./autogen.sh
+./configure --prefix=/usr
+make
+make install
+cd -
+
+# Workaround for:
+# In file included from /scribus15/scribus/third_party/zip/zip.cpp:29:0:
+# /scribus15/scribus/third_party/zip/zip_p.h:65:10: error: 'z_crc_t' does not name a type
+#   typedef z_crc_t crc_t;
+if [ ! -d zlib-1.2.8 ] ; then
+  wget http://zlib.net/zlib-1.2.8.tar.gz
+  tar xf zlib-1.2.8.tar.gz
+fi
+cd zlib-*
+./configure --prefix=/usr
+make
+make install
+cd -
+
+# Workaround for missing "/usr/lib64/lib64/libboost_date_time.a"
+if [ ! -e /usr/lib64/lib64 ] ; then
+  ls /usr/lib64/lib64 2>/dev/null || ln -sf /usr/lib64/ /usr/lib64/lib64
+fi
+
+# Workaround for missing "/usr/lib64/lib64/libboost_date_time-d.a"
+# http://comments.gmane.org/gmane.comp.mobile.osmocom.sdr/1097
+rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
+
+# Workaround for:
+# -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
+# CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:363 (message):
+#   None of the required 'libcairo>=1.10.0;cairo>=1.10.0' found
+if [ -z "$NO_DOWNLOAD" ] ; then
+  rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
+  rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
+fi
+
+svn co svn://scribus.net/trunk/Scribus scribus15
+# svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
+
+# Workaround for:
+# When cmake oes not find the libraries we compiled above
+# pkg-config --list-all
+# Package 'icu-i18n', required by 'libvisio-0.1', not found
+sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libcdr-0.1.pc 
+sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libmspub-0.1.pc 
+sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libvisio-0.1.pc 
+
+# Workaround for:
+# ld: cannot find -lpmd-0.0
+cp /usr/lib/libpagemaker-0.0.so /usr/lib/libpmd-0.0.so
+
+cd scribus1*
+
+ldconfig
+
+rm -rf /Scribus.AppDir/ || true
+mkdir -p /Scribus.AppDir/usr
+
+cmake -DWANT_SVNVERSION=1 -DCMAKE_INSTALL_PREFIX:PATH=/Scribus.AppDir/usr .
+
+make
+
+# Install into the AppDir
+make install
+
+cd /Scribus.AppDir
+
+# FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
+mkdir -p ./usr/lib/qt5/plugins/
+
+if [ -e $(dirname /usr/li*/qt5/plugins/bearer) ] ; then
+  PLUGINS=$(dirname /usr/li*/qt5/plugins/bearer)
+else
+  PLUGINS=../../5.5/gc*/plugins/
+fi
+echo $PLUGINS # /usr/lib64/qt5/plugins if build system Qt is found
+cp -r $PLUGINS/bearer ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/iconengines ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/imageformats ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/platforminputcontexts ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/platforms ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/platformthemes ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/sensors ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
+
+cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+# Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
+# This application failed to start because it could not find or load the Qt platform plugin "xcb".
+# Setting export QT_DEBUG_PLUGINS=1 revealed the cause.
+# QLibraryPrivate::loadPlugin failed on "/usr/lib64/qt5/plugins/platforms/libqxcb.so" : 
+# "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
+# Which means that we have to copy libEGL.so.1 in too
+cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
+cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
+cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
+
+ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
+
+# The following are assumed to be part of the base system
+rm -f usr/lib/libcom_err.so.2 || true
+rm -f usr/lib/libcrypt.so.1 || true
+rm -f usr/lib/libdl.so.2 || true
+rm -f usr/lib/libexpat.so.1 || true
+rm -f usr/lib/libfontconfig.so.1 || true
+rm -f usr/lib/libgcc_s.so.1 || true
+rm -f usr/lib/libglib-2.0.so.0 || true
+rm -f usr/lib/libgpg-error.so.0 || true
+rm -f usr/lib/libgssapi_krb5.so.2 || true
+rm -f usr/lib/libgssapi.so.3 || true
+rm -f usr/lib/libhcrypto.so.4 || true
+rm -f usr/lib/libheimbase.so.1 || true
+rm -f usr/lib/libheimntlm.so.0 || true
+rm -f usr/lib/libhx509.so.5 || true
+rm -f usr/lib/libICE.so.6 || true
+rm -f usr/lib/libidn.so.11 || true
+rm -f usr/lib/libk5crypto.so.3 || true
+rm -f usr/lib/libkeyutils.so.1 || true
+rm -f usr/lib/libkrb5.so.26 || true
+rm -f usr/lib/libkrb5.so.3 || true
+rm -f usr/lib/libkrb5support.so.0 || true
+# rm -f usr/lib/liblber-2.4.so.2 || true # needed for debian wheezy
+# rm -f usr/lib/libldap_r-2.4.so.2 || true # needed for debian wheezy
+rm -f usr/lib/libm.so.6 || true
+rm -f usr/lib/libp11-kit.so.0 || true
+rm -f usr/lib/libpcre.so.3 || true
+rm -f usr/lib/libpthread.so.0 || true
+rm -f usr/lib/libresolv.so.2 || true
+rm -f usr/lib/libroken.so.18 || true
+rm -f usr/lib/librt.so.1 || true
+rm -f usr/lib/libsasl2.so.2 || true
+rm -f usr/lib/libSM.so.6 || true
+rm -f usr/lib/libusb-1.0.so.0 || true
+rm -f usr/lib/libuuid.so.1 || true
+rm -f usr/lib/libwind.so.0 || true
+rm -f usr/lib/libz.so.1 || true
+
+# These seem to be available on most systems but not Ubuntu 11.04
+# rm -f usr/lib/libffi.so.6 usr/lib/libGL.so.1 usr/lib/libglapi.so.0 usr/lib/libxcb.so.1 usr/lib/libxcb-glx.so.0 || true
+
+# Delete potentially dangerous libraries
+rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
+# Do NOT delete libX* because otherwise on Ubuntu 11.04:
+# loaded library "Xcursor" malloc.c:3096: sYSMALLOc: Assertion (...) Aborted
+
+# We don't bundle the developer stuff
+rm -rf usr/include || true
+rm -rf usr/lib/cmake || true
+rm -rf usr/lib/pkgconfig || true
+
+strip usr/bin/* usr/lib/* || true
+
+# On openSUSE Qt is picking up the wrong libqxcb.so
+# (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
+# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
+# the current working directory is set to usr/ inside the AppImage before running the app
+cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+# Since we set /Scribus.AppDir as the prefix, we need to patch it away too (FIXME)
+# Probably it would be better to use /app as a prefix because it has the same length for all apps
+cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|././././././././././|g' {} \; ; cd ..
+
+cp ../AppImageKit/AppRun .
+cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
+cp ./usr/share/scribus/icons/1_5_0/scribus.png .
+
+# Workaround for:
+# pathForIcon: Unable to load icon ./share/scribus/icons/1_5_1/AppIcon.png: File not found
+# Copy over the ones missing in 1_5_1 and delete 1_5_0
+no | cp -r ./usr/share/scribus/icons/1_5_0/* ./usr/share/scribus/icons/1_5_1/ || true
+yes | rm -rf ./usr/share/scribus/icons/1_5_0 || true
+
+cd ..
+
+APP=Scribus
+
+VER=$(grep "#define VERSION" ./scribus1*/config.h | cut -d '"' -f 2)
+REVISION=$(svn info scribus1* |grep Revision: | cut -c11-)
+VERSION=$VER.$REVISION
+echo $VERSION
+
+ARCH=$(arch)
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$PWD/$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$PWD/$APP"-"$VERSION"-i386.AppImage"
+fi
+
+mkdir -p out
+
+rm -f out/*.AppImage || true
+AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ out/$APPIMAGE
+
+# Test the resulting AppImage on my local system
+# sudo /tmp/*/union/AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/Fedora-Live-Workstation-x86_64-22-3.iso /tmp/*/union/Scribus.AppDir/
