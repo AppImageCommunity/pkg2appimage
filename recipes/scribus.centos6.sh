@@ -299,14 +299,15 @@ rm -rf usr/lib/pkgconfig || true
 
 strip usr/bin/* usr/lib/* || true
 
+# Since we set /Scribus.AppDir as the prefix, we need to patch it away too (FIXME)
+# Probably it would be better to use /app as a prefix because it has the same length for all apps
+cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|././././././././././|g' {} \; ; cd ..
+
 # On openSUSE Qt is picking up the wrong libqxcb.so
 # (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
 # Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
 # the current working directory is set to usr/ inside the AppImage before running the app
 cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
-# Since we set /Scribus.AppDir as the prefix, we need to patch it away too (FIXME)
-# Probably it would be better to use /app as a prefix because it has the same length for all apps
-cd usr/ ; find . -type f -exec sed -i -e 's|/Scribus.AppDir/usr/|././././././././././|g' {} \; ; cd ..
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
