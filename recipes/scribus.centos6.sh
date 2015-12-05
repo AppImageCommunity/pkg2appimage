@@ -312,7 +312,7 @@ cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 cd ..
 
 APP=Scribus
-VERSION=$(svn info scribus1* |grep Revision: | cut -c11-)
+VERSION="svn"$(svn info scribus1* |grep Revision: | cut -c11-)
 ARCH=$(arch)
 
 if [[ "$ARCH" = "x86_64" ]] ; then
@@ -324,7 +324,7 @@ fi
 
 mkdir -p out
 
-rm -f out/Scribus.AppImage || true
+rm -f out/*.AppImage || true
 AppImageKit/AppImageAssistant.AppDir/package Scribus.AppDir/ out/$APPIMAGE
 
 # Test the resulting AppImage on my local system
