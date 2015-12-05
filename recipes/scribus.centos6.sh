@@ -319,7 +319,12 @@ yes | rm -rf ./usr/share/scribus/icons/1_5_0 || true
 cd ..
 
 APP=Scribus
-VERSION="svn"$(svn info scribus1* |grep Revision: | cut -c11-)
+
+VER=$(grep "#define VERSION" ./scribus1*/config.h | cut -d '"' -f 2)
+REVISION=$(svn info scribus1* |grep Revision: | cut -c11-)
+VERSION=$VER.$REVISION
+echo $VERSION
+
 ARCH=$(arch)
 
 if [[ "$ARCH" = "x86_64" ]] ; then
