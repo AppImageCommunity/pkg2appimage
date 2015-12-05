@@ -85,7 +85,7 @@ ldconfig
 
 
 if [ ! -d libmspub ] ; then
-  git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.gitcd libmspub/
+  git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.git
 fi
 cd libmspub/
 ./autogen.sh
