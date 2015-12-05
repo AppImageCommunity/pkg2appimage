@@ -47,6 +47,7 @@ fi
 # Use the new compiler
 . /opt/rh/devtoolset-2/enable
 
+if [ -z "$NO_DOWNLOAD" ] ; then
 # http://wiki.scribus.net/canvas/Librevenge
 # For those who always build the latest 1.5.0svn from source for testing, 
 # some new dependencies have been introduced to get the full functionality of 1.5.0.
