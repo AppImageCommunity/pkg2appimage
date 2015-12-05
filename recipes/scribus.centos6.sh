@@ -54,8 +54,9 @@ if [ -z "$NO_DOWNLOAD" ] ; then
 # These are coming from http://www.documentliberation.org
 # irc #documentliberation-dev
 
-# Upgrade auttoconf to 2.65 for librevenge-0.0.1
-if [ -z "$NO_DOWNLOAD" ] ; then
+if [ -z "$NO_LIBS" ] ; then
+
+# Upgrade autoconf to 2.65 for librevenge-0.0.1
   wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
   tar xf autoconf-2.65.tar.bz2 
   cd autoconf-*
@@ -195,6 +196,8 @@ sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libvisio-0.1.pc
 # Workaround for:
 # ld: cannot find -lpmd-0.0
 cp /usr/lib/libpagemaker-0.0.so /usr/lib/libpmd-0.0.so
+
+fi # if [ -z "$NO_LIBS" ]
 
 cd scribus1*
 
