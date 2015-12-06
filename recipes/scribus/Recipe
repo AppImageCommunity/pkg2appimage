@@ -349,10 +349,10 @@ echo $VERSION
 ARCH=$(arch)
 
 if [[ "$ARCH" = "x86_64" ]] ; then
-	APPIMAGE=$PWD/$APP"-"$VERSION"-x86_64.AppImage"
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
 fi
 if [[ "$ARCH" = "i686" ]] ; then
-	APPIMAGE=$PWD/$APP"-"$VERSION"-i386.AppImage"
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
 fi
 
 mkdir -p out
