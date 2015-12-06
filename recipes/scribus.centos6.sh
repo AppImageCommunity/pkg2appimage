@@ -182,6 +182,8 @@ if [ -z "$NO_DOWNLOAD" ] ; then
   rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
 fi
 
+fi # if [ -z "$NO_LIBS" ]
+
 svn co svn://scribus.net/trunk/Scribus scribus15
 # svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
 
@@ -196,8 +198,6 @@ sed -i -e 's|icu-i18n|icu|g' /usr/lib/pkgconfig/libvisio-0.1.pc
 # Workaround for:
 # ld: cannot find -lpmd-0.0
 cp /usr/lib/libpagemaker-0.0.so /usr/lib/libpmd-0.0.so
-
-fi # if [ -z "$NO_LIBS" ]
 
 cd scribus1*
 
