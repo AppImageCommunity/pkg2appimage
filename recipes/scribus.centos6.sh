@@ -330,12 +330,6 @@ cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
 cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 
-# Workaround for:
-# pathForIcon: Unable to load icon ./share/scribus/icons/1_5_1/AppIcon.png: File not found
-# Copy over the ones missing in 1_5_1 and delete 1_5_0
-no | cp -r ./usr/share/scribus/icons/1_5_0/* ./usr/share/scribus/icons/1_5_1/ || true
-yes | rm -rf ./usr/share/scribus/icons/1_5_0 || true
-
 cd ..
 
 APP=Scribus
