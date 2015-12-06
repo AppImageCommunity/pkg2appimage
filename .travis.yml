@@ -16,7 +16,7 @@ before_install:
 
 script:
 - mkdir -p ./out/
-- wget https://github.com/probonopd/AppImages/blob/master/recipes/$RECIPE/Recipe -o ./out/Recipe
+- wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/$RECIPE/Recipe -o ./out/Recipe
 - docker --version
 - docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
 - # docker cp $(docker ps -alq):/out/ .
