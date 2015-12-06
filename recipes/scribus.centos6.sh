@@ -314,8 +314,8 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/usr|././|g' {} \; ; cd ..
 
 # We do not bundle this, so let's not search that inside the AppImage. 
 # Fixes "Qt: Failed to create XKB context!" and lets us enter text
-sed -i -e 's|././/share/X11/xkb|/usr/share/X11/xkb|g' ./usr/lib/qt5/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
-sed -i -e 's|././/share/X11/xkb|/usr/share/X11/xkb|g' ./usr/lib/libQt5XcbQpa.so.5
+sed -i -e 's|././/share/X11/|/usr/share/X11/|g' ./usr/lib/qt5/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
+sed -i -e 's|././/share/X11/|/usr/share/X11/|g' ./usr/lib/libQt5XcbQpa.so.5
 
 # libpython has /usr and /lib64 in separate strings, hence patch that too
 sed -i -e 's|lib64/|lib/./|g' usr/lib/libpython*
