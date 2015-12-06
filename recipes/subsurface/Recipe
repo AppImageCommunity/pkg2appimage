@@ -316,11 +316,15 @@ if [[ "$ARCH" = "i686" ]] ; then
 fi
 
 # Put this script into the AppImage for debugging
-# FIXME: The follwong line does not work
+# FIXME: The follwing line does not work
 # cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
+
+mkdir -p out
+
+rm -f out/*.AppImage || true
 
 # Convert the AppDir into an AppImage
 rm -rf $APPIMAGE
-../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ out/$APPIMAGE
 
-ls -lh $APPIMAGE
+ls -lh out/$APPIMAGE
