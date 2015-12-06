@@ -5,6 +5,7 @@ services:
 
 env:
   - RECIPE=scribus
+  - RECIPE=subsurface
   
 before_install:
 - # Install prerequisites for travis2github.py uploader
