@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Enter a CentOS 6 chroot (you could use other methods)
 # git clone https://github.com/probonopd/AppImageKit.git
 # ./AppImageKit/build.sh 
