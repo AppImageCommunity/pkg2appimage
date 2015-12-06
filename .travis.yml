@@ -19,6 +19,9 @@ script:
 - wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/$RECIPE/Recipe -o ./out/Recipe
 - docker --version
 - ls ${PWD}/out
-- docker run -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
-- # docker cp $(docker ps -alq):/out/ . # To be replaced by using /mnt
+- docker create -t -i probonopd/appimages:$RECIPE  /bin/bash -ex /out/Recipe
+- ID=$(docker ps -alq)
+- docker cp ./out $ID/
+- docker start -a -i $ID
+- docker cp $ID:/out/ .
 - python travis2github.py out/*.AppImage
