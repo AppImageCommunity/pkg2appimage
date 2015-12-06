@@ -77,7 +77,7 @@ export PATH=/bin:/sbin:$PATH # For CentOS 6
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Enable EPEL repository; needed for recent Qt and
 # install dependencies
-sudo yum -y install epel-release git make autoconf automake libtool \
+sudo yum -y install wget epel-release git make autoconf automake libtool \
         libzip-devel libxml2-devel libxslt-devel libsqlite3x-devel \
         libudev-devel libusbx-devel libcurl-devel libssh2-devel mesa-libGL-devel sqlite-devel \
         tar gzip which make autoconf automake gstreamer-devel mesa-libEGL coreutils grep wget
