@@ -20,4 +20,6 @@ script:
 - wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/$RECIPE/Recipe -O ./out/Recipe
 - sed -i -e 's|sudo ||g' ./out/Recipe # For subsurface recipe
 - docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
+- echo "DONE"
+- ls -lh out/*.AppImage
 - python travis2github.py out/*.AppImage
