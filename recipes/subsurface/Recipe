@@ -319,6 +319,8 @@ fi
 # FIXME: The follwing line does not work
 # cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
 
+cd ..
+
 mkdir -p out
 
 rm -f out/*.AppImage || true
