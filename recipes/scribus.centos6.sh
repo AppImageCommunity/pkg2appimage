@@ -250,6 +250,10 @@ ldd usr/bin/scribus | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./
 ldd usr/lib/scribus/plugins/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
+# Tcl/Tk, Tkinter (for Calendar script)
+ldd /usr/li*/python2.6/lib-dynload/_tkinter.so | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+cp -r /usr/li*/tcl8.5 /usr/li*/tk8.5 usr/lib/
+
 # The following are assumed to be part of the base system
 rm -f usr/lib/libcom_err.so.2 || true
 rm -f usr/lib/libcrypt.so.1 || true
