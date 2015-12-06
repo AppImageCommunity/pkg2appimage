@@ -253,6 +253,7 @@ ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  
 # Tcl/Tk, Tkinter (for Calendar script)
 ldd /usr/li*/python2.6/lib-dynload/_tkinter.so | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 cp -r /usr/li*/tcl8.5 /usr/li*/tk8.5 usr/lib/
+cp -r /usr/share/tcl* /usr/share/tk* usr/share/
 
 # The following are assumed to be part of the base system
 rm -f usr/lib/libcom_err.so.2 || true
