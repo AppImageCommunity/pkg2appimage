@@ -3,5 +3,5 @@
 # Based on CentOS 6
 ############################################################
 FROM centos:6
-ADD https://github.com/probonopd/AppImages/raw/master/recipes/scribus.centos6.sh /scribus.centos6.sh
+ADD https://github.com/probonopd/AppImages/raw/master/recipes/scribus/Recipe /Recipe
 RUN bash -ex scribus.centos6.sh && yum clean all && rm -rf /out && rm -rf Scribus*
