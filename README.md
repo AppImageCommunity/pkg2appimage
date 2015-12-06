@@ -1,6 +1,6 @@
 # AppImages [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages)
 
-This repository contains some recipes to generate AppImages (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). It also contains dockerfiles that can be used to create containers in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages can run on most modern desktop Linux distributions.
+This repository contains some recipes to generate AppImages (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). It also contains dockerfiles that are used to create [Docker images on Docker Hub](https://hub.docker.com/r/probonopd/appimages/) (think of them as glorified `chroot` environments) in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages can run on most modern desktop Linux distributions.
 
 See the [Releases](https://github.com/probonopd/AppImages/releases) tab for downloads.
 
