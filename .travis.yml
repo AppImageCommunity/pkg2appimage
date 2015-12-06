@@ -15,7 +15,7 @@ before_install:
 - ln -s /usr/lib/python2.7/dist-packages/six.py /usr/lib/python2.7/dist-packages/requests/ /usr/lib/python2.7/dist-packages/chardet/ /usr/lib/python2.7/dist-packages/urllib3/ .
 
 script:
-- docker run probonopd/AppImages:$RECIPE /bin/bash -ex /Recipe
+- docker run probonopd/appimages:$RECIPE /bin/bash -ex /Recipe
 - docker cp $(docker ps -alq):/out/ .
 - ls -lh out/
 - python travis2github.py out/*.AppImage
