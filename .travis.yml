@@ -17,11 +17,12 @@ before_install:
 script:
 - mkdir -p ./out/
 - wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/$RECIPE/Recipe -O ./out/Recipe
-- docker --version
-- cat ${PWD}/out/Recipe
-- docker create -t -i probonopd/appimages:$RECIPE  /bin/bash -ex /out/Recipe
-- ID=$(docker ps -alq)
-- docker cp ./out $ID:/
-- docker start -a -i $ID
-- docker cp $ID:/out/ .
+- # docker --version
+- # cat ${PWD}/out/Recipe
+- # docker create -t -i probonopd/appimages:$RECIPE  /bin/bash -ex /out/Recipe
+- # ID=$(docker ps -alq)
+- # docker cp ./out $ID:/
+- # docker start -a -i $ID
+- docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
+- # docker cp $ID:/out/ .
 - python travis2github.py out/*.AppImage
