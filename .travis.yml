@@ -15,7 +15,10 @@ before_install:
 - ln -s /usr/lib/python2.7/dist-packages/six.py /usr/lib/python2.7/dist-packages/requests/ /usr/lib/python2.7/dist-packages/chardet/ /usr/lib/python2.7/dist-packages/urllib3/ .
 
 script:
-- docker run probonopd/appimages:$RECIPE /bin/bash -ex /Recipe
-- docker cp $(docker ps -alq):/out/ .
+- mkdir -p ./out/
+- wget https://github.com/probonopd/AppImages/blob/master/recipes/$RECIPE/Recipe -o ./out/Recipe
+- docker --version
+- docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
+- # docker cp $(docker ps -alq):/out/ .
 - ls -lh out/
 - python travis2github.py out/*.AppImage
