@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# This recipe does not build from source, but rather uses a very special
+# Slackware build which is geared toward what we need already.
+# We could also do that is done in vlc.SlackBuild ourselves instead.
+# Citation from ./usr/doc/vlc-*/vlc.SlackBuild:
+# NOTE: this SlackBuild is a monster - it tries to wrap all dependencies to
+# vlc into the resulting package by building these deps as static libraries
+# and then in the final stage linking vlc against all the static libraries.
+# The resulting package has all the vlc functionality and does not depend on
+# any software that is not present in a standard full install of Slackware.
+# This makes my package quite different from all the other vlc builds that are
+# floating around on the Internet.
+
+if [[ "x$ARCH" == "x" ]] ; then
+  ARCH="x86_64"
+fi
+
+APP=vlc
+
+mkdir -p $APP/$APP.AppDir
+
+cd $APP
+
+FILE=$(wget "http://slackware.org.uk/people/alien/restricted_slackbuilds/vlc/pkg64/current/?C=S;O=D" -q -O - | grep txz | head -n 1 | cut -d '"' -f 10)
+wget -c http://slackware.org.uk/people/alien/restricted_slackbuilds/vlc/pkg64/current/$FILE
+
+cd $APP.AppDir/
+
+tar xf ../vlc-*
+
+cd usr/ ; find . -type f -executable -exec sed -i -e 's|/usr|././|g' {} \; ; cd ..
+cp ./usr/share/applications/vlc.desktop .
+
+# Taken from install/doinst.sh
+( cd usr/lib* ; rm -rf libvlc.so.5 )
+( cd usr/lib* ; ln -sf libvlc.so.5.5.0 libvlc.so.5 )
+( cd usr/lib*/vlc ; rm -rf libvlc_vdpau.so )
+( cd usr/lib*/vlc ; ln -sf libvlc_vdpau.so.0.0.0 libvlc_vdpau.so )
+( cd usr/lib*/vlc ; rm -rf libvlc_vdpau.so.0 )
+( cd usr/lib*/vlc ; ln -sf libvlc_vdpau.so.0.0.0 libvlc_vdpau.so.0 )
+( cd usr/lib* ; rm -rf libvlccore.so )
+( cd usr/lib* ; ln -sf libvlccore.so.8.0.0 libvlccore.so )
+( cd usr/lib* ; rm -rf libvlccore.so.8 )
+( cd usr/lib* ; ln -sf libvlccore.so.8.0.0 libvlccore.so.8 )
+( cd usr/lib* ; rm -rf libvlc.so )
+( cd usr/lib* ; ln -sf libvlc.so.5.5.0 libvlc.so )
+
+if [ -e usr/lib64 ] ; then
+  ln -s lib64/ usr/lib
+fi 
+
+wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+chmod a+x ./AppRun
+
+cd ..
+
+wget https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+chmod a+x ./AppImageAssistant
+
+VERSION=$(./$APP.AppDir/AppRun --version 2>&1 | grep  -o "(2.*)" | sed -e "s/(//" | sed -e "s/)//")
+echo $VERSION
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+mkdir -p ../out/
+./AppImageAssistant ./$APP.AppDir ../out/$APPIMAGE
