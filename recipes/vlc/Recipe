@@ -3,6 +3,7 @@
 # This recipe does not build from source, but rather uses a very special
 # Slackware build which is geared toward what we need already.
 # We could also do that is done in vlc.SlackBuild ourselves instead.
+#
 # Citation from ./usr/doc/vlc-*/vlc.SlackBuild:
 # NOTE: this SlackBuild is a monster - it tries to wrap all dependencies to
 # vlc into the resulting package by building these deps as static libraries
@@ -11,6 +12,9 @@
 # any software that is not present in a standard full install of Slackware.
 # This makes my package quite different from all the other vlc builds that are
 # floating around on the Internet.
+#
+# However, see the footer of this file that shows that there are 
+# some dependencies that cannot be assumed to be present everywhere (FIXME)
 
 if [[ "x$ARCH" == "x" ]] ; then
   ARCH="x86_64"
@@ -76,3 +80,41 @@ fi
 
 mkdir -p ../out/
 ./AppImageAssistant ./$APP.AppDir ../out/$APPIMAGE
+
+exit 0
+
+================================================
+
+# FIXME
+# On Ubuntu 12.04.5 LTS:
+
+root@ubuntu:/tmp/.mount_pDGzHU/usr# find . -type f -executable -exec ldd {} \; 2>&1 | grep "=> not found" | sort | uniq
+	liba52.so.0 => not found
+	libcrypto.so.1 => not found
+	libgcrypt.so.20 => not found
+	libGLEW.so.1.10 => not found
+	libglut.so.3 => not found
+	libgnutls.so.30 => not found
+	libgstapp-1.0.so.0 => not found
+	libgstbase-1.0.so.0 => not found
+	libgstreamer-1.0.so.0 => not found
+	libgstvideo-1.0.so.0 => not found
+	libharfbuzz.so.0 => not found
+	libhogweed.so.4 => not found
+	libjpeg.so.62 => not found
+	libmad.so.0 => not found
+	libnettle.so.6 => not found
+	libpng16.so.16 => not found
+	libSDL_image-1.2.so.0 => not found
+	libssl.so.1 => not found
+	libtiff.so.5 => not found
+	libvga.so.1 => not found
+	libxcb-composite.so.0 => not found
+	libxcb-dri3.so.0 => not found
+	libxcb-keysyms.so.1 => not found
+	libxcb-present.so.0 => not found
+	libxcb-randr.so.0 => not found
+	libxcb-sync.so.1 => not found
+	libxcb-xv.so.0 => not found
+	libxshmfence.so.1 => not found
+
