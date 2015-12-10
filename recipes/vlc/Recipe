@@ -27,11 +27,11 @@ mkdir -p $APP/$APP.AppDir
 cd $APP
 
 if [[ "$ARCH" = "x86_64" ]] ; then
-  FILE=$(wget "http://slackware.org.uk/people/alien/restricted_slackbuilds/vlc/pkg64/current/?C=S;O=D" -q -O - | grep txz | head -n 1 | cut -d '"' -f 10)
+  FILE=$(wget "http://www.slackware.com/~alien/slackbuilds/vlc/pkg64/current/?C=S;O=D" -q -O - | grep txz | head -n 1 | cut -d '"' -f 10)
   wget -c http://slackware.org.uk/people/alien/restricted_slackbuilds/vlc/pkg64/current/$FILE
 fi
 if [[ "$ARCH" = "i686" ]] ; then
-  FILE=$(wget "http://slackware.org.uk/people/alien/restricted_slackbuilds/vlc/pkg/current/?C=S;O=D" -q -O - | grep txz | head -n 1 | cut -d '"' -f 10)
+  FILE=$(wget "http://www.slackware.com/~alien/slackbuilds/vlc/pkg/current/?C=S;O=D" -q -O - | grep txz | head -n 1 | cut -d '"' -f 10)
   wget -c http://slackware.org.uk/people/alien/restricted_slackbuilds/vlc/pkg/current/$FILE
 fi
 
