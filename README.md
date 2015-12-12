@@ -3,9 +3,9 @@
  * Scribus [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion)
  * Subsurface [![Download](https://api.bintray.com/packages/probono/AppImages/subsurface/images/download.svg)](https://bintray.com/probono/AppImages/subsurface/_latestVersion)
  
-This repository contains some recipes to generate __AppImages__ (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). See the [Releases](https://github.com/probonopd/AppImages/releases) tab for downloads of the generated AppImages.
+This repository contains some recipes to generate __AppImages__ (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). See the [Bintray page](https://bintray.com/probono/AppImages) tab for downloads of the generated AppImages.
 
-This repository also contains __recipes__, which are the scripts used to create the AppImages, and __dockerfiles__ that are used to create [Docker images on Docker Hub](https://hub.docker.com/r/probonopd/appimages/) (think of them as glorified `chroot` environments) in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages can run on most modern desktop Linux distributions.
+This repository also contains __recipes__, which are the scripts used to create the AppImages, and __dockerfiles__ that are used to create [Docker images on Docker Hub](https://hub.docker.com/r/probonopd/appimages/) (think of them as glorified `chroot` environments) in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages are uploaded to a Bintray repository and can run on most modern desktop Linux distributions.
 
 This repository is intended to showcase the [AppImage](http://appimage.org) format and [AppImageKit](https://github.com/probonopd/AppImageKit) software used to create AppImages. Upstream projects are encouraged to use this showcase to produce their own __upstream packaging__ AppImages, as some projects (like [Subsurface](https://subsurface-divelog.org) already do).
 
@@ -27,7 +27,7 @@ Both bundle not only the application itself, but also the required Qt libraries 
 
 So why not use the same approach as on Windows and OS X, namely, treat the base operating system as a _platform_ on top of which we tun the application we care about. This means that we have to bundle the application with all their dependencies that are _not_ part of the base operating system. Welcome [application bundles](https://blogs.gnome.org/tvb/2013/12/10/application-bundles-for-glade/).
 
-[Here](https://github.com/probonopd/AppImages/releases/tag/1) is is an AppImage of Subsurface, built from the latest git sources in a CentOS 6.7 chroot using this [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.centos6.sh). Just download, `chmod a+x`, and run. At 49 MB, the AppImage is roughly in line with the binaries for Windows and OS X. With some more hand-tuning, the size could probably be brought further down. So far, the AppImage has been verified to run on
+[Here](https://github.com/probonopd/AppImages/releases/tag/1) is is an AppImage of Subsurface, built from the latest git sources in a CentOS 6 chroot using this [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface/Recipe). Just download, `chmod a+x`, and run. At 49 MB, the AppImage is roughly in line with the binaries for Windows and OS X. With some more hand-tuning, the size could probably be brought further down. So far, the AppImage has been verified to run on
  * CentOS-6.7-x86_64-LiveCD.iso
  * CentOS-7.0-1406-x86_64-GnomeLive.iso
  * CentOS-7-x86_64-LiveGNOME-1503.iso
@@ -74,7 +74,7 @@ But we also target 32-bit systems like
 
 Note that the AppImage runs not only on debian stable, but even on debian __oldstable__ (which is wheezy at this time).
 
-Most likely it will run on others, too - and with some fine-tuning of the [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface.centos6.sh) (i.e., bundling additional dependencies) even more.
+Most likely it will run on others, too - and with some fine-tuning of the [recipe](https://github.com/probonopd/AppImages/blob/master/recipes/subsurface/Recipe) (i.e., bundling additional dependencies) even more.
 
 > And if you don't use shared libraries, getting your package in, like, is just painful. 
 
