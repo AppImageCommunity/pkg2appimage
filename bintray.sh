@@ -135,6 +135,19 @@ echo ""
 echo "Uploading and publishing ${FILE}..."
 ${CURL} -T ${FILE} "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
 
+if [ $(env | grep TRAVIS_JOB_ID ) ] ; then
+echo ""
+echo "Adding Travis CI log to release notes..."
+BUILD_LOG="https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true"
+    data='{
+  "bintray": {
+    "syntax": "markdown",
+    "content": "'${BUILD_LOG}'"
+  }
+}'
+${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes
+fi
+
 # Seemingly this works only after the second time running this script - thus disabling for now (FIXME)
 # echo ""
 # echo "Adding ${FILE} to download list..."
