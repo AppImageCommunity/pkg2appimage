@@ -12,7 +12,7 @@ before_install:
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
 - wget -c https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
 - sudo apt-get update -qq
-- sudo apt-get install python-requests  python-chardet python-urllib3 python-six -qq
+- sudo apt-get install python-requests  python-chardet python-urllib3 python-six bsdtar curl -qq
 - ln -s /usr/lib/python2.7/dist-packages/six.py /usr/lib/python2.7/dist-packages/requests/ /usr/lib/python2.7/dist-packages/chardet/ /usr/lib/python2.7/dist-packages/urllib3/ .
 
 script:
@@ -23,3 +23,4 @@ script:
 - echo "DONE"
 - ls -lh out/*.AppImage
 - python travis2github.py out/*.AppImage
+- find out/ -name "*.AppImage" -exec bash -x bintray.sh {} \; 
