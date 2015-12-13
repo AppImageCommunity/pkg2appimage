@@ -68,7 +68,7 @@ cd ..
 wget https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
 chmod a+x ./AppImageAssistant
 
-VERSION=$(strings ./$APP.AppDir/usr/lib64/libvlccore.so.* | grep "^[0-9]\.[0-9]\." | head -n 1 | sed -e 's/-/./g')
+VERSION=$(strings ./$APP.AppDir/usr/lib/libvlccore.so.* | grep "^[0-9]\.[0-9]\." | head -n 1 | sed -e 's/-/./g')
 echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
