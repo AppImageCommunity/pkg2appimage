@@ -143,7 +143,9 @@ export PATH=./:$PATH
 if [ $(which zsyncmake) ] ; then
   echo ""
   echo "Uploading and publishing zsync file for ${FILE}..."
-  zsyncmake -u $(basename ${FILE}) ${FILE} -o ${FILE}.zsync
+  # Workaround for:
+  # https://github.com/probonopd/zsync-curl/issues/1
+  zsyncmake -u http://dl.bintray.com/probono/AppImages/$(basename ${FILE}) ${FILE} -o ${FILE}.zsync
   ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
 else
   echo "zsyncmake not found, skipping zsync file generation and upload"
