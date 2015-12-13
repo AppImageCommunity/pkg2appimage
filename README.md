@@ -1,5 +1,6 @@
 # AppImages [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages)
 
+ * Firefox [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion)
  * Scribus [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion)
  * Subsurface [![Download](https://api.bintray.com/packages/probono/AppImages/subsurface/images/download.svg)](https://bintray.com/probono/AppImages/subsurface/_latestVersion)
  
