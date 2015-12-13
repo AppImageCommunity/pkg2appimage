@@ -143,7 +143,7 @@ export PATH=./:$PATH
 if [ $(which zsyncmake) ] ; then
   echo ""
   echo "Uploading and publishing zsync file for ${FILE}..."
-  zsyncmake -u $(basename ${FILE}) ${FILE}
+  zsyncmake -u $(basename ${FILE}) ${FILE} -o ${FILE}.zsync
   ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
 else
   echo "zsyncmake not found, skipping zsync file generation and upload"
