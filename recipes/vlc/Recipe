@@ -68,7 +68,7 @@ cd ..
 wget https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
 chmod a+x ./AppImageAssistant
 
-VERSION=$(./$APP.AppDir/AppRun --version | head -n 1 | cut -d "(" -f 3 | cut -d ")" -f 1 | sed -e 's/-/./g')
+VERSION=$(./$APP.AppDir/AppRun --version 2>&1 3>&1 4>&1 | head -n 1 | cut -d "(" -f 3 | cut -d ")" -f 1 | sed -e 's/-/./g')
 echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
