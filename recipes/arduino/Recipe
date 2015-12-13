@@ -4,13 +4,13 @@ set +e
 
 URL="http://downloads.arduino.cc/arduino-nightly-linux64.tar.xz"
 APP=Arduino
-mkdir -p ./$APP/$APP.AppDir
+mkdir -p ./$APP
 cd ./$APP
 
 wget -c "$URL"
 
 tar xf *.tar.xz
-mv ardu*/* $APP.AppDir
+mv ardu*/ $APP.AppDir
 
 cd $APP.AppDir/
 
@@ -19,17 +19,29 @@ cp lib/arduino_small.png arduino.png
 sed -i -e 's|FULL_PATH/||g' arduino.desktop
 
 # Move icons into place so that AppImageAssistant finds them
-mkdir -p usr/share
-mv lib/icons usr/share/
+mkdir -p usr/share/icons/
+mv lib/icons/ usr/share/icons/hicolor
+cat usr/share/icons/hicolor/96x96/apps/arduino.png > arduino.png
 
+# Get appdata - why is it missing in the binary distribution?
+mkdir -p usr/share/appdata/
+rm usr/share/appdata/arduino.appdata.xml || true
+wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/appdata/arduino.appdata.xml
+
+# Get desktop file
+mv lib/desktop.template arduino.desktop
+sed -i -e 's/<BINARY_LOCATION>/AppRun/g' arduino.desktop
+sed -i -e 's/<ICON_NAME>/arduino/g' arduino.desktop
 cd ..
 
 # Figure out $VERSION
 VER=$(grep -r ARDUINO $APP.AppDir/revisions.txt | head -n 1 | cut -d " " -f 2)
 HOUR=$(cat $APP.AppDir/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' | sed -e 's|:||g')
-VERSION=$VER"_"$HOUR
+VERSION=$VER"."$HOUR
 echo $VERSION
 
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # (64-bit)
 chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
 ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
