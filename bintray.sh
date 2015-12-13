@@ -135,6 +135,15 @@ echo ""
 echo "Uploading and publishing ${FILE}..."
 ${CURL} -T ${FILE} "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
 
+if [ $(which zsyncmake) ] ; then
+  echo ""
+  echo "Uploading and publishing zsync file for ${FILE}..."
+  zsyncmake -u $(basename ${FILE}) ${FILE}
+  ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
+else
+  echo "zsyncmake not found, skipping zsync file generation and upload"
+fi
+
 if [ $(env | grep TRAVIS_JOB_ID ) ] ; then
 echo ""
 echo "Adding Travis CI log to release notes..."
