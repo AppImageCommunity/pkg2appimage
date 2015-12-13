@@ -333,6 +333,14 @@ mkdir usr/lib/python2.6
 cp -rf /usr/lib64/python2.6/* usr/lib/python2.6/ || true
 cp -rf /usr/lib32/python2.6/* usr/lib/python2.6/ || true
 
+# Workaround for:
+# D-Bus library appears to be incorrectly set up;
+# failed to read machine uuid: Failed to open
+# The file is more commonly in /etc/machine-id
+# sed -i -e 's|/var/lib/dbus/machine-id|//././././etc/machine-id|g' ./usr/lib/libdbus-1.so.3
+# or
+rm -f ./usr/lib/libdbus-1.so.3 || true
+
 cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
 cp ./usr/share/scribus/icons/1_5_0/scribus.png .
