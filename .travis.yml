@@ -18,5 +18,5 @@ script:
 #- sed -i -e 's|sudo ||g' ./out/Recipe # For subsurface recipe
 #- docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
 #- ls -lh out/*.AppImage
-- travis.sh $RECIPE
+- bash travis.sh $RECIPE
 - find out/ -name "*.AppImage" -exec bash bintray.sh {} \; 
