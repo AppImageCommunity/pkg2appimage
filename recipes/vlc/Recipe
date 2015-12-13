@@ -81,6 +81,9 @@ fi
 mkdir -p ../out/
 ./AppImageAssistant ./$APP.AppDir ../out/$APPIMAGE
 
+# Test what we have produced and watch its verbose output
+../out/$APPIMAGE -vv --version
+
 exit 0
 
 ================================================
