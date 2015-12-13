@@ -51,13 +51,6 @@ else
 fi
 
 DESCRIPTION=$(bsdtar -f "${FILE}" -O -x ./"${DESKTOP}" | grep -e "^Comment=" | sed s/Comment=//g)
-if [ "$DESCRIPTION" == "" ] ; then
-  bsdtar -f "${FILE}" -O -x ./"${DESKTOP}"
-  echo "DESCRIPTION missing in ${DESKTOP}, exiting"
-  exit 1
-else
-  echo "* DESCRIPTION $DESCRIPTION"
-fi
 
 ICONNAME=$(bsdtar -f "${FILE}" -O -x "${DESKTOP}" | grep -e "^Icon=" | sed s/Icon=//g)
 
@@ -94,6 +87,13 @@ if [ "$APPDATA" == "" ] ; then
 else
   echo "* APPDATA found"
   DESCRIPTION=$(echo $APPDATA | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g' | xargs)
+fi
+
+if [ "$DESCRIPTION" == "" ] ; then
+  bsdtar -f "${FILE}" -O -x ./"${DESKTOP}"
+  echo "DESCRIPTION missing and no Comment= in ${DESKTOP}, exiting"
+  exit 1
+else
   echo "* DESCRIPTION $DESCRIPTION"
 fi
 
