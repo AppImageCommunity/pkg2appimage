@@ -41,7 +41,7 @@ DESKTOP=$(bsdtar -tf "${FILE}" | grep ^./[^/]*.desktop$ | head -n 1)
 
 echo "* DESKTOP $DESKTOP"
 
-PCK_NAME=$(bsdtar -f "${FILE}" -O -x ./"${DESKTOP}" | grep -e "^Name=" | sed s/Name=//g | cut -d " " -f 1 | xargs)
+PCK_NAME=$(bsdtar -f "${FILE}" -O -x ./"${DESKTOP}" | grep -e "^Name=" | head -n 1 | sed s/Name=//g | cut -d " " -f 1 | xargs)
 if [ "$PCK_NAME" == "" ] ; then
   bsdtar -f "${FILE}" -O -x ./"${DESKTOP}"
   echo "PCK_NAME missing in ${DESKTOP}, exiting"
