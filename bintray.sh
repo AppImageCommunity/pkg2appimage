@@ -47,7 +47,7 @@ if [ "$PCK_NAME" == "" ] ; then
   echo "PCK_NAME missing in ${DESKTOP}, exiting"
   exit 1
 else
-  echo "* PKG_NAME $PCK_NAME"
+  echo "* PCK_NAME $PCK_NAME"
 fi
 
 DESCRIPTION=$(bsdtar -f "${FILE}" -O -x ./"${DESKTOP}" | grep -e "^Comment=" | sed s/Comment=//g)
