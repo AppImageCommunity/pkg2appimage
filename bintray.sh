@@ -36,12 +36,12 @@ fi
 CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Content-Type:application/json -H Accept:application/json"
 
 # Get metadata from the desktop file inside the AppImage
-DESKTOP=$(bsdtar -tf "${FILE}" | grep .desktop$ | head -n 1)
+DESKTOP=$(bsdtar -tf "${FILE}" | grep ^./[^/]*.desktop$ | head -n 1)
 # Extract the description from the desktop file
 
 echo "* DESKTOP $DESKTOP"
 
-PCK_NAME=$(bsdtar -f "${FILE}" -O -x ./"${DESKTOP}" | grep -e "^Name=" | sed s/Name=//g)
+PCK_NAME=$(bsdtar -f "${FILE}" -O -x ./"${DESKTOP}" | grep -e "^Name=" | sed s/Name=//g | cut -d " " -f 1 | xargs)
 if [ "$PCK_NAME" == "" ] ; then
   bsdtar -f "${FILE}" -O -x ./"${DESKTOP}"
   echo "PCK_NAME missing in ${DESKTOP}, exiting"
