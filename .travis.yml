@@ -4,15 +4,16 @@ addons:
     packages:
     - bsdtar
     - curl
+    - zsync
 services:
 - docker
 
 env:
 #  - RECIPE=scribus
-#  - RECIPE=subsurface
+  - RECIPE=subsurface
 #  - RECIPE=firefox
 #  - RECIPE=arduino
-  - RECIPE=libreoffice
+#  - RECIPE=libreoffice
 #  - RECIPE=vlc
 
 script:
