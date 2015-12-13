@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # A "hello world" recipe
+# This is just a proof-of-concept, in reality you should use a proper "recipe" script 
+# to create proper AppDirs in order to ensure binary compatibility of your AppImages. 
+# See the documentation and the other recipes for details and for examples on how to 
+# bundle real-world software such as LibreOffice, Google Chrome, and others as AppImages.
 
 export APP=leafpad
 
