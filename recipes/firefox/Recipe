@@ -1,0 +1,41 @@
+#!/bin/bash -x
+
+set +e
+
+mkdir -p ./Firefox/Firefox.AppDir
+cd ./Firefox
+
+wget -c --trust-server-names "https://download.mozilla.org/?product=firefox-latest&os=linux64"
+VERSION=$(ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
+
+cd ./Firefox.AppDir
+tar xfj ../*.tar.bz2
+
+mkdir usr
+mv firefox usr/bin
+
+find . -name default48.png -exec mv \{\} firefox.png \;
+
+cat > firefox.desktop <<EOF
+[Desktop Entry]
+Name=Firefox
+Icon=firefox
+Exec=firefox %u
+Categories=GNOME;GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+StartupNotify=true
+EOF
+
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+"$HERE"/usr/bin/firefox $@
+EOF
+chmod a+x AppRun
+
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # 64-bit
+
+chmod a+x ./AppImageAssistant
+./AppImageAssistant ./Firefox.AppDir/ Firefox_$VERSION.AppImage
