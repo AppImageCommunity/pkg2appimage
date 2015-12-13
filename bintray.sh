@@ -135,6 +135,11 @@ echo ""
 echo "Uploading and publishing ${FILE}..."
 ${CURL} -T ${FILE} "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
 
+# Workaround for as long as zsync is not available on Travis
+wget -c https://github.com/probonopd/AppImages/releases/download/1/zsyncmake
+chmod a+x zsyncmake
+export PATH=./:$PATH
+
 if [ $(which zsyncmake) ] ; then
   echo ""
   echo "Uploading and publishing zsync file for ${FILE}..."
