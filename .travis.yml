@@ -11,7 +11,8 @@ env:
 #  - RECIPE=scribus
 #  - RECIPE=subsurface
 #  - RECIPE=firefox
-  - RECIPE=arduino
+#  - RECIPE=arduino
+  - RECIPE=libreoffice
 
 script:
 - bash travis.sh $RECIPE
