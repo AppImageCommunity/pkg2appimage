@@ -9,13 +9,13 @@ services:
 - docker
 
 env:
-#  - RECIPE=scribus
+  - RECIPE=scribus
 #  - RECIPE=subsurface
 #  - RECIPE=firefox
 #  - RECIPE=arduino
 #  - RECIPE=libreoffice
 #  - RECIPE=vlc
-  - RECIPE=leafpad
+#  - RECIPE=leafpad
   
 script:
 - bash travis.sh $RECIPE
