@@ -8,9 +8,10 @@ services:
 - docker
 
 env:
-  - RECIPE=scribus
-  - RECIPE=subsurface
-  - RECIPE=firefox
+#  - RECIPE=scribus
+#  - RECIPE=subsurface
+#  - RECIPE=firefox
+  - RECIPE=arduino
 
 script:
 - bash travis.sh $RECIPE
