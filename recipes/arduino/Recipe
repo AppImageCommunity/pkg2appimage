@@ -18,6 +18,10 @@ mv arduino AppRun
 cp lib/arduino_small.png arduino.png
 sed -i -e 's|FULL_PATH/||g' arduino.desktop
 
+# Move icons into place so that AppImageAssistant finds them
+mkdir -p usr/share
+mv lib/icons usr/share/
+
 cd ..
 
 # Figure out $VERSION
