@@ -1,1 +1,70 @@
-# TO be written
+#!/bin/bash
+
+# Currently broken as it insists on a writeable profile
+
+# Check torproject.org website for latest version
+VERSION=$(wget -q https://www.torproject.org/download/download.html.en -O - | grep " - Linux, BSD, and Unix" | xargs | cut -d " " -f 2)
+
+if [[ "x$ARCH" == "x" ]] ; then
+  ARCH="x86_64"
+fi
+
+APP=torbrowser
+
+mkdir -p $APP/$APP.AppDir
+
+cd $APP
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+  wget -c "https://www.torproject.org/dist/torbrowser/${VERSION}/tor-browser-linux64-${VERSION}_en-US.tar.xz"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+  wget -c "https://www.torproject.org/dist/torbrowser/${VERSION}/tor-browser-linux32-${VERSION}_en-US.tar.xz"
+fi
+
+cd $APP.AppDir/
+
+tar xf ../tor*xz
+
+mkdir -p usr/bin
+mv tor-browser_*/Browser/* usr/bin
+
+rm -r tor-browser_*/
+
+cat > torbrowser.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Name=TorBrowserBundle
+Comment=Tor Browser is +1 for privacy and -1 for mass surveillance
+Categories=Network;WebBrowser;Security;
+Exec=start-tor-browser
+Icon=tor-browser
+StartupWMClass=Tor Browser
+EOF
+
+cp ./usr/bin/browser/icons/mozicon128.png tor-browser.png
+
+# Workaround for:
+# You cannot run Tor Browser from a read-only file system.
+# Please copy Tor Browser to another location before trying to use it.
+sed -i -e "s|TorBrowser/Data/Browser/profile.default|\$HOME/.torbrowser|g" usr/bin/start-tor-browser
+
+#############################################################################
+# TODO: FIXME
+# Need to run this once on every client machine
+# cp -r usr/bin/TorBrowser/Data/Browser/profile.default $HOME/.torbrowser
+# seems NOT sufficient
+#############################################################################
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+mkdir -p ../out/
+./AppImageAssistant ./$APP.AppDir ../out/$APPIMAGE
+
+# Test what we have produced and watch its verbose output
+../out/$APPIMAGE -vv --version
