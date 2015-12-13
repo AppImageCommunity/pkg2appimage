@@ -28,6 +28,9 @@ cd ..
 
 VERSION=$(echo $URL | cut -d "_" -f 2 | cut -d "-" -f 1 | head -n 1 | xargs)
 
+wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+chmod a+x AppImageAssistant
+
 mkdir -p ../out
 rm ../out/Leafpad-$VERSION-x86_64.AppImage || true
 ./AppImageAssistant $APP.AppDir ../out/Leafpad-$VERSION-x86_64.AppImage
