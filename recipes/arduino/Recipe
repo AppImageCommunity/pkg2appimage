@@ -2,10 +2,6 @@
 
 set +e
 
-# Install dependencies
-sudo apt-get update
-sudo apt-get -y install python-requests xorriso # TODO: Replace with something that does not need sudo
-
 URL="http://downloads.arduino.cc/arduino-nightly-linux64.tar.xz"
 APP=Arduino
 mkdir -p ./$APP/$APP.AppDir
@@ -13,7 +9,7 @@ cd ./$APP
 
 wget -c "$URL"
 
-tar xfv *.tar.xz
+tar xf *.tar.xz
 mv ardu*/* $APP.AppDir
 
 cd $APP.AppDir/
@@ -30,16 +26,6 @@ HOUR=$(cat $APP.AppDir/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' |
 VERSION=$VER"_"$HOUR
 echo $VERSION
 
-# (64-bit)
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/1/AppImageAssistant"
-
-xorriso -indev ./AppImageAssistant* -osirrox on -extract / ./AppImageAssistant.AppDir
-./AppImageAssistant.AppDir/package ./$APP.AppDir/ $APP"_"$VERSION".AppImage"
-
-ls -lh ./$APP"_"$VERSION".AppImage"
-
-# Upload
-cd ..
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/travis2github.py
-wget https://raw.githubusercontent.com/probonopd/travis2github/master/magic.py
-python travis2github.py $APP"_"$VERSION".AppImage"
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
