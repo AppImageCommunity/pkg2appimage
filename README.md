@@ -9,7 +9,7 @@
  
 This repository contains some recipes to generate __AppImages__ (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). See the [Bintray page](https://bintray.com/probono/AppImages) tab for downloads of the generated AppImages.
 
-__Recipes__, are the scripts used to create the AppImages, and __Dockerfiles__ are used to create [Docker images on Docker Hub](https://hub.docker.com/r/probonopd/appimages/) (think of them as glorified `chroot` environments) in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages are uploaded to a Bintray repository and can run on most modern desktop Linux distributions.
+__Recipes__ are the scripts used to create the AppImages, and __Dockerfiles__ are used to build [Docker images on Docker Hub](https://hub.docker.com/r/probonopd/appimages/) (think of them as glorified `chroot` environments) in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the Dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages are uploaded to a Bintray repository and can run on most modern desktop Linux distributions.
 
 This repository is intended to showcase the [AppImage](http://appimage.org) format and [AppImageKit](https://github.com/probonopd/AppImageKit) software used to create AppImages. Upstream projects are encouraged to use this showcase to produce their own __upstream packaging__ AppImages, as some projects (like [Subsurface](https://subsurface-divelog.org) already do).
 
