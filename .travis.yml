@@ -6,15 +6,17 @@ services:
 env:
   - RECIPE=scribus
   - RECIPE=subsurface
+  - RECIPE=firefox
   
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install bsdtar curl -qq
 
 script:
-- mkdir -p ./out/
-- wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/$RECIPE/Recipe -O ./out/Recipe
-- sed -i -e 's|sudo ||g' ./out/Recipe # For subsurface recipe
-- docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
-- ls -lh out/*.AppImage
+#- mkdir -p ./out/
+#- wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/$RECIPE/Recipe -O ./out/Recipe
+#- sed -i -e 's|sudo ||g' ./out/Recipe # For subsurface recipe
+#- docker run -i -v ${PWD}/out:/out probonopd/appimages:$RECIPE /bin/bash -ex /out/Recipe
+#- ls -lh out/*.AppImage
+- travis.sh $RECIPE
 - find out/ -name "*.AppImage" -exec bash bintray.sh {} \; 
