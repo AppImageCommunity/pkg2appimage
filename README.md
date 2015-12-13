@@ -4,6 +4,7 @@
 |--:|---|
 | Arduino | [![Download](https://api.bintray.com/packages/probono/AppImages/Arduino/images/download.svg)](https://bintray.com/probono/AppImages/Arduino/_latestVersion)  |
 | Firefox | [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion)  |
+| LibreOffice | [![Download](https://api.bintray.com/packages/probono/AppImages/LibreOffice/images/download.svg)](https://bintray.com/probono/AppImages/LibreOffice/_latestVersion)  |
 | Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion)  |
 | Subsurface | [![Download](https://api.bintray.com/packages/probono/AppImages/subsurface/images/download.svg)](https://bintray.com/probono/AppImages/subsurface/_latestVersion) |
  
