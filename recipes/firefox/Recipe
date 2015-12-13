@@ -18,7 +18,7 @@ tar xfj ../*.tar.bz2
 mkdir usr
 mv firefox usr/bin
 
-find . -name default48.png -exec mv \{\} firefox.png \;
+find . -name mozicon128.png -exec cp \{\} firefox.png \;
 
 cat > firefox.desktop <<EOF
 [Desktop Entry]
