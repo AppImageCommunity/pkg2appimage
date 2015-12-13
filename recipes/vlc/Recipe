@@ -88,6 +88,9 @@ exit 0
 
 ================================================
 
+# Run like this with -vv to see the plugins load and miss their dependencies
+Downloads/vlc-2.2.1.0.ga425c42-x86_64.AppImage -vv 2>&1 | grep cannot | cut -d "(" -f 2 | cut -d ":" -f 1 | sort | uniq
+ 
 # FIXME
 # On Ubuntu 12.04.5 LTS:
 
