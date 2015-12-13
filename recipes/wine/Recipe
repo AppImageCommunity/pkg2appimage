@@ -1,0 +1,10 @@
+# To be written
+# See http://www.wine-staging.com/news/2015-12-11-packaging-changes.html
+# "Not all distros can afford to update a single package every two weeks. 
+# As a result, they often only provide packages for the stable branch 
+# or ship an outdated version of the development branch. 
+# To solve this problem, there was the decision at WineConf 2015 that 
+# WineHQ should provide packages for popular distributions." (...)
+# "The support for CentOS has been dropped, we do not longer provide 
+# packages for this distribution. CentOS 6 often provides packages that 
+# are too outdated to support all features of Wine Staging"
