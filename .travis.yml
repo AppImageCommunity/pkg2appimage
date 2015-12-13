@@ -1,16 +1,16 @@
-sudo: required
+sudo: false
+addons:
+  apt:
+    packages:
+    - bsdtar
+    - curl
 services:
 - docker
-- notifications: false
 
 env:
   - RECIPE=scribus
   - RECIPE=subsurface
   - RECIPE=firefox
-  
-before_install:
-- sudo apt-get update -qq
-- sudo apt-get install bsdtar curl -qq
 
 script:
 #- mkdir -p ./out/
