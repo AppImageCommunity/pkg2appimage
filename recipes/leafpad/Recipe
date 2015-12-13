@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# A "hello world" recipe
+
+export APP=leafpad
+
+mkdir -p $APP/$APP.AppDir
+cd $APP
+
+# Note we are using a really old binary so that it runs hopefully everywhere
+# ALso note this is a very simplistic example as we assume this package has no dependencies
+# that are not part of the base system - unlike most other packages
+URL=http://ftp.rz.tu-bs.de/pub/mirror/ubuntu-packages/pool/universe/l/leafpad/leafpad_0.8.17-2_amd64.deb
+wget -c "${URL}"
+
+cd $APP.AppDir
+dpkg -x ../$APP_*.deb .
+
+# Copy icon and desktop file in place
+cp ./usr/share/icons/hicolor/scalable/apps/$APP.svg .
+cp ./usr/share/applications/$APP.desktop .
+
+# Put in AppRun file
+wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+chmod a+x AppRun
+
+cd ..
+
+VERSION=$(echo $URL | cut -d "_" -f 2 | cut -d "-" -f 1 | head -n 1 | xargs)
+
+mkdir -p ../out
+rm ../out/Leafpad-$VERSION-x86_64.AppImage || true
+./AppImageAssistant $APP.AppDir ../out/Leafpad-$VERSION-x86_64.AppImage
