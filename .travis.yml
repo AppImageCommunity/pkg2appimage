@@ -15,8 +15,9 @@ env:
 #  - RECIPE=arduino
 #  - RECIPE=libreoffice
 #  - RECIPE=vlc
-  - RECIPE=leafpad
-  
+#  - RECIPE=leafpad
+   - RECIPE=chromium
+
 script:
 - bash travis.sh $RECIPE
 - find out/ -name "*.AppImage" -exec bash bintray.sh {} \; 
