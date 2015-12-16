@@ -150,8 +150,8 @@ if [ $(which zsyncmake) ] ; then
   dd if=/dev/zero of="${FILE}" bs=1 seek=33651 count=512 conv=notrunc
   # Example for next line: Subsurface-_latestVersion-x86_64.AppImage
   NAMELATESTVERSION=$(echo $(basename ${FILE}) | sed -e "s|${VERSION}|_latestVersion|g")
-  # Example for next line: bintray-zsync|https://bintray.com/probono/AppImages/Subsurface/_latestVersion|https://bintray.com/artifact/download/probono/AppImages/Subsurface-_latestVersion-x86_64.AppImage.zsync
-  LINE="bintray-zsync|https://bintray.com/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/_latestVersion|https://bintray.com/artifact/download/${BINTRAY_USER}/${BINTRAY_REPO}/${NAMELATESTVERSION}.zsync"
+  # Example for next line: bintray-zsync|probono|AppImages|Subsurface|Subsurface-_latestVersion-x86_64.AppImage.zsync
+  LINE="bintray-zsync|${BINTRAY_USER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
   echo "${LINE}" | dd of="${FILE}" bs=1 seek=33651 count=512 conv=notrunc
 else
   echo "zsyncmake not found, skipping zsync file generation and upload"
