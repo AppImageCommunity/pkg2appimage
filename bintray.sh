@@ -138,12 +138,6 @@ export PATH=./:$PATH
 
 if [ $(which zsyncmake) ] ; then
   echo ""
-  echo "Uploading and publishing zsync file for ${FILE}..."
-  # Workaround for:
-  # https://github.com/probonopd/zsync-curl/issues/1
-  zsyncmake -u http://dl.bintray.com/probono/AppImages/$(basename ${FILE}) ${FILE} -o ${FILE}.zsync
-  ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
-  echo ""
   echo "Embedding update information into ${FILE}..."
   # Clear ISO 9660 Volume Descriptor #1 field "Application Used" 
   # (contents not defined by ISO 9660) and write URL there
@@ -153,6 +147,12 @@ if [ $(which zsyncmake) ] ; then
   # Example for next line: bintray-zsync|probono|AppImages|Subsurface|Subsurface-_latestVersion-x86_64.AppImage.zsync
   LINE="bintray-zsync|${BINTRAY_USER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
   echo "${LINE}" | dd of="${FILE}" bs=1 seek=33651 count=512 conv=notrunc
+  echo ""
+  echo "Uploading and publishing zsync file for ${FILE}..."
+  # Workaround for:
+  # https://github.com/probonopd/zsync-curl/issues/1
+  zsyncmake -u http://dl.bintray.com/probono/AppImages/$(basename ${FILE}) ${FILE} -o ${FILE}.zsync
+  ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
 else
   echo "zsyncmake not found, skipping zsync file generation and upload"
 fi
