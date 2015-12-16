@@ -164,6 +164,9 @@ bash -ex ./subsurface/scripts/build.sh
 ( cd subsurface/build ; make install )
 
 cp ./subsurface/subsurface.desktop $APP.AppDir/
+# Workaround for:
+# https://github.com/torvalds/subsurface/pull/124
+sed -i -e 's|Name=subsurface|Name=Subsurface|g' $APP.AppDir/subsurface.desktop
 cp ./subsurface/icons/subsurface-icon.svg $APP.AppDir/
 
 # Bundle dependency libraries into the AppDir
