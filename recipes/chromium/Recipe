@@ -10,6 +10,7 @@ mkdir -p chromium/chromium.AppDir
 cd chromium/
 wget -c --trust-server-names "https://download-chromium.appspot.com/dl/Linux_x64?type=continuous"
 wget -c --trust-server-names http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_151-12.3_amd64.deb
+wget -c --trust-server-names http://ftp.us.debian.org/debian/pool/main/libx/libxss/libxss1_1.2.0-2_amd64.deb
 
 cd chromium.AppDir/
 
