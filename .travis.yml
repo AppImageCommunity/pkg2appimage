@@ -11,12 +11,12 @@ services:
 env:
 #  - RECIPE=scribus
 #  - RECIPE=subsurface
-#  - RECIPE=firefox
+  - RECIPE=firefox
 #  - RECIPE=arduino
 #  - RECIPE=libreoffice
 #  - RECIPE=vlc
 #  - RECIPE=leafpad
-   - RECIPE=chromium
+#  - RECIPE=chromium
 
 script:
 - bash travis.sh $RECIPE
