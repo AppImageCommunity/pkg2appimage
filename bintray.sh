@@ -131,10 +131,6 @@ echo "Creating package ${PCK_NAME}..."
     }"
 ${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}
 
-echo ""
-echo "Uploading and publishing ${FILE}..."
-${CURL} -T ${FILE} "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
-
 # Workaround for as long as zsync is not available on Travis
 wget -c https://github.com/probonopd/AppImages/releases/download/1/zsyncmake
 chmod a+x zsyncmake
@@ -147,9 +143,23 @@ if [ $(which zsyncmake) ] ; then
   # https://github.com/probonopd/zsync-curl/issues/1
   zsyncmake -u http://dl.bintray.com/probono/AppImages/$(basename ${FILE}) ${FILE} -o ${FILE}.zsync
   ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
+  echo ""
+  echo "Embedding update information into ${FILE}..."
+  # Clear ISO 9660 Volume Descriptor #1 field "Application Used" 
+  # (contents not defined by ISO 9660) and write URL there
+  dd if=/dev/zero of="${FILE}" bs=1 seek=33651 count=512 conv=notrunc
+  # Example for next line: Subsurface-_latestVersion-x86_64.AppImage
+  NAMELATESTVERSION=$(echo $(basename ${FILE}) | sed -e "s|${VERSION}|_latestVersion|g")
+  # Example for next line: bintray-zsync|https://bintray.com/probono/AppImages/Subsurface/_latestVersion|https://bintray.com/artifact/download/probono/AppImages/Subsurface-_latestVersion-x86_64.AppImage.zsync
+  LINE="bintray-zsync|https://bintray.com/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/_latestVersion|https://bintray.com/artifact/download/${BINTRAY_USER}/${BINTRAY_REPO}/${NAMELATESTVERSION}.zsync"
+  echo "${LINE}" | dd of="${FILE}" bs=1 seek=33651 count=512 conv=notrunc
 else
   echo "zsyncmake not found, skipping zsync file generation and upload"
 fi
+
+echo ""
+echo "Uploading and publishing ${FILE}..."
+${CURL} -T ${FILE} "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
 
 if [ $(env | grep TRAVIS_JOB_ID ) ] ; then
 echo ""
