@@ -6,7 +6,7 @@
 | Firefox | [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion)  |
 | LibreOffice | [![Download](https://api.bintray.com/packages/probono/AppImages/LibreOffice/images/download.svg)](https://bintray.com/probono/AppImages/LibreOffice/_latestVersion)  |
 | Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion)  |
-| Subsurface | [![Download](https://api.bintray.com/packages/probono/AppImages/subsurface/images/download.svg)](https://bintray.com/probono/AppImages/subsurface/_latestVersion) |
+| Subsurface | [![Download](https://api.bintray.com/packages/probono/AppImages/Subsurface/images/download.svg)](https://bintray.com/probono/AppImages/Subsurface/_latestVersion) |
  
 This repository contains some recipes to generate __AppImages__ (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). See the [Bintray page](https://bintray.com/probono/AppImages) tab for downloads of the generated AppImages.
 
