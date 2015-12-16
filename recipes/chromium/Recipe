@@ -1,0 +1,56 @@
+#!/bin/bash -x
+
+# https://download-chromium.appspot.com/
+# This is a raw build of Chromium for Linux x64, right off the trunk. It may be tremendously buggy.
+# Hence we take the "Last Known Good Revision".
+
+set +e
+
+mkdir -p chromium/chromium.AppDir
+cd chromium/
+wget -c --trust-server-names "https://download-chromium.appspot.com/dl/Linux_x64?type=continuous"
+wget -c --trust-server-names http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_151-12.3_amd64.deb
+
+cd chromium.AppDir/
+
+unzip ../chrome-linux.zip
+find ../ -name *.deb -exec dpkg -x \{\} . \;
+mv lib/ usr/lib
+
+find -name product_logo_48.png -exec cp \{\} chromium.png \;
+
+mkdir -p usr/bin
+cd usr/bin
+ln -s ../../chrome-linux/chrome-wrapper chrome
+
+cd -
+
+cat > ./AppRun <<\EOF
+#!/bin/sh
+HERE=$(dirname $(readlink -f "${0}"))
+export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+"${HERE}"/usr/bin/chrome --no-sandbox $@
+EOF
+
+chmod a+x ./AppRun
+
+find . -type f -executable -exec strip {} \;
+
+cat > ./chromium.desktop <<\EOF
+[Desktop Entry]
+Name=Chromium
+Icon=chromium
+Exec=chromium %u
+Categories=Network;WebBrowser;
+StartupNotify=true
+EOF
+
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # 64-bit
+chmod a+x ./AppImageAssistant
+
+mkdir -p ./out/
+rm -f ../out/Chromium-*.AppImage || true
+
+./AppImageAssistant ./chromium.AppDir/ ../out/Chromium-$VERSION-x86_64.AppImage
