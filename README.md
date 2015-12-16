@@ -3,6 +3,7 @@
 | Application |  |
 |--:|---|
 | Arduino | [![Download](https://api.bintray.com/packages/probono/AppImages/Arduino/images/download.svg)](https://bintray.com/probono/AppImages/Arduino/_latestVersion)  |
+| Chromium | [![Download](https://api.bintray.com/packages/probono/AppImages/Chromium/images/download.svg)](https://bintray.com/probono/AppImages/Chromium/_latestVersion)  |
 | Firefox | [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion)  |
 | LibreOffice | [![Download](https://api.bintray.com/packages/probono/AppImages/LibreOffice/images/download.svg)](https://bintray.com/probono/AppImages/LibreOffice/_latestVersion)  |
 | Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion)  |
