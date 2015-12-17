@@ -3,6 +3,8 @@
 # Push AppImages and related metadata to Bintray
 # https://bintray.com/docs/api/
 
+set -e
+
 API=https://api.bintray.com
 FILE=$1
 
