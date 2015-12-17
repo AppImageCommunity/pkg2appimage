@@ -20,5 +20,4 @@ env:
 
 script:
 - bash travis.sh $RECIPE
-- find out/ -name "*.AppImage" -exec bash appimage-lint.sh {} \; 
-- find out/ -name "*.AppImage" -exec bash bintray.sh {} \; 
+- find out/ -name "*.AppImage" -exec bash -ex bintray.sh {} \; 
