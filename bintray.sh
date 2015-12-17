@@ -81,9 +81,9 @@ if [ ! "$ICONFILE" == "" ] ; then
 fi
 
 # Check if there is appstream data and use it
-APPDATANAME=$(echo ${DESKTOP} | sed 's/.desktop/.appdata.xml/g' )
-APPDATAFILE=$(bsdtar -tf "${FILE}" | grep ${APPDATANAME}$ | head -n 1)
-APPDATA=$(bsdtar -f "${FILE}" -O -x "${APPDATAFILE}")
+APPDATANAME=$(echo ${DESKTOP} | sed 's/.desktop/.appdata.xml/g' | sed 's|./||'  )
+APPDATAFILE=$(bsdtar -tf "${FILE}" | grep ${APPDATANAME}$ | head -n 1 || true)
+APPDATA=$(bsdtar -f "${FILE}" -O -x "${APPDATAFILE}" || true)
 if [ "$APPDATA" == "" ] ; then
   echo "* APPDATA missing"
 else
