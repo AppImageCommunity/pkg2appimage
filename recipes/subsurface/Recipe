@@ -331,4 +331,5 @@ rm -f ../out/*.AppImage || true
 rm -rf $APPIMAGE
 ../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
 
+chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
 ls -lh ../out/$APPIMAGE
