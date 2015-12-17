@@ -10,8 +10,8 @@ services:
 
 env:
 #  - RECIPE=scribus
-#  - RECIPE=subsurface
-  - RECIPE=firefox
+  - RECIPE=subsurface
+#  - RECIPE=firefox
 #  - RECIPE=arduino
 #  - RECIPE=libreoffice
 #  - RECIPE=vlc
