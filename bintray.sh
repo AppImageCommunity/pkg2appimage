@@ -133,11 +133,6 @@ echo "Creating package ${PCK_NAME}..."
     }"
 ${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}
 
-# Workaround for as long as zsync is not available on Travis
-wget -c https://github.com/probonopd/AppImages/releases/download/1/zsyncmake
-chmod a+x zsyncmake
-export PATH=./:$PATH
-
 if [ $(which zsyncmake) ] ; then
   echo ""
   echo "Embedding update information into ${FILE}..."
