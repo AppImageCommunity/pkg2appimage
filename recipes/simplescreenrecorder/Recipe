@@ -1,0 +1,38 @@
+# Now we are inside CentOS 6
+grep -r "CentOS release 6" /etc/redhat-release || exit 1
+
+git_pull_rebase_helper()
+{
+	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
+	if [ "x$GITCLEAN" != "x" ] ; then
+		git stash save
+		git pull --rebase
+		git stash pop
+	else
+		git pull --rebase
+	fi
+}
+
+# Some packages (e.g. ffmpeg) are not in the official repository, but can be installed from the rpmfusion repository
+
+yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/i386/rpmfusion-free-release-6-1.noarch.rpm http://download1.rpmfusion.org/nonfree/el/updates/6/i386/rpmfusion-nonfree-release-6-1.noarch.rpm
+
+sudo yum -y install ffmpeg-devel qt4-devel alsa-lib-devel pulseaudio-libs-devel jack-audio-connection-kit-devel \
+gcc make gcc-c++ glibc-devel.i686 libgcc.i686 libX11-devel libX11-devel.i686 libXext-devel libXext-devel.i686 \
+libXfixes-devel libXfixes-devel.i686 mesa-libGL-devel mesa-libGL-devel.i686 mesa-libGLU-devel mesa-libGLU-devel.i686 mesa-libGLU-devel.x86_64
+
+git clone https://github.com/MaartenBaert/ssr.git
+
+if [ ! -d ssr ] ; then
+  git clone https://github.com/MaartenBaert/ssr.git
+fi
+cd ssr/
+git_pull_rebase_helper
+
+sed -i -e 's/root/xroot/g' simple-build-and-install 
+
+./simple-build-and-install
+
+# checking for QT4... no
+# configure: error: Qt4 not found
+# http://www.maartenbaert.be/recentcomments.php#comment_962
