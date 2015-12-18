@@ -13,6 +13,12 @@ git_pull_rebase_helper()
 	fi
 }
 
+# Workaround for:
+# checking for QT4... no
+# configure: error: Qt4 not found
+# We need at least Qt 4.8, hence we get it from kde.repo
+wget http://kdeforge.unl.edu/apt/kde-redhat/epel/kde.repo -O /etc/yum.repos.d/kde.repo
+
 # Some packages (e.g. ffmpeg) are not in the official repository, but can be installed from the rpmfusion repository
 
 yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/i386/rpmfusion-free-release-6-1.noarch.rpm http://download1.rpmfusion.org/nonfree/el/updates/6/i386/rpmfusion-nonfree-release-6-1.noarch.rpm
@@ -29,10 +35,14 @@ fi
 cd ssr/
 git_pull_rebase_helper
 
+# We build as root
 sed -i -e 's/root/xroot/g' simple-build-and-install 
+
+# Workaround for:
+# Global.h:50: error: variable or field 'atomic_thread_fence_replacement' declared void
+# We need at least GCC 4.4 for atomic support, hence we use devtoolset-2
+. /opt/rh/devtoolset-2/enable
 
 ./simple-build-and-install
 
-# checking for QT4... no
-# configure: error: Qt4 not found
-# http://www.maartenbaert.be/recentcomments.php#comment_962
+# /opt/rh/devtoolset-2/root/usr/libexec/gcc/x86_64-redhat-linux/4.8.2/ld: cannot find -lQtCore
