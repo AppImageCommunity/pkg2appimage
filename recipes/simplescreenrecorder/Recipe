@@ -3,22 +3,20 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
 git_pull_rebase_helper()
 {
-	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
-	if [ "x$GITCLEAN" != "x" ] ; then
-		git stash save
-		git pull --rebase
-		git stash pop
-	else
-		git pull --rebase
-	fi
+	git reset --hard HEAD
+        git pull
 }
+
+if [ -z "$NO_DOWNLOAD" ] ; then
 
 # Workaround for:
 # cannot find -lstdc++_nonshared
 # Force-install devtoolset-2-libstdc++-devel i686
-cd /
-wget http://people.centos.org/~tru/devtools-2/6/i386/RPMS/devtoolset-2-libstdc++-devel-4.8.2-15.el6.i686.rpm -O - | rpm2cpio | cpio -idm || true
-cd -
+if [ ! -e /opt/rh/devtoolset-2/root/usr/lib/gcc/i686-redhat-linux ] ; then
+  cd /
+  wget http://people.centos.org/~tru/devtools-2/6/i386/RPMS/devtoolset-2-libstdc++-devel-4.8.2-15.el6.i686.rpm -O - | rpm2cpio | cpio -idm
+  cd -
+fi
 
 # Workaround for:
 # checking for QT4... no
@@ -34,6 +32,16 @@ sudo yum -y install ffmpeg-devel qt4-devel alsa-lib-devel pulseaudio-libs-devel 
 gcc make gcc-c++ glibc-devel.i686 libgcc.i686 libX11-devel libX11-devel.i686 libXext-devel libXext-devel.i686 \
 libXfixes-devel libXfixes-devel.i686 mesa-libGL-devel mesa-libGL-devel.i686 mesa-libGLU-devel mesa-libGLU-devel.i686 mesa-libGLU-devel.x86_64 qt4
 
+# Workaround for:
+# Global.h:50: error: variable or field 'atomic_thread_fence_replacement' declared void
+# We need at least GCC 4.4 for atomic support, hence we use devtoolset-2
+sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
+
+fi # if [ -z "$NO_DOWNLOAD" ]
+
+. /opt/rh/devtoolset-2/enable
+
 git clone https://github.com/MaartenBaert/ssr.git
 
 if [ ! -d ssr ] ; then
@@ -45,12 +53,8 @@ git_pull_rebase_helper
 # We build as root
 sed -i -e 's/root/xroot/g' simple-build-and-install 
 
-# Workaround for:
-# Global.h:50: error: variable or field 'atomic_thread_fence_replacement' declared void
-# We need at least GCC 4.4 for atomic support, hence we use devtoolset-2
-sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
-sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
-. /opt/rh/devtoolset-2/enable
+# We want another prefix, /app
+sed -i -e 's|prefix=/usr|prefix=/app/usr|g' simple-build-and-install
 
 ./simple-build-and-install
 
@@ -62,3 +66,22 @@ sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 # Found the issue with:
 # ld -lQtCore --verbose
 # Turns out /usr/lib64/libQtCore.so was missing, as the qt4 package was not installed
+
+cd app
+
+mkdir usr/lib
+
+# Copy in the direct dependencies
+ldd usr/bin/simplescreenrecorder | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' usr/lib || true
+
+# Copy in the indirect dependencies
+FILES=$(find . -type f -executable)
+for FILE in $FILES ; do
+  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' usr/lib || true
+done
+
+cp ./usr/share/applications/simplescreenrecorder.desktop .
+cp ./usr/share/icons/hicolor/scalable/apps/simplescreenrecorder.svg .
+
+wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+chmod a+rwx AppRun
