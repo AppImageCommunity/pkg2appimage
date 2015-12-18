@@ -17,7 +17,7 @@ git_pull_rebase_helper()
 # cannot find -lstdc++_nonshared
 # Force-install devtoolset-2-libstdc++-devel i686
 cd /
-wget http://people.centos.org/~tru/devtools-2/6/i386/RPMS/devtoolset-2-libstdc++-devel-4.8.2-15.el6.i686.rpm -O - | rpm2cpio | cpio -idm
+wget http://people.centos.org/~tru/devtools-2/6/i386/RPMS/devtoolset-2-libstdc++-devel-4.8.2-15.el6.i686.rpm -O - | rpm2cpio | cpio -idm || true
 cd -
 
 # Workaround for:
