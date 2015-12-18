@@ -14,6 +14,13 @@ git_pull_rebase_helper()
 }
 
 # Workaround for:
+# cannot find -lstdc++_nonshared
+# Force-install devtoolset-2-libstdc++-devel i686
+cd /
+wget http://people.centos.org/~tru/devtools-2/6/i386/RPMS/devtoolset-2-libstdc++-devel-4.8.2-15.el6.i686.rpm -O - | rpm2cpio | cpio -idm
+cd -
+
+# Workaround for:
 # checking for QT4... no
 # configure: error: Qt4 not found
 # We need at least Qt 4.8, hence we get it from kde.repo
@@ -55,24 +62,3 @@ sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 # Found the issue with:
 # ld -lQtCore --verbose
 # Turns out /usr/lib64/libQtCore.so was missing, as the qt4 package was not installed
-
-# Workaround for:
-# cannot find -lstdc++_nonshared
-# Still missing! (FIXME)
-
-exit 1
-
-# Looks like it is picking up the 64-bit libstdc++ instead of the 32-bit one?
-
-make[2]: Entering directory `/ssr/build32/glinject'
-/bin/sh ../libtool  --tag=CXX   --mode=link g++ -m32 -pthread -fPIC -std=c++0x -Wall -O2 -pipe -pthread -fPIC -avoid-version -shared -lrt -ldl -lGL -lGLU -lX11 -lXfixes  -o libssr-glinject.la -rpath /usr/lib libssr_glinject_la-elfhacks.lo libssr_glinject_la-GLInject.lo libssr_glinject_la-GLXFrameGrabber.lo libssr_glinject_la-Hook.lo libssr_glinject_la-SSRVideoStreamWriter.lo  
-libtool: link: g++ -m32  -fPIC -DPIC -shared -nostdlib /usr/lib/../lib/crti.o /opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/32/crtbeginS.o  .libs/libssr_glinject_la-elfhacks.o .libs/libssr_glinject_la-GLInject.o .libs/libssr_glinject_la-GLXFrameGrabber.o .libs/libssr_glinject_la-Hook.o .libs/libssr_glinject_la-SSRVideoStreamWriter.o   -lrt -ldl -lGL -lGLU -lX11 -lXfixes -L/opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/32 -L/opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2 -L/opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/../../.. -lstdc++ -lm -lc -lgcc_s /opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/32/crtendS.o /usr/lib/../lib/crtn.o  -m32 -pthread -O2 -pthread   -pthread -Wl,-soname -Wl,libssr-glinject.so -o .libs/libssr-glinject.so
-/opt/rh/devtoolset-2/root/usr/libexec/gcc/x86_64-redhat-linux/4.8.2/ld: skipping incompatible /opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/libstdc++_nonshared.a when searching for -lstdc++_nonshared
-/opt/rh/devtoolset-2/root/usr/libexec/gcc/x86_64-redhat-linux/4.8.2/ld: skipping incompatible /opt/rh/devtoolset-2/root/usr/lib/gcc/x86_64-redhat-linux/4.8.2/libstdc++_nonshared.a when searching for -lstdc++_nonshared
-/opt/rh/devtoolset-2/root/usr/libexec/gcc/x86_64-redhat-linux/4.8.2/ld: cannot find -lstdc++_nonshared
-collect2: error: ld returned 1 exit status
-make[2]: *** [libssr-glinject.la] Error 1
-make[2]: Leaving directory `/ssr/build32/glinject'
-make[1]: *** [all-recursive] Error 1
-make[1]: Leaving directory `/ssr/build32'
-make: *** [all] Error 2
