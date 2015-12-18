@@ -67,7 +67,9 @@ sed -i -e 's|prefix=/usr|prefix=/app/usr|g' simple-build-and-install
 # ld -lQtCore --verbose
 # Turns out /usr/lib64/libQtCore.so was missing, as the qt4 package was not installed
 
-cd app
+VERSION=$(git describe | sed -e 's/-/./g')
+
+cd /app
 
 mkdir usr/lib
 
@@ -85,3 +87,20 @@ cp ./usr/share/icons/hicolor/scalable/apps/simplescreenrecorder.svg .
 
 wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
 chmod a+rwx AppRun
+
+cd -
+
+wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+chmod a+x AppImageAssistant 
+mkdir -p out
+
+APP=SimpleScreenRecorder
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+
+./AppImageAssistant app/ out/$APPIMAGE
