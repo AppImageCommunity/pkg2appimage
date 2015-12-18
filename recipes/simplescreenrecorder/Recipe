@@ -1,3 +1,5 @@
+# Example for a Qt4 application
+
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
@@ -104,6 +106,15 @@ rm usr/lib/libpthread.so.0
 # Workaround for:
 # relocation error: ./lib/librt.so.1: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
 rm usr/lib/librt.so.1
+
+# Workaround for:
+# Segmentation fault (core dumped)
+# Delete potentially dangerous libraries
+rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
+rm -f usr/lib/libglib-* usr/lib/libgthread-*  usr/lib/libuuid.so.1  usr/lib/libdl.so.2  || true
+
+# Do NOT delete libX* because otherwise on Ubuntu 11.04:
+# loaded library "Xcursor"
 
 if [ -z "$NO_DOWNLOAD" ] ; then
   wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
