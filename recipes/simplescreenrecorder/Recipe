@@ -41,6 +41,8 @@ sed -i -e 's/root/xroot/g' simple-build-and-install
 # Workaround for:
 # Global.h:50: error: variable or field 'atomic_thread_fence_replacement' declared void
 # We need at least GCC 4.4 for atomic support, hence we use devtoolset-2
+sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+sudo yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 . /opt/rh/devtoolset-2/enable
 
 ./simple-build-and-install
