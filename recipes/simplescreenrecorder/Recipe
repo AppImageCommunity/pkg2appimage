@@ -1,6 +1,14 @@
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
+# Determine which architecture should be built
+if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
+	ARCH=$(/bin/arch)
+else
+	echo "Architecture could not be determined"
+	exit 1
+fi
+
 git_pull_rebase_helper()
 {
 	git reset --hard HEAD
@@ -85,22 +93,40 @@ done
 cp ./usr/share/applications/simplescreenrecorder.desktop .
 cp ./usr/share/icons/hicolor/scalable/apps/simplescreenrecorder.svg .
 
-wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
-chmod a+rwx AppRun
+# Workaround for:
+# ./lib/libc.so.6: version `GLIBC_2.14' not found (required by /usr/lib64/libogg.so.0)
+rm usr/lib/libc.so.6
 
-cd -
+# Workaround for:
+# relocation error: ./lib/libpthread.so.0: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
+rm usr/lib/libpthread.so.0
 
-wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
-chmod a+x AppImageAssistant 
-mkdir -p out
+# Workaround for:
+# relocation error: ./lib/librt.so.1: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
+rm usr/lib/librt.so.1
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+  wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+  chmod a+rwx AppRun
+fi
+
+cd ..
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+  wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+  chmod a+x AppImageAssistant 
+fi # if [ -z "$NO_DOWNLOAD" ] ; then
 
 APP=SimpleScreenRecorder
 if [[ "$ARCH" = "x86_64" ]] ; then
-	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+	AI=$APP"-"$VERSION"-x86_64.AppImage"
 fi
 if [[ "$ARCH" = "i686" ]] ; then
-	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+	AI=$APP"-"$VERSION"-i386.AppImage"
 fi
 
+echo $AI
 
-./AppImageAssistant app/ out/$APPIMAGE
+rm -rf out/$AI
+mkdir -p out/ || true
+./AppImageAssistant app/ out/$AI
