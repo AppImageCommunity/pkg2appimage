@@ -88,7 +88,7 @@ if [ "$APPDATA" == "" ] ; then
   echo "* APPDATA missing"
 else
   echo "* APPDATA found"
-  DESCRIPTION=$(echo $APPDATA | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g' | xargs)
+  DESCRIPTION=$(echo $APPDATA | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g')
 fi
 
 if [ "$DESCRIPTION" == "" ] ; then
