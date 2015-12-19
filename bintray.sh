@@ -3,7 +3,7 @@
 # Push AppImages and related metadata to Bintray
 # https://bintray.com/docs/api/
 
-set -e
+trap 'exit 1' ERR
 
 API=https://api.bintray.com
 FILE=$1
