@@ -37,7 +37,7 @@ cd -
 export CC='gcc -U_FORTIFY_SOURCE -include /usr/include/libcwrap.h'
 cmake . && make clean && make $APP
 
-VERSION=$(git rev-list --count HEAD)
+VERSION=$(git rev-list --count HEAD).$(git describe --tags | cut -d - -f 3)
 
 mkdir -p ../out || true
 if [[ "$ARCH" = "x86_64" ]] ; then AI=$APP"-"$VERSION"-x86_64.AppImage"; fi
