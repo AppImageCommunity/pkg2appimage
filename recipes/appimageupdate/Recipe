@@ -20,6 +20,8 @@ git_pull_rebase_helper
 VERSION=$(git describe --tags | cut -d "-" -f 1)
 wget -c https://github.com/probonopd/zsync-curl/releases/download/_binaries/zsync_curl -O AppImageUpdate.AppDir/usr/bin/zsync_curl
 chmod a+x AppImageUpdate.AppDir/usr/bin/zsync_curl
+wget -c https://github.com/probonopd/zsync-curl/releases/download/_binaries/appimageupdategui -O AppImageUpdate.AppDir/usr/bin/appimageupdategui
+chmod a+x AppImageUpdate.AppDir/usr/bin/appimageupdategui
 cd ..
 
 if [ -z "$NO_DOWNLOAD" ] ; then
