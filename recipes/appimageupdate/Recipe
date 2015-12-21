@@ -17,7 +17,7 @@ if [ ! -d ssr ] ; then
 fi
 cd AppImageKit/
 git_pull_rebase_helper
-VERSION=$(git describe --tags | cut -d "-" -f 1)
+VERSION=$(git rev-list --count HEAD)
 wget -c https://github.com/probonopd/zsync-curl/releases/download/_binaries/zsync_curl -O AppImageUpdate.AppDir/usr/bin/zsync_curl
 chmod a+x AppImageUpdate.AppDir/usr/bin/zsync_curl
 wget -c https://github.com/probonopd/zsync-curl/releases/download/_binaries/appimageupdategui -O AppImageUpdate.AppDir/usr/bin/appimageupdategui
