@@ -59,7 +59,7 @@ mv lib*/* usr/lib/ || true
 rm -rf ./lib* || true
 
 # Copy desktop file in place
-DESKTOP=$(find . -name "$APP.desktop" | head -n 1)
+DESKTOP=$(find . -name "*$APP.desktop" | head -n 1)
 cp $DESKTOP .
 
 VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
