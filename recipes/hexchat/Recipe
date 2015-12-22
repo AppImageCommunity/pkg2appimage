@@ -1,5 +1,10 @@
 APP=hexchat
 
+if [ "$APP" == "" ] ; then
+  echo "Environment variable \$APP is missing"
+  exit 1
+fi
+
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
   ARCH=$(arch)
