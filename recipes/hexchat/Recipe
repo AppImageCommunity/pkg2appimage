@@ -1,0 +1,53 @@
+APP=hexchat
+
+yum -y install $APP
+mkdir -p /app/usr/bin /app/usr/lib /out
+cd /app/
+
+VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
+
+FILES=$(rpm -qla $APP)
+for FILE in $FILES ; do
+  if [ -f $FILE ] ; then
+    cp --parents -rf $FILE /app/
+  fi
+done
+
+# Copy in the indirect dependencies
+FILES=$(find /app -type f -executable)
+for FILE in $FILES ; do
+  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' /app/usr/lib || true
+done
+
+# TODO: Maintain a global list of files that should NOT go into the AppImages
+# along with a reason
+
+# Workaround for:
+# ./lib/libc.so.6: version `GLIBC_2.14' not found (required by /usr/lib64/libogg.so.0)
+rm usr/lib/libc.so.6
+
+# Workaround for:
+# relocation error: ./lib/libpthread.so.0: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
+rm usr/lib/libpthread.so.0
+# Workaround for:
+# relocation error: ./lib/librt.so.1: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
+rm usr/lib/librt.so.1
+
+# Workaround for:
+# Segmentation fault (core dumped)
+# Delete potentially dangerous libraries
+rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
+rm -f usr/lib/libglib-* usr/lib/libgthread-* usr/lib/libuuid.so.1 usr/lib/libdl.so.2 || true
+# Do NOT delete libX* because otherwise on Ubuntu 11.04:
+# loaded library "Xcursor"
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+  AI=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+  AI=$APP"-"$VERSION"-i386.AppImage"
+fi
+echo $AI
+rm -rf out/$AI
+mkdir -p out/ || true
+./AppImageAssistant app/ out/$AI
