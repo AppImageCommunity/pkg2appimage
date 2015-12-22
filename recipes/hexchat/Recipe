@@ -19,6 +19,10 @@ mkdir -p /app/usr/bin /app/usr/lib /out
 
 cd /app/
 
+# CentOS 6 places stuff in lib64 where AppRun doesn't find it
+ln -s ./lib ./usr/lib64
+ln -s ./lib ./usr/lib32
+
 FILES=$(rpm -qla $APP)
 for FILE in $FILES ; do
   if [ -f $FILE ] ; then
