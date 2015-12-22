@@ -20,6 +20,8 @@ cd /app/
 
 VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
 
+APPNAME=$(grep -r "^Name=" hexchat.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
+
 FILES=$(rpm -qla $APP)
 for FILE in $FILES ; do
   if [ -f $FILE ] ; then
@@ -84,10 +86,10 @@ chmod a+x AppImageAssistant
 fi # if [ -z "$NO_DOWNLOAD" ] ; then
 
 if [[ "$ARCH" = "x86_64" ]] ; then
-  AI=$APP"-"$VERSION"-x86_64.AppImage"
+  AI=$APPNAME"-"$VERSION"-x86_64.AppImage"
 fi
 if [[ "$ARCH" = "i686" ]] ; then
-  AI=$APP"-"$VERSION"-i386.AppImage"
+  AI=$APPNAME"-"$VERSION"-i386.AppImage"
 fi
 
 echo $AI
