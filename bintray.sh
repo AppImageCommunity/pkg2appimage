@@ -21,6 +21,7 @@ VCS_URL="https://github.com/probonopd/AppImages.git" # Mandatory for packages in
 which curl || exit 1
 which bsdtar || exit 1 # https://github.com/libarchive/libarchive/wiki/ManPageBsdtar1 ; isoinfo cannot read zisofs
 which grep || exit 1
+which zsyncmake || exit 1
 
 if [ ! $(env | grep BINTRAY_API_KEY ) ] ; then
   echo "Environment variable \$BINTRAY_API_KEY missing"
@@ -89,7 +90,7 @@ if [ "$APPDATA" == "" ] ; then
 else
   echo "* APPDATA found"
   DESCRIPTION=$(echo $APPDATA | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g')
-  WEBSITE_URL=$(grep -r homepage $APPDATA | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
+  WEBSITE_URL=$(echo $APPDATA | grep "homepage" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
 fi
 
 if [ "$DESCRIPTION" == "" ] ; then
