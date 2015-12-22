@@ -1,4 +1,4 @@
-APP=hexchat
+APP=$1 # hexchat
 
 if [ "$APP" == "" ] ; then
   echo "Environment variable \$APP is missing"
@@ -13,11 +13,15 @@ else
   exit 1
 fi
 
+ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+chmod a+x AppRun
+
 yum -y install $APP
 rm -rf /app /out || true # Clean up from previous runs
 mkdir -p /app/usr/bin /app/usr/lib /out
 
-cd /app/
+APPDIR=/app/
+cd $APPDIR
 
 # CentOS 6 places stuff in lib64 where AppRun doesn't find it
 ln -s ./lib ./usr/lib64
@@ -27,7 +31,7 @@ FILES=$(rpm -qla $APP)
 for FILE in $FILES ; do
   if [ -f $FILE ] ; then
     echo $FILE
-    cp --parents -rf $FILE ./
+    cp --parents -rfL $FILE ./
   fi
 done
 
@@ -41,7 +45,7 @@ DEPS=$(cat DEPSFILE  |sort | uniq)
 for FILE in $DEPS ; do
   if [ -f $FILE ] ; then
     echo $FILE
-    cp --parents -rf $FILE ./
+    cp --parents -rfL $FILE ./
   fi
 done
 rm -f DEPSFILE
@@ -77,8 +81,30 @@ if [ ! -x usr/bin/$EXEC ] ; then
   sed -i -e  "s/^Exec=.*$/Exec=$APP/g" ./*.desktop
 fi
 
+# Patch usr
+find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
+
+# Patch etc
+# find usr/ -type f -executable -exec sed -i -e "s|/etc|./et|g" {} \;
+# cd usr/ ; ln -s ../etc ./et ; cd -
+
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
+
+# Workaround for:
+# GTK theme is broken
+rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
+
+# Workaround for:
+# On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
+rm usr/lib/libgio* || true
+
+# Workaround for:
+# "Connection failed (unable to get local issuer certificate.? (20))" on Ubuntu
+# TO BE DONE
+
+# Unsure about these
+rm usr/lib/libgmodule* usr/lib/libatk* usr/lib/libcairo || true
 
 # Workaround for:
 # ./lib/libc.so.6: version `GLIBC_2.14' not found (required by /usr/lib64/libogg.so.0)
@@ -99,13 +125,50 @@ rm -f usr/lib/libglib-* usr/lib/libgthread-* usr/lib/libuuid.so.1 usr/lib/libdl.
 # Do NOT delete libX* because otherwise on Ubuntu 11.04:
 # loaded library "Xcursor"
 
-wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
-chmod a+x AppRun
+# The following are assumed to be part of the base system
+rm -f usr/lib/libcom_err.so.2 || true
+rm -f usr/lib/libcrypt.so.1 || true
+rm -f usr/lib/libdl.so.2 || true
+rm -f usr/lib/libexpat.so.1 || true
+rm -f usr/lib/libfontconfig.so.1 || true
+rm -f usr/lib/libgcc_s.so.1 || true
+rm -f usr/lib/libglib-2.0.so.0 || true
+rm -f usr/lib/libgpg-error.so.0 || true
+rm -f usr/lib/libgssapi_krb5.so.2 || true
+rm -f usr/lib/libgssapi.so.3 || true
+rm -f usr/lib/libhcrypto.so.4 || true
+rm -f usr/lib/libheimbase.so.1 || true
+rm -f usr/lib/libheimntlm.so.0 || true
+rm -f usr/lib/libhx509.so.5 || true
+rm -f usr/lib/libICE.so.6 || true
+rm -f usr/lib/libidn.so.11 || true
+rm -f usr/lib/libk5crypto.so.3 || true
+rm -f usr/lib/libkeyutils.so.1 || true
+rm -f usr/lib/libkrb5.so.26 || true
+rm -f usr/lib/libkrb5.so.3 || true
+rm -f usr/lib/libkrb5support.so.0 || true
+# rm -f usr/lib/liblber-2.4.so.2 || true # needed for debian wheezy
+# rm -f usr/lib/libldap_r-2.4.so.2 || true # needed for debian wheezy
+rm -f usr/lib/libm.so.6 || true
+rm -f usr/lib/libp11-kit.so.0 || true
+rm -f usr/lib/libpcre.so.3 || true
+rm -f usr/lib/libpthread.so.0 || true
+rm -f usr/lib/libresolv.so.2 || true
+rm -f usr/lib/libroken.so.18 || true
+rm -f usr/lib/librt.so.1 || true
+rm -f usr/lib/libsasl2.so.2 || true
+rm -f usr/lib/libSM.so.6 || true
+rm -f usr/lib/libusb-1.0.so.0 || true
+rm -f usr/lib/libuuid.so.1 || true
+rm -f usr/lib/libwind.so.0 || true
+rm -f usr/lib/libz.so.1 || true
 
-cd -
+cp ../AppRun .
+
+cd $APPDIR/../
 
 if [ -z "$NO_DOWNLOAD" ] ; then
-wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+ls AppImageAssistant || wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
 chmod a+x AppImageAssistant
 fi # if [ -z "$NO_DOWNLOAD" ] ; then
 
@@ -121,4 +184,4 @@ echo $AI
 rm -f out/$AI || true
 mkdir -p out/ || true
 
-./AppImageAssistant app/ out/$AI
+./AppImageAssistant $APPDIR out/$AI
