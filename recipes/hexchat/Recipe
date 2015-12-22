@@ -79,12 +79,6 @@ if [ "$VERSION" == "" ] ; then
 fi
 
 APPNAME=$(grep -r "^Name=" ./*.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
-echo $APPNAME
-
-if [ "$APPNAME" == "" ] ; then
-  echo "Cannot determine APPNAME from desktop file"
-  exit 1
-fi
 
 EXEC=$(grep -r "^Exec=" ./*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
 if [ ! -x usr/bin/$EXEC ] ; then
@@ -101,6 +95,19 @@ if [ ! -f $APPDATAFILE ] ; then
   zcat /usr/share/app-info/xmls/fedora.xml.gz | xmlstarlet sel -t -c "//id[text()='$APP.desktop']/.." >> $APPDATAFILE
   zcat /usr/share/app-info/xmls/fedora.xml.gz | tail -n 1 >> $APPDATAFILE
   [ $(cat usr/share/appdata/$APP.appdata.xml | wc -l) -lt 7 ] && rm usr/share/appdata/$APP.appdata.xml
+fi
+
+# If we have AppData, then we should use the name from there
+# since in .desktop files, "names" can be things like "XChat IRC" rather than "XChat"
+if [ -f $APPDATAFILE ] ; then
+  APPNAME=$(xmlstarlet sel -t -c "//name[not(@*)]/text()" $APPDATAFILE)
+fi
+
+echo $APPNAME
+
+if [ "$APPNAME" == "" ] ; then
+  echo "Cannot determine APPNAME from desktop file or AppData"
+  exit 1
 fi
 
 # Patch usr
