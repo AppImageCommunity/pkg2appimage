@@ -16,6 +16,7 @@ fi
 yum -y install $APP
 rm -rf /app /out || true # Clean up from previous runs
 mkdir -p /app/usr/bin /app/usr/lib /out
+
 cd /app/
 
 FILES=$(rpm -qla $APP)
@@ -52,8 +53,18 @@ cp $DESKTOP .
 VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
 echo $VERSION
 
-APPNAME=$(grep -r "^Name=" *.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
+if [ "$VERSION" == "" ] ; then
+  echo "Cannot determine version from rpm"
+  exit 1
+fi
+
+APPNAME=$(grep -r "^Name=" ./*.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
 echo $APPNAME
+
+if [ "$APPNAME" == "" ] ; then
+  echo "Cannot determine APPNAME from desktop file"
+  exit 1
+fi
 
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
