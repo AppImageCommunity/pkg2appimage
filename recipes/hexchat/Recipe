@@ -70,7 +70,7 @@ rm -rf ./lib* || true
 DESKTOP=$(find . -name "*$APP.desktop" | head -n 1)
 cp $DESKTOP .
 
-VERSION=$(rpm -qa | grep $APP | head -n 1 | cut -d - -f 2)
+VERSION=$(rpm -qa | grep ^$APP- | cut -d - -f 2)
 echo $VERSION
 
 if [ "$VERSION" == "" ] ; then
