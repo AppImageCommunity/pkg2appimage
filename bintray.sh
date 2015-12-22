@@ -89,6 +89,7 @@ if [ "$APPDATA" == "" ] ; then
 else
   echo "* APPDATA found"
   DESCRIPTION=$(echo $APPDATA | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g')
+  WEBSITE_URL=$(grep -r homepage $APPDATA | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
 fi
 
 if [ "$DESCRIPTION" == "" ] ; then
