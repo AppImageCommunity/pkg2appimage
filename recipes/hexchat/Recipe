@@ -43,7 +43,7 @@ done
 rm -f DEPSFILE
 
 # We want everything in usr/ inside the AppDir
-mv lib*/* usr/lib || true
+mv lib*/* usr/lib/ || true
 rm -rf ./lib* || true
 
 # Copy desktop file in place
