@@ -95,6 +95,9 @@ find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
 
+# To make the AppImage smaller
+rm usr/lib/libfreetype* || true
+
 # Workaround for:
 # GTK theme is broken
 rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
