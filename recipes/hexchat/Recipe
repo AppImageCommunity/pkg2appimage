@@ -66,6 +66,13 @@ if [ "$APPNAME" == "" ] ; then
   exit 1
 fi
 
+EXEC=$(grep -r "^Exec=" ./*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
+if [ ! -x usr/bin/$EXEC ] ; then
+  echo "Desktop file specifies Exec=$EXEC but usr/bin/$EXEC is not there, hence patching in $APP"
+  echo "Probably AppRun could be modified to allow more fancy Exec= lines but for now this is safer"
+  echo *desktop | sed -e  "s/^Exec=.*$/Exec=$APP/g" ./*.desktop
+fi
+
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
 
