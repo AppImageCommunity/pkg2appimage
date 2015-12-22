@@ -50,8 +50,10 @@ DESKTOP=$(find . -name "$APP.desktop" | head -n 1)
 cp $DESKTOP .
 
 VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
+echo $VERSION
 
-APPNAME=$(grep -r "^Name=" hexchat.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
+APPNAME=$(grep -r "^Name=" *.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
+echo $APPNAME
 
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
