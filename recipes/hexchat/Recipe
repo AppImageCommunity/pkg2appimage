@@ -38,6 +38,10 @@ for FILE in $DEPS ; do
 done
 rm -f DEPSFILE
 
+# We want everything in usr/ inside the AppDir
+mv lib*/* usr/ || true
+rm -rf ./lib* || true
+
 # Copy desktop file in place
 DESKTOP=$(find . -name "$APP.desktop" | head -n 1)
 cp $DESKTOP .
