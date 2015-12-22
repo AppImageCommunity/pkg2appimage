@@ -1,5 +1,13 @@
 APP=hexchat
 
+# Determine which architecture should be built
+if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
+  ARCH=$(arch)
+else
+  echo "Architecture could not be determined"
+  exit 1
+fi
+
 yum -y install $APP
 mkdir -p /app/usr/bin /app/usr/lib /out
 cd /app/
@@ -10,12 +18,12 @@ FILES=$(rpm -qla $APP)
 for FILE in $FILES ; do
   if [ -f $FILE ] ; then
     echo $FILE
-    cp --parents -rf $FILE /app/
+    cp --parents -rf $FILE ./
   fi
 done
 
 # Copy in the indirect dependencies
-FILES=$(find /app -type f -executable)
+FILES=$(find . -type f -executable)
 DEPS=""
 for FILE in $FILES ; do
   ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
@@ -24,7 +32,7 @@ DEPS=$(cat DEPSFILE  |sort | uniq)
 for FILE in $DEPS ; do
   if [ -f $FILE ] ; then
     echo $FILE
-    cp --parents -rf $FILE /app/
+    cp --parents -rf $FILE ./
   fi
 done
 rm -f DEPSFILE
@@ -51,13 +59,26 @@ rm -f usr/lib/libglib-* usr/lib/libgthread-* usr/lib/libuuid.so.1 usr/lib/libdl.
 # Do NOT delete libX* because otherwise on Ubuntu 11.04:
 # loaded library "Xcursor"
 
+wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+chmod a+x AppRun
+
+cd -
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+chmod a+x AppImageAssistant
+fi # if [ -z "$NO_DOWNLOAD" ] ; then
+
 if [[ "$ARCH" = "x86_64" ]] ; then
   AI=$APP"-"$VERSION"-x86_64.AppImage"
 fi
 if [[ "$ARCH" = "i686" ]] ; then
   AI=$APP"-"$VERSION"-i386.AppImage"
 fi
+
 echo $AI
+
 rm -rf out/$AI
 mkdir -p out/ || true
+
 ./AppImageAssistant app/ out/$AI
