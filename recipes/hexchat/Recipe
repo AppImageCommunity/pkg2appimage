@@ -17,6 +17,14 @@ fi
 ls epel-testing.repo ||  yum -y install epel-release
 ls /etc/yum.repos.d/rpmfusion-nonfree-updates.repo || yum -y localinstall --nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/i386/rpmfusion-free-release-6-1.noarch.rpm http://download1.rpmfusion.org/nonfree/el/updates/6/i386/rpmfusion-nonfree-release-6-1.noarch.rpm
 
+# Install bleeding-edge AppData from Fedora Rawhide which we can use as a fallback if there is none in the package
+if [ ! -e /usr/share/app-info/xmls/fedora.xml.gz ] ; then
+  BUILD_ID=$( wget "https://apps.fedoraproject.org/packages/fcomm_connector/koji/query/query_builds/%7B%22filters%22:%7B%22package%22:%22appstream-data%22,%22state%22:%22%22%7D,%22rows_per_page%22:10,%22start_row%22:0%7D" -O - | grep -Poe '"build_id":.*?,' | head -n 1 | cut -d : -f 2 | cut -d , -f 1)
+  RPM=$(wget "http://koji.fedoraproject.org/koji/buildinfo?buildID=$BUILD_ID" -O - | grep -Poe "http.*?noarch.rpm")
+  rpm -ivh "$RPM"
+  yum -y install xmlstarlet
+fi
+
 ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
 chmod a+x AppRun
 
@@ -83,6 +91,16 @@ if [ ! -x usr/bin/$EXEC ] ; then
   echo "Desktop file specifies Exec=$EXEC but usr/bin/$EXEC is not there, hence patching in $APP"
   echo "Probably AppRun could be modified to allow more fancy Exec= lines but for now this is safer"
   sed -i -e  "s/^Exec=.*$/Exec=$APP/g" ./*.desktop
+fi
+
+# If there is no AppData, we use AppData from Fedora Rawhide
+APPDATAFILE=usr/share/appdata/$APP.appdata.xml
+if [ ! -f $APPDATAFILE ] ; then
+  mkdir -p usr/share/appdata/
+  zcat /usr/share/app-info/xmls/fedora.xml.gz | head -n 2 > $APPDATAFILE
+  zcat /usr/share/app-info/xmls/fedora.xml.gz | xmlstarlet sel -t -c "//id[text()='$APP.desktop']/.." >> $APPDATAFILE
+  zcat /usr/share/app-info/xmls/fedora.xml.gz | tail -n 1 >> $APPDATAFILE
+  [ $(cat usr/share/appdata/$APP.appdata.xml | wc -l) -lt 7 ] && rm usr/share/appdata/$APP.appdata.xml
 fi
 
 # Patch usr
