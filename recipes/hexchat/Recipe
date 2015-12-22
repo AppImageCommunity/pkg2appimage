@@ -13,6 +13,10 @@ else
   exit 1
 fi
 
+# Install EPEL and RPM Fusion repositories for software that is newer than CentOS 6 (this is why I use CentOS for this)
+ls epel-testing.repo ||  yum -y install epel-release
+ls /etc/yum.repos.d/rpmfusion-nonfree-updates.repo || yum -y localinstall --nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/i386/rpmfusion-free-release-6-1.noarch.rpm http://download1.rpmfusion.org/nonfree/el/updates/6/i386/rpmfusion-nonfree-release-6-1.noarch.rpm
+
 ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
 chmod a+x AppRun
 
