@@ -18,10 +18,6 @@ rm -rf /app /out || true # Clean up from previous runs
 mkdir -p /app/usr/bin /app/usr/lib /out
 cd /app/
 
-VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
-
-APPNAME=$(grep -r "^Name=" hexchat.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
-
 FILES=$(rpm -qla $APP)
 for FILE in $FILES ; do
   if [ -f $FILE ] ; then
@@ -52,6 +48,10 @@ rm -rf ./lib* || true
 # Copy desktop file in place
 DESKTOP=$(find . -name "$APP.desktop" | head -n 1)
 cp $DESKTOP .
+
+VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
+
+APPNAME=$(grep -r "^Name=" hexchat.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
 
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
