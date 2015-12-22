@@ -9,15 +9,25 @@ VERSION=$(rpm -qa | grep $APP | cut -d - -f 2)
 FILES=$(rpm -qla $APP)
 for FILE in $FILES ; do
   if [ -f $FILE ] ; then
+    echo $FILE
     cp --parents -rf $FILE /app/
   fi
 done
 
 # Copy in the indirect dependencies
 FILES=$(find /app -type f -executable)
+DEPS=""
 for FILE in $FILES ; do
-  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' /app/usr/lib || true
+  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
 done
+DEPS=$(cat DEPSFILE  |sort | uniq)
+for FILE in $DEPS ; do
+  if [ -f $FILE ] ; then
+    echo $FILE
+    cp --parents -rf $FILE /app/
+  fi
+done
+rm -f DEPSFILE
 
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
