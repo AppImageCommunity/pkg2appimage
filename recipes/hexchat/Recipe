@@ -9,6 +9,7 @@ else
 fi
 
 yum -y install $APP
+rm -rf /app /out || true # Clean up from previous runs
 mkdir -p /app/usr/bin /app/usr/lib /out
 cd /app/
 
@@ -37,19 +38,23 @@ for FILE in $DEPS ; do
 done
 rm -f DEPSFILE
 
+# Copy desktop file in place
+DESKTOP=$(find . -name "$APP.desktop" | head -n 1)
+cp $DESKTOP .
+
 # TODO: Maintain a global list of files that should NOT go into the AppImages
 # along with a reason
 
 # Workaround for:
 # ./lib/libc.so.6: version `GLIBC_2.14' not found (required by /usr/lib64/libogg.so.0)
-rm usr/lib/libc.so.6
+rm usr/lib/libc.so.6 || true
 
 # Workaround for:
 # relocation error: ./lib/libpthread.so.0: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-rm usr/lib/libpthread.so.0
+rm usr/lib/libpthread.so.0 || true
 # Workaround for:
 # relocation error: ./lib/librt.so.1: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-rm usr/lib/librt.so.1
+rm usr/lib/librt.so.1 || true
 
 # Workaround for:
 # Segmentation fault (core dumped)
@@ -78,7 +83,7 @@ fi
 
 echo $AI
 
-rm -rf out/$AI
+rm -f out/$AI || true
 mkdir -p out/ || true
 
 ./AppImageAssistant app/ out/$AI
