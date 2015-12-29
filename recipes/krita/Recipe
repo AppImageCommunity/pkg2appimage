@@ -35,7 +35,7 @@ if [ ! -d AppImageKit ] ; then
 fi
 cd AppImageKit/
 git_pull_rebase_helper
-sed -i -e 's/sudo //g/' ./build.sh # sudo is not present in our CentOS chroot
+sed -i -e 's/sudo //g' ./build.sh # sudo is not present in our CentOS chroot
 ./build.sh
 cd ..
 fi
