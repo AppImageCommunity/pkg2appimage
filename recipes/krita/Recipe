@@ -5,6 +5,14 @@
 # ./AppImageKit/build.sh 
 # sudo ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.5-x86_64-LiveCD.iso bash
 
+# A krita build layout looks like this:
+# krita/ -- the source directory
+# krita/3rdparty -- the cmake definitions for the dependencies
+# d -- downloads of the dependencies from files.kde.org
+# b -- build directory for the dependencies
+# krita_build -- build directory for krita itself
+# Krita.AppDir -- install directory for krita and the dependencies
+
 # Halt on errors
 set -e
 
@@ -22,7 +30,11 @@ git_pull_rebase_helper()
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 yum -y install epel-release 
+
+# We need to be up to date in order to install the xcb-keysyms dependency
 yum -y update
+
+# Base dependencies and Qt5
 yum -y install wget tar bzip2 git libtool which fuse fuse-devel subversion automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtsvg-devel qt5-qtscript-devel qt5-qtx11extras-devel glibc-headers libstdc++-devel gcc-c++ freetype-devel fontconfig-devel libxml2-devel libstdc++-devel libXrender-devel patch xcb-util-keysyms-devel libXi-devel
 
 # Newer compiler than what comes with CentOS 6
@@ -55,6 +67,7 @@ if [ ! -d krita ] ; then
 fi
 cd krita/
 git_pull_rebase_helper
+cd ..
 
 # Create the build dir for the 3rdparty deps
 mkdir b
@@ -69,7 +82,7 @@ mkdir -p /app/usr
 mkdir -p /app/usr/lib
 ln -s /app/usr/lib /app/usr/lib64
 
-cmake ../3rdparty \
+cmake ../krita/3rdparty \
     -DCMAKE_INSTALL_PREFIX:PATH=/app/usr \
     -DINSTALL_ROOT=/app/usr \
     -DEXTERNALS_DOWNLOAD_DIR=d
