@@ -52,8 +52,7 @@ cd /AppImageKit/
 git_pull_rebase_helper
 ./build.sh
 cd /
-fi
-
+fi # if [ -z "$NO_DOWNLOAD" ]
 
 # Workaround for:
 # /usr/lib/librevenge-stream-0.0.so: undefined reference to `std::__detail::_List_node_base::_M_hook(std::__detail::_List_node_base*)'
@@ -85,10 +84,10 @@ cd /krita/
 git_pull_rebase_helper
 
 # Create the build dir for the 3rdparty deps
-if [ ! -d /b ]
+if [ ! -d /b ] ; then
     mkdir /b
 fi    
-if [ ! -d /d ]
+if [ ! -d /d ] ; then
     mkdir /d
 fi
 
