@@ -5,14 +5,6 @@
 # ./AppImageKit/build.sh 
 # sudo ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.5-x86_64-LiveCD.iso bash
 
-# A krita build layout looks like this:
-# krita/ -- the source directory
-# krita/3rdparty -- the cmake definitions for the dependencies
-# d -- downloads of the dependencies from files.kde.org
-# b -- build directory for the dependencies
-# krita_build -- build directory for krita itself
-# Krita.AppDir -- install directory for krita and the dependencies
-
 # Halt on errors
 set -e
 
@@ -22,6 +14,16 @@ set -x
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
+# Determine which architecture should be built
+if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
+  ARCH=$(arch)
+else
+  echo "Architecture could not be determined"
+  exit 1
+fi
+
+export LD_LIBRARY_PATH=/usr/lib64/:/usr/lib:/krita.appdir/usr/lib
+
 git_pull_rebase_helper()
 {
 	git reset --hard HEAD
@@ -30,30 +32,34 @@ git_pull_rebase_helper()
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 yum -y install epel-release 
-
-# We need to be up to date in order to install the xcb-keysyms dependency
+# we need to be up to date in order to install the xcb-keysyms dependency
 yum -y update
-
-# Base dependencies and Qt5
-yum -y install wget tar bzip2 git libtool which fuse fuse-devel subversion automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtsvg-devel qt5-qtscript-devel qt5-qtx11extras-devel glibc-headers libstdc++-devel gcc-c++ freetype-devel fontconfig-devel libxml2-devel libstdc++-devel libXrender-devel patch xcb-util-keysyms-devel libXi-devel
+# base dependencies and Qt5.
+yum -y install wget tar bzip2 git libtool which fuse fuse-devel automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtsvg-devel qt5-qtscript-devel qt5-qtx11extras-devel glibc-headers libstdc++-devel gcc-c++ freetype-devel fontconfig-devel libxml2-devel libstdc++-devel libXrender-devel patch xcb-util-keysyms-devel libXi-devel
 
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
 yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 
+# Make sure we build from the /, parts of this script depends on that. We also need to run as root...
+cd  /
+
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
-  git clone https://github.com/probonopd/AppImageKit.git
+  git clone https://github.com/probonopd/AppImageKit.git /AppImageKit
 fi
-cd AppImageKit/
+cd /AppImageKit/
 git_pull_rebase_helper
-sed -i -e 's/sudo //g' ./build.sh # sudo is not present in our CentOS chroot
 ./build.sh
-cd ..
-fi # if [ -z "$NO_DOWNLOAD" ]
+cd /
+fi
 
+
+# Workaround for:
+# /usr/lib/librevenge-stream-0.0.so: undefined reference to `std::__detail::_List_node_base::_M_hook(std::__detail::_List_node_base*)'
 # Use the new compiler
 . /opt/rh/devtoolset-2/enable
+
 
 # Workaround for: On CentOS 6, .pc files in /usr/lib/pkgconfig are not recognized
 # However, this is where .pc files get installed when bulding libraries... (FIXME)
@@ -61,31 +67,46 @@ fi # if [ -z "$NO_DOWNLOAD" ]
 # between Ubuntu and CentOS 6
 ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
 
+
+# A krita build layout looks like this:
+# krita/ -- the source directory
+# krita/3rdparty -- the cmake definitions for the dependencies
+# d -- downloads of the dependencies from files.kde.org
+# b -- build directory for the dependencies
+# krita_build -- build directory for krita itself
+# krita.appdir -- install directory for krita and the dependencies
+
 # Get Krita
-if [ ! -d krita ] ; then
-  git clone https://github.com/KDE/krita.git
+if [ ! -d /krita ] ; then
+	git clone https://github.com/KDE/krita.git /krita
 fi
-cd krita/
+
+cd /krita/
 git_pull_rebase_helper
-cd ..
 
 # Create the build dir for the 3rdparty deps
-mkdir b
-cd b
-mkdir d
+if [ ! -d /b ]
+    mkdir /b
+fi    
+if [ ! -d /d ]
+    mkdir /d
+fi
+
+cd /b
+rm -rf /b/* || true
 
 # Prepare the install location
-rm -rf /app/ || true
-mkdir -p /app/usr
+rm -rf /krita.appdir/ || true
+mkdir -p /krita.appdir/usr
 
 # make sure lib and lib64 are the same thing
-mkdir -p /app/usr/lib
-ln -s /app/usr/lib /app/usr/lib64
+mkdir -p /krita.appdir/usr/lib
+ln -s /krita.appdir/usr/lib /krita.appdir/usr/lib64
 
-cmake ../krita/3rdparty \
-    -DCMAKE_INSTALL_PREFIX:PATH=/app/usr \
-    -DINSTALL_ROOT=/app/usr \
-    -DEXTERNALS_DOWNLOAD_DIR=d
+cmake /krita/3rdparty \
+    -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+    -DINSTALL_ROOT=/usr \
+    -DEXTERNALS_DOWNLOAD_DIR=/d
     
 cmake --build . --config RelWithDebInfo --target ext_boost
 cmake --build . --config RelWithDebInfo --target ext_eigen3
@@ -104,13 +125,12 @@ cmake --build . --config RelWithDebInfo --target ext_libraw
 cmake --build . --config RelWithDebInfo --target ext_kcrash
 cmake --build . --config RelWithDebInfo --target ext_poppler
 cmake --build . --config RelWithDebInfo --target ext_gsl
-
+    
 cd ..
-
-mkdir krita_build
-cd krita_build
+mkdir /krita_build
+cd /krita_build
 cmake ../krita \
-    -DCMAKE_INSTALL_PREFIX:PATH=/app/usr \
+    -DCMAKE_INSTALL_PREFIX:PATH=/krita.appdir/usr \
     -DDEFINE_NO_DEPRECATED=1 \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DPACKAGERS_BUILD=1 \
@@ -121,7 +141,7 @@ cmake ../krita \
 # Install into the AppDir
 make -j4 install
 
-cd /app
+cd /krita.appdir
 
 # FIXME: How to find out which subset of plugins is really needed? I used strace when running the binary
 mkdir -p ./usr/lib/qt5/plugins/
@@ -154,7 +174,7 @@ cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Othe
 cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
 
-#ldd usr/bin/krita | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+ldd usr/bin/krita | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 #ldd usr/lib64/krita/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 #ldd usr/lib64/plugins/imageformats/*.so  | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 
@@ -230,11 +250,11 @@ rm -rf usr/share/ECM/ || true
 rm -rf usr/share/gettext || true
 rm -rf usr/share/pkgconfig || true
 
-# don't strip -- we like debug symbols for daily builds
-strip usr/bin/* usr/lib64/* usr/lib/* || true
+strip usr/lib/krita/* usr/bin/* usr/lib/* || true
 
-# Since we set /app as the prefix, we need to patch it away too
-cd usr/ ; find . -type f -exec sed -i -e 's|/app/usr|././././|g' {} \; ; cd  ..
+# Since we set /krita.appdir as the prefix, we need to patch it away too (FIXME)
+# Probably it would be better to use /app as a prefix because it has the same length for all apps
+cd usr/ ; find . -type f -exec sed -i -e 's|/krita.appdir/usr/|./././././././././|g' {} \; ; cd  ..
 
 # On openSUSE Qt is picking up the wrong libqxcb.so
 # (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
@@ -246,6 +266,7 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/usr|././|g' {} \; ; cd ..
 sed -i -e 's|././/share/X11/|/usr/share/X11/|g' ./usr/lib/qt5/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so
 sed -i -e 's|././/share/X11/|/usr/share/X11/|g' ./usr/lib/libQt5XcbQpa.so.5
 
+
 # Workaround for:
 # D-Bus library appears to be incorrectly set up;
 # failed to read machine uuid: Failed to open
@@ -256,22 +277,20 @@ rm -f ./usr/lib/libdbus-1.so.3 || true
 
 cp ../AppImageKit/AppRun .
 cp ./usr/share/applications/krita.desktop krita.desktop
-cp ../krita/krita/pics/app/64-apps-calligrakrita.png . calligrakrita.png
+cp /krita/krita/pics/app/64-apps-calligrakrita.png calligrakrita.png
 
-cd ..
+cd / 
 
 APP=Krita
 
 VER=$(grep "#define CALLIGRA_VERSION_STRING" krita_build/libs/version/calligraversion.h | cut -d '"' -f 2)
 cd krita
 BRANCH=$( git branch | cut -d ' ' -f 2)
-REVISION=$(git rev-parse HEAD)
+REVISION=$(git rev-parse --short HEAD)
 cd ..
 VERSION=$VER-$BRANCH-$REVISION
 VERSION="$(sed s/\ /-/g <<<$VERSION)"
 echo $VERSION
-
-ARCH=$(arch)
 
 if [[ "$ARCH" = "x86_64" ]] ; then
 	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
@@ -281,12 +300,12 @@ if [[ "$ARCH" = "i686" ]] ; then
 fi
 echo $APPIMAGE
 
-mkdir -p out
+mkdir -p /out
 
-rm -f out/*.AppImage || true
-AppImageKit/AppImageAssistant.AppDir/package app/ out/$APPIMAGE
+rm -f /out/*.AppImage || true
+AppImageKit/AppImageAssistant.AppDir/package /krita.appdir/ /out/$APPIMAGE
 
-chmod a+rwx out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
+chmod a+rwx /out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
 
 # Test the resulting AppImage on my local system
 # sudo /tmp/*/union/AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/Fedora-Live-Workstation-x86_64-22-3.iso /tmp/*/union/Scribus.AppDir/
