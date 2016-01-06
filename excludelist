@@ -1,0 +1,29 @@
+# This file lists libraries that we will assume to be present on the host system and hence
+# should NOT be bundled inside AppImages. This is a working document; expect it to change
+# over time. File format: one filename per line. Each entry should have a justification comment.
+
+libGL.so.1
+# Workaround for:
+# Different distributions put dri/ libraries in different places, which are not found if we supply a bundled libGL.so.1
+# /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so
+# /usr/lib64/dri/swrast_dri.so
+
+libdrm.so.2
+# Workaround for:
+# Antergos Linux release 2015.11 (ISO-Rolling)
+# /usr/lib/libdrm_amdgpu.so.1: error: symbol lookup error: undefined symbol: drmGetNodeTypeFromFd (fatal)
+# libGL error: unable to load driver: swrast_dri.so
+# libGL error: failed to load driver: swrast
+# Unrecognized OpenGL version
+
+libxcb.so.1
+# Workaround for:
+# Fedora 23
+# symbol lookup error: /lib64/libxcb-dri3.so.0: undefined symbol: xcb_send_fd
+# Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
+
+libX11.so.6
+# Workaround for:
+# Fedora 23
+# symbol lookup error: ./lib/libX11.so.6: undefined symbol: xcb_wait_for_reply64
+# Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
