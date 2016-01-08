@@ -24,6 +24,11 @@ dpkg -x ../$APP_*.deb .
 cp ./usr/share/icons/hicolor/scalable/apps/$APP.svg .
 cp ./usr/share/applications/$APP.desktop .
 
+# Add desktop integration
+wget -O ./usr/bin/$APP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$APP.wrapper
+sed -i -e "s|Exec=$APP |Exec=$APP.wrapper |g" $APP.desktop
+
 # Put in AppRun file
 wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
 chmod a+x AppRun
