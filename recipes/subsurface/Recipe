@@ -302,7 +302,7 @@ cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ #
 XAPP=subsurface
 wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
 chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$APP |Exec=$APP.wrapper |g" $XAPP.desktop
+sed -i -e "s|Exec=$XAPP |Exec=$XAPP.wrapper |g" $XAPP.desktop
 
 cd ..
 find $APP.AppDir/
