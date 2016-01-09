@@ -16,7 +16,7 @@ warn () {
   echo "WARNING: $1"
 }
 
-if [ ! -z $(which desktop-file-edit ] ; then
+if [ ! -z $(which desktop-file-edit) ] ; then
   fatal "desktop-file-edit is missing, please install it"
 fi
 
