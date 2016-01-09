@@ -63,14 +63,8 @@ set -x
 
 git_pull_rebase_helper()
 {
-	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
-	if [ "x$GITCLEAN" != "x" ] ; then
-		git stash save
-		git pull --rebase
-		git stash pop
-	else
-		git pull --rebase
-	fi
+	git reset --hard HEAD
+        git pull
 }
 
 export PATH=/bin:/sbin:$PATH # For CentOS 6
