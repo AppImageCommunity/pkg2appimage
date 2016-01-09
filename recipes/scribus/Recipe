@@ -346,6 +346,12 @@ cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
 cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 
+# Add desktop integration
+XAPP=scribus
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$APP |Exec=$APP.wrapper |g" $XAPP.desktop
+
 cd ..
 
 APP=Scribus
