@@ -10,14 +10,19 @@ APPDIR="${1}"
 fatal () {
   echo "FATAL: $1"
   exit 1
-} 
+}
 
 warn () {
   echo "WARNING: $1"
 }
 
-if [ ! -z $(which desktop-file-edit) ] ; then
+which desktop-file-edit
+if [ ! $? -eq 0 ] ; then
   fatal "desktop-file-edit is missing, please install it"
+fi
+
+if [ ! -e excludelist ] ; then
+  fatal "excludelist missing, please install it"
 fi
 
 if [ ! -d "${APPDIR}" ] ; then
@@ -42,10 +47,10 @@ num_keys_fatal () {
   if [ ${NUM_KEYS} != 1 ] ; then
     fatal "Key $1 is not in .desktop file exactly once"
   fi
-} 
+}
 
-desktop-file-edit "${APPDIR}"/*.desktop"
-if [ $? -eq 0 ] ; then
+desktop-file-edit "${APPDIR}"/*.desktop
+if [ ! $? -eq 0 ] ; then
   fatal "desktop-file-edit did not exit cleanly on the .desktop file"
 fi
 
@@ -54,7 +59,7 @@ num_keys_warn () {
   if [ ${NUM_KEYS} != 1 ] ; then
     warn "Key $1 is not in .desktop file exactly once"
   fi
-} 
+}
 
 num_keys_fatal Name
 num_keys_fatal Exec
@@ -64,5 +69,15 @@ num_keys_warn Comment
 
 NUM_APPDATA=$(ls "${APPDIR}"/usr/share/appdata/.xml 2>/dev/null | wc -l)
 if [ ! ${NUM_APPDATA} -gt 1 ] ; then
-  warn "No appdata file(s) present. Get some from upstream, https://github.com/hughsie/fedora-appstream/tree/master/appdata-extra/desktop or debian packages"
+  warn 'No appdata file(s) present. Get some from upstream, https://github.com/hughsie/fedora-appstream/tree/master/appdata-extra/desktop or debian packages'
 fi
+
+BLACKLISTED_FILES=$(cat excludelist | sed '/^\s*$/d' | sed '/^#.*$/d')
+FOUND=""
+for FILE in $BLACKLISTED_FILES ; do
+  FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
+  echo $FOUND
+  if [ ! -z "$FOUND" ] ; then
+    fatal "Blacklisted file ${FOUND} found"
+  fi
+done
