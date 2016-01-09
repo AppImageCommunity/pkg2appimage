@@ -16,6 +16,10 @@ warn () {
   echo "WARNING: $1"
 }
 
+if [ ! -z $(which desktop-file-edit ] ; then
+  fatal "desktop-file-edit is missing, please install it"
+fi
+
 if [ ! -d "${APPDIR}" ] ; then
   fatal "${APPDIR} is no directory"
 fi
@@ -39,6 +43,11 @@ num_keys_fatal () {
     fatal "Key $1 is not in .desktop file exactly once"
   fi
 } 
+
+desktop-file-edit "${APPDIR}"/*.desktop"
+if [ $? -eq 0 ] ; then
+  fatal "desktop-file-edit did not exit cleanly on the .desktop file"
+fi
 
 num_keys_warn () {
   NUM_KEYS=$(grep -e "^${1}=.*" "${APPDIR}"/*.desktop | wc -l)
