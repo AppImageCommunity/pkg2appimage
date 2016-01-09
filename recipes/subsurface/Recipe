@@ -306,11 +306,11 @@ chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
 # Remove blacklisted files - TODO: move to a library function
-if [ ! -e "../AppImages/excludelist" ] ; then
+if [ ! -e "../../AppImages/excludelist" ] ; then
   echo "excludelist missing, please install it"
   exit 1
 fi
-BLACKLISTED_FILES=$(cat "../AppImages/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
+BLACKLISTED_FILES=$(cat "../../AppImages/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
 FOUND=""
 for FILE in $BLACKLISTED_FILES ; do
   FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
