@@ -30,7 +30,7 @@ rm ./$BINARY
 find ../../opt -name soffice -path *program* -exec ln -s \{\} ./$BINARY \;
 cd ../../
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppRun" # (64-bit)
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
 
 # The following is a real dirty hack to get under the 250 MB file size limit 
@@ -46,7 +46,7 @@ rm opt/libreoffice5.0/program/python-core-3.3.3/lib/lib-dynload/_hashlib.cpython
 cd ..
 
 mkdir -p ../out
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # 64-bit
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # 64-bit
 chmod a+x AppImageAssistant
 rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
 ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"

@@ -44,7 +44,7 @@ wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/de
 
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # 64-bit
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # 64-bit
 
 mkdir -p ../out/
 rm ../out/Firefox-* || true

@@ -40,7 +40,7 @@ HOUR=$(cat $APP.AppDir/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' |
 VERSION=$VER"."$HOUR
 echo $VERSION
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # (64-bit)
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
 chmod a+x ./AppImageAssistant
 mkdir -p ../out
 rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true

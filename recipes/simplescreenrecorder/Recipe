@@ -117,14 +117,14 @@ rm -f usr/lib/libglib-* usr/lib/libgthread-*  usr/lib/libuuid.so.1  usr/lib/libd
 # loaded library "Xcursor"
 
 if [ -z "$NO_DOWNLOAD" ] ; then
-  wget https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+  wget https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
   chmod a+rwx AppRun
 fi
 
 cd ..
 
 if [ -z "$NO_DOWNLOAD" ] ; then
-  wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+  wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant # 64-bit
   chmod a+x AppImageAssistant 
 fi # if [ -z "$NO_DOWNLOAD" ] ; then
 

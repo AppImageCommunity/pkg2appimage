@@ -25,7 +25,7 @@ if [ ! -e /usr/share/app-info/xmls/fedora.xml.gz ] ; then
   yum -y install xmlstarlet
 fi
 
-ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
 chmod a+x AppRun
 
 yum -y install $APP
@@ -210,7 +210,7 @@ cp ../AppRun .
 cd $APPDIR/../
 
 if [ -z "$NO_DOWNLOAD" ] ; then
-ls AppImageAssistant || wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+ls AppImageAssistant || wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant # 64-bit
 chmod a+x AppImageAssistant
 fi # if [ -z "$NO_DOWNLOAD" ] ; then
 

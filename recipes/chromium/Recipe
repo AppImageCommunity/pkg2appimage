@@ -53,7 +53,7 @@ wget -c --trust-server-names https://github.com/hughsie/fedora-appstream/raw/mas
 
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant" # 64-bit
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # 64-bit
 chmod a+x ./AppImageAssistant
 
 mkdir -p ./out/

@@ -30,14 +30,14 @@ chmod a+x ./usr/bin/$APP.wrapper
 sed -i -e "s|Exec=$APP |Exec=$APP.wrapper |g" $APP.desktop
 
 # Put in AppRun file
-wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppRun # 64-bit
+wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
 chmod a+x AppRun
 
 cd ..
 
 VERSION=$(echo $URL | cut -d "_" -f 2 | cut -d "-" -f 1 | head -n 1 | xargs)
 
-wget -c https://github.com/probonopd/AppImageKit/releases/download/4/AppImageAssistant # 64-bit
+wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant # 64-bit
 chmod a+x AppImageAssistant
 
 mkdir -p ../out
