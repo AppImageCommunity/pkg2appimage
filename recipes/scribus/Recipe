@@ -103,7 +103,7 @@ if [ ! -d libvisio ] ; then
 fi
 cd libvisio/
 git_pull_rebase_helper
-# git checkout 9593bbf3b9ea47ccc864536c94f154ce68bad22f # last good as of today?
+git checkout 9593bbf3b9ea47ccc864536c94f154ce68bad22f # known good
 ./autogen.sh
 ./configure --prefix=/usr
 # Workaround for:
