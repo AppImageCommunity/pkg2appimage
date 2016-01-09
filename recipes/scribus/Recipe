@@ -350,7 +350,7 @@ cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 XAPP=scribus
 wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
 chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP |Exec=$XAPP.wrapper |g" $XAPP.desktop
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
 cd ..
 
