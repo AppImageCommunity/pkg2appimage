@@ -73,7 +73,7 @@ if [ ! ${NUM_APPDATA} -gt 1 ] ; then
   warn 'No appdata file(s) present. Get some from upstream, https://github.com/hughsie/fedora-appstream/tree/master/appdata-extra/desktop or debian packages'
 fi
 
-BLACKLISTED_FILES=$(cat excludelist | sed '/^\s*$/d' | sed '/^#.*$/d')
+BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
 FOUND=""
 for FILE in $BLACKLISTED_FILES ; do
   FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
