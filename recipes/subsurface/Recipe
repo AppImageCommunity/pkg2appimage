@@ -61,6 +61,9 @@ set -e
 # Be verbose
 set -x
 
+HERE=$(dirname $(readlink -f "${0}"))
+
+# TODO: move to a library function
 git_pull_rebase_helper()
 {
 	git reset --hard HEAD
@@ -274,7 +277,7 @@ mv ./usr/lib/grantlee/ ./usr/lib/qt5/plugins/
 # It is the equivalent for "find" for libraries.
 cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
 cp $(ldconfig -p | grep libpng12.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
-cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+# cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
 cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
 # Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
 # This application failed to start because it could not find or load the Qt platform plugin "xcb".
@@ -283,7 +286,7 @@ cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # othe
 # "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
 # Which means that we have to copy libEGL.so.1 in too
 cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
-cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
+# cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ 
 
 # I have no clue why but on i386 systems this seems to be required
 if [[ "$ARCH" = "i686" ]] ; then
@@ -298,11 +301,26 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
 
-# Add desktop integration
+# Add desktop integration - TODO: move to a library function
 XAPP=subsurface
 wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
 chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Remove blacklisted files - TODO: move to a library function
+if [ ! -e "${HERE}/../../excludelist" ] ; then
+  echo "excludelist missing, please install it"
+  exit 1
+fi
+BLACKLISTED_FILES=$(cat "${HERE}/../../excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
+FOUND=""
+for FILE in $BLACKLISTED_FILES ; do
+  FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
+  echo $FOUND
+  if [ ! -z "$FOUND" ] ; then
+    fatal "Blacklisted file ${FOUND} found"
+  fi
+done
 
 cd ..
 find $APP.AppDir/
