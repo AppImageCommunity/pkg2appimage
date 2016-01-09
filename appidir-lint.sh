@@ -5,6 +5,7 @@
 
 set -e
 
+HERE=$(dirname $(readlink -f "${0}"))
 APPDIR="${1}"
 
 fatal () {
@@ -21,7 +22,7 @@ if [ ! $? -eq 0 ] ; then
   fatal "desktop-file-edit is missing, please install it"
 fi
 
-if [ ! -e excludelist ] ; then
+if [ ! -e "${HERE}/excludelist" ] ; then
   fatal "excludelist missing, please install it"
 fi
 
