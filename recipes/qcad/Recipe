@@ -41,6 +41,12 @@ cp ./usr/bin/scripts/qcad_icon.svg .
 # Get desktop file
 wget -q "http://www.qcad.org/bugtracker/index.php?getfile=420" -O qcad.desktop
 
+# Add desktop integration
+XAPP=qcad
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
 # Go out of AppImage
 cd ..
 
