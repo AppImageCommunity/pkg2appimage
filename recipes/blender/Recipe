@@ -6,7 +6,7 @@
 
 set +e
 
-URL=$(wget -q "https://www.blender.org/download/" -O - | grep -Poe "http.*?-x86_64.tar.bz2" | head -n 1)
+URL=$(wget -q "https://www.blender.org/download/" -O - | grep -Poe "http.*?-x86_64.tar.bz2" | tail -n 1)
 echo $URL
 
 APP=Blender
