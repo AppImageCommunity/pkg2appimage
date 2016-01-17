@@ -39,6 +39,7 @@ cd hardware/esp8266/git/tools/
 python ./get.py
 ESPVER=$(git rev-list --count HEAD)
 sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
+rm ./dist/*
 cd ../../../../
 
 cd ..
