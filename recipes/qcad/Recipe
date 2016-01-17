@@ -1,0 +1,55 @@
+#!/bin/bash -x
+
+# In this case, the upstream project seems to already
+# provide binaries that are supposed to run everywhere,
+# so we merely package these as an AppImage
+
+set +e
+
+DLPATH=$(wget -q http://qcad.org/en/qcad-downloads-trial -O - | grep -oe "href=.*-linux-x86_64.tar.gz" | cut -d '"' -f 2)
+URL=http://qcad.org$DLPATH
+echo $URL
+
+APP=QCAD
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+wget -c "$URL"
+
+tar xf *.tar.gz
+mv qcad-*-linux-*/* $APP.AppDir/usr/bin/
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+# Remove trials (assuming upstream doesn't want to have them
+# distributed)
+rm ./usr/bin/qcad-*/plugins/libqcadcamscripts.so
+rm ./usr/bin/qcad-*/plugins/libqcadproscripts.so
+rm ./usr/bin/plugins/libqcadtriangulation.so
+rm ./usr/bin/plugins/libqcaddwg.so
+rm ./usr/bin/plugins/libqcadpolygon.so
+
+# Move icons into place so that AppImageAssistant finds them
+cp ./usr/bin/scripts/qcad_icon.svg .
+
+# TODO: Get appdata
+
+# Get desktop file
+wget -q "http://www.qcad.org/bugtracker/index.php?getfile=420" -O qcad.desktop
+
+# Go out of AppImage
+cd ..
+
+# Figure out $VERSION
+VERSION=$(ls qcad-*-*.tar.gz | cut -d "-" -f 2)
+echo $VERSION
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
