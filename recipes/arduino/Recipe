@@ -32,12 +32,21 @@ wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.
 mv lib/desktop.template arduino.desktop
 sed -i -e 's/<BINARY_LOCATION>/AppRun/g' arduino.desktop
 sed -i -e 's/<ICON_NAME>/arduino/g' arduino.desktop
+
+# Add git version of https://github.com/esp8266/Arduino/
+git clone https://github.com/esp8266/Arduino.git hardware/esp8266/git/ 
+cd hardware/esp8266/git/tools/
+python ./get.py
+ESPVER=$(git rev-list --count HEAD)
+sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
+cd ../../../../
+
 cd ..
 
 # Figure out $VERSION
 VER=$(grep -r ARDUINO $APP.AppDir/revisions.txt | head -n 1 | cut -d " " -f 2)
 HOUR=$(cat $APP.AppDir/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' | sed -e 's|:||g')
-VERSION=$VER"."$HOUR
+VERSION=$VER"."$HOUR".esp"$ESPVER
 echo $VERSION
 
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
