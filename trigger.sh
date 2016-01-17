@@ -2,6 +2,9 @@
 
 # Trigger builds on travis using GitHub username and password
 # https://docs.travis-ci.com/api?http#creating-a-temporary-github-token
+# 
+# For example, to build arduino:
+# bash <(curl -s https://raw.githubusercontent.com/probonopd/AppImages/master/trigger.sh) arduino
 
 set +e
 
