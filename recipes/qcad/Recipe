@@ -27,8 +27,8 @@ chmod a+x ./AppRun
 
 # Remove trials (assuming upstream doesn't want to have them
 # distributed)
-rm ./usr/bin/qcad-*/plugins/libqcadcamscripts.so
-rm ./usr/bin/qcad-*/plugins/libqcadproscripts.so
+rm ./usr/bin/plugins/libqcadcamscripts.so
+rm ./usr/bin/plugins/libqcadproscripts.so
 rm ./usr/bin/plugins/libqcadtriangulation.so
 rm ./usr/bin/plugins/libqcaddwg.so
 rm ./usr/bin/plugins/libqcadpolygon.so
