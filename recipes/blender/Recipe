@@ -1,0 +1,69 @@
+#!/bin/bash -x
+
+# In this case, the upstream project seems to already
+# provide binaries that are supposed to run everywhere,
+# so we merely package these as an AppImage
+
+set +e
+
+URL=$(wget -q "https://www.blender.org/download/" -O - | grep -Poe "http.*?-x86_64.tar.bz2" | head -n 1)
+echo $URL
+
+APP=Blender
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+wget -c "$URL"
+
+tar xf *.tar.bz2
+mv blender-*/* $APP.AppDir/usr/bin/
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+# Move icons into place so that AppImageAssistant finds them
+cp ./usr/bin/icons/scalable/apps/blender.svg .
+
+# Get appdata
+mkdir -p ./usr/share/appdata/
+wget -q "https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appdata-extra/desktop/blender.appdata.xml" -O ./usr/share/appdata/blender.appdata.xml
+
+# Get desktop file
+# wget -q "https://git.blender.org/gitweb/gitweb.cgi/blender.git/blob_plain/HEAD:/release/freedesktop/blender.desktop"
+# Workaround for:
+# Segmentation fault when running AppRun
+cat > blender.desktop <<\EOF
+[Desktop Entry]
+Name=Blender
+GenericName=3D modeler
+Comment=3D modeling, animation, rendering and post-production
+Keywords=3d;cg;modeling;animation;painting;sculpting;texturing;video editing;video tracking;rendering;render engine;cycles;game engine;python;
+Exec=blender %f
+Icon=blender
+Terminal=false
+Type=Application
+Categories=Graphics;3DGraphics;
+MimeType=application/x-blender;
+EOF
+
+# Add desktop integration
+XAPP=blender
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+# Figure out $VERSION
+VERSION=$(ls blender-*.bz2 | cut -d "-" -f 2)
+echo $VERSION
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
