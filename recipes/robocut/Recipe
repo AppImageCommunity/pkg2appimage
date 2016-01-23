@@ -34,7 +34,6 @@ cp ./usr/bin/images/icon.png robocut.png
 # Get desktop file
 cat > robocut.desktop <<\EOF
 [Desktop Entry]
-[Desktop Entry]
 Icon=robocut
 Exec=robocut
 Name=Robocut
