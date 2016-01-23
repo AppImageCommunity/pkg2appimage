@@ -1,0 +1,61 @@
+#!/bin/bash -x
+
+# Qt4 based app
+
+set +e
+
+yum install qt-devel gcc-c++ libusb1-devel
+
+git clone https://github.com/nosliwneb/robocut.git
+cd robocut/
+
+APP=Robocut
+
+mkdir -p ./$APP.AppDir/usr/bin
+
+qmake-qt4 
+make
+strip robocut
+
+cd $APP.AppDir/
+
+mv ../robocut ../images ./usr/bin/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+# Move icons into place so that AppImageAssistant finds them
+cp ./usr/bin/images/icon.png robocut.png
+
+# TODO: Get appdata
+# mkdir -p ./usr/share/appdata/
+# ...
+
+# Get desktop file
+cat > robocut.desktop <<\EOF
+[Desktop Entry]
+[Desktop Entry]
+Icon=robocut
+Exec=robocut
+Name=Robocut
+Categories=Graphics;
+EOF
+
+# Add desktop integration
+XAPP=robocut
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+# Figure out $VERSION
+VERSION=$(grep -r VERSION Robocut.pro | cut -d " " -f 3 | sed -e 's|_||g')
+echo $VERSION
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
