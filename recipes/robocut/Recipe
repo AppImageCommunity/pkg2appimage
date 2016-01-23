@@ -2,12 +2,51 @@
 
 # Qt4 based app
 
-set +e
+# Now we are inside CentOS 6
+grep -r "CentOS release 6" /etc/redhat-release || exit 1
+
+# Determine which architecture should be built
+if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
+	ARCH=$(/bin/arch)
+else
+	echo "Architecture could not be determined"
+	exit 1
+fi
+
+git_pull_rebase_helper()
+{
+	git reset --hard HEAD
+        git pull
+}
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+
+# Workaround for:
+# cannot find -lstdc++_nonshared
+# Force-install devtoolset-2-libstdc++-devel i686
+if [ ! -e /opt/rh/devtoolset-2/root/usr/lib/gcc/i686-redhat-linux ] ; then
+  cd /
+  wget http://people.centos.org/~tru/devtools-2/6/i386/RPMS/devtoolset-2-libstdc++-devel-4.8.2-15.el6.i686.rpm -O - | rpm2cpio | cpio -idm
+  cd -
+fi
+
+# Workaround for:
+# checking for QT4... no
+# configure: error: Qt4 not found
+# We need at least Qt 4.8, hence we get it from kde.repo
+wget http://kdeforge.unl.edu/apt/kde-redhat/epel/kde.repo -O /etc/yum.repos.d/kde.repo
+
+# Some packages (e.g. ffmpeg) are not in the official repository, but can be installed from the rpmfusion repository
+
+yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/i386/rpmfusion-free-release-6-1.noarch.rpm http://download1.rpmfusion.org/nonfree/el/updates/6/i386/rpmfusion-nonfree-release-6-1.noarch.rpm
 
 yum install qt-devel gcc-c++ libusb1-devel
 
-git clone https://github.com/nosliwneb/robocut.git
+if [ ! -d robocut ] ; then
+  git clone https://github.com/nosliwneb/robocut.git
+fi
 cd robocut/
+git_pull_rebase_helper
 
 APP=Robocut
 
