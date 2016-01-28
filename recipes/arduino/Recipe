@@ -34,12 +34,11 @@ sed -i -e 's/<BINARY_LOCATION>/AppRun/g' arduino.desktop
 sed -i -e 's/<ICON_NAME>/arduino/g' arduino.desktop
 
 # Add git version of https://github.com/esp8266/Arduino/
-git clone https://github.com/esp8266/Arduino.git hardware/esp8266/git/ 
-cd hardware/esp8266/git/tools/
+git clone https://github.com/esp8266/Arduino.git hardware/esp8266/esp8266/ 
+cd hardware/esp8266/esp8266/tools/
 python ./get.py
 ESPVER=$(git rev-list --count HEAD)
-# The following breaks the architecture detection (makes the IDE think the architecture is "git")
-# sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
+sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
 rm ./dist/*
 cd ../../../../
 
