@@ -38,7 +38,8 @@ git clone https://github.com/esp8266/Arduino.git hardware/esp8266/git/
 cd hardware/esp8266/git/tools/
 python ./get.py
 ESPVER=$(git rev-list --count HEAD)
-sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
+# The following breaks the architecture detection (makes the IDE think the architecture is "git")
+# sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
 rm ./dist/*
 cd ../../../../
 
