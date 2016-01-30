@@ -52,7 +52,7 @@ cd  /
 
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
-  git clone https://github.com/probonopd/AppImageKit.git /AppImageKit
+  git clone  --depth 1 https://github.com/probonopd/AppImageKit.git /AppImageKit
 fi
 
 cd /AppImageKit/
@@ -85,7 +85,7 @@ ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
 
 # Get Krita
 if [ ! -d /krita ] ; then
-	git clone https://github.com/KDE/krita.git /krita
+	git clone  --depth 1 https://github.com/KDE/krita.git /krita
 fi
 
 cd /krita/
@@ -248,11 +248,9 @@ rm -f usr/lib/libusb-1.0.so.0 || true
 rm -f usr/lib/libuuid.so.1 || true
 rm -f usr/lib/libwind.so.0 || true
 
-# Remove these libraries, we need to use the system versions
+# Remove these libraries, we need to use the system versions; this means 11.04 is not supported (12.04 is our baseline)
 rm -f usr/lib/libGL.so.* || true
-rm -f usr/lib/libDRM.so.* || true
-rm -f usr/lib/libxcb.so.* || true
-rm -f usr/lib/libX11.so.* || true
+rm -f usr/lib/libdrm.so.* || true
 
 #rm -f usr/lib/libz.so.1 || true
 
@@ -300,6 +298,12 @@ cp ../AppImageKit/AppRun .
 cp ./usr/share/applications/krita.desktop krita.desktop
 cp /krita/krita/pics/app/64-apps-calligrakrita.png calligrakrita.png
 
+
+# replace krita with the lib-checking startup script.
+#cd /krita.appdir/usr/bin
+#mv krita krita.real
+#wget https://raw.githubusercontent.com/boudewijnrempt/AppImages/master/recipes/krita/krita
+#chmod a+rx krita
 cd / 
 
 APP=Krita
