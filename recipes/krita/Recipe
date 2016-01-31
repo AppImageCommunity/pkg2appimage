@@ -20,10 +20,8 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 # Also we do not want to download and build the dependencies every
 # time we build Krita on travis in the docker image. In order to
 # use newer dependencies, we re-build the docker image instead.
-if [ ! -z "$BINTRAY_API_KEY" ] ; then
-  unset DO_NOT_BUILD_KRITA
-  NO_DOWNLOAD=1
-fi
+unset DO_NOT_BUILD_KRITA
+NO_DOWNLOAD=1
 
 # qjsonparser, used to add metadata to the plugins needs to work in a en_US.UTF-8 environment. That's
 # not always set correctly in CentOS 6.7
