@@ -16,10 +16,14 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
 # If we are running inside Travis CI, then we want to build Krita
 # and we remove the $DO_NOT_BUILD_KRITA environment variable
-# that was used in the process of generating the Docker image
-# if [ ! -z "$TRAVIS" ] ; then
-#  unset DO_NOT_BUILD_KRITA
-# fi
+# that was used in the process of generating the Docker image.
+# Also we do not want to download and build the dependencies every
+# time we build Krita on travis in the docker image. In order to
+# use newer dependencies, we re-build the docker image instead.
+if [ ! -z "$TRAVIS" ] ; then
+  unset DO_NOT_BUILD_KRITA
+  NO_DOWNLOAD=1
+fi
 
 # qjsonparser, used to add metadata to the plugins needs to work in a en_US.UTF-8 environment. That's
 # not always set correctly in CentOS 6.7
@@ -117,6 +121,9 @@ ln -s lib lib64
 
 # start building the deps
 cd /b
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+
 rm -rf /b/* || true
 
 cmake /krita/3rdparty \
@@ -142,6 +149,8 @@ cmake --build . --config RelWithDebInfo --target ext_kcrash
 # XXX: this builds, but pulls in ext_png, which leads to big conflicts
 #cmake --build . --config RelWithDebInfo --target ext_poppler
 cmake --build . --config RelWithDebInfo --target ext_gsl
+
+fi # if [ -z "$NO_DOWNLOAD" ]
     
 cd ..
 
