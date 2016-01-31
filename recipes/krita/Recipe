@@ -14,6 +14,13 @@ set -x
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
+# If we are running inside Travis CI, then we want to build Krita
+# and we remove the $DO_NOT_BUILD_KRITA environment variable
+# that was used in the process of generating the Docker image
+if [ ! -z "$TRAVIS" ] ; then
+  unset DO_NOT_BUILD_KRITA
+fi
+
 # qjsonparser, used to add metadata to the plugins needs to work in a en_US.UTF-8 environment. That's
 # not always set correctly in CentOS 6.7
 export LC_ALL=en_US.UTF-8
