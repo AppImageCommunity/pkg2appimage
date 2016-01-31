@@ -137,7 +137,15 @@ cmake --build . --config RelWithDebInfo --target ext_kcrash
 cmake --build . --config RelWithDebInfo --target ext_gsl
     
 cd ..
-mkdir /krita_build
+
+# If the environment variable DO_NOT_BUILD_KRITA is set to something,
+# then stop here. This is for docker hub which has a timeout that
+# prevents us from building in one go.
+if [ ! -z "$DO_NOT_BUILD_KRITA" ] ; then
+  exit 0
+fi
+
+mkdir -p /krita_build
 cd /krita_build
 cmake ../krita \
     -DCMAKE_INSTALL_PREFIX:PATH=/krita.appdir/usr \
