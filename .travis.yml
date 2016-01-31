@@ -21,3 +21,12 @@ env:
 script:
 - bash travis.sh $RECIPE
 - find out/ -name "*.AppImage" -exec bash -e bintray.sh {} \; 
+
+notifications:
+irc:
+channels:
+- "chat.freenode.net#$RECIPE"
+template:
+- "https://github.com/probonopd/AppImages/blob/master/recipes/$RECIPE/Recipe: %{build_url}: %{message}"
+- "Change view : %{compare_url}"
+on_success: always
