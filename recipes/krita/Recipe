@@ -20,7 +20,7 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 # Also we do not want to download and build the dependencies every
 # time we build Krita on travis in the docker image. In order to
 # use newer dependencies, we re-build the docker image instead.
-if [ "$TRAVIS" == "true" ] ; then
+if [ ! -z "$BINTRAY_API_KEY" ] ; then
   unset DO_NOT_BUILD_KRITA
   NO_DOWNLOAD=1
 fi
