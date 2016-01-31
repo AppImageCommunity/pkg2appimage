@@ -17,9 +17,9 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 # If we are running inside Travis CI, then we want to build Krita
 # and we remove the $DO_NOT_BUILD_KRITA environment variable
 # that was used in the process of generating the Docker image
-if [ ! -z "$TRAVIS" ] ; then
-  unset DO_NOT_BUILD_KRITA
-fi
+# if [ ! -z "$TRAVIS" ] ; then
+#  unset DO_NOT_BUILD_KRITA
+# fi
 
 # qjsonparser, used to add metadata to the plugins needs to work in a en_US.UTF-8 environment. That's
 # not always set correctly in CentOS 6.7
@@ -148,9 +148,9 @@ cd ..
 # If the environment variable DO_NOT_BUILD_KRITA is set to something,
 # then stop here. This is for docker hub which has a timeout that
 # prevents us from building in one go.
-if [ ! -z "$DO_NOT_BUILD_KRITA" ] ; then
-  exit 0
-fi
+# if [ ! -z "$DO_NOT_BUILD_KRITA" ] ; then
+#  exit 0
+# fi
 
 mkdir -p /krita_build
 cd /krita_build
