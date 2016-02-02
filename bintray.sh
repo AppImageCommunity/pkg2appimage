@@ -13,6 +13,7 @@ FILE=$1
 BINTRAY_USER="probono"
 BINTRAY_API_KEY=$BINTRAY_API_KEY # env
 BINTRAY_REPO="AppImages"
+BINTRAY_REPO_OWNER=$BINTRAY_USER # owner and user not always the same
 PCK_NAME=$(basename $1)
 WEBSITE_URL="http://appimage.org"
 ISSUE_TRACKER_URL="https://github.com/probonopd/AppImages/issues"
@@ -133,7 +134,7 @@ echo "Creating package ${PCK_NAME}..."
     \"licenses\": [\"MIT\"],
     \"labels\": [\"AppImage\", \"AppImageKit\"]
     }"
-${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}
+${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}
 
 if [ $(which zsyncmake) ] ; then
   echo ""
@@ -144,21 +145,21 @@ if [ $(which zsyncmake) ] ; then
   # Example for next line: Subsurface-_latestVersion-x86_64.AppImage
   NAMELATESTVERSION=$(echo $(basename ${FILE}) | sed -e "s|${VERSION}|_latestVersion|g")
   # Example for next line: bintray-zsync|probono|AppImages|Subsurface|Subsurface-_latestVersion-x86_64.AppImage.zsync
-  LINE="bintray-zsync|${BINTRAY_USER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
+  LINE="bintray-zsync|${BINTRAY_REPO_OWNER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
   echo "${LINE}" | dd of="${FILE}" bs=1 seek=33651 count=512 conv=notrunc
   echo ""
   echo "Uploading and publishing zsync file for ${FILE}..."
   # Workaround for:
   # https://github.com/probonopd/zsync-curl/issues/1
-  zsyncmake -u http://dl.bintray.com/probono/AppImages/$(basename ${FILE}) ${FILE} -o ${FILE}.zsync
-  ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
+  zsyncmake -u http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename ${FILE}) ${FILE} -o ${FILE}.zsync
+  ${CURL} -T ${FILE}.zsync "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE}).zsync?publish=1&override=1"
 else
   echo "zsyncmake not found, skipping zsync file generation and upload"
 fi
 
 echo ""
 echo "Uploading and publishing ${FILE}..."
-${CURL} -T ${FILE} "${API}/content/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
+${CURL} -T ${FILE} "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename ${FILE})?publish=1&override=1"
 
 if [ $(env | grep TRAVIS_JOB_ID ) ] ; then
 echo ""
@@ -170,7 +171,7 @@ BUILD_LOG="https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true"
     "content": "'${BUILD_LOG}'"
   }
 }'
-${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_USER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes
+${CURL} -X POST -d "${data}" ${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes
 fi
 
 # Seemingly this works only after the second time running this script - thus disabling for now (FIXME)
@@ -180,7 +181,7 @@ fi
 #     data="{
 #     \"list_in_downloads\": true
 #     }"
-# ${CURL} -X PUT -d "${data}" ${API}/file_metadata/${BINTRAY_USER}/${BINTRAY_REPO}/$(basename ${FILE})
+# ${CURL} -X PUT -d "${data}" ${API}/file_metadata/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename ${FILE})
 # echo "TODO: Remove earlier versions of the same architecture from the download list"
 
 # echo ""
