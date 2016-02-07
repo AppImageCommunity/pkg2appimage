@@ -28,6 +28,7 @@ chmod a+x ./AppRun
 cp ./usr/share/icons/hicolor/scalable/apps/brackets.svg .
 
 cp ./usr/bin/brackets.desktop .
+echo "Comment=An open source code editor for web designers and front-end developers. Supported by Adobe." >> brackets.desktop
 
 mkdir -p usr/lib
 mv lib/* usr/lib/
