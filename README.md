@@ -5,6 +5,7 @@
 | Atom | [![Download](https://api.bintray.com/packages/probono/AppImages/Atom/images/download.svg)](https://bintray.com/probono/AppImages/Atom/_latestVersion#files)  |
 | Arduino | [![Download](https://api.bintray.com/packages/probono/AppImages/Arduino/images/download.svg)](https://bintray.com/probono/AppImages/Arduino/_latestVersion#files)  |
 | Blender | [![Download](https://api.bintray.com/packages/probono/AppImages/Blender/images/download.svg)](https://bintray.com/probono/AppImages/Blender/_latestVersion#files)  |
+| Brackets | [![Download](https://api.bintray.com/packages/probono/AppImages/Brackets/images/download.svg)](https://bintray.com/probono/AppImages/Brackets/_latestVersion#files)  |
 | Chromium | [![Download](https://api.bintray.com/packages/probono/AppImages/Chromium/images/download.svg)](https://bintray.com/probono/AppImages/Chromium/_latestVersion#files)  |
 | Firefox | [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion#files)  |
 | LibreOffice | [![Download](https://api.bintray.com/packages/probono/AppImages/LibreOffice/images/download.svg)](https://bintray.com/probono/AppImages/LibreOffice/_latestVersion#files)  |
