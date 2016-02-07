@@ -183,8 +183,10 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # if [ -z "$NO_DOWNLOAD" ] ; then
   # rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
   # rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
-  rpm -ivh --force ftp://ftp5.gwdg.de/pub/opensuse/repositories/home:/Kakumba/RedHat_RHEL-6/x86_64/libcairo2-1.14.2-6.1.$(arch).rpm
-  rpm -ivh --force ftp://ftp5.gwdg.de/pub/opensuse/repositories/home:/Kakumba/RedHat_RHEL-6/x86_64/cairo-devel-1.14.2-6.1.$(arch).rpm
+  cd /etc/yum.repos.d/
+  wget http://download.opensuse.org/repositories/home:Kakumba/CentOS_CentOS-6/home:Kakumba.repo
+  yum install cairo-devel libcairo2
+  cd -
 # fi
 
 fi # if [ -z "$NO_LIBS" ]
