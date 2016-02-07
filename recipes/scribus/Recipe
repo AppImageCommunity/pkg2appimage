@@ -180,10 +180,12 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # -- checking for one of the modules 'libcairo>=1.10.0;cairo>=1.10.0'
 # CMake Error at /usr/share/cmake/Modules/FindPkgConfig.cmake:363 (message):
 #   None of the required 'libcairo>=1.10.0;cairo>=1.10.0' found
-if [ -z "$NO_DOWNLOAD" ] ; then
-  rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
-  rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
-fi
+# if [ -z "$NO_DOWNLOAD" ] ; then
+  # rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-1.10.2-3.el6.$(arch).rpm
+  # rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
+  rpm -ivh --force ftp://ftp5.gwdg.de/pub/opensuse/repositories/home:/Kakumba/RedHat_RHEL-6/x86_64/libcairo2-1.14.2-6.1.$(arch).rpm
+  rpm -ivh --force ftp://ftp5.gwdg.de/pub/opensuse/repositories/home:/Kakumba/RedHat_RHEL-6/x86_64/cairo-devel-1.14.2-6.1.$(arch).rpm
+# fi
 
 fi # if [ -z "$NO_LIBS" ]
 
