@@ -185,7 +185,7 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
   # rpm -ivh --force ftp://ftp.pbone.net/mirror/ftp.sourceforge.net/pub/sourceforge/f/fu/fuduntu-el/el6/current/TESTING/RPMS/cairo-devel-1.10.2-3.el6.$(arch).rpm
   cd /etc/yum.repos.d/
   wget http://ftp5.gwdg.de/pub/opensuse/repositories/home:/Kakumba/RedHat_RHEL-6/home:Kakumba.repo
-  yum install cairo-devel libcairo2
+  yum -y install cairo-devel libcairo2
   cd -
 # fi
 
