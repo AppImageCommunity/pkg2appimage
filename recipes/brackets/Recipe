@@ -1,0 +1,50 @@
+# We don't have to build this one from source
+# because upstream is providing binaries that seem to be usable for
+# creating an AppImage; hence this recipe is very short and quick
+
+APP=Brackets
+
+mkdir -p $APP/$APP.AppDir
+cd $APP/
+
+LINK=$(wget -q https://github.com/adobe/brackets/releases -O - | grep Extract | grep download | grep 64-bit.deb | head -n 1 | cut -d '"' -f 2)
+URL="https://github.com${LINK}"
+echo $URL
+wget -c "$URL"
+wget -c --trust-server-names http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_151-12.3_amd64.deb
+
+cd $APP.AppDir
+
+dpkg -x ../Brackets*.deb .
+dpkg -x ../libudev*.deb .
+
+rm usr/bin/brackets
+mv opt/brackets/* usr/bin/
+rm -rf ./opt/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+cp ./usr/share/icons/hicolor/scalable/apps/brackets.svg .
+
+cp ./usr/bin/brackets.desktop .
+
+mkdir -p usr/lib
+mv lib/* usr/lib/
+
+# Add desktop integration
+XAPP=arduino
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+cd .. # Go out of AppDir
+
+# Figure out $VERSION
+VERSION=$(cat $APP.AppDir//usr/bin/www/config.json | grep version | cut -d '"' -f 4 | sed -e 's|-|.|g')
+echo $VERSION
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
