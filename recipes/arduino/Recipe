@@ -8,20 +8,21 @@ mkdir -p ./$APP
 cd ./$APP
 
 wget -c "$URL"
-
 tar xf *.tar.xz
-mv ardu*/ $APP.AppDir
+
+mkdir -p $APP.AppDir/usr/bin
+
+mv ardu*/* $APP.AppDir/usr/bin/
 
 cd $APP.AppDir/
 
-mv arduino AppRun
-cp lib/arduino_small.png arduino.png
-sed -i -e 's|FULL_PATH/||g' arduino.desktop
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
 
 # Move icons into place so that AppImageAssistant finds them
-mkdir -p usr/share/icons/
-mv lib/icons/ usr/share/icons/hicolor
-cat usr/share/icons/hicolor/96x96/apps/arduino.png > arduino.png
+mkdir -p usr/share/icons
+mv usr/bin/lib/icons usr/share/icons/hicolor
+cat usr/share/icons/hicolor/128x128/apps/arduino.png > arduino.png
 
 # Get appdata - why is it missing in the binary distribution?
 mkdir -p usr/share/appdata/
@@ -29,25 +30,31 @@ rm usr/share/appdata/arduino.appdata.xml || true
 wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/appdata/arduino.appdata.xml
 
 # Get desktop file
-mv lib/desktop.template arduino.desktop
-sed -i -e 's/<BINARY_LOCATION>/AppRun/g' arduino.desktop
+find . -name desktop.template -exec cp {} arduino.desktop \;
+sed -i -e 's/<BINARY_LOCATION>/arduino/g' arduino.desktop
 sed -i -e 's/<ICON_NAME>/arduino/g' arduino.desktop
 
 # Add git version of https://github.com/esp8266/Arduino/
-git clone https://github.com/esp8266/Arduino.git hardware/esp8266/esp8266/ 
-cd hardware/esp8266/esp8266/tools/
+git clone https://github.com/esp8266/Arduino.git usr/bin/hardware/esp8266/esp8266/ 
+cd usr/bin/hardware/esp8266/esp8266/tools/
 python ./get.py
-ESPVER=$(git rev-list --count HEAD)
+ESPVER=$(git rev-parse --short HEAD)
 sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
 rm ./dist/*
-cd ../../../../
+cd ../../../../../../
 
-cd ..
+# Add desktop integration
+XAPP=arduino
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+cd .. # Go out of AppDir
 
 # Figure out $VERSION
-VER=$(grep -r ARDUINO $APP.AppDir/revisions.txt | head -n 1 | cut -d " " -f 2)
-HOUR=$(cat $APP.AppDir/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' | sed -e 's|:||g')
-VERSION=$VER"."$HOUR".esp"$ESPVER
+VER=$(grep -r ARDUINO $APP.AppDir/usr/bin/revisions.txt | head -n 1 | cut -d " " -f 2)
+HOUR=$(cat $APP.AppDir/usr/bin/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's| ||g' | sed -e 's|:||g')
+VERSION=$VER".hourly"$HOUR".esp"$ESPVER
 echo $VERSION
 
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
