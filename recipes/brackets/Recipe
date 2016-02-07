@@ -33,7 +33,7 @@ mkdir -p usr/lib
 mv lib/* usr/lib/
 
 # Add desktop integration
-XAPP=arduino
+XAPP=brackets
 wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
 chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
