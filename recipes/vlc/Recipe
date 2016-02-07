@@ -5,6 +5,7 @@
 # We could also do that is done in vlc.SlackBuild ourselves instead.
 #
 # Or build on CentOS 6 like described here: http://moritz.in/vlc-on-uberspace/
+# and here: https://wiki.videolan.org/UnixCompile/
 #
 # Citation from ./usr/doc/vlc-*/vlc.SlackBuild:
 # NOTE: this SlackBuild is a monster - it tries to wrap all dependencies to
