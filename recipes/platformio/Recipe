@@ -1,0 +1,27 @@
+# This is an example of a nodejs app
+# which is not really compiled from scratch
+# but installs nodejs modules with npm
+# so I am assuming for now that it is OK to do this on Travis CI's stock Ubuntu
+# if thre resulting binaries don't run on old systems, then we need to do this
+# e.g., inside a CentOS 6 docker image
+
+sudo apt-get -y install npm
+
+sudo apt-get -y install curl git
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+sudo apt-get install --yes nodejs
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+sudo sudo npm update npm -g
+npm -v
+sudo npm config set python /usr/bin/python2 -g
+
+wget -c https://github.com/atom/atom/archive/master.zip
+unzip master.zip
+cd atom-master/
+
+INSTLVERSION=$(wget -q https://github.com/platformio/platformio-atom-ide-autoinstaller/releases -O - | grep "platformio-atom-ide-autoinstaller/releases/tag/" | head -n 1 | cut -d "v" -f 2 | cut -d '"' -f 1)
+sed -i -e 's|"packageDependencies": {|"packageDependencies": { "platformio-ide-installer": "'"${INSTLVERSION}"'",|g' package.json 
+
+./script/build
+
+# To be continued
