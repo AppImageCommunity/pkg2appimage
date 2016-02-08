@@ -5,15 +5,18 @@
 # if thre resulting binaries don't run on old systems, then we need to do this
 # e.g., inside a CentOS 6 docker image
 
-sudo apt-get -y install npm
-
-sudo apt-get -y install curl git
+sudo apt-get -y install npm build-essential git libgnome-keyring-dev fakeroot curl
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
 sudo apt-get install --yes nodejs
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 sudo sudo npm update npm -g
 npm -v
 sudo npm config set python /usr/bin/python2 -g
+
+APP=PlaformIO
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
 
 wget -c https://github.com/atom/atom/archive/master.zip
 unzip master.zip
@@ -24,7 +27,18 @@ sed -i -e 's|"packageDependencies": {|"packageDependencies": { "platformio-ide-i
 
 ./script/build
 
-# To be continued
+# TODO: Fill dot-atom/packages/
+# or, better:
+# git clone https://github.com/user/repo.git
+# cd repo
+# apm install
+# At runtime:
+# apm link # this will add a symlink to $HOME/.atom/packages
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
 
 # sudo script/grunt install --install-dir /install/atom/here
 # sudo script/grunt install --build-dir /build/atom/here --install-dir /install/atom/here
