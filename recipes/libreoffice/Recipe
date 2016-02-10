@@ -33,15 +33,14 @@ cd ../../
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
 
-# The following is a real dirty hack to get under the 250 MB file size limit 
-# imposed by Bintray (FIXME)
+# The following is a real dirty hack to stay under the Bintray 250 MB file size limit 
 # We are deleting some of the largest Python binary libraries
 # Hopefully no Python macros are crashing because of this
 # TODO: Find something else to strip away or get better compression or get Bintray
-# lift the filesize limit
-rm opt/libreoffice5.0/program/python-core-3.3.3/lib/lib-dynload/_ssl.cpython-33m.so ..
-rm opt/libreoffice5.0/program/python-core-3.3.3/lib/lib-dynload/_decimal.cpython-33m.so ..
-rm opt/libreoffice5.0/program/python-core-3.3.3/lib/lib-dynload/_hashlib.cpython-33m.so ..
+# to lift the filesize limit
+find . -name _ssl.cpython* -exec rm {} \; || true
+find . -name _decimal.cpython* -exec rm {} \; || true
+find . -name _hashlib.cpython* -exec rm {} \; || true
 
 cd ..
 
