@@ -1,0 +1,55 @@
+#!/bin/bash -x
+
+# This is an example of a Java application
+
+set +e
+
+APP=IrScrutinizer
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+# Get Java
+wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
+
+# Get IrScrutinizer 
+FILEPATH=$(wget -q "https://github.com/bengtmartensson/harctoolboxbundle/releases" -O - | grep IrScrutinizer-bin.zip | grep href | head -n 1 | cut -d '"' -f 2)
+URL=https://github.com/$FILEPATH
+wget -c "$URL"
+
+cd $APP.AppDir
+unzip ../IrScrutinizer-bin.zip
+rm -rf Windows*/ Mac*/ Linux-i386/ *bat
+tar xf ../jre*
+
+# Rewrite desktop file
+desktop-file-install --set-key=Exec --set-value=irscrutinizer --set-key=Icon --set-value=irscrutinizer irscrutinizer.desktop --dir .
+
+mv irscrutinizer.sh IrpProtocols.ini Linux-amd64/ schemas/ protocols.ini exportformats.xml IrScrutinizer-jar-with-dependencies.jar usr/bin/
+mv usr/bin/irscrutinizer.sh usr/bin/irscrutinizer
+
+( cd usr/bin/bin ; ln -s ../../../jre*/bin/java . )
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+# Add desktop integration
+XAPP=irscrutinizer
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Get version
+VERSION=$(cat irscrutinizer.desktop | grep ^Name | cut -d " " -f 2)
+
+# Rewrite desktop file; remove version from there
+desktop-file-install --set-key=Name --set-value=IrScrutinizer irscrutinizer.desktop --dir .
+desktop-file-install --set-key=Comment --set-value="A powerful program for capturing, generating, analyzing, importing, and exporting of infrared (IR) signals" irscrutinizer.desktop --dir .
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
