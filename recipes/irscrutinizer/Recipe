@@ -27,7 +27,8 @@ desktop-file-install --set-key=Exec --set-value=irscrutinizer --set-key=Icon --s
 mv irscrutinizer.sh IrpProtocols.ini Linux-amd64/ schemas/ protocols.ini exportformats.xml IrScrutinizer-jar-with-dependencies.jar usr/bin/
 mv usr/bin/irscrutinizer.sh usr/bin/irscrutinizer
 
-( mkdir -p cd usr/bin/bin ; cd usr/bin/bin ; ln -s ../../../jre*/bin/java . )
+# Workaround for the fact that the upstream bash script changes into usr/bin before running Java
+( mkdir -p usr/bin/bin ; cd usr/bin/bin ; ln -s ../../../jre*/bin/java . )
 
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
