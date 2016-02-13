@@ -1,6 +1,8 @@
 #!/bin/bash -x
 
-# This is an example of a Java application
+# This is an example of a Java application.
+# However since this application is portable and stores its indexes next to it, it is better to use it
+# without an AppImage. (FIXME)
 
 set +e
 
@@ -52,12 +54,8 @@ VERSION=$(grep -r "DocFetcher .*<br" ./usr/bin/help/English/DocFetcher_Manual.ht
 # Move icon into place
 cp usr/bin/img/docfetcher128.png docfetcher.png
 
-# Configure DocFetcher to write to $HOME rather than to the AppImage
-cat >> ./usr/bin/misc/paths.txt <\EOF
-settings=$HOME/DocFetcher
-indexes=$HOME/DocFetcher
-swt=$HOME/DocFetcher
-EOF
+# Configure DocFetcher to write to /tmp rather than to the AppImage
+( cd usr/bin ; rm -rf indexes ; ln -s /tmp indexes )
 
 # Go out of AppImage
 cd ..
