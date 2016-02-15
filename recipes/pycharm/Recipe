@@ -1,0 +1,59 @@
+This is an example of a commercial application.
+
+################################################
+## TODO: WRITE A WRAPPER THAT SETS $JAVA_HOME ##
+################################################
+
+APP=PyCharm 
+mkdir -p $APP/$APP.AppDir/usr/bin
+
+cd $APP/
+
+wget -c "https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz"
+
+# Get Java
+wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+tar xf ../pycharm-*.tar.gz 
+( mkdir -p usr/bin/bin ; cd usr/bin; ln -s ../../pycharm-community-5.0.4/bin/pycharm.sh . )
+
+# Install java
+tar xf ../jre*
+( mkdir -p usr/bin/bin ; cd usr/bin/bin ; ln -s ../../../jre*/bin/java . )
+
+cat > pycharm.desktop <<\EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=PyCharm Community Edition
+Icon=pycharm
+Exec=pycharm.sh" %f
+Comment=Develop with pleasure!
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-pycharm-ce
+EOF
+
+cp pycharm-community-5.0.4/bin/pycharm.png .
+
+VERSION=$(ls ../wxHexEditor-*.tar.bz2 | cut -d - -f 2 | sed -e 's|v||g')
+echo $VERSION
+
+# Do not add desktop integration since it comes with its own
+
+################################################
+## TODO: WRITE A WRAPPER THAT SETS $JAVA_HOME ##
+################################################
+
+cd .. # Go out of AppDir
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
