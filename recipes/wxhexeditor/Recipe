@@ -1,2 +1,49 @@
-# To be written
-# http://downloads.sourceforge.net/project/wxhexeditor/wxHexEditor/v0.23%20Beta/wxHexEditor-v0.23-Linux_x86_64.tar.bz2
+APP=wxHexEditor
+mkdir -p $APP/$APP.AppDir/usr/bin
+
+cd $APP/
+
+wget -c "http://downloads.sourceforge.net/project/wxhexeditor/wxHexEditor/v0.23%20Beta/wxHexEditor-v0.23-Linux_x86_64.tar.bz2"
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+tar xf ../wxHexEditor-*.tar.bz2
+mv wxHexEditor/* usr/bin/
+rm -r wxHexEditor/
+
+cat > wxHexEditor.desktop <<\EOF
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=wxHexEditor
+GenericName=wxHexEditor
+Comment=A hex editor for huge files and devices
+Exec=wxHexEditor
+Icon=wxHexEditor
+Terminal=false
+Type=Application
+Categories=Utility;TextEditor;
+EOF
+
+mkdir -p usr/share/icons/hicolor/48x48/apps
+wget "https://sourceforge.net/p/wxhexeditor/code/HEAD/tree/trunk/resources/wxHexEditor.png?format=raw" -O usr/share/icons/hicolor/48x48/apps/wxHexEditor.png
+
+VERSION=$(ls ../wxHexEditor-*.tar.bz2 | cut -d - -f 2 | sed -e 's|v||g')
+echo $VERSION
+
+# Add desktop integration
+XAPP=wxHexEditor
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+cd .. # Go out of AppDir
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
