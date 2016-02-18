@@ -1,44 +1,79 @@
-# This is an example of a nodejs app
-# which is not really compiled from scratch
-# but installs nodejs modules with npm
-# so I am assuming for now that it is OK to do this on Travis CI's stock Ubuntu
-# if thre resulting binaries don't run on old systems, then we need to do this
-# e.g., inside a CentOS 6 docker image
+#!/bin/bash -x
 
-sudo apt-get -y install npm build-essential git libgnome-keyring-dev fakeroot curl
-curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-sudo apt-get install --yes nodejs
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-sudo sudo npm update npm -g
-npm -v
-sudo npm config set python /usr/bin/python2 -g
+#################################################################
+# THIS IS A WORK IN PROGRESS - NOT WORKING AS INTENDED YET
+#################################################################
 
-APP=PlaformIO
+set +e
+
+URL="https://sourceforge.net/projects/platformio-storage/files/ide-bundles/platformio-atom-linux-amd64.deb/download"
+echo $URL
+URL2="http://downloads.sourceforge.net/project/platformio-storage/ide-bundles/platformio-atom-ide-deps.tar.gz"
+echo $URL2
+
+APP=PlatformIO
 
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
-wget -c https://github.com/atom/atom/archive/master.zip
-unzip master.zip
-cd atom-master/
-
-INSTLVERSION=$(wget -q https://github.com/platformio/platformio-atom-ide-autoinstaller/releases -O - | grep "platformio-atom-ide-autoinstaller/releases/tag/" | head -n 1 | cut -d "v" -f 2 | cut -d '"' -f 1)
-sed -i -e 's|"packageDependencies": {|"packageDependencies": { "platformio-ide-installer": "'"${INSTLVERSION}"'",|g' package.json 
-
-./script/build
-
-# TODO: Fill dot-atom/packages/
-# or, better:
-# git clone https://github.com/user/repo.git
-# cd repo
-# apm install
-# At runtime:
-# apm link # this will add a symlink to $HOME/.atom/packages
+wget -c --trust-server-names "$URL" "$URL2" "$URL3"
 
 cd $APP.AppDir/
+dpkg -x ../platformio*deb .
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+mkdir ./packages
+( cd packages/ , tar xf ../../platformio-atom-ide-deps.tar.gz )
 
-# sudo script/grunt install --install-dir /install/atom/here
-# sudo script/grunt install --build-dir /build/atom/here --install-dir /install/atom/here
+# Write a custom AppRun file that does things slightly differently
+cat > AppRun <<\EOF
+#!/bin/sh
+HERE=$(dirname $(readlink -f "${0}"))
+export ATOM_HOME="$HOME/.platformio_ide"
+
+export PATH="$HERE/packages/platformio-ide/penv/bin/":$PATH
+if [ ! -d "$ATOM_HOME/packages" ]; then
+  mkdir -p "$ATOM_HOME/packages/"
+fi
+ln -sf "$HERE/packages"/* "$ATOM_HOME/packages/"
+"$HERE/usr/bin/atom" $@
+# TODO: Remove the symlinks created above
+EOF
+chmod a+x AppRun
+
+# Move icon into place so that AppImageAssistant finds them
+cp ./usr/share/pixmaps/atom.png .
+
+# TODO: Get appdata
+# mkdir -p ./usr/share/appdata/
+# wget -q "..." -O ./usr/share/appdata/atom.appdata.xml
+
+# Get desktop file
+cp ./usr/share/applications/atom.desktop .
+sed -i -e "s|/usr/share/atom/||g" atom.desktop
+
+# Remove launcher and move in place
+# TODO: Replace this by something cleaner
+rm usr/bin/atom
+mv usr/share/atom/* usr/bin/
+
+# Add desktop integration
+XAPP=atom
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+./usr/bin/resources/app/apm/bin/apm install platformio-ide
+mv $HOME/.atom/packages/platformio-ide ./packages/
+
+# Figure out $VERSION
+VERSION=$(grep -r "atom@" ./usr/share/doc/atom/copyright | cut -d " " -f 2 | cut -d "@" -f 2)
+echo $VERSION
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
