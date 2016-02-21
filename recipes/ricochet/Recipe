@@ -1,0 +1,51 @@
+# This is a Qt app that is compiled by upstream in a portable way
+# including everything Qt needs to run. It would be great if all
+# upstreams did it that way... would save us from having to compile
+# It manages to be just 14 MB large despite being a Qt app
+
+FILE=$(wget -q "https://ricochet.im/releases/latest/" -O - | grep -Poe "\".*x86_64.tar.bz2" | cut -d '"' -f 2 | head -n 1)
+
+URL="https://ricochet.im/releases/latest/${FILE}"
+
+APP=Ricochet
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+wget -c "$URL"
+
+tar xf *tar.bz2
+
+mv ricochet/* $APP.AppDir/usr/bin/
+
+cd $APP.AppDir
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+wget https://raw.githubusercontent.com/ricochet-im/ricochet/master/src/ricochet.desktop
+
+mkdir -p usr/share/icons/hicolor/48x48/apps/
+( cd usr/share/icons/hicolor/48x48/apps/ ; wget https://raw.githubusercontent.com/ricochet-im/ricochet/master/icons/ricochet.png )
+
+VERSION=$(ls ../ricochet-*.tar.bz2 | cut -d "-" -f 2)
+
+# Add desktop integration
+XAPP=ricochet
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+// If built in portable mode (default), configuration 
+// is stored in the 'config' directory next to the binary.
+// If not writable, launching fails.
+// This behavior may be overriden by passing a folder path 
+// as the first argument.
+sed -i -e 's|exec $BIN "$@"|exec $BIN $HOME/.ricochet|g' usr/bin/ricochet.wrapper
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
