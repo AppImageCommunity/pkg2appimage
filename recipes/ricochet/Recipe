@@ -39,7 +39,7 @@ sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 // If not writable, launching fails.
 // This behavior may be overriden by passing a folder path 
 // as the first argument.
-sed -i -e 's|exec $BIN "$@"|exec $BIN $HOME/.ricochet|g' usr/bin/ricochet.wrapper
+sed -i -e 's|@|HOME/.ricochet|g' usr/bin/ricochet.wrapper
 
 # Go out of AppImage
 cd ..
