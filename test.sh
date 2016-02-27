@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Test AppImage on many distributions
 # using Live CD ISO files
 
