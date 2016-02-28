@@ -27,7 +27,6 @@ dpkg -x ../libudev*.deb .
 dpkg -x ../libgcrypt11*.deb .
 mkdir -p usr/lib
 mv lib/x86_64-linux-gnu/* usr/lib/
-rm -r lib/
 
 rm usr/bin/brackets
 mv opt/brackets/* usr/bin/
@@ -43,6 +42,7 @@ echo "Comment=An open source code editor for web designers and front-end develop
 
 mkdir -p usr/lib
 mv lib/* usr/lib/
+rm -r lib/
 
 # Add desktop integration
 XAPP=brackets
