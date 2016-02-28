@@ -13,10 +13,20 @@ echo $URL
 wget -c "$URL"
 wget -c --trust-server-names http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_151-12.3_amd64.deb
 
+# Brackets uses an old version of the CEF (Chromium Embedded Framework) that depends on libgcrypt11. 
+# However libgcrypt11 has been deprecated in modern distros.
+# https://github.com/adobe/brackets/issues/10255
+# https://github.com/adobe/brackets-shell/pull/541
+FILE=$(wget -q "http://security.debian.org/debian-security/pool/updates/main/libg/libgcrypt11/?C=M;O=D" -O - | grep _amd64.deb | cut -d '"' -f 8 | head -n 1)
+wget -c --trust-server-names "http://security.debian.org/debian-security/pool/updates/main/libg/libgcrypt11/${FILE}"
+
 cd $APP.AppDir
 
 dpkg -x ../Brackets*.deb .
 dpkg -x ../libudev*.deb .
+dpkg -x ../libgcrypt11*.deb .
+mv lib/x86_64-linux-gnu/* usr/lib/
+rm -r lib/
 
 rm usr/bin/brackets
 mv opt/brackets/* usr/bin/
