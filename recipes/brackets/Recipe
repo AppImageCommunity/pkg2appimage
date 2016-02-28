@@ -25,6 +25,7 @@ cd $APP.AppDir
 dpkg -x ../Brackets*.deb .
 dpkg -x ../libudev*.deb .
 dpkg -x ../libgcrypt11*.deb .
+mkdir -p usr/lib
 mv lib/x86_64-linux-gnu/* usr/lib/
 rm -r lib/
 
