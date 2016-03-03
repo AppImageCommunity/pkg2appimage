@@ -1,0 +1,109 @@
+#!/bin/bash -x
+
+# In this case, the upstream project seems to already
+# provide binaries that are supposed to run everywhere,
+# so we merely package these as an AppImage
+
+set +e
+
+#dependencies
+SDL="https://kojipkgs.fedoraproject.org//packages/SDL2/2.0.3/7.fc23/i686/SDL2-2.0.3-7.fc23.i686.rpm"
+SDL_TTF="https://kojipkgs.fedoraproject.org//packages/SDL2_ttf/2.0.13/1.fc23/i686/SDL2_ttf-2.0.13-1.fc23.i686.rpm"
+SPEEXDSP="https://kojipkgs.fedoraproject.org//packages/speexdsp/1.2/0.9.rc3.fc24/x86_64/speexdsp-1.2-0.9.rc3.fc24.x86_64.rpm"
+FONT_CONFIG="https://kojipkgs.fedoraproject.org//packages/fontconfig/2.11.94/4.fc23/x86_64/fontconfig-2.11.94-4.fc23.x86_64.rpm"
+JANSSON="https://kojipkgs.fedoraproject.org//packages/jansson/2.7/2.fc23/i686/jansson-2.7-2.fc23.i686.rpm"
+LIB_CURL="https://kojipkgs.fedoraproject.org//packages/curl/7.43.0/6.fc23/i686/libcurl-7.43.0-6.fc23.i686.rpm"
+SPEEX_DSP="https://kojipkgs.fedoraproject.org//packages/speexdsp/1.2/0.7.rc3.fc23/i686/speexdsp-1.2-0.7.rc3.fc23.i686.rpm"
+NGHTTP="https://kojipkgs.fedoraproject.org//packages/nghttp2/1.7.1/1.fc23/i686/libnghttp2-1.7.1-1.fc23.i686.rpm"
+SSH_2="https://kojipkgs.fedoraproject.org//packages/libssh2/1.6.0/4.fc23/i686/libssh2-1.6.0-4.fc23.i686.rpm"
+KRB="https://kojipkgs.fedoraproject.org//packages/krb5/1.14.1/1.fc23/i686/krb5-libs-1.14.1-1.fc23.i686.rpm"
+COM_ERR="https://kojipkgs.fedoraproject.org//packages/e2fsprogs/1.42.13/3.fc23/i686/libcom_err-1.42.13-3.fc23.i686.rpm"
+SSL="https://kojipkgs.fedoraproject.org//packages/openssl/1.0.2g/2.fc23/i686/openssl-libs-1.0.2g-2.fc23.i686.rpm"
+KEY_UTIL="https://kojipkgs.fedoraproject.org//packages/keyutils/1.5.9/7.fc23/i686/keyutils-libs-1.5.9-7.fc23.i686.rpm"
+
+#openrct2 game
+URL="http://cdn.limetric.com/games/openrct2/0.0.4.0/develop/1867ddf/4/OpenRCT2-0.0.4.0-develop-1867ddf-linux.tar.gz"
+
+echo $URL
+
+APP=OpenRCT2
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+wget -c --trust-server-names "$SDL"
+wget -c --trust-server-names "$SDL_TTF"
+wget -c --trust-server-names "$SPEEXDSP"
+wget -c --trust-server-names "$FONT_CONFIG"
+wget -c --trust-server-names "$JANSSON"
+wget -c --trust-server-names "$URL"
+wget -c --trust-server-names "$LIB_CURL"
+wget -c --trust-server-names "$SPEEX_DSP"
+wget -c --trust-server-names "$NGHTTP"
+wget -c --trust-server-names "$SSH_2"
+wget -c --trust-server-names "$KRB"
+wget -c --trust-server-names "$COM_ERR"
+wget -c --trust-server-names "$SSL"
+wget -c --trust-server-names "$KEY_UTIL"
+tar -xvf OpenRCT2*.tar.gz 
+
+
+shopt -s extglob
+
+cd $APP.AppDir/
+rpm2cpio ../SDL2!(_ttf*).rpm . | cpio -idmv
+rpm2cpio ../SDL2_ttf*.rpm . | cpio -idmv
+rpm2cpio ../gspeexdsp*.rpm . | cpio -idmv
+rpm2cpio ../fontconfig*.rpm . | cpio -idmv
+rpm2cpio ../jansson*.rpm . | cpio -idmv
+rpm2cpio ../libcurl*.rpm . | cpio -idmv
+rpm2cpio ../speexdsp*.rpm . | cpio -idmv
+rpm2cpio ../libnghttp2*.rpm . | cpio -idmv
+rpm2cpio ../libssh2*.rpm . | cpio -idmv
+rpm2cpio ../krb5*.rpm . | cpio -idmv
+rpm2cpio ../libcom_err*.rpm . | cpio -idmv
+rpm2cpio ../openssl-libs*.rpm . | cpio -idmv
+rpm2cpio ../keyutils*.rpm . | cpio -idmv
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+# move game files to image
+cp -R ../OpenRCT2/* ./usr/bin/
+
+# TODO: Get appdata
+# mkdir -p ./usr/share/appdata/
+# wget -q "..." -O ./usr/share/appdata/atom.appdata.xml
+
+#Get desktop file
+wget -c --trust-server-names https://openrct2.org/assets/images/logos/icon_x64.png
+
+#create desktop file to run application
+cat > ./openrct2.desktop <<\EOF
+[Desktop Entry]
+Name=OpenRCT2
+Icon=icon_x64
+Exec=openrct2
+Categories=Game;
+Type=Application
+StartupNotify=true
+EOF
+
+# Add desktop integration
+XAPP=openrct2
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Figure out $VERSION
+VERSION=$(grep -r "Release version:" ./usr/bin/doc/readme.txt | cut -d " " -f 3)
+echo $VERSION
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
