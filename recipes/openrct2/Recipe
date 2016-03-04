@@ -21,6 +21,11 @@ COM_ERR="https://kojipkgs.fedoraproject.org//packages/e2fsprogs/1.42.13/3.fc23/i
 SSL="https://kojipkgs.fedoraproject.org//packages/openssl/1.0.2g/2.fc23/i686/openssl-libs-1.0.2g-2.fc23.i686.rpm"
 KEY_UTIL="https://kojipkgs.fedoraproject.org//packages/keyutils/1.5.9/7.fc23/i686/keyutils-libs-1.5.9-7.fc23.i686.rpm"
 
+
+DEVELOP="https://openrct2.org/altapi/?command=get-latest-download&flavourId=4&gitBranch=develop"
+STABLE="https://openrct2.org/altapi/?command=get-latest-download&flavourId=4&gitBranch=master"
+
+
 #openrct2 game
 URL="http://cdn.limetric.com/games/openrct2/0.0.4.0/develop/1867ddf/4/OpenRCT2-0.0.4.0-develop-1867ddf-linux.tar.gz"
 
@@ -28,15 +33,19 @@ echo $URL
 
 APP=OpenRCT2
 
+rm -rf ./$APP/$APP.AppDir/*
+rm -rf ./$APP/OpenRCT2*tar.gz
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
+
+wget -c --trust-server-names "http://stedolan.github.io/jq/download/linux64/jq" 
+chmod +x ./jq
 
 wget -c --trust-server-names "$SDL"
 wget -c --trust-server-names "$SDL_TTF"
 wget -c --trust-server-names "$SPEEXDSP"
 wget -c --trust-server-names "$FONT_CONFIG"
 wget -c --trust-server-names "$JANSSON"
-wget -c --trust-server-names "$URL"
 wget -c --trust-server-names "$LIB_CURL"
 wget -c --trust-server-names "$SPEEX_DSP"
 wget -c --trust-server-names "$NGHTTP"
@@ -45,8 +54,12 @@ wget -c --trust-server-names "$KRB"
 wget -c --trust-server-names "$COM_ERR"
 wget -c --trust-server-names "$SSL"
 wget -c --trust-server-names "$KEY_UTIL"
+wget $(curl "$DEVELOP" | ./jq ".url" | sed "s/^\([\"']\)\(.*\)\1\$/\2/g")
 tar -xvf OpenRCT2*.tar.gz 
 
+#extract the name of the build
+OUTPUT_FILE=$(curl "$DEVELOP" | ./jq ".url" | cut -d "/" -f 10 | cut -d "." -f 4)
+echo $OUTPUT_FILE
 
 shopt -s extglob
 
@@ -95,9 +108,6 @@ wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppI
 chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
-# Figure out $VERSION
-VERSION=$(grep -r "Release version:" ./usr/bin/doc/readme.txt | cut -d " " -f 3)
-echo $VERSION
 
 # Go out of AppImage
 cd ..
@@ -105,5 +115,5 @@ cd ..
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
 chmod a+x ./AppImageAssistant
 mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+rm ../out/$OUTPUT_FILE"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$OUTPUT_FILE"-x86_64.AppImage"
