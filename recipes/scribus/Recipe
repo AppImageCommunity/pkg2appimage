@@ -347,7 +347,6 @@ cp -rf /usr/lib32/python2.6/* usr/lib/python2.6/ || true
 rm -f ./usr/lib/libdbus-1.so.3 || true
 
 # Fix the "libGL error" messages
-cd Scribus.AppDir
 rm -f usr/lib/libGL.so.* || true
 rm -f usr/lib/libdrm.so.* || true
 
