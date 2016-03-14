@@ -150,3 +150,30 @@ Ubuntu 14.04.1 LTS (Trusty Tahr) - ubuntu-14.04.1-desktop-amd64.iso
 openSUSE Tumbleweed (20151012) - openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso
 
 ![opensuse](https://cloud.githubusercontent.com/assets/2480569/10559386/f4bdc906-74ef-11e5-87b7-98d9033d1252.png)
+
+
+## Miscellaneous
+
+### Uploading AppImages to Bintray
+
+The script [bintray.sh](https://github.com/probonopd/AppImages/blob/master/bintray.sh) can be used by anyone to upload AppImages to Bintray.
+
+The script will:
+
+1. Extract metadata from the AppImage
+2. Make the AppImage updatable with zsync
+3. Upload the AppImage to Bintray
+
+In order to use `bintray.sh` you must first define your Bintray credentials in the environment. In order to get your Bintray API Key, you need to enter the "API Key" section in https://bintray.com/profile/edit
+
+Example:
+```
+wget https://raw.githubusercontent.com/probonopd/AppImages/master/bintray.sh
+export BINTRAY_USER=<Your Bintray username>
+export BINTRAY_REPO=<Your Bintray repository>
+export BINTRAY_REPO_OWNER=<Your bintray Organization (optional)>
+export BINTRAY_API_KEY=<Your Bintray API Key>
+./bintray.sh "Subsurface-4.5.1.667-x86_64.AppImage"
+```
+
+If you use Travis for CI, you can define these variables in the Travis control panel, specially the `BINTRAY_API_KEY`, in order to keep it secure.
