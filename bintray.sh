@@ -132,7 +132,7 @@ elif [[ "$(basename "$FILE")" =~ ([^- ]*)-([^- ]*)-([^- ]*).(AppImage|run) ]] ; 
   [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[2]}"
   # ARCH="${BASH_REMATCH[3]}"
 elif [[ "$(basename "$FILE")" =~ (.*)\ (.*)-([^- ]*) ]] ; then # Other binaries
-  [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
+  PCK_NAME="${BASH_REMATCH[1]}"
   [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[2]}"
   # ARCH="${BASH_REMATCH[3]}"
 else
