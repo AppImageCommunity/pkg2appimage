@@ -48,17 +48,17 @@ which bsdtar >/dev/null || exit 1 # https://github.com/libarchive/libarchive/wik
 which grep >/dev/null || exit 1
 which zsyncmake >/dev/null || exit 1
 
-if [ ! $(env | grep BINTRAY_API_KEY ) ] ; then
-  echo "Environment variable \$BINTRAY_API_KEY missing"
-  exit 1
-fi
-
 # Do not upload artefacts generated as part of a pull request
 if [ $(env | grep TRAVIS_PULL_REQUEST ) ] ; then
   if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
     echo "Not uploading since this is a pull request"
     exit 0
   fi
+fi
+
+if [ ! $(env | grep BINTRAY_API_KEY ) ] ; then
+  echo "Environment variable \$BINTRAY_API_KEY missing"
+  exit 1
 fi
 
 CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Content-Type:application/json -H Accept:application/json -w \n"
