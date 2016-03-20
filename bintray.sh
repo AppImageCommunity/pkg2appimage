@@ -123,7 +123,7 @@ if [ "$IS_AN_APPIMAGE" ] ; then
   fi
 fi
 
-if [[ "$(basename "$FILE")" =~ (.*)\ (.*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
+if [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
   [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
   [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[2]}"
   # ARCH="${BASH_REMATCH[3]}"
@@ -131,7 +131,7 @@ elif [[ "$(basename "$FILE")" =~ ([^- ]*)-([^- ]*)-([^- ]*).(AppImage|run) ]] ; 
   [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
   [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[2]}"
   # ARCH="${BASH_REMATCH[3]}"
-elif [[ "$(basename "$FILE")" =~ (.*)\ (.*)-([^- ]*) ]] ; then # Other binaries
+elif [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*) ]] ; then # Other binaries
   PCK_NAME="${BASH_REMATCH[1]}"
   [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[2]}"
   # ARCH="${BASH_REMATCH[3]}"
