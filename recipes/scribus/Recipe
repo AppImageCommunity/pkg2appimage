@@ -350,7 +350,7 @@ rm -f ./usr/lib/libdbus-1.so.3 || true
 rm -f usr/lib/libGL.so.* || true
 rm -f usr/lib/libdrm.so.* || true
 
-cp ../AppImageKit/AppRun_* ./AppRun
+cp ../AppImageKit/AppRun .
 cp ./usr/share/mimelnk/application/vnd.scribus.desktop scribus.desktop
 cp ./usr/share/scribus/icons/1_5_0/scribus.png .
 
