@@ -193,7 +193,12 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 
 fi # if [ -z "$NO_LIBS" ]
 
-git clone https://github.com/HOST-Oman/scribus.git --branch ctl --single-branch scribus15
+if [ ! -d scribus15 ] ; then
+  git clone https://github.com/HOST-Oman/scribus.git --branch ctl --single-branch scribus15
+fi
+cd scribus15/
+git_pull_rebase_helper
+
 # svn co svn://scribus.net/trunk/Scribus scribus15
 # svn co -r 20099 svn://scribus.net/trunk/Scribus scribus150
 
