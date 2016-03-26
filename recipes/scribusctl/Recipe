@@ -199,8 +199,7 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 if [[ ! -d glib-2.32.0 ]]; then
         # xz needs extra hoops; https://www.centos.org/forums/viewtopic.php?t=5059
 	unxz glib-2.32.0.tar.xz
-	tar -xv glib-2.32.0.tar
-	xz glib-2.32.0.tar
+	tar xv glib-2.32.0.tar
 	cd glib-2.32.0
 	./configure --prefix=/usr --with-pcre=system && make && make install || exit 1
 	ldconfig
