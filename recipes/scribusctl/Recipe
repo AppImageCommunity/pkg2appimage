@@ -197,7 +197,7 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # The glib GBytes type was added in glib 2.32
 [[ ! -f glib-2.48.0.tar.xz ]] && wget http://ftp.gnome.org/pub/gnome/sources/glib/2.48/glib-2.48.0.tar.xz
 if [[ ! -d glib-2.48.0 ]]; then
-	tar xvf glib-2.48.0.tar.xz
+	tar -xJf glib-2.48.0.tar.xz
 	cd harfbuzz-0.9.38
 	./configure --prefix=/usr --with-pcre=system && make && make install || exit 1
 	ldconfig
