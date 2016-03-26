@@ -122,7 +122,7 @@ chmod a+x ./AppRun
 cat > obpm.desktop <<\EOF
 [Desktop Entry]
 Name=OBPM
-Categories=Utility
+Categories=Utility;
 Exec=obpm
 Icon=obpm
 EOF
