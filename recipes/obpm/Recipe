@@ -123,6 +123,7 @@ chmod a+x ./AppRun
 
 cat > obpm.desktop <<\EOF
 [Desktop Entry]
+Type=Application
 Name=OBPM
 Categories=Utility;
 Exec=obpm
