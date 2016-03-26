@@ -1,2 +1,146 @@
 # https://github.com/LazyT/obpm
 # To be written. Example of a really lean Qt application that comes with an Installer and bundled Qt files.
+
+set +e
+APP=OBPM
+
+sudo apt-get -y install xvfb rpm2cpio
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+FILEPATH=$(wget -q "https://github.com/LazyT/obpm/releases" -O - | grep lin.run | grep href | head -n 1 | cut -d '"' -f 2)
+URL=https://github.com/$FILEPATH
+wget -c "$URL"
+
+wget -c "ftp://ftp.pbone.net/mirror/li.nux.ro/download/nux/dextop/el6Workstation/x86_64/chrome-deps-stable-3.11-1.x86_64.rpm"
+rpm2cpio chrome-deps-stable-3.11-1.x86_64.rpm | cpio -idmv
+
+cat > extract-qt-installer <<\EOoF
+#!/bin/bash
+# QT-CI Project
+# License: Apache-2.0
+# https://github.com/benlau/qtci
+
+set -e #quit on error
+
+if [ $# -lt 2 ];
+then
+    echo extract-qt-installer qt-installer output_path
+    exit -1
+fi
+
+export PATH=$PATH:$PWD
+export WORKDIR=$PWD
+INSTALLER=$1
+OUTPUT=$2
+SCRIPT="$(mktemp)"
+
+cat <<EOF > $SCRIPT
+function Controller() {
+    installer.installationFinished.connect(function() {
+        gui.clickButton(buttons.NextButton);
+    });
+}
+
+Controller.prototype.WelcomePageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.CredentialsPageCallback = function() {
+    gui.clickButton(buttons.CommitButton);
+}
+
+Controller.prototype.ComponentSelectionPageCallback = function() {
+    var widget = gui.currentPageWidget();
+
+    // widget.deselectAll();
+
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.IntroductionPageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
+
+
+Controller.prototype.TargetDirectoryPageCallback = function() {
+    var widget = gui.currentPageWidget();
+
+    if (widget != null) {
+        widget.TargetDirectoryLineEdit.setText("$OUTPUT");
+    }
+
+    gui.clickButton(buttons.NextButton);
+
+}
+
+Controller.prototype.LicenseAgreementPageCallback = function() {
+    var widget = gui.currentPageWidget();
+
+    if (widget != null) {
+        widget.AcceptLicenseRadioButton.setChecked(true);
+    }
+
+    gui.clickButton(buttons.NextButton);
+
+}
+
+Controller.prototype.ReadyForInstallationPageCallback = function() {
+
+    gui.clickButton(buttons.CommitButton);
+}
+
+Controller.prototype.FinishedPageCallback = function() {
+    var widget = gui.currentPageWidget();
+    gui.clickButton(buttons.FinishButton);
+}
+EOF
+
+chmod u+x $1
+$1 --script $SCRIPT
+EOoF
+
+chmod a+x *
+
+cd $APP.AppDir
+
+Xvfb :99 &
+export DISPLAY=:99
+../extract-qt-installer ../*.run "$(dirname $(readlink -e ./usr/bin))/$(basename ./usr/bin)" &
+sleep 15 # The action above must be completed within that time or gets killed
+killall Xvfb
+export DISPLAY=:0
+
+mkdir usr/lib
+mv usr/bin/lib* usr/lib/
+cp ../opt/google/chrome/lib/libstdc++.so.6 usr/lib/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+cat > obpm.desktop <<\EOF
+[Desktop Entry]
+Name=OBPM
+Categories=Utility
+Exec=obpm
+Icon=obpm
+EOF
+
+cp ./usr/bin/obpm.png .
+
+# Add desktop integration
+XAPP=obpm
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+VERSION=$(ls ../*.run | cut -d "-" -f 2)
+
+# Go out of AppImage
+cd ..
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
