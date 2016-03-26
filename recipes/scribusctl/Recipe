@@ -198,7 +198,7 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 [[ ! -f glib-2.48.0.tar.xz ]] && wget http://ftp.gnome.org/pub/gnome/sources/glib/2.48/glib-2.48.0.tar.xz
 if [[ ! -d glib-2.48.0 ]]; then
 	tar -xJf glib-2.48.0.tar.xz
-	cd harfbuzz-0.9.38
+	cd glib-2.48.0
 	./configure --prefix=/usr --with-pcre=system && make && make install || exit 1
 	ldconfig
 	cd ..
