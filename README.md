@@ -10,6 +10,7 @@
 | Firefox | [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion#files)  |
 | IrScrutinizer | [![Download](https://api.bintray.com/packages/probono/AppImages/IrScrutinizer/images/download.svg)](https://bintray.com/probono/AppImages/IrScrutinizer/_latestVersion#files)  |
 | LibreOffice | [![Download](https://api.bintray.com/packages/probono/AppImages/LibreOffice/images/download.svg)](https://bintray.com/probono/AppImages/LibreOffice/_latestVersion#files)  |
+| OBPM | [![Download](https://api.bintray.com/packages/probono/AppImages/OBPM/images/download.svg)](https://bintray.com/probono/AppImages/OBPM/_latestVersion#files) |
 | QCAD | [![Download](https://api.bintray.com/packages/probono/AppImages/Qcad/images/download.svg)](https://bintray.com/probono/AppImages/Qcad/_latestVersion#files) |
 | Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion#files)  |
 | Subsurface | [![Download](https://api.bintray.com/packages/probono/AppImages/Subsurface/images/download.svg)](https://bintray.com/probono/AppImages/Subsurface/_latestVersion#files) |
