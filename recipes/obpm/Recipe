@@ -1,5 +1,6 @@
 # https://github.com/LazyT/obpm
-# To be written. Example of a really lean Qt application that comes with an Installer and bundled Qt files.
+# Example of a really lean Qt application that comes with an Installer and bundled Qt files.
+# To get the payload files out of the Qt installer is somewhat tricky but doable.
 
 set +e
 APP=OBPM
