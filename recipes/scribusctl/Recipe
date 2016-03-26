@@ -13,7 +13,7 @@ set -x
 
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
-
+i
 git_pull_rebase_helper()
 {
 	GITCLEAN=$(git diff --shortstat 2> /dev/null | tail -n1)
@@ -28,7 +28,7 @@ git_pull_rebase_helper()
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 yum -y install epel-release 
-yum -y install wget tar bzip2 git libtool which fuse fuse-devel subversion automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu-devel tkinter
+yum -y install wget tar bzip2 git libtool which fuse fuse-devel subversion automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu libicu-devel tkinter
 
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
@@ -190,6 +190,16 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
   yum -y install cairo-devel libcairo2
   cd -
 # fi
+
+# Try to build harfbuzz
+[[ ! -f harfbuzz-0.9.38.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.38.tar.bz2
+if [[ ! -d harfbuzz-0.9.38 ]]; then
+	tar xvf harfbuzz-0.9.38.tar.bz2
+	cd harfbuzz-0.9.38
+	./configure --prefix=/usr && make && make install || exit 1
+	ldconfig
+	cd ..
+fi
 
 fi # if [ -z "$NO_LIBS" ]
 
