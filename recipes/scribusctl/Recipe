@@ -199,7 +199,7 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # 	./configure --prefix=/usr --with-pcre=system && make && make install || exit 1
 # 	ldconfig
 # 	cd ..
-fi
+# fi
 
 # Try to build harfbuzz
 [[ ! -f harfbuzz-0.9.8.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.8.tar.bz2
