@@ -216,6 +216,9 @@ BUILD_LOG="https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true"
 ${CURL} -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes"
 fi
 
+HERE="$(dirname "$(readlink -f "${0}")")"
+"${HERE}/bintray-tidy.sh" -s archive "${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}"
+
 # Seemingly this works only after the second time running this script - thus disabling for now (FIXME)
 # echo ""
 # echo "Adding ${FILE} to download list..."
