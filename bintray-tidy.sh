@@ -105,7 +105,7 @@ function max_versions() {
     if [ "$i" -lt "$max_versions" ]; then
       print_action "Keeping" "${REMOTE_VERSIONS[$i]}"
     else
-      delete_version "${REMOTE_VERSIONS[$i]}" "$created"
+      delete_version "${REMOTE_VERSIONS[$i]}"
     fi
   done
 }
