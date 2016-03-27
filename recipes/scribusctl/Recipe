@@ -201,6 +201,12 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # 	cd ..
 # fi
 
+# Requires relatively recent versions of harfbuzz (which requires relatively recent version of glib)
+# which is a real pain to compile on CentOS 6
+# -- checking for modules 'harfbuzz>=0.9.38;harfbuzz-icu' 
+# -- package 'harfbuzz>=0.9.38' not found 
+# -- package 'harfbuzz-icu' not found
+
 # Try to build harfbuzz
 [[ ! -f harfbuzz-0.9.8.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.8.tar.bz2
 if [[ ! -d harfbuzz-0.9.8 ]]; then
