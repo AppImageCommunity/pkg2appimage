@@ -22,7 +22,7 @@ git_pull_rebase_helper()
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 yum -y install epel-release 
-yum -y install wget tar bzip2 git libtool which fuse fuse-devel subversion automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu libicu-devel tkinter libffi-devel gettext pcre-devel # xz
+yum -y install wget tar bzip2 git libtool which fuse fuse-devel subversion automake libtool mesa-libEGL cppunit-devel cmake qt5-qtbase-gui qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qttools qt5-qttools-devel qt5-qtwebkit qt5-qtwebkit-devel qt5-qtbase-static glibc-headers libstdc++-devel gcc-c++ freetype-devel cairo-devel lcms2-devel libpng-devel libjpeg-devel libtiff-devel python-devel aspell-devel boost-devel cups-devel libxml2-devel libstdc++-devel boost-devel-static gperf libicu libicu-devel tkinter # libffi-devel gettext pcre-devel # xz
 
 # Newer compiler than what comes with CentOS 6
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
@@ -189,23 +189,23 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # hb-glib.h:50:22: error: 'GBytes' was not declared in this scope (harfbuzz)
 # http://stackoverflow.com/questions/31707140/installing-harfbuzz-1-0-1-on-centos-5
 # The glib GBytes type was added in glib 2.32
-[[ ! -f glib-2.32.0.tar.xz ]] && wget http://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.0.tar.xz
-if [[ ! -d glib-2.32.0 ]]; then
-        # xz needs extra hoops; https://www.centos.org/forums/viewtopic.php?t=5059
-	tar --xz -xvf glib-2.32.0.tar.xz
-	# unxz glib-2.32.0.tar.xz
-	# tar xv glib-2.32.0.tar
-	cd glib-2.32.0
-	./configure --prefix=/usr --with-pcre=system && make && make install || exit 1
-	ldconfig
-	cd ..
+# [[ ! -f glib-2.32.0.tar.xz ]] && wget http://ftp.gnome.org/pub/gnome/sources/glib/2.32/glib-2.32.0.tar.xz
+# if [[ ! -d glib-2.32.0 ]]; then
+#         # xz needs extra hoops; https://www.centos.org/forums/viewtopic.php?t=5059
+# 	tar --xz -xvf glib-2.32.0.tar.xz
+# 	# unxz glib-2.32.0.tar.xz
+# 	# tar xv glib-2.32.0.tar
+# 	cd glib-2.32.0
+# 	./configure --prefix=/usr --with-pcre=system && make && make install || exit 1
+# 	ldconfig
+# 	cd ..
 fi
 
 # Try to build harfbuzz
-[[ ! -f harfbuzz-0.9.38.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.38.tar.bz2
-if [[ ! -d harfbuzz-0.9.38 ]]; then
-	tar xvf harfbuzz-0.9.38.tar.bz2
-	cd harfbuzz-0.9.38
+[[ ! -f harfbuzz-0.9.8.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.8.tar.bz2
+if [[ ! -d harfbuzz-0.9.8 ]]; then
+	tar xvf harfbuzz-0.9.8.tar.bz2
+	cd harfbuzz-0.9.8
 	./configure --prefix=/usr && make && make install || exit 1
 	ldconfig
 	cd ..
