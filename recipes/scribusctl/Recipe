@@ -86,7 +86,7 @@ if [ ! -d libmspub ] ; then
   git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.git
 fi
 cd libmspub/
-git_pull_rebase_helper
+# git_pull_rebase_helper
 git checkout ef9e59b64f3cb168459c2625da7582a4372df7ec # known good
 ./autogen.sh
 ./configure --prefix=/usr
@@ -98,7 +98,7 @@ if [ ! -d libvisio ] ; then
   git clone http://anongit.freedesktop.org/git/libreoffice/libvisio.git
 fi
 cd libvisio/
-git_pull_rebase_helper
+# git_pull_rebase_helper
 git checkout 9593bbf3b9ea47ccc864536c94f154ce68bad22f # known good
 ./autogen.sh
 ./configure --prefix=/usr
