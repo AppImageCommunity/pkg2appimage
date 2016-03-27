@@ -39,13 +39,16 @@ if [ -z "$NO_LIBS" ] ; then
   make && make install
 fi
 
+
+cd /$APP/
+
 LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
 wget -c "http://download.videolan.org/pub/videolan/vlc/last/$LATEST"
-tar xf ../vlc-2.2.2.tar.xz
+tar xf vlc-2.2.2.tar.xz
 
-cd vlc-*
+cd vlc-*/
 
-if [ -z "$NO_LIBS" ] ; th
+if [ -z "$NO_LIBS" ] ; then
   cd contrib
   # rm -rf ./x86_64-redhat-linux/ || true
   mkdir native
