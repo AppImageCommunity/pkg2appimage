@@ -57,6 +57,8 @@ if [ -z "$NO_LIBS" ] ; then
   # Disable bluray because it depends on java which is large (can enable it later again)
   sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray|g' config.mak 
   make # errors out, hence doing:
+  # Workaround for:
+  # ass_shaper.c:31:19: error: hb-ft.h: No such file or directory
   cp -rf ./harfbuzz/src/*.h /VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/include/harfbuzz/
   make
   cd ../../
