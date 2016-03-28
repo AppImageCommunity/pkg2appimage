@@ -1,0 +1,40 @@
+# NOTE: This recipe does not work yet
+exit 1
+###########################################
+
+# 55 MB
+yum -y install glib5-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-static poppler-devel inkscape
+
+# 6 MB
+wget https://github.com/inkscape/inkscape/archive/master.zip
+unzip master.zip
+cd inkscape-master/inkscape-launchpad/
+
+./autogen.sh
+./configure --prefix=/usr
+
+# Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
+# Requested 'glibmm-2.4 >= 2.28' but version of glibmm is 2.22.1
+
+# Workaround for:
+# configure: error: *** A compiler with support for C++11 language features is required.
+. /opt/rh/devtoolset-2/enable 
+
+wget http://cairographics.org/releases/cairomm-1.9.8.tar.gz
+tar xf cairomm-1.9.8.tar.gz
+cd cairomm-1.9.8
+./configure --prefix=/usr
+make
+sudo make install
+cd ..
+
+# Not sure if this is really needed
+rm -rf /usr/include/cairomm-1.0/
+export PKG_CONFIG_PATH=/usr/share/pkgconfig/:$PKG_CONFIG_PATH
+
+wget http://ftp.gnome.org/pub/gnome/sources/glibmm/2.28/glibmm-2.28.0.tar.bz2
+tar xf glibmm-2.28.0.tar.bz2
+cd glibmm-2.28.0
+
+# extra_defs_gen/generate_defs_gio.cc:25:34: fatal error: 
+# gio/gsettingsbackend.h: No such file or directory
