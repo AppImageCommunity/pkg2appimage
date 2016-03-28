@@ -3,7 +3,7 @@ exit 1
 ###########################################
 
 # 55 MB
-yum -y install glib5-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-static poppler-devel inkscape
+yum -y install glib5-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-static poppler-devel
 
 # 6 MB
 wget https://github.com/inkscape/inkscape/archive/master.zip
