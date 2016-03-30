@@ -212,7 +212,7 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 if [[ ! -d harfbuzz-0.9.8 ]]; then
 	tar xvf harfbuzz-0.9.8.tar.bz2
 	cd harfbuzz-0.9.8
-	./configure --prefix=/usr && make && make install || exit 1
+	./configure --prefix=/usr --with-gobject && make && make install || exit 1
 	ldconfig
 	cd ..
 fi
