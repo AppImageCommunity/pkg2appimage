@@ -1,0 +1,54 @@
+#!/bin/bash -x
+
+set +e
+
+APP=QGroundControl
+
+mkdir -p $APP/$APP.AppDir
+cd $APP/
+wget -c "http://qgroundcontrol.s3.amazonaws.com/master/qgroundcontrol.tar.bz2"
+tar xf ./qgroundcontrol.tar.bz2
+
+cd $APP.AppDir/
+
+mv ../qgroundcontrol/* .
+mv qgroundcontrol-start.sh AppRun
+
+# Workaround until 
+# https://github.com/mavlink/qgroundcontrol/pull/3129
+# is merged
+cat > ./AppRun <<\EOF
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+export LD_LIBRARY_PATH="${HERE}/Qt/libs":$LD_LIBRARY_PATH
+export QML2_IMPORT_PATH="${HERE}/Qt/qml"
+export QT_PLUGIN_PATH="${HERE}/Qt/plugins"
+"${HERE}/qgroundcontrol" "$@"
+EOF
+
+# Get icon
+wget "https://raw.githubusercontent.com/mavlink/qgroundcontrol/948b89753aa0b60f29f46ea0918feae05084d178/resources/icons/qgroundcontrol.png"
+
+cat > ./qgroundcontrol.desktop <<\EOF
+[Desktop Entry]
+Type=Application
+Name=qgroundcontrol
+GenericName=Ground Control Station
+Comment=UAS ground control station
+Icon=qgroundcontrol
+Exec=AppRun
+Terminal=false
+Categories=Utility;
+Keywords=computer;
+EOF
+
+VERSION=$(strings qgroundcontrol | grep v[0-9*]\.[0-9*]\.[0-9*]-[0-9*] | head -n 1)
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
