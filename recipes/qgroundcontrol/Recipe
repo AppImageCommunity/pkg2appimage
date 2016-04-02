@@ -8,11 +8,15 @@ mkdir -p $APP/$APP.AppDir
 cd $APP/
 wget -c "http://qgroundcontrol.s3.amazonaws.com/master/qgroundcontrol.tar.bz2"
 tar xf ./qgroundcontrol.tar.bz2
+wget -c http://ftp.us.debian.org/debian/pool/main/u/udev/udev_175-7.2_amd64.deb
+wget -c http://ftp.us.debian.org/debian/pool/main/e/espeak/espeak_1.46.02-2_amd64.deb
+wget -c http://ftp.us.debian.org/debian/pool/main/libs/libsdl1.2/libsdl1.2debian_1.2.15-5_amd64.deb
 
 cd $APP.AppDir/
 
 mv ../qgroundcontrol/* .
 mv qgroundcontrol-start.sh AppRun
+find ../ -name *.deb -exec dpkg -x {} . \;
 
 # Workaround until 
 # https://github.com/mavlink/qgroundcontrol/pull/3129
@@ -20,7 +24,7 @@ mv qgroundcontrol-start.sh AppRun
 cat > ./AppRun <<\EOF
 #!/bin/sh
 HERE="$(dirname "$(readlink -f "${0}")")"
-export LD_LIBRARY_PATH="${HERE}/Qt/libs":$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="${HERE}/usr/lib/":"${HERE}/Qt/libs":$LD_LIBRARY_PATH
 export QML2_IMPORT_PATH="${HERE}/Qt/qml"
 export QT_PLUGIN_PATH="${HERE}/Qt/plugins"
 "${HERE}/qgroundcontrol" "$@"
