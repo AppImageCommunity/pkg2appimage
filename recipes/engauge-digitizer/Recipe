@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Compile Subsurface and bundle it as an AppImage on CentOS 6
-# By Simon Peter 11/2015
+# Compile engauge-digitizer and bundle it as an AppImage on CentOS 6
+#
 # This script is supposed to run inside a CentOS 6 environment. On a Ubuntu host machine, I used
 # the following commands set up a CentOS 6 environment; you can use your own chroot method of choice instead
 # or just boot the CentOS-6.7-$ARCH-LiveCD.iso in a virtual machine and run this script inside there.
@@ -12,48 +12,6 @@
 # or
 # sudo linux64 ./AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/CentOS-6.7-x86_64-LiveCD.iso bash
 # bash -ex ./subsurface.centos6.sh
-
-# Resulting AppImage is known to run on
-# CentOS-6.7-x86_64-LiveCD.iso
-# CentOS-7.0-1406-x86_64-GnomeLive.iso
-# CentOS-7-x86_64-LiveGNOME-1503.iso
-# Chromixium-1.5-amd64.iso
-# debian-live-8.2.0-amd64-cinnamon-desktop.iso
-# debian-live-8.2.0-amd64-gnome-desktop+nonfree.iso
-# elementary_OS_0.3_freya_amd64.iso
-# Fedora-Live-Desktop-x86_64-20-1.iso
-# Fedora-Live-Workstation-x86_64-22-3.iso
-# Fedora-Live-Workstation-x86_64-23-10.iso
-# kali-linux-2.0-amd64.iso
-# Mageia-5-LiveDVD-GNOME-x86_64-DVD.iso
-# openSUSE-Tumbleweed-GNOME-Live-x86_64-Current.iso (20151012)
-# openSUSE-Tumbleweed-KDE-Live-x86_64-Current.iso (20151022)
-# tanglu-3.0-gnome-live-amd64.hybrid.iso
-# trisquel_7.0_amd64.iso
-# ubuntu-12.04.5-desktop-amd64.iso
-# ubuntu-14.04.1-desktop-amd64.iso
-# ubuntu-15.04-desktop-amd64.iso
-# ubuntu-15.10-desktop-amd64.iso
-# ubuntu-gnome-15.04-desktop-amd64.iso
-# ubuntu-gnome-15.10-desktop-amd64.iso
-# wily-desktop-amd64.iso
-# xubuntu-15.04-desktop-amd64.iso
-# ==
-# CentOS-6.4-i386-LiveDVD.iso
-# CentOS-6.5-i386-LiveCD.iso
-# CentOS-6.7-i386-LiveCD.iso
-# debian_7.0.0_wheezy_i386_20130705_binary.hybrid.iso
-# debian-live-7.5.0-i386-gnome-desktop.iso
-# Fedora-Live-Design-suite-i686-20-1.iso
-# Fedora-Live-Desktop-i686-19-1.iso
-# Fedora-Live-Desktop-i686-20-1.iso
-# Fedora-Live-Xfce-i686-20-1.iso
-# kali-linux-1.0.7-i386.iso
-# openSUSE-13.1-GNOME-Live-i686.iso
-# openSUSE-Tumbleweed-GNOME-Live-i686-Snapshot20151012-Media.iso (20151012)
-# tails-i386-1.5.iso
-# ubuntu-11.04-desktop-i386.iso
-# ubuntu-12.04.2-desktop-i386.iso
 
 # Halt on errors
 set -e
@@ -310,18 +268,11 @@ done
 # GTK theme is broken
 rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
 
-# Workaround for:
-# On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
-rm usr/lib/libgio* || true
-
 cd ..
 find $APP.AppDir/
 
 # Figure out $VERSION
-#GITVERSION=$(cd engauge-digitizer ; git describe | sed -e 's/-g.*$// ; s/^v//')
-#GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
-#VERSION=$(echo $GITVERSION | sed -e 's/-/./')
-VERSION=7.1
+VERSION=$(cat engauge-digitizer/.git/packed-refs | tail -n 1 | cut -d / -f 3 | cut -d v -f 2)
 echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
