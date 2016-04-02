@@ -94,6 +94,10 @@ mkdir -p /$APP/$APP.AppDir/usr/bin
 
 cd /$APP/engauge-digitizer
 
+# Figure out $VERSION
+VERSION=$(git rev-parse --short=8 HEAD)
+echo $VERSION
+
 export ENGAUGE_RELEASE=1
 qmake-qt5 engauge.pro
 #Hack to nodebug
@@ -270,10 +274,6 @@ rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
 
 cd ..
 find $APP.AppDir/
-
-# Figure out $VERSION
-VERSION=$(git rev-parse --short=8 HEAD)
-echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
 	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
