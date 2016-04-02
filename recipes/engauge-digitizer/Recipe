@@ -272,7 +272,7 @@ cd ..
 find $APP.AppDir/
 
 # Figure out $VERSION
-VERSION=$(cat engauge-digitizer/.git/packed-refs | tail -n 1 | cut -d / -f 3 | cut -d v -f 2)
+VERSION=$(git rev-parse --short=8 HEAD)
 echo $VERSION
 
 if [[ "$ARCH" = "x86_64" ]] ; then
