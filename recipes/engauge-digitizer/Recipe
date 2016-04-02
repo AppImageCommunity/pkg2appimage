@@ -266,8 +266,13 @@ for FILE in $BLACKLISTED_FILES ; do
 done
 
 # Workaround for:
+# symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libunity-gtk-module.so: undefined symbol: g_settings_newn
+rm usr/lib/qt5/plugins/platformthemes/libqgtk* || true
+
+# Workaround for:
 # GTK theme is broken
 rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
+
 
 cd ..
 find $APP.AppDir/
