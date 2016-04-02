@@ -40,7 +40,7 @@ wget "https://raw.githubusercontent.com/mavlink/qgroundcontrol/948b89753aa0b60f2
 cat > ./qgroundcontrol.desktop <<\EOF
 [Desktop Entry]
 Type=Application
-Name=qgroundcontrol
+Name=QGroundControl
 GenericName=Ground Control Station
 Comment=UAS ground control station
 Icon=qgroundcontrol
