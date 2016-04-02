@@ -118,11 +118,8 @@ cat > ./engauge.desktop <<\EOF
 Name=Engauge Digitizer
 Type=Application
 Comment=Extract data from graphs
-TryExec=engauge
 Exec=engauge
-MimeType=text/plain;
-Categories=Education;Science;DataVisialization;
-Name[en_US]=Engauge-Digitizer.desktop
+Categories=Education;Science;
 Icon=engauge.xpm
 EOF
 
