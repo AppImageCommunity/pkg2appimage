@@ -20,7 +20,7 @@ tar xf ../pycharm-*.tar.gz
 
 # Install java
 tar xf ../jre*
-( cd ./pycharm-community-* ; mkdir -p jre ; cd jre ; mv ../../jre*/ jre )
+( cd ./pycharm-community-* ; mkdir -p jre ; cd jre ; mv ../../jre* ./jre )
 
 cat > pycharm.desktop <<\EOF
 [Desktop Entry]
