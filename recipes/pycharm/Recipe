@@ -1,4 +1,4 @@
-# This is an example of a commercial application.
+# This is an example of a commercial Java application.
 
 APP=PyCharm 
 mkdir -p $APP/$APP.AppDir/usr/bin
