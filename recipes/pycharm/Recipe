@@ -41,7 +41,7 @@ EOF
 
 cp pycharm-community-5.0.4/bin/pycharm.png .
 
-VERSION=$(ls ../wxHexEditor-*.tar.bz2 | cut -d - -f 2 | sed -e 's|v||g')
+VERSION=$(ls ../pycharm-community-* | cut -d - -f 2')
 echo $VERSION
 
 # Do not add desktop integration since it comes with its own
