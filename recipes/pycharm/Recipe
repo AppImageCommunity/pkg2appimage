@@ -1,9 +1,5 @@
 This is an example of a commercial application.
 
-################################################
-## TODO: WRITE A WRAPPER THAT SETS $JAVA_HOME ##
-################################################
-
 APP=PyCharm 
 mkdir -p $APP/$APP.AppDir/usr/bin
 
@@ -24,7 +20,7 @@ tar xf ../pycharm-*.tar.gz
 
 # Install java
 tar xf ../jre*
-( mkdir -p usr/bin/bin ; cd usr/bin/bin ; ln -s ../../../jre*/bin/java . )
+( cd ./pycharm-community-* ; mkdir -p jre ; cd jre ; mv ../../jre*/ jre )
 
 cat > pycharm.desktop <<\EOF
 [Desktop Entry]
@@ -45,10 +41,6 @@ VERSION=$(ls ../pycharm-community-* | cut -d - -f 2')
 echo $VERSION
 
 # Do not add desktop integration since it comes with its own
-
-################################################
-## TODO: WRITE A WRAPPER THAT SETS $JAVA_HOME ##
-################################################
 
 cd .. # Go out of AppDir
 
