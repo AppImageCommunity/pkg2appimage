@@ -208,10 +208,10 @@ rpm -ql boost-devel | grep 'cmake$' | xargs rm || true
 # -- package 'harfbuzz-icu' not found
 
 # Try to build harfbuzz
-[[ ! -f harfbuzz-0.9.8.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.8.tar.bz2
-if [[ ! -d harfbuzz-0.9.8 ]]; then
-	tar xvf harfbuzz-0.9.8.tar.bz2
-	cd harfbuzz-0.9.8
+[[ ! -f harfbuzz-0.9.38.tar.bz2 ]] && wget http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.38.tar.bz2
+if [[ ! -d harfbuzz-0.9.38 ]]; then
+	tar xvf harfbuzz-0.9.38.tar.bz2
+	cd harfbuzz-0.9.38
 	./configure --prefix=/usr --with-gobject && make && make install || exit 1
 	ldconfig
 	cd ..
