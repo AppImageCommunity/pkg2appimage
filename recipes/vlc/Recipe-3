@@ -1,0 +1,336 @@
+#set -e
+
+# Be verbose
+set -x
+
+# TODO: move to a library function
+git_pull_rebase_helper()
+{
+git reset --hard HEAD
+git pull
+}
+
+# Determine which architecture should be built
+if [[ "$(/bin/arch)" = "i686" || "$(/bin/arch)" = "x86_64" ]] ; then
+ARCH=$(/bin/arch)
+else
+echo "Architecture could not be determined"
+exit 1
+fi
+
+# Now we are inside CentOS 6
+grep -r "CentOS release 6" /etc/redhat-release || exit 1
+
+cd /
+
+if [ ! -d AppImages ] ; then
+git clone https://github.com/probonopd/AppImages.git
+fi
+cd AppImages/
+git_pull_rebase_helper
+cd ..
+
+yum -y install pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake
+
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Install AppImageKit build dependencies
+yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
+
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+cmake .
+make clean
+make
+cd ..
+fi
+
+#for ragel
+export PATH=/usr/local/bin:$PATH
+
+  # Compile and install yasm 1.2.0 (or newer)
+  cd /usr/src
+  wget -c -T 10 http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz
+  tar -xzf yasm-1.2.0.tar.gz
+  cd yasm-1.2.0
+  ./configure --prefix=/usr
+  make
+  make install
+  cd ..
+
+APP=VLC
+rm -rf /$APP/$APP.AppDir
+mkdir -p /$APP/$APP.AppDir
+cd /$APP
+
+if [ -z "$NO_LIBS" ] ; then
+  #ragel
+  cd /usr/src
+  wget -c -T 10 http://www.colm.net/files/ragel/ragel-6.9.tar.gz
+  tar -xvf ragel-6.9.tar.gz
+  cd /usr/src/ragel-6.9
+  ./configure && make && make install
+
+  #update autoconf to 2.69
+  cd /usr/src
+  wget -c -T 10 http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+  tar xvfvz autoconf-2.69.tar.gz
+  cd /usr/src/autoconf-2.69
+  ./configure --prefix=/usr
+  make && make install
+
+  #update automake to 1.15
+  cd /usr/src
+  wget -c -T 10 http://ftp.gnu.org/gnu/automake/automake-1.15.tar.gz
+  tar xvfvz automake-1.15.tar.gz
+  cd /usr/src/automake-1.15
+  ./configure --prefix=/usr
+  make && make install
+
+  #update libtool to 2.4.6
+  cd /usr/src
+  wget -c -T 10 http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz
+  tar xvfvz libtool-2.4.6.tar.gz
+  cd /usr/src/libtool-2.4.6
+  ./configure --prefix=/usr
+  make && make install
+
+  #update gettext to 0.19.6
+  cd /usr/src
+  wget -c -T 10 ftp://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.gz
+  tar xvfvz gettext-0.19.6.tar.gz
+  cd /usr/src/gettext-0.19.6
+  ./configure --prefix=/usr --libdir=/usr/lib64
+  make && make install
+
+  #update alsa-lib to 1.0.24.1
+  cd /usr/src
+  wget -c -T 10 ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.0.24.1.tar.bz2
+  tar xvfvj alsa-lib-1.0.24.1.tar.bz2
+  cd /usr/src/alsa-lib-1.0.24.1
+  ./configure --prefix=/usr --libdir=/usr/lib64
+  make && make install
+fi
+
+
+cd /$APP/
+
+LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
+wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/last/$LATEST"
+tar xf vlc-2.2.2.tar.xz
+
+cd vlc-*/
+#fix download link
+sed -i 's/ftp:/http:/g' contrib/src/x264/rules.mak
+
+if [ -z "$NO_LIBS" ] ; then
+  cd contrib
+  # rm -rf ./x86_64-redhat-linux/ || true
+  mkdir native
+  cd native
+  ../bootstrap
+  #Disable curl, since it fails on some HTTPS sites
+  echo "Disable curl, use wget"
+  sed -i 's/shell curl/shell curl1/g' Makefile
+  #set wget timeout and retries
+  sed -i 's/wget --passive/wget --passive --timeout=30/g' Makefile
+
+  # Disable bluray because it depends on java which is large (can enable it later again)
+  sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak
+  make # errors out, hence doing:
+  # Workaround for:
+  # ass_shaper.c:31:19: error: hb-ft.h: No such file or directory
+  cp -rf ./harfbuzz/src/*.h /VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/include/harfbuzz/
+  make
+  cd ../../
+fi
+
+cd /$APP/vlc-*/
+autoreconf -fiv -I/VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/share/aclocal
+#Disable chromaprint for now, due to libavcodec link issue, http://forum.videolan.org/viewtopic.php?t=119954
+./configure --disable-chromaprint --prefix=/usr
+#Disable -liconv link flag
+sed -i 's/-liconv//g' Makefile
+sed -i 's/-liconv//g' modules/Makefile
+make || exit 1
+make install DESTDIR=/$APP/$APP.AppDir
+
+cp ./share/icons/128x128/vlc.png /$APP/$APP.AppDir
+
+# Bundle dependency libraries into the AppDir
+cd /$APP/$APP.AppDir/
+cp ../../AppImageKit/AppRun .
+chmod a+x AppRun
+
+#Desktop file
+cat > ./vlc.desktop <<\EOF
+[Desktop Entry]
+Name=VLC
+Type=Application
+Comment=Multimedia player
+Exec=vlc
+Categories=Audio;Video;
+Icon=vlc.png
+EOF
+
+#start of big copy-paste
+mkdir -p ./usr/lib/qt4
+cp -r /usr/lib64/qt4/plugins ./usr/lib/qt4/
+
+export LD_LIBRARY_PATH=./usr/lib/:../../4/gc*/lib/:$LD_LIBRARY_PATH
+ldd usr/bin/vlc | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
+
+# Copy in the indirect dependencies
+FILES=$(find . -type f -executable)
+
+for FILE in $FILES ; do
+    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+done
+
+# The following are assumed to be part of the base system
+rm -f usr/lib/libcom_err.so.2 || true
+rm -f usr/lib/libcrypt.so.1 || true
+rm -f usr/lib/libdl.so.2 || true
+rm -f usr/lib/libexpat.so.1 || true
+rm -f usr/lib/libfontconfig.so.1 || true
+rm -f usr/lib/libgcc_s.so.1 || true
+rm -f usr/lib/libglib-2.0.so.0 || true
+rm -f usr/lib/libgpg-error.so.0 || true
+rm -f usr/lib/libgssapi_krb5.so.2 || true
+rm -f usr/lib/libgssapi.so.3 || true
+rm -f usr/lib/libhcrypto.so.4 || true
+rm -f usr/lib/libheimbase.so.1 || true
+rm -f usr/lib/libheimntlm.so.0 || true
+rm -f usr/lib/libhx509.so.5 || true
+rm -f usr/lib/libICE.so.6 || true
+rm -f usr/lib/libidn.so.11 || true
+rm -f usr/lib/libk5crypto.so.3 || true
+rm -f usr/lib/libkeyutils.so.1 || true
+rm -f usr/lib/libkrb5.so.26 || true
+rm -f usr/lib/libkrb5.so.3 || true
+rm -f usr/lib/libkrb5support.so.0 || true
+# rm -f usr/lib/liblber-2.4.so.2 || true # needed for debian wheezy
+# rm -f usr/lib/libldap_r-2.4.so.2 || true # needed for debian wheezy
+rm -f usr/lib/libm.so.6 || true
+rm -f usr/lib/libp11-kit.so.0 || true
+rm -f usr/lib/libpcre.so.3 || true
+rm -f usr/lib/libpthread.so.0 || true
+rm -f usr/lib/libresolv.so.2 || true
+rm -f usr/lib/libroken.so.18 || true
+rm -f usr/lib/librt.so.1 || true
+rm -f usr/lib/libsasl2.so.2 || true
+rm -f usr/lib/libSM.so.6 || true
+rm -f usr/lib/libusb-1.0.so.0 || true
+rm -f usr/lib/libuuid.so.1 || true
+rm -f usr/lib/libwind.so.0 || true
+rm -f usr/lib/libz.so.1 || true
+
+# These seem to be available on most systems but not Ubuntu 11.04
+# rm -f usr/lib/libffi.so.6 usr/lib/libGL.so.1 usr/lib/libglapi.so.0 usr/lib/libxcb.so.1 usr/lib/libxcb-glx.so.0 || true
+
+# Delete potentially dangerous libraries
+rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
+# Do NOT delete libX* because otherwise on Ubuntu 11.04:
+# loaded library "Xcursor" malloc.c:3096: sYSMALLOc: Assertion (...) Aborted
+
+# We don't bundle the developer stuff
+rm -rf usr/include || true
+rm -rf usr/lib/cmake || true
+rm -rf usr/lib/pkgconfig || true
+
+find /VLC/VLC.AppDir/usr/lib/ -name '*.la' | xargs -i rm {}
+
+strip usr/bin/* usr/lib/* usr/lib/vlc/plugins/*/* || true
+
+# Fix GDK_IS_PIXBUF errors on older distributions
+
+# TODO: Move all cp lib things to using ldconfig because it is more robust
+# across different build system distributions and architectures.
+# It is the equivalent for "find" for libraries.
+cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libpng12.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+# cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
+# Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
+# This application failed to start because it could not find or load the Qt platform plugin "xcb".
+# Setting export QT_DEBUG_PLUGINS=1 revealed the cause.
+# QLibraryPrivate::loadPlugin failed on "/usr/lib64/qt5/plugins/platforms/libqxcb.so" :
+# "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
+# Which means that we have to copy libEGL.so.1 in too
+cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
+# cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/
+
+# I have no clue why but on i386 systems this seems to be required
+if [[ "$ARCH" = "i686" ]] ; then
+        cp $(ldconfig -p | grep libgbm.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/
+fi
+
+# On openSUSE Qt is picking up the wrong libqxcb.so
+# (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
+# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
+# the current working directory is set to usr/ inside the AppImage before running the app
+cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+
+cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
+
+#end of big copy-paste
+
+# Add desktop integration - TODO: move to a library function
+XAPP=vlc
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Remove blacklisted files - TODO: move to a library function
+if [ ! -e "../../AppImages/excludelist" ] ; then
+echo "excludelist missing, please install it"
+exit 1
+fi
+BLACKLISTED_FILES=$(cat "../../AppImages/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
+FOUND=""
+for FILE in $BLACKLISTED_FILES ; do
+FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
+echo $FOUND
+if [ ! -z "$FOUND" ] ; then
+fatal "Blacklisted file ${FOUND} found"
+fi
+done
+
+# Workaround for:
+# symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libunity-gtk-module.so: undefined symbol: g_settings_newn
+#rm usr/lib/qt5/plugins/platformthemes/libqgtk* || true
+
+# Workaround for:
+# GTK theme is broken
+rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
+
+VERSION=2.2.2
+
+cd ..
+find $APP.AppDir/
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+# Put this script into the AppImage for debugging
+# FIXME: The follwing line does not work
+# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
+
+mkdir -p ../out
+
+rm -f ../out/*.AppImage || true
+
+# Convert the AppDir into an AppImage
+rm -rf $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
+
+chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
+ls -lh ../out/$APPIMAGE
