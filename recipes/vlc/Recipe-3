@@ -1,4 +1,7 @@
-#set -e
+#!/bin/bash
+
+# Halt on errors
+set -e
 
 # Be verbose
 set -x
@@ -30,7 +33,7 @@ cd AppImages/
 git_pull_rebase_helper
 cd ..
 
-yum -y install pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake
+yum -y install pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake mesa-libgbm
 
 
 if [ -z "$NO_DOWNLOAD" ] ; then
@@ -126,6 +129,9 @@ tar xf vlc-2.2.2.tar.xz
 cd vlc-*/
 #fix download link
 sed -i 's/ftp:/http:/g' contrib/src/x264/rules.mak
+# Workaround for:
+# ass_shaper.c:31:19: error: hb-ft.h: No such file or directory
+sed -i 's|install|install \&\& cp -rf ./src/*.h /VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/include/harfbuzz/|g' ./contrib/src/harfbuzz/rules.mak
 
 if [ -z "$NO_LIBS" ] ; then
   cd contrib
@@ -140,11 +146,7 @@ if [ -z "$NO_LIBS" ] ; then
   sed -i 's/wget --passive/wget --passive --timeout=30/g' Makefile
 
   # Disable bluray because it depends on java which is large (can enable it later again)
-  sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak
-  make # errors out, hence doing:
-  # Workaround for:
-  # ass_shaper.c:31:19: error: hb-ft.h: No such file or directory
-  cp -rf ./harfbuzz/src/*.h /VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/include/harfbuzz/
+  sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak 
   make
   cd ../../
 fi
@@ -156,7 +158,7 @@ autoreconf -fiv -I/VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/share/aclocal
 #Disable -liconv link flag
 sed -i 's/-liconv//g' Makefile
 sed -i 's/-liconv//g' modules/Makefile
-make || exit 1
+make
 make install DESTDIR=/$APP/$APP.AppDir
 
 cp ./share/icons/128x128/vlc.png /$APP/$APP.AppDir
@@ -177,7 +179,6 @@ Categories=Audio;Video;
 Icon=vlc.png
 EOF
 
-#start of big copy-paste
 mkdir -p ./usr/lib/qt4
 cp -r /usr/lib64/qt4/plugins ./usr/lib/qt4/
 
@@ -273,11 +274,9 @@ fi
 # (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
 # Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
 # the current working directory is set to usr/ inside the AppImage before running the app
-cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
+#cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
-
-#end of big copy-paste
 
 # Add desktop integration - TODO: move to a library function
 XAPP=vlc
