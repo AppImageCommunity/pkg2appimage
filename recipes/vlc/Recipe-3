@@ -33,7 +33,7 @@ cd AppImages/
 git_pull_rebase_helper
 cd ..
 
-yum -y install pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake mesa-libgbm mesa-libEGL
+yum -y install epel-release wget pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake mesa-libgbm mesa-libEGL
 
 
 if [ -z "$NO_DOWNLOAD" ] ; then
@@ -119,6 +119,7 @@ if [ -z "$NO_LIBS" ] ; then
   make && make install
 fi
 
+yum -y install libXpm-devel mesa-libEGL-devel libvdpau-devel gstreamer-devel gstreamer-plugins-base-devel libdc1394-devel libraw1394-devel libbluray-devel opencv-devel libsmbclient-devel libvncserver-devel freerdp-devel xcb-util-keysyms-devel librsvg2-devel cairo-devel libcaca-devel jack-audio-connection-kit-devel kdelibs
 
 cd /$APP/
 
