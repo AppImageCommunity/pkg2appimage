@@ -120,7 +120,7 @@ if [ -z "$NO_LIBS" ] ; then
   make && make install
 fi
 
-yum -y install libXpm-devel mesa-libEGL-devel libvdpau-devel gstreamer-devel gstreamer-plugins-base-devel libdc1394-devel libraw1394-devel libbluray-devel libsmbclient-devel libvncserver-devel freerdp-devel xcb-util-keysyms-devel librsvg2-devel cairo-devel libcaca-devel jack-audio-connection-kit-devel kdelibs
+yum -y install libXpm-devel mesa-libEGL-devel libvdpau-devel gstreamer-devel gstreamer-plugins-base-devel libdc1394-devel libraw1394-devel libbluray-devel libsmbclient-devel libvncserver-devel freerdp-devel xcb-util-keysyms-devel librsvg2-devel cairo-devel libcaca-devel jack-audio-connection-kit-devel kdelibs libavc1394-devel
 
 cd /$APP/
 
