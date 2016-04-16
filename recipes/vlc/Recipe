@@ -125,14 +125,14 @@ cd /$APP/
 
 LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
 wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/last/$LATEST"
-tar xf vlc-2.2.2.tar.xz
+tar xf vlc-*.tar.xz
 
 cd vlc-*/
 #fix download link
 sed -i 's/ftp:/http:/g' contrib/src/x264/rules.mak
 # Workaround for:
 # ass_shaper.c:31:19: error: hb-ft.h: No such file or directory
-sed -i 's|install|install \&\& cp -rf ./src/*.h /VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/include/harfbuzz/|g' ./contrib/src/harfbuzz/rules.mak
+sed -i 's|install|install \&\& cp -rf ./src/*.h /VLC/vlc-*/contrib/x86_64-redhat-linux/include/harfbuzz/|g' ./contrib/src/harfbuzz/rules.mak
 
 if [ -z "$NO_LIBS" ] ; then
   cd contrib
@@ -153,7 +153,7 @@ if [ -z "$NO_LIBS" ] ; then
 fi
 
 cd /$APP/vlc-*/
-autoreconf -fiv -I/VLC/vlc-2.2.2/contrib/x86_64-redhat-linux/share/aclocal
+autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
 #Disable chromaprint for now, due to libavcodec link issue, http://forum.videolan.org/viewtopic.php?t=119954
 ./configure --disable-chromaprint --prefix=/usr
 #Disable -liconv link flag
