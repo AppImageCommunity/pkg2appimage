@@ -33,9 +33,8 @@ cd AppImages/
 git_pull_rebase_helper
 cd ..
 
+yum -y remove qt5-qtbase # VLC cannot be built with Qt5 and export QT_SELECT=4 does not work for me
 yum -y install gcc-c++ epel-release wget pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake mesa-libgbm mesa-libEGL fftw-devel
-
-export QT_SELECT=4
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Install AppImageKit build dependencies
