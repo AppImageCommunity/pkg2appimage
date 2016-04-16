@@ -32,18 +32,18 @@ cat > Etcher.desktop <<EOF
 [Desktop Entry]
 Name=Etcher
 Exec=Etcher
-Desription=A better way to flash OS images to SD cards
+Description=A better way to flash OS images to SD cards
 Icon=etcher
 Type=Application
 EOF
 
 wget -q "https://github.com/resin-io/etcher/raw/master/assets/icon.png" -O etcher.png
 
-# Add desktop integration
-XAPP=Etcher
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+# Add desktop integration - doesn't play well with apps run as root yet
+# XAPP=Etcher
+# wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+# chmod a+x ./usr/bin/$XAPP.wrapper
+# sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
 # Append the required GLIBC version to the version string
 GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
