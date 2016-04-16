@@ -28,7 +28,7 @@ rm -r etcher-release/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
 
-cat > etcher.desktop <<EOF
+cat > Etcher.desktop <<EOF
 [Desktop Entry]
 Name=Etcher
 Exec=Etcher
