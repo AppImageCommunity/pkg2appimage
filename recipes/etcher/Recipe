@@ -1,0 +1,58 @@
+# This is an example for an Electron-based app that is not a text editor.
+# We are using their precompiled binaries.
+
+APP=Etcher
+
+mkdir -p $APP/$APP.AppDir
+cd $APP/
+
+# Get the current version from the GitHub Releases page
+# since on http://www.etcher.io/ it is not accessible
+# (probably hidden deep inside some JavaScript?), stupid.
+ 
+VERSION=$(wget "https://github.com/resin-io/etcher/releases" -q -O - | grep tag-name | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1)
+VERSION=${VERSION:1} # Remove first character which is "v"
+
+URL="https://resin-production-downloads.s3.amazonaws.com/etcher/${VERSION}/Etcher-linux-x64.tar.gz"
+
+wget -c --trust-server-names "$URL"
+
+cd $APP.AppDir
+
+tar xf ../Etcher-*
+
+mkdir -p usr/bin
+mv etcher-release/Etcher-linux-x64/* usr/bin/
+rm -r etcher-release/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+cat > etcher.desktop <<EOF
+[Desktop Entry]
+Name=Etcher
+Exec=Etcher
+Desription=A better way to flash OS images to SD cards
+Icon=etcher
+Type=Application
+EOF
+
+wget -q "https://github.com/resin-io/etcher/raw/master/assets/icon.png" -O etcher.png
+
+# Add desktop integration
+XAPP=Etcher
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Append the required GLIBC version to the version string
+GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+VERSION=$VERSION-glibc$GLIBC_NEEDED
+
+cd .. # Go out of AppDir
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
