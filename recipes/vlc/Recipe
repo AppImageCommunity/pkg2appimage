@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# NOTE: This script currently only runs ONCE
+# which means we cannot use it for nightly builds
+# FIXME
+
 # Halt on errors
 set -e
 
