@@ -82,7 +82,7 @@ GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | 
 VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
 echo $VERSION
 
-# Workaround for:
+# Workaround for: https://launchpad.net/bugs/1545771
 # error: file contains group "Drawing Shortcut Group", but groups extending the format should start with "X-"
 cat > inkscape.desktop <<\EOF
 [Desktop Entry]
