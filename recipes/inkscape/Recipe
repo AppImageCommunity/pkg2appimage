@@ -25,16 +25,22 @@
 yum -y install libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 
 # Get Inkscape
-URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
-wget -c "$URL"
 
-# Or the latest version from git- 6 MB
-# wget https://github.com/inkscape/inkscape/archive/master.zip
-# unzip master.zip
-# cd inkscape-master/inkscape-launchpad/
+# Latest released version
+# URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
+# wget -c "$URL"
+# tar xf inkscape*.tar.bz2
+# cd inkscape-*
 
-tar xf inkscape*.tar.bz2
-cd inkscape-*
+# Or the development version from bzr:lp (it's dog slow)
+yum -y install bzr
+if [ -d inkscape ] ; then
+  cd inkscape
+  bzr inkscape
+else
+  bzr checkout lp:inkscape inkscape
+  cd inkscape
+fi
 
 ./autogen.sh
 ./configure --prefix=/AppDir/usr --enable-binreloc
