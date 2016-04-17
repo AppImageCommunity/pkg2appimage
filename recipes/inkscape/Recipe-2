@@ -1,0 +1,70 @@
+# CentOS 6.7
+# Does not work currently because
+# compilation of glib2 fails (FIXME)
+
+#######################################################################################
+
+# Install and enable Devtoolset-3 by Software Collections
+# https://www.softwarecollections.org/en/scls/rhscl/devtoolset-3/
+yum -y install centos-release-scl-rh
+yum -y install devtoolset-3-gcc-c++.x86_64 # 66 MB
+scl enable devtoolset-3 bash
+
+# Install and enable Autotools by Pavel Raiskup
+# https://www.softwarecollections.org/en/scls/praiskup/autotools/
+rpm -ivh https://www.softwarecollections.org/en/scls/praiskup/autotools/epel-6-x86_64/download/praiskup-autotools-epel-6-x86_64.noarch.rpm
+sudo yum install autotools-latest # 19 MB
+scl enable autotools-latest bash
+
+### Not clear if the above is really needed ###
+
+#######################################################################################
+
+# Set Up an RPM Build Environment under CentOS
+# https://wiki.centos.org/HowTos/SetupRpmBuildEnvironment
+
+yum install -y rpm-build redhat-rpm-config make gcc # 3 MB
+mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+useradd -s /sbin/nologin mockbuild
+
+# Compile and install newer Cairo which is needed for newer cairomm
+
+wget http://vault.centos.org/7.2.1511/os/Source/SPackages/cairo-1.14.2-1.el7.src.rpm
+
+yum -y install libXrender-devel libX11-devel libpng-devel libxml2-devel pixman-devel freetype-devel fontconfig-devel glib2-devel librsvg2-devel mesa-libGL-devel mesa-libEGL-devel # 12 MB
+
+rpmbuild --rebuild cairo-1.14.2-1.el7.src.rpm
+
+# Compile and install newer cairomm
+
+yum -y install libsigc++20-devel
+rpm -ivh --replacefiles /root/rpmbuild/RPMS/x86_64/* # Self-compiled RPMs from above
+
+wget http://vault.centos.org/7.2.1511/os/Source/SPackages/cairomm-1.10.0-8.el7.src.rpm
+
+rpmbuild --rebuild cairomm-1.10.0-8.el7.src.rpm
+
+rpm -ivh --replacefiles /root/rpmbuild/RPMS/x86_64/cairomm-*
+
+### Works until here ###
+
+#######################################################################################
+
+# Compile and install newer glib which is needed for newer glibmm
+
+wget http://vault.centos.org/7.2.1511/os/Source/SPackages/glib2-2.42.2-5.el7.src.rpm
+
+yum -y install git gettext libattr-devel libselinux-devel systemtap-sdt-devel libtool gtk-doc python-devel libffi-devel elfutils-libelf-devel chrpath gamin-devel # 14 MB
+
+rpmbuild --rebuild glib2-2.42.2-5.el7.src.rpm
+
+# user mockbuild does not exist
+# Bad exit status from /var/tmp/rpm-tmp.gsoM2m (%prep)
+
+#######################################################################################
+
+# Compile and install newer glibmm
+
+wget http://vault.centos.org/7.2.1511/os/Source/SPackages/glibmm24-2.42.0-1.el7.src.rpm
+
+rpmbuild --rebuild glibmm24-2.42.0-1.el7.src.rpm
