@@ -22,7 +22,8 @@
 # undefined symbol: g_type_check_instance_is_fundamentally_a
 # Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1,
 
-yum -y install libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+yum -y install libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel glibmm24-devel libsigc++-devel gtkmm24-devel gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel glibmm24 libsigc++ gtkmm24 intltool boost-devel popt-devel
+# ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick poppler-devel
 
 # Get Inkscape
 
@@ -32,7 +33,8 @@ yum -y install libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-
 # tar xf inkscape*.tar.bz2
 # cd inkscape-*
 
-# Or the development version from bzr:lp (it's dog slow)
+# Or the development version from bzr:lp (it's dog slow) as long as they have not moved to GitHub yet
+# As per #inkscape-devel this is the only way to get the release number
 yum -y install bzr
 if [ -d inkscape ] ; then
   cd inkscape
