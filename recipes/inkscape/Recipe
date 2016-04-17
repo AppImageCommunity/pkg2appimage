@@ -26,3 +26,25 @@ sudo make install
 # Note that because Inkscape uses binreloc, we do not need to binary-patch the executable
 # because binreloc makes paths relative rather than absolute
 # https://github.com/datenwolf/binreloc
+
+############## Compilation and installation succeeded ############## 
+
+cd /AppDir/
+
+mkdir -p ./usr/lib
+ldd usr/bin/inkscape | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+
+# Delete blacklisted files; TODO: Move to a library function
+BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+echo $BLACKLISTED_FILES
+for FILE in $BLACKLISTED_FILES ; do
+  FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)
+  if [ ! -z "$FOUND" ] ; then
+    echo "Deleting blacklisted ${FOUND}"
+    rm -f "${FOUND}"
+  fi
+done
+
+# Running this on Ubuntu 16.04:
+# (inkscape:25238): GdkPixbuf-WARNING **: Error loading XPM image loader: Image type 'xpm' is not supported
+# Inkscape encountered an internal error and will close now.
