@@ -19,6 +19,6 @@ tar xf inkscape*.tar.bz2
 cd inkscape-*
 
 ./autogen.sh
-./configure --prefix=/ink
+./configure --prefix=/AppDir/usr --enable-binreloc
 make -j16
 sudo make install
