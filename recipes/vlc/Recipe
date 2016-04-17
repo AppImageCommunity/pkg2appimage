@@ -2,7 +2,7 @@
 
 # NOTE: This script currently only runs ONCE
 # which means we cannot use it for nightly builds
-# FIXME
+# TODO: Make this run repeatedly and only compile what needs to be compiled (not everything) (FIXME)
 
 # Halt on errors
 set -e
