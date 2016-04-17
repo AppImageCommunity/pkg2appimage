@@ -49,13 +49,14 @@ for FILE in $BLACKLISTED_FILES ; do
   fi
 done
 
-VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
-VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
-VERSION=$VER1.$VER2
-echo $VERSION
-
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
+
+VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
+VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
+GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
+echo $VERSION
 
 # Workaround for:
 # error: file contains group "Drawing Shortcut Group", but groups extending the format should start with "X-"
