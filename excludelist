@@ -6,6 +6,10 @@ libc.so.6
 # Workaround for:
 relocation error: usr/lib/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
 
+libstdc++.so.6
+# Workaround for:
+# usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.21' not found
+
 libm.so.6
 # Workaround for:
 # relocation error: usr/lib/libm.so.6: symbol __get_cpu_features, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
@@ -55,3 +59,47 @@ libgtk-x11-2.0.so.0
 libasound.so.2
 # Workaround for:
 # No sound, e.g., in VLC.AppImage (does not find sound cards)
+
+# The following are assumed to be part of the base system
+# Removing these has worked e.g., for Krita. Feel free to report if
+# you think that some of these should go into AppImages and why.
+libcom_err.so.2
+libcrypt.so.1
+libdl.so.2
+libexpat.so.1
+libgcc_s.so.1
+libglib-2.0.so.0
+libgpg-error.so.0
+libgssapi_krb5.so.2
+libgssapi.so.3
+libhcrypto.so.4
+libheimbase.so.1
+libheimntlm.so.0
+libhx509.so.5
+libICE.so.6
+libidn.so.11
+libk5crypto.so.3
+libkeyutils.so.1
+libkrb5.so.26
+libkrb5.so.3
+libkrb5support.so.0
+libm.so.6
+libp11-kit.so.0
+libpcre.so.3
+libpthread.so.0
+libresolv.so.2
+libroken.so.18
+librt.so.1
+libsasl2.so.2
+libSM.so.6
+libusb-1.0.so.0
+libuuid.so.1
+libwind.so.0
+
+# Remove these libraries, we need to use the system versions; 
+# this means that Ubuntu 11.04 is not supported (making 12.04 is our baseline)
+libGL.so.1
+libdrm.so.2
+
+# Potentially dangerous libraries
+libgobject-2.0.so.0
