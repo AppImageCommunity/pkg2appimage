@@ -35,7 +35,7 @@
 # undefined symbol: g_type_check_instance_is_fundamentally_a
 # Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1,
 
-yum -y install wget sudo make which libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel glibmm24-devel libsigc++-devel gtkmm24-devel gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel glibmm24 libsigc++ gtkmm24 intltool boost-devel popt-devel
+yum -y install wget make which libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel glibmm24-devel libsigc++-devel gtkmm24-devel gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel glibmm24 libsigc++ gtkmm24 intltool boost-devel popt-devel
 # ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick poppler-devel
 
 # Get Inkscape
@@ -60,7 +60,7 @@ fi
 ./autogen.sh
 ./configure --prefix=/AppDir/usr --enable-binreloc
 make -j8
-sudo make install
+make install
 
 # Note that because Inkscape uses binreloc, we do not need to binary-patch the executable
 # because binreloc makes paths relative rather than absolute
