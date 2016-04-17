@@ -24,3 +24,5 @@ make -j8
 sudo make install
 
 # Note that because Inkscape uses binreloc, we do not need to binary-patch the executable
+# because binreloc makes paths relative rather than absolute
+# https://github.com/datenwolf/binreloc
