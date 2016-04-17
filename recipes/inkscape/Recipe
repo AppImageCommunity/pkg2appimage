@@ -31,6 +31,10 @@ sudo make install
 
 cd /AppDir/
 
+# Strip executables; greatly reduces AppImage size
+find . -type f -executable -exec strip {} \;
+
+# Copy dependency libraries
 mkdir -p ./usr/lib
 ldd usr/bin/inkscape | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 
@@ -45,6 +49,30 @@ for FILE in $BLACKLISTED_FILES ; do
   fi
 done
 
-# Running this on Ubuntu 16.04:
-# (inkscape:25238): GdkPixbuf-WARNING **: Error loading XPM image loader: Image type 'xpm' is not supported
-# Inkscape encountered an internal error and will close now.
+VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
+VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
+VERSION=$VER1.$VER2
+echo $VERSION
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+find . -name *.desktop -exec mv {} . \;
+cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
+
+APP=Inkscape
+
+# Add desktop integration
+XAPP=inkscape
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ./out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./AppDir/ ./out/$APP"-"$VERSION"-x86_64.AppImage"
