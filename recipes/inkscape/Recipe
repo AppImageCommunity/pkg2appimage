@@ -48,15 +48,14 @@ cd ..
 tar xf inkscape*.tar.bz2
 cd inkscape-*
 
-./autogen.sh
-./configure
-
-# Still says:
+# Workaround for:
 # Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
 # Requested 'glibmm-2.4 >= 2.28' but version of glibmm is 2.22.1
-# Why?
+# This is because .pc files have been installed in /usr/lib rather than /usr/lib64
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
-exit 1 ####################################################
+./autogen.sh
+./configure
 
 # Workaround for:
 # configure: error: *** A compiler with support for C++11 language features is required.
