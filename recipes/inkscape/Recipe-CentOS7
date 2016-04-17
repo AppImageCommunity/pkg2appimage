@@ -1,0 +1,26 @@
+# For now I have given up on building Inkscape on CentOS 6
+# because it needs so many newer versions of the gdk/gtk/gdkmm/gtkmm dependencies
+# Help would be greatly appreciated. In the meantime, I am using CentOS 7
+# which means that the resulting AppImage will be compatible with fewer older systems
+# CentOS-7.0-1406-x86_64-GnomeLive.iso
+
+yum -y install gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+
+# Why the heck does it download half the Internet when running on the ISO including LibreOffice???
+
+# Get Inkscape
+URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
+wget -c "$URL"
+
+# Or the latest version from git- 6 MB
+# wget https://github.com/inkscape/inkscape/archive/master.zip
+# unzip master.zip
+# cd inkscape-master/inkscape-launchpad/
+
+tar xf inkscape*.tar.bz2
+cd inkscape-*
+
+./autogen.sh
+./configure --prefix=/ink
+make -j16
+sudo make install
