@@ -20,5 +20,5 @@ cd inkscape-*
 
 ./autogen.sh
 ./configure --prefix=/AppDir/usr --enable-binreloc
-make -j16
+make -j8
 sudo make install
