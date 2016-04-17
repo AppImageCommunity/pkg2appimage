@@ -6,8 +6,6 @@
 
 yum -y install gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 
-# Why the heck does it download half the Internet when running on the ISO including LibreOffice???
-
 # Get Inkscape
 URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
 wget -c "$URL"
