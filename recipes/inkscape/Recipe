@@ -2,7 +2,25 @@
 # because it needs so many newer versions of the gdk/gtk/gdkmm/gtkmm dependencies
 # Help would be greatly appreciated. In the meantime, I am using CentOS 7
 # which means that the resulting AppImage will be compatible with fewer older systems
+# I compiled successfully using this Recipe on CentOS-7.0-1406-x86_64-GnomeLive.iso
+# 
+# The resulting AppImage has been tested successfully on
+# CentOS-7-x86_64-LiveGNOME-1511.iso
+# debian-live-8.0.0-amd64-xfce-desktop+nonfree.iso
+# elementary_OS_0.3_freya_amd64.iso
+# Fedora-Live-Workstation-x86_64-23-10.iso
+# ubuntu-16.04-beta2-desktop-amd64.iso
+#
+# Does not run on 
 # CentOS-7.0-1406-x86_64-GnomeLive.iso
+# openSUSE-13.1-GNOME-Live-x86_64.iso
+# ./lib/libglibmm-2.4.so.1: undefined symbol: g_variant_parse_error_quark
+# According to its changelog, g_variant_parse_error_quark() was removed in glibmm 2.39.93
+#
+# Does not run on 
+# ubuntu-14.04.1-desktop-amd64.iso
+# undefined symbol: g_type_check_instance_is_fundamentally_a
+# Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1,
 
 yum -y install gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick glibmm24-devel libsigc++-devel gtkmm24-devel glibmm24 libsigc++ gtkmm24 intltool gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 
