@@ -1,0 +1,37 @@
+URL="http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.0.27.71.g0a26e3b2-9_amd64.deb"
+
+echo $URL
+
+APP=Spotify
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+wget -c --trust-server-names "$URL"
+
+cd $APP.AppDir/
+dpkg -x ../spotify*deb .
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+cp ./usr/share/spotify/spotify.desktop .
+
+cp ./usr/share/spotify/icons/spotify-linux-256.png spotify-client.png
+
+VERSION=$(ls ../spotify*deb | cut -d _ -f 2)
+
+# Add desktop integration
+XAPP=spotify
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
