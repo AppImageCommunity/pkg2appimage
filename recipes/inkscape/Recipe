@@ -82,7 +82,7 @@ fi
 yum -y install bzr
 if [ -d inkscape ] ; then
   cd inkscape
-  bzr inkscape
+  bzr update
 else
   bzr checkout lp:inkscape inkscape
   cd inkscape
