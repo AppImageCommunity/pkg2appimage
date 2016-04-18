@@ -32,9 +32,10 @@
 #
 # Does not run on 
 # antergos-2014.08.07-x86_64.iso
+# linuxmint-17.3-cinnamon-64bit.iso
 # ubuntu-14.04.1-desktop-amd64.iso
 # undefined symbol: g_type_check_instance_is_fundamentally_a
-# Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1,
+# Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1
 
 # TODO: move to a library function
 git_pull_rebase_helper()
