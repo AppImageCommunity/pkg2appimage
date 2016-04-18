@@ -31,6 +31,7 @@
 # According to its changelog, g_variant_parse_error_quark() was removed in glibmm 2.39.93
 #
 # Does not run on 
+# antergos-2014.08.07-x86_64.iso
 # ubuntu-14.04.1-desktop-amd64.iso
 # undefined symbol: g_type_check_instance_is_fundamentally_a
 # Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1,
