@@ -55,7 +55,7 @@ yum -y install wget make which libtool gcc-c++ cairo-devel cairomm-devel glibmm2
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Install AppImageKit build dependencies
-sudo yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
+yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
 
 # Build AppImageKit
 if [ ! -d AppImageKit ] ; then
