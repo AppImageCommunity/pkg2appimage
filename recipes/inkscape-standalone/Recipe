@@ -1,0 +1,177 @@
+#!/bin/bash
+
+# Compile Inkscape and bundle it as an AppImage on CentOS 7
+# By Simon Peter 4/2016
+# This script is supposed to run inside a CentOS 7 environment. On a Ubuntu host machine, I used
+# the following commands set up a CentOS 7 environment; you can use your own chroot method of choice instead
+# or just boot the CentOS-7.0-1406-x86_64-GnomeLive.iso in a virtual machine and run this script inside there.
+# 
+# wget https://github.com/probonopd/AppImageKit/raw/master/AppImageAssistant.AppDir/testappimage
+# sudo bash testappimage CentOS-7.0-1406-x86_64-GnomeLive.iso bash
+# wget https://github.com/probonopd/AppImages/raw/master/recipes/inkscape/Recipe
+# bash -ex Recipe
+#
+# For now I have given up on building Inkscape on CentOS 6
+# because it needs so many newer versions of the gdk/gtk/gdkmm/gtkmm dependencies
+# Help would be greatly appreciated. In the meantime, I am using CentOS 7
+# which means that the resulting AppImage will be compatible with fewer older systems
+# I compiled successfully using this Recipe on CentOS-7.0-1406-x86_64-GnomeLive.iso
+# 
+# The resulting AppImage has been tested successfully on
+# CentOS-7-x86_64-LiveGNOME-1511.iso
+# debian-live-8.0.0-amd64-xfce-desktop+nonfree.iso
+# elementary_OS_0.3_freya_amd64.iso
+# Fedora-Live-Workstation-x86_64-23-10.iso
+# ubuntu-16.04-beta2-desktop-amd64.iso
+#
+# Does not run on (FIXME):
+# CentOS-7.0-1406-x86_64-GnomeLive.iso
+# openSUSE-13.1-GNOME-Live-x86_64.iso
+# ./lib/libglibmm-2.4.so.1: undefined symbol: g_variant_parse_error_quark
+# According to its changelog, g_variant_parse_error_quark() was removed in glibmm 2.39.93
+#
+# Bundling libglib-2.0.so.0 should do away with the following error (FIXME, find a better solution):
+# antergos-2014.08.07-x86_64.iso
+# linuxmint-17.3-cinnamon-64bit.iso
+# ubuntu-14.04.1-desktop-amd64.iso
+# undefined symbol: g_type_check_instance_is_fundamentally_a
+# Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1
+
+# TODO: move to a library function
+git_pull_rebase_helper()
+{
+	git reset --hard HEAD
+        git pull
+}
+
+# Determine which architecture should be built
+if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
+	ARCH=$(/bin/arch)
+else
+	echo "Architecture could not be determined"
+	exit 1
+fi
+
+yum -y install wget make which libtool gcc-c++ cairo-devel cairomm-devel glibmm24-devel giomm24-devel pango-devel pangoft2-devel gsl-devel libxslt-devel gc-devel freetype-devel glibmm24-devel libsigc++-devel gtkmm24-devel gc gc-devel lcms2 lcms2-devel libxml2-devel libxslt-devel glibmm24 libsigc++ gtkmm24 intltool boost-devel popt-devel
+# ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick poppler-devel
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Install AppImageKit build dependencies
+yum -y install cmake binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
+
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+cmake .
+make clean
+make
+cd ..
+fi
+
+# Get Inkscape
+
+# Latest released version
+# URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
+# wget -c "$URL"
+# tar xf inkscape*.tar.bz2
+# cd inkscape-*
+
+# Or the development version from bzr:lp (it's dog slow) as long as they have not moved to GitHub yet
+# As per #inkscape-devel this is the only way to get the release number
+yum -y install bzr
+if [ -d inkscape ] ; then
+  cd inkscape
+  bzr update
+else
+  bzr checkout lp:inkscape inkscape
+  cd inkscape
+fi
+
+./autogen.sh
+./configure --prefix=/AppDir/usr --enable-binreloc
+make -j8
+make install
+
+# Note that because Inkscape uses binreloc, we do not need to binary-patch the executable
+# because binreloc makes paths relative rather than absolute
+# https://github.com/datenwolf/binreloc
+
+############## Compilation and installation succeeded ############## 
+
+cd /AppDir/
+
+# Strip executables; greatly reduces AppImage size
+find . -type f -executable -exec strip {} \;
+
+# Copy dependency libraries
+mkdir -p ./usr/lib
+ldd usr/bin/inkscape | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
+VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
+VERSION=$VER1.$VER2.standalone
+echo $VERSION
+
+# Workaround for: https://launchpad.net/bugs/1545771
+# error: file contains group "Drawing Shortcut Group", but groups extending the format should start with "X-"
+cat > inkscape.desktop <<\EOF
+[Desktop Entry]
+Version=1.0
+Name=Inkscape
+GenericName=Vector Graphics Editor
+X-GNOME-FullName=Inkscape Vector Graphics Editor
+Comment=Create and edit Scalable Vector Graphics images
+Type=Application
+Categories=Graphics;VectorGraphics;GTK;
+MimeType=image/svg+xml;image/svg+xml-compressed;application/vnd.corel-draw;application/pdf;application/postscript;image/x-eps;application/illustrator;
+Exec=inkscape %F
+TryExec=inkscape
+Terminal=false
+StartupNotify=true
+Icon=inkscape
+X-Ayatana-Desktop-Shortcuts=Drawing
+EOF
+
+cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
+
+# AppImageAssistant picks up too small icon if we leave these in (FIXME)
+rm -rf usr/share/icons/hicolor/16x16/ usr/share/icons/hicolor/22x22/ usr/share/icons/hicolor/24x24/ usr/share/icons/hicolor/32x32/ usr/share/icons/hicolor/48x48/
+
+APP=Inkscape
+
+# Add desktop integration
+XAPP=inkscape
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+# Put this script into the AppImage for debugging
+# FIXME: The follwing line does not work
+# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
+
+mkdir -p ../out
+
+rm -f ../out/*.AppImage || true
+
+# Convert the AppDir into an AppImage
+rm -rf $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./AppDir/ ../out/$APPIMAGE
+
+chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
+ls -lh ../out/$APPIMAGE
