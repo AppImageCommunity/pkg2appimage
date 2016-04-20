@@ -68,11 +68,12 @@ rm -rf etc/ home/ run/ var/ usr/share/fonts media/
 cd usr/
 '../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu --list ./bin/inkscape
 
+# Go out of the AppImage
 cd ../..
 
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
 chmod a+x ./AppImageAssistant
 ./AppImageAssistant cde-root/ Inkscape-trunk-standalone_x86_64.AppImage
 
-sudo mkdir -p /out
-sudo mv Inkscape-trunk-standalone_x86_64.AppImage /out
+sudo mkdir -p ../out
+sudo mv Inkscape-trunk-standalone_x86_64.AppImage ../out
