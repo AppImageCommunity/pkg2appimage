@@ -93,3 +93,34 @@ chmod a+x ./AppImageAssistant
 
 sudo mkdir -p ../out
 sudo mv Inkscape-trunk-standalone_x86_64.AppImage ../out
+
+# Strangely, the resulting AppImage still tries to access some 
+# libraries outside the AppImage(FIXME)
+# /usr/lib/x86_64/liblzma.so.2
+# /usr/lib/x86_64-linux-gnu/charset.alias
+# /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so
+# /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so
+# /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache
+# /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so
+# /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so
+# /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so
+# /usr/lib/x86_64-linux-gnu/gvfs/tls/libgvfscommon.so
+# /usr/lib/x86_64-linux-gnu/gvfs/tls/x86_64/libgvfscommon.so
+# /usr/lib/x86_64-linux-gnu/gvfs/x86_64/libgvfscommon.so
+# /usr/lib/x86_64-linux-gnu/libcanberra-gtk.so.0
+# /usr/lib/x86_64-linux-gnu/libcanberra.so.0
+# /usr/lib/x86_64-linux-gnu/libcap-ng.so.0
+# /usr/lib/x86_64-linux-gnu/liblzma.so.2
+# /usr/lib/x86_64-linux-gnu/libogg.so.0
+# /usr/lib/x86_64-linux-gnu/libtdb.so.1
+# /usr/lib/x86_64-linux-gnu/libvorbisfile.so.3
+# /usr/lib/x86_64-linux-gnu/libvorbis.so.0
+# /usr/lib/x86_64-linux-gnu/libX11.so.6
+# /usr/lib/x86_64-linux-gnu/libXau.so.6
+# /usr/lib/x86_64-linux-gnu/libxcb.so.1
+# /usr/lib/x86_64-linux-gnu/libXdmcp.so.6
+# /usr/lib/x86_64-linux-gnu/pango/1.8.0/module-files.d
+# /usr/lib/x86_64-linux-gnu/pango/1.8.0/modules.cache
+# /usr/lib/x86_64-linux-gnu/tls/liblzma.so.2
+# /usr/lib/x86_64-linux-gnu/tls/x86_64/liblzma.so.2
+# /usr/lib/x86_64-linux-gnu/x86_64/liblzma.so.2
