@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# This is intended to run on Ubuntu.
+# It uses binaries from the Inkscape trunk ppa and bundles EVERY library, down to glibc.
+# The advantage of this approach is that it is really easy to do 
+# and it allows the AppImage to run on older target systems, too.
+
+# Prepare AppDir
+sudo add-apt-repository -y ppa:inkscape.dev/trunk
+sudo apt-get update
+sudo apt-get -y install inkscape-trunk cde
+cde inkscape &
+sleep 10
+killall inkscape
+cd cde-package/cde-root/
+dpkg -x /var/cache/apt/archives/inkscape-trunk_*.deb .
+dpkg -x /var/cache/apt/archives/inkscape-trunk-data_*.deb .
+
+cat > AppRun <<\EOF
+#!/bin/sh
+
+APPDIR="$(dirname "$(readlink -f "${0}")")"
+INSTALL_PREFIX=/usr
+
+# Base environment variables
+export LD_LIBRARY_PATH=${APPDIR}${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+export PATH=${APPDIR}${INSTALL_PREFIX}/bin:${PATH}
+export XDG_DATA_DIRS=${APPDIR}${INSTALL_PREFIX}/share:${XDG_DATA_DIRS}
+
+# D-Bus, silence fatal warnings, libdbus is in the mix but we don't need a D-Bus environment
+export DBUS_FATAL_WARNINGS=0
+
+# Pango environment variables
+# export PANGO_RC_FILE=${APPDIR}/pangorc
+
+# GTK+/GIO/GdkPixbuf environment variables
+# http://askubuntu.com/questions/251712/how-can-i-install-a-gsettings-schema-without-root-privileges
+export GSETTINGS_SCHEMA_DIR=${APPDIR}${INSTALL_PREFIX}/share/glib-2.0/schemas/:${GSETTINGS_SCHEMA_DIR}
+export GDK_PIXBUF_MODULE_FILE=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+export GTK_PATH=${APPDIR}${INSTALL_PREFIX}/lib/gtk-3.0
+export GTK_DATA_PREFIX=${APPDIR}${INSTALL_PREFIX}
+export GTK_THEME=Adwaita
+
+# Currently we change into the APPDIR directory, this only because of gdk-pixbuf
+# and pango cache files which need to specify relative paths.
+cd ${APPDIR}/${INSTALL_PREFIX}
+
+'../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu ./bin/inkscape "$@"
+EOF
+chmod a+x AppRun
+
+cp ./usr/share/applications/inkscape.desktop .
+cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
+rm -rf ./usr/share/icons/hicolor/48x48 # So that this is not picked up by AppImageAssistant
+rm -rf etc/ home/ run/ var/ usr/share/fonts media/
+
+cd usr/
+'../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu --list ./bin/inkscape
+
+cd ../..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+./AppImageAssistant cde-root/ Inkscape-trunk-standalone_x86_64.AppImage
+
+sudo mkdir -p /out
+sudo mv Inkscape-trunk-standalone_x86_64.AppImage /out
