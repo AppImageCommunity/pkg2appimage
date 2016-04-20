@@ -52,6 +52,8 @@ export GTK_PATH=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gtk-2.0/immodule
 export GTK_DATA_PREFIX=${APPDIR}${INSTALL_PREFIX}
 export GTK_THEME=Adwaita
 
+export GCONV_PATH=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gconv/
+
 # Currently we change into the APPDIR directory, this only because of gdk-pixbuf
 # and pango cache files which need to specify relative paths.
 cd ${APPDIR}/${INSTALL_PREFIX}
@@ -59,6 +61,10 @@ cd ${APPDIR}/${INSTALL_PREFIX}
 '../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu ./bin/inkscape "$@"
 EOF
 chmod a+x AppRun
+
+# This belongs to glibc and needs to be bundled if we bundle glibc; GCONV_PATH needs to be set there
+mkdir -p usr/lib/x86_64-linux-gnu/gconv/
+cp /usr/lib/x86_64-linux-gnu/gconv/* usr/lib/x86_64-linux-gnu/gconv/
 
 cp ./usr/share/applications/inkscape.desktop .
 cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
