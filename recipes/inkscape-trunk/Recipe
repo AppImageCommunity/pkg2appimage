@@ -54,6 +54,9 @@ export GTK_THEME=Adwaita
 
 export GCONV_PATH=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gconv/
 
+unset GTK_MODULES # Otherwise crashes on later Ubuntu because it tries to load unity-gtk-module
+# from the host system, which requires a newer glibc (FIXME)
+
 # Currently we change into the APPDIR directory, this only because of gdk-pixbuf
 # and pango cache files which need to specify relative paths.
 cd ${APPDIR}/${INSTALL_PREFIX}
