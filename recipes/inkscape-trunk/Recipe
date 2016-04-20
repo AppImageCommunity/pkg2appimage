@@ -74,11 +74,8 @@ cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
 rm -rf ./usr/share/icons/hicolor/48x48 # So that this is not picked up by AppImageAssistant
 rm -rf etc/ home/ run/ var/ usr/share/fonts media/
 
-# Path absolute to relative paths (TODO: Use binreloc instead)
-sed -i -e 's|/usr|././|g' ./usr/bin/inkscape
-sed -i -e 's|/usr|././|g' ./usr/bin/inkview
-sed -i -e 's|/usr|././|g' ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/*/loaders.cache
-sed -i -e 's|/usr|././|g' ./usr/lib/x86_64-linux-gnu/gtk-2.0/*/immodules.cache
+# Path absolute to relative paths
+find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
 
 # Bundle additional libraries (these seem to be needed at runtime but are not bundled for whatever reason)
 cp  /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/
