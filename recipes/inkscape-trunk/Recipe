@@ -5,22 +5,24 @@
 # The advantage of this approach is that it is really easy to do 
 # and it allows the AppImage to run on older target systems, too.
 
-# Prepare AppDir
+# Install Inkscape from PPA
 sudo add-apt-repository -y ppa:inkscape.dev/trunk
 sudo apt-get update
 sudo apt-get -y install inkscape-trunk cde
 
+# Run Inkscape through CDE
 export DISPLAY=:99.0
 sh -e /etc/init.d/xvfb start
 sleep 3 # give xvfb some time to start
-
 cde inkscape &
 sleep 15
 killall inkscape
-
 sh -e /etc/init.d/xvfb stop
 
 cd cde-package/cde-root/
+
+# Finalize the AppDir by extracting everything that belongs to Inkscape into it,
+# not just what CDE captured above
 dpkg -x /var/cache/apt/archives/inkscape-trunk_*.deb .
 dpkg -x /var/cache/apt/archives/inkscape-trunk-data_*.deb .
 
@@ -62,6 +64,7 @@ cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
 rm -rf ./usr/share/icons/hicolor/48x48 # So that this is not picked up by AppImageAssistant
 rm -rf etc/ home/ run/ var/ usr/share/fonts media/
 
+# Nothing should point to /usr or /lib and the likes anymore
 cd usr/
 '../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu --list ./bin/inkscape
 
