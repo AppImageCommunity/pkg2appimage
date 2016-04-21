@@ -83,24 +83,24 @@ rm -rf etc/ home/ run/ var/ usr/share/fonts media/
 # /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so
 # /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so
 mkdir -p ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/
-cp /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/
-cp /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/
+cp /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/ || true
+cp /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/ || true
 
 # /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache
 # /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so
 mkdir -p ./usr/lib/x86_64-linux-gnu/gio/modules/
-cp /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so ./usr/lib/x86_64-linux-gnu/gio/modules/
+cp /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so ./usr/lib/x86_64-linux-gnu/gio/modules/ || true
 
 # /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so
 mkdir -p ./usr/lib/x86_64-linux-gnu/gtk-2.0/modules/
-cp /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so ./usr/lib/x86_64-linux-gnu/gtk-2.0/modules/
+cp /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so ./usr/lib/x86_64-linux-gnu/gtk-2.0/modules/ || true
 
 # /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so
 # /usr/lib/x86_64-linux-gnu/gvfs/tls/libgvfscommon.so
 # /usr/lib/x86_64-linux-gnu/gvfs/tls/x86_64/libgvfscommon.so
 # /usr/lib/x86_64-linux-gnu/gvfs/x86_64/libgvfscommon.so
 mkdir -p ./usr/lib/x86_64-linux-gnu/gvfs/
-cp /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so ./usr/lib/x86_64-linux-gnu/gvfs/
+cp /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so ./usr/lib/x86_64-linux-gnu/gvfs/ || true
 
 ######################
 
