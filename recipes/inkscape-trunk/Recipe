@@ -78,7 +78,7 @@ rm -rf etc/ home/ run/ var/ usr/share/fonts media/
 # Are these not copied in automatically but required?
 
 # /usr/lib/x86_64-linux-gnu/charset.alias
-cp /usr/lib/x86_64-linux-gnu/charset.alias ./usr/lib/x86_64-linux-gnu/
+### cp /usr/lib/x86_64-linux-gnu/charset.alias ./usr/lib/x86_64-linux-gnu/
 
 # /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so
 # /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so
