@@ -74,6 +74,12 @@ cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
 rm -rf ./usr/share/icons/hicolor/48x48 # So that this is not picked up by AppImageAssistant
 rm -rf etc/ home/ run/ var/ usr/share/fonts media/
 
+# Copy in the indirect dependencies - is this needed?
+FILES=$(find ./usr -type f -executable)
+for FILE in $FILES ; do
+    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib/x86_64-linux-gnu/ || true
+done
+
 # Path absolute to relative paths
 find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
 
