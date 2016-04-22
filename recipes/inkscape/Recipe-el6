@@ -70,6 +70,26 @@ make
 sudo make install
 cd ..
 
+# Workaround for:
+# Requested 'pangomm-1.4 >= 2.27.1'
+# when compiling gtkmm-2.24.0
+yum -y remove pangomm || true
+wget https://github.com/GNOME/mm-common/archive/0.9.10.tar.gz
+tar xf 0.9.10.tar.gz
+cd mm-common-0.9.10/
+./autogen.sh
+./configure --prefix=/usr --enable-static --disable-shared
+make
+sudo make install
+cd ..
+wget -c http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.28/pangomm-2.28.0.tar.bz2
+tar xf pangomm-2.28.0.tar.bz2
+cd pangomm-2.28.0
+./configure --prefix=/usr --enable-static --disable-shared
+make
+sudo make install
+cd ..
+
 wget -c http://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.24/gtkmm-2.24.0.tar.bz2
 tar xf gtkmm-2.24.0.tar.bz2
 cd gtkmm-2.24.0
