@@ -5,7 +5,8 @@
 
 ###########################################
 
-yum -y install gcc ImageMagick-c++-devel ImageMagick-c++ ImageMagick-devel ImageMagick  libsigc++-devel libsigc++ intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+yum -y install gcc ImageMagick-devel ImageMagick libsigc++20-devel intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+# ImageMagick-c++-devel ImageMagick-c++
 
 URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
 wget -c "$URL"
@@ -27,7 +28,7 @@ cd -
 wget -c http://cairographics.org/releases/cairomm-1.9.8.tar.gz
 tar xf cairomm-1.9.8.tar.gz
 cd cairomm-1.9.8
-./configure --prefix=/usr
+./configure --prefix=/usr --enable-static --disable-shared
 make
 sudo make install
 cd ..
@@ -43,13 +44,10 @@ rpm -ivh ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNS
 wget -c http://ftp.gnome.org/pub/gnome/sources/glibmm/2.28/glibmm-2.28.0.tar.bz2
 tar xf glibmm-2.28.0.tar.bz2
 cd glibmm-2.28.0
-./configure --prefix=/usr
+./configure --prefix=/usr --enable-static --disable-shared
 make
 sudo make install
 cd ..
-
-tar xf inkscape*.tar.bz2
-cd inkscape-*
 
 # Workaround for:
 # Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
@@ -57,13 +55,34 @@ cd inkscape-*
 # This is because .pc files have been installed in /usr/lib rather than /usr/lib64
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
-./autogen.sh
-./configure
-
 # Workaround for:
 # configure: error: *** A compiler with support for C++11 language features is required.
-# . /opt/rh/devtoolset-2/enable 
+. /opt/rh/devtoolset-2/enable 
 
+# Workaround for:
+# error: 'size_t' does not name a type
+# when compiling gtkmm
+wget -c http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.9.tar.bz2
+tar xf libsigc++-2.2.9.tar.bz2
+cd libsigc++-2.2.9
+./configure --prefix=/usr --enable-static --disable-shared
+make
+sudo make install
+cd ..
+
+wget -c http://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.18/gtkmm-2.18.0.tar.bz2
+tar xf gtkmm-2.18.0.tar.bz2
+cd gtkmm-2.18.0
+./configure --prefix=/usr --enable-static --disable-shared
+make
+sudo make install
+cd ..
+
+tar xf inkscape*.tar.bz2
+cd inkscape-*
+
+./autogen.sh
+./configure --prefix=/AppImage --enable-binreloc
 make
 
 sudo make install
