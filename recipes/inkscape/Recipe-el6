@@ -91,6 +91,11 @@ cd inkscape-*
 sed -i -e 's|-DG_DISABLE_DEPRECATED||g' configure
 sed -i -e 's|-DGTK_DISABLE_DEPRECATED||g' configure
 
+# Possibly also needed?
+sed -i -e 's|-DGLIBMM_DISABLE_DEPRECATED||g' configure
+sed -i -e 's|-DGDKMM_DISABLE_DEPRECATED||g' configure
+sed -i -e 's|-DGTKMM_DISABLE_DEPRECATED||g' configure
+
 ./configure --prefix=/AppImage --enable-binreloc
 make
 
