@@ -79,7 +79,7 @@ sudo make install
 cd ..
 
 # Workaround for:
-# error: expected '=', ',', ';', 'asm' or '__attribute__' before 'char'
+# error: unknown type name 'G_CONST_RETURN'
 # when compiling Inkscape
 # This is because GLib has deprecated the macro G_CONST_RETURN
 # https://forums.gentoo.org/viewtopic-p-6829424.html#6829424
