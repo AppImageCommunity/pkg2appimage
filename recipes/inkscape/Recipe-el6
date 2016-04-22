@@ -127,4 +127,9 @@ sed -i -e 's|-DGTKMM_DISABLE_DEPRECATED||g' configure
 ./configure --prefix=/AppImage --enable-binreloc
 make
 
+# In file included from display/sp-canvas.cpp:23:0:
+# /usr/include/cairomm-1.0/cairomm/region.h: At global scope:
+# /usr/include/cairomm-1.0/cairomm/region.h:47:25: error: 'RectangleInt' does not name a type
+#   explicit Region(const RectangleInt& rectangle);
+
 sudo make install
