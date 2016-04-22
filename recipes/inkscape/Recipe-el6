@@ -78,6 +78,11 @@ make
 sudo make install
 cd ..
 
+tar xf inkscape*.tar.bz2
+cd inkscape-*
+
+./autogen.sh
+
 # Workaround for:
 # error: unknown type name 'G_CONST_RETURN'
 # when compiling Inkscape
@@ -86,10 +91,6 @@ cd ..
 sed -i -e 's|-DG_DISABLE_DEPRECATED||g' configure
 sed -i -e 's|-DGTK_DISABLE_DEPRECATED||g' configure
 
-tar xf inkscape*.tar.bz2
-cd inkscape-*
-
-./autogen.sh
 ./configure --prefix=/AppImage --enable-binreloc
 make
 
