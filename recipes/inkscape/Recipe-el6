@@ -78,6 +78,14 @@ make
 sudo make install
 cd ..
 
+# Workaround for:
+# error: expected '=', ',', ';', 'asm' or '__attribute__' before 'char'
+# when compiling Inkscape
+# This is because GLib has deprecated the macro G_CONST_RETURN
+# https://forums.gentoo.org/viewtopic-p-6829424.html#6829424
+sed -i -e 's|-DG_DISABLE_DEPRECATED||g' configure
+sed -i -e 's|-DGTK_DISABLE_DEPRECATED||g' configure
+
 tar xf inkscape*.tar.bz2
 cd inkscape-*
 
