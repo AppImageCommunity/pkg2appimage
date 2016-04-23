@@ -28,6 +28,17 @@ else
 	exit 1
 fi
 
+# Workaround for:
+# Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
+# Requested 'glibmm-2.4 >= 2.28' but version of glibmm is 2.22.1
+# This is because .pc files have been installed in /usr/lib rather than /usr/lib64
+export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
+
+if [ -z "$TRAVIS_JOB_ID" ] ; then
+
+mkdir -p dependencies
+cd dependencies/
+
 yum -y install wget make which libtool gcc-c++ pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
@@ -74,12 +85,6 @@ cd glibmm-2.28.0
 make
 make install
 cd ..
-
-# Workaround for:
-# Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
-# Requested 'glibmm-2.4 >= 2.28' but version of glibmm is 2.22.1
-# This is because .pc files have been installed in /usr/lib rather than /usr/lib64
-export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
 # Workaround for:
 # configure: error: *** A compiler with support for C++11 language features is required.
@@ -164,6 +169,17 @@ tar xf download
 cd boost_*
 ./bootstrap.sh
 ./b2 install --prefix=/usr 
+cd ..
+
+cd .. # go out of dependencies
+
+fi # if [ -z "$TRAVIS_JOB_ID" ]
+
+# Workaround for:
+# configure: error: *** A compiler with support for C++11 language features is required.
+wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
+. /opt/rh/devtoolset-2/enable 
 
 # Get Inkscape
 
