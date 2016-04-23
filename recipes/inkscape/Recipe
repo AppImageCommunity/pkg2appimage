@@ -225,6 +225,9 @@ sed -i -e 's|-DGDKMM_DISABLE_DEPRECATED||g' configure
 sed -i -e 's|-DGTKMM_DISABLE_DEPRECATED||g' configure
 
 ./configure --prefix=/AppDir/usr --enable-binreloc
+# Try to patch in the revision number so that it shows up in the About box
+echo "namespace Inkscape { char const *version_string = \"0.91 r$REVISION\"; }" > src/inkscape-version.cpp
+# Or we could try to patch the Makefile
 make -j8
 make install
 
