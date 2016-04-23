@@ -263,7 +263,7 @@ done
 
 # Workaround for:
 # GTK theme is broken
-rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
+rm -rf usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
 
 VERSION=2.2.2
 
