@@ -24,18 +24,18 @@
 # Fedora-Live-Workstation-x86_64-23-10.iso
 # ubuntu-16.04-beta2-desktop-amd64.iso
 #
-# Does not run on (FIXME):
-# CentOS-7.0-1406-x86_64-GnomeLive.iso
-# openSUSE-13.1-GNOME-Live-x86_64.iso
-# ./lib/libglibmm-2.4.so.1: undefined symbol: g_variant_parse_error_quark
-# According to its changelog, g_variant_parse_error_quark() was removed in glibmm 2.39.93
-#
-# Bundling libglib-2.0.so.0 should do away with the following error (FIXME, find a better solution):
+# Bundling libglib-2.0.so.0 in order to do away with the following error (FIXME, find a better solution):
 # antergos-2014.08.07-x86_64.iso
 # linuxmint-17.3-cinnamon-64bit.iso
 # ubuntu-14.04.1-desktop-amd64.iso
 # undefined symbol: g_type_check_instance_is_fundamentally_a
 # Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1
+#
+# It also fixes
+# CentOS-7.0-1406-x86_64-GnomeLive.iso
+# openSUSE-13.1-GNOME-Live-x86_64.iso
+# ./lib/libglibmm-2.4.so.1: undefined symbol: g_variant_parse_error_quark
+# According to its changelog, g_variant_parse_error_quark() was removed in glibmm 2.39.93
 
 # TODO: move to a library function
 git_pull_rebase_helper()
