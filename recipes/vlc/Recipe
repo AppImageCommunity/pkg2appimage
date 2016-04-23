@@ -293,7 +293,8 @@ cp $(ldconfig -p | grep libtinfo.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
 # GTK theme is broken
 rm -rf usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
 
-VERSION=2.2.2
+GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+VERSION=2.2.2.glibc$GLIBC_NEEDED
 
 cd ..
 find $APP.AppDir/
