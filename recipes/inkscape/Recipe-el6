@@ -13,6 +13,14 @@
 
 ###########################################
 
+# Determine which architecture should be built
+if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
+	ARCH=$(/bin/arch)
+else
+	echo "Architecture could not be determined"
+	exit 1
+fi
+
 yum -y install wget make which libtool gcc-c++ pango-devel gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
