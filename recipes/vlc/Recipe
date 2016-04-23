@@ -18,12 +18,7 @@ git pull
 }
 
 # Determine which architecture should be built
-if [[ "$(/bin/arch)" = "i686" || "$(/bin/arch)" = "x86_64" ]] ; then
-ARCH=$(/bin/arch)
-else
-echo "Architecture could not be determined"
-exit 1
-fi
+ARCH="x86_64"
 
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
