@@ -22,7 +22,10 @@ cp ./usr/share/spotify/spotify.desktop .
 
 cp ./usr/share/spotify/icons/spotify-linux-256.png spotify-client.png
 
-VERSION=$(ls ../spotify*deb | cut -d _ -f 2)
+GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+VER1=$(ls ../spotify*deb | cut -d _ -f 2)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
 
 # Add desktop integration
 XAPP=spotify
