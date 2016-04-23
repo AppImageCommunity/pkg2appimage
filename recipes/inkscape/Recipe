@@ -13,6 +13,13 @@
 
 ###########################################
 
+# TODO: move to a library function
+git_pull_rebase_helper()
+{
+	git reset --hard HEAD
+        git pull
+}
+
 # Determine which architecture should be built
 if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
 	ARCH=$(/bin/arch)
