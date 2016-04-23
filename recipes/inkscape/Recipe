@@ -94,6 +94,8 @@ cd ..
 
 # Workaround for:
 # configure: error: *** A compiler with support for C++11 language features is required.
+wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 . /opt/rh/devtoolset-2/enable 
 
 # Workaround for:
@@ -178,11 +180,6 @@ cd boost_*
 cd ..
 
 cd .. # go out of dependencies
-
-# Workaround for:
-# configure: error: *** A compiler with support for C++11 language features is required.
-wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
-yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 
 fi # if [ -z "$TRAVIS_JOB_ID" ]
 
