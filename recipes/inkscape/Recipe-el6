@@ -8,14 +8,6 @@
 yum -y install pango-devel gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
-URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
-wget -c "$URL"
-
-# Or the latest version from git- 6 MB
-# wget https://github.com/inkscape/inkscape/archive/master.zip
-# unzip master.zip
-# cd inkscape-master/inkscape-launchpad/
-
 # Workaround for:
 # Requested 'cairo >= 1.10' but version of cairo is 1.8.8
 cd /etc/yum.repos.d/
@@ -91,6 +83,24 @@ sudo make install
 cd ..
 
 # Workaround for:
+# configure: error: Package requirements (atk >= 1.12 glibmm-2.4 >= 2.24) were not met
+# when compiling atkmm
+##### Hint from the Internet: So after uninstalling glib2 2.30, I reactivated 2.28, 
+#installed pkgconfig and then atk built just fine - https://trac.macports.org/ticket/32203
+# We patch away -DG_DISABLE_DEPRECATED for now
+wget -c http://ftp.gnome.org/pub/GNOME/sources/atk/1.22/atk-1.22.0.tar.bz2
+tar xf atk-*.tar.bz2
+cd atk-*
+sed -i -e 's|-DG_DISABLE_DEPRECATED||g' ./atk/Makefile.in
+sed -i -e 's|-DG_DISABLE_DEPRECATED||g' ./atk/Makefile.am
+sed -i -e 's|-DG_DISABLE_DEPRECATED||g' ./tests/Makefile.in
+sed -i -e 's|-DG_DISABLE_DEPRECATED||g' ./tests/Makefile.am
+./configure --prefix=/usr --enable-static --disable-shared
+make
+sudo make install
+cd ..
+
+# Workaround for:
 # Requested 'atkmm-1.6 >= 2.22.2'
 wget -c http://ftp.gnome.org/pub/GNOME/sources/atkmm/2.22/atkmm-2.22.5.tar.bz2
 tar xf atkmm-2.22.5.tar.bz2
@@ -100,16 +110,38 @@ make
 sudo make install
 cd ..
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.24/gtkmm-2.24.0.tar.bz2
-tar xf gtkmm-2.24.0.tar.bz2
-cd gtkmm-2.24.0
+# C++ Interfaces for GTK+ and GNOME
+# Use the same version as gtk+ (2.24 on el6.7)
+# Workaround for:
+# Can't open perl script "/usr/share/glibmm-2.4/doctool/doc-install.pl": No such file or directory
+# https://bugs.launchpad.net/ubuntu/+source/gtkmm2.4/+bug/765992
+# Use 
+wget -c http://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.24/gtkmm-2.24.1.tar.bz2
+tar xf gtkmm-*.tar.bz2
+cd gtkmm-*
 ./configure --prefix=/usr --enable-static --disable-shared
 make
 sudo make install
 cd ..
 
-tar xf inkscape*.tar.bz2
-cd inkscape-*
+# Get Inkscape
+
+# Latest released version
+# URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
+# wget -c "$URL"
+# tar xf inkscape*.tar.bz2
+# cd inkscape-*
+
+# Or the development version from bzr:lp (it's dog slow) as long as they have not moved to GitHub yet
+# As per #inkscape-devel this is the only way to get the release number
+yum -y install bzr
+if [ -d inkscape ] ; then
+  cd inkscape
+  bzr update
+else
+  bzr checkout lp:inkscape inkscape
+  cd inkscape
+fi
 
 # Workaround for:
 # error: unknown type name 'G_CONST_RETURN'
@@ -118,18 +150,115 @@ cd inkscape-*
 # https://forums.gentoo.org/viewtopic-p-6829424.html#6829424
 sed -i -e 's|-DG_DISABLE_DEPRECATED||g' configure
 sed -i -e 's|-DGTK_DISABLE_DEPRECATED||g' configure
-
 # Possibly also needed?
 sed -i -e 's|-DGLIBMM_DISABLE_DEPRECATED||g' configure
 sed -i -e 's|-DGDKMM_DISABLE_DEPRECATED||g' configure
 sed -i -e 's|-DGTKMM_DISABLE_DEPRECATED||g' configure
 
-./configure --prefix=/AppImage --enable-binreloc
-make
+./configure --prefix=/AppDir/usr --enable-binreloc
+make -j8
+make install
 
-# In file included from display/sp-canvas.cpp:23:0:
-# /usr/include/cairomm-1.0/cairomm/region.h: At global scope:
-# /usr/include/cairomm-1.0/cairomm/region.h:47:25: error: 'RectangleInt' does not name a type
-#   explicit Region(const RectangleInt& rectangle);
+# Note that because Inkscape uses binreloc, we do not need to binary-patch the executable
+# because binreloc makes paths relative rather than absolute
+# https://github.com/datenwolf/binreloc
 
-sudo make install
+############## Compilation and installation succeeded ############## 
+
+cd /AppDir/
+
+# Strip executables; greatly reduces AppImage size
+find . -type f -executable -exec strip {} \;
+
+# Copy dependency libraries
+mkdir -p ./usr/lib
+ldd usr/bin/inkscape | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
+
+# Delete blacklisted files; TODO: Move to a library function
+BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+echo $BLACKLISTED_FILES
+for FILE in $BLACKLISTED_FILES ; do
+  FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)
+  if [ ! -z "$FOUND" ] ; then
+    echo "Deleting blacklisted ${FOUND}"
+    rm -f "${FOUND}"
+  fi
+done
+
+# Workaround for:
+# undefined symbol: g_type_check_instance_is_fundamentally_a
+# Function g_type_check_instance_is_fundamentally_a was introduced in glib2-2.41.1
+# Bundle libglib-2.0.so.0 - TODO: find a better solution, e.g., downgrade libglib-2.0 at compile time
+cp $(ldconfig -p | grep libglib-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+# The following come with glib2 and probably need to be treated together:
+cp $(ldconfig -p | grep libgio-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libgmodule-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libgobject-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libgthread-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
+VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
+GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
+echo $VERSION
+
+# Workaround for: https://launchpad.net/bugs/1545771
+# error: file contains group "Drawing Shortcut Group", but groups extending the format should start with "X-"
+cat > inkscape.desktop <<\EOF
+[Desktop Entry]
+Version=1.0
+Name=Inkscape
+GenericName=Vector Graphics Editor
+X-GNOME-FullName=Inkscape Vector Graphics Editor
+Comment=Create and edit Scalable Vector Graphics images
+Type=Application
+Categories=Graphics;VectorGraphics;GTK;
+MimeType=image/svg+xml;image/svg+xml-compressed;application/vnd.corel-draw;application/pdf;application/postscript;image/x-eps;application/illustrator;
+Exec=inkscape %F
+TryExec=inkscape
+Terminal=false
+StartupNotify=true
+Icon=inkscape
+X-Ayatana-Desktop-Shortcuts=Drawing
+EOF
+
+cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
+
+# AppImageAssistant picks up too small icon if we leave these in (FIXME)
+rm -rf usr/share/icons/hicolor/16x16/ usr/share/icons/hicolor/22x22/ usr/share/icons/hicolor/24x24/ usr/share/icons/hicolor/32x32/ usr/share/icons/hicolor/48x48/
+
+APP=Inkscape
+
+# Add desktop integration
+XAPP=inkscape
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+# Put this script into the AppImage for debugging
+# FIXME: The follwing line does not work
+# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
+
+mkdir -p ../out
+
+rm -f ../out/*.AppImage || true
+
+# Convert the AppDir into an AppImage
+rm -rf $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./AppDir/ ../out/$APPIMAGE
+
+chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
+ls -lh ../out/$APPIMAGE
