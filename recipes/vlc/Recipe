@@ -182,6 +182,8 @@ Categories=Audio;Video;
 Icon=vlc.png
 EOF
 
+rm -rf usr/share/icons/hicolor/48x48/
+
 mkdir -p ./usr/lib/qt4
 cp -r /usr/lib64/qt4/plugins ./usr/lib/qt4/
 
