@@ -152,9 +152,13 @@ if [ -z "$NO_LIBS" ] ; then
 fi
 
 # Clean up so that the Docker image won't be so large
-# as without cleaning it has over 5 GB
+# as without cleaning it has over 5 GB; 
+# not sure if it will work with the below deleted (to be verified)
 rm -rf /var/cache/yum || true # 75 MB
 rm -rf /usr/src || true # 337 MB
+rm -rf /VLC/vlc-2.2.2/contrib/tarballs || true # 94 MB
+rm -rf /VLC/vlc-2.2.2/contrib/src || true # 2 MB
+rm -rf /VLC/vlc-2.2.2/contrib/native || true # 1.4 GB
 
 cd /$APP/vlc-*/
 autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
