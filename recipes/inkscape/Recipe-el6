@@ -24,6 +24,17 @@ yum -y install cairo-devel libcairo2
 cd -
 
 # Workaround for:
+# error: 'size_t' does not name a type
+# when compiling gtkmm
+wget -c http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.9.tar.bz2
+tar xf libsigc++-2.2.9.tar.bz2
+cd libsigc++-2.2.9
+./configure --prefix=/usr --enable-static --disable-shared
+make
+sudo make install
+cd ..
+
+# Workaround for:
 # Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
 wget -c http://cairographics.org/releases/cairomm-1.10.0.tar.gz
 tar xf cairomm-*.tar.gz
@@ -58,17 +69,6 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 # Workaround for:
 # configure: error: *** A compiler with support for C++11 language features is required.
 . /opt/rh/devtoolset-2/enable 
-
-# Workaround for:
-# error: 'size_t' does not name a type
-# when compiling gtkmm
-wget -c http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.2/libsigc++-2.2.9.tar.bz2
-tar xf libsigc++-2.2.9.tar.bz2
-cd libsigc++-2.2.9
-./configure --prefix=/usr --enable-static --disable-shared
-make
-sudo make install
-cd ..
 
 # Workaround for:
 # Requested 'pangomm-1.4 >= 2.27.1'
