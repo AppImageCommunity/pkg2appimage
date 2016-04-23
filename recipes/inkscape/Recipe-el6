@@ -5,7 +5,7 @@
 
 ###########################################
 
-yum -y install pango-devel gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+yum -y install wget make which libtool gcc-c++ pango-devel gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
 # Workaround for:
@@ -23,7 +23,7 @@ tar xf libsigc++-2.2.9.tar.bz2
 cd libsigc++-2.2.9
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # Workaround for:
@@ -33,7 +33,7 @@ tar xf cairomm-*.tar.gz
 cd cairomm-*
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # Workaround for:
@@ -49,7 +49,7 @@ tar xf glibmm-2.28.0.tar.bz2
 cd glibmm-2.28.0
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # Workaround for:
@@ -72,14 +72,14 @@ cd mm-common-0.9.10/
 ./autogen.sh
 ./configure --prefix=/usr --enable-static --disable-shared
 make USE_NETWORK=yes
-sudo make install
+make install
 cd ..
 wget -c http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.28/pangomm-2.28.0.tar.bz2
 tar xf pangomm-2.28.0.tar.bz2
 cd pangomm-2.28.0
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # Workaround for:
@@ -97,7 +97,7 @@ sed -i -e 's|-DG_DISABLE_DEPRECATED||g' ./tests/Makefile.in
 sed -i -e 's|-DG_DISABLE_DEPRECATED||g' ./tests/Makefile.am
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # Workaround for:
@@ -107,7 +107,7 @@ tar xf atkmm-2.22.5.tar.bz2
 cd atkmm-2.22.5
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # C++ Interfaces for GTK+ and GNOME
@@ -121,7 +121,7 @@ tar xf gtkmm-*.tar.bz2
 cd gtkmm-*
 ./configure --prefix=/usr --enable-static --disable-shared
 make
-sudo make install
+make install
 cd ..
 
 # Get Inkscape
