@@ -151,6 +151,11 @@ if [ -z "$NO_LIBS" ] ; then
   cd ../../
 fi
 
+# Clean up so that the Docker image won't be so large
+# as without cleaning it has over 5 GB
+rm -rf /var/cache/yum || true # 75 MB
+rm -rf /usr/src || true # 337 MB
+
 cd /$APP/vlc-*/
 autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
 # Disable chromaprint for now, due to libavcodec link issue, http://forum.videolan.org/viewtopic.php?t=119954
