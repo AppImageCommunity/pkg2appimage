@@ -99,6 +99,7 @@ libSM.so.6
 libusb-1.0.so.0
 libuuid.so.1
 libwind.so.0
+libz.so.1
 
 # Remove these libraries, we need to use the system versions; 
 # this means that Ubuntu 11.04 is not supported (making 12.04 is our baseline)
