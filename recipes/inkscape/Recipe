@@ -77,9 +77,10 @@ cd ..
 # Workaround for:
 # error: unpacking of archive failed: cpio: cap_set_file
 # https://github.com/docker/hub-feedback/issues/461
-# Inside Docker we cannot install the following RPMs properly, so doing a crude workaround
-wget ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glibc-common-2.15-60.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glibc-2.15-60.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glib2-devel-2.35.8-1.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glib2-2.35.8-1.el6.x86_64.rpm
-find glib2*.rpm -exec  sh -c "rpm2cpio {} | cpio -idmv" \;
+# Inside Docker we cannot install the following RPMs properly, so doing a crude workaround (" || true")
+rpm -ivh ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glibc-common-2.15-60.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glibc-2.15-60.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glib2-devel-2.35.8-1.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glib2-2.35.8-1.el6.x86_64.rpm --replacefiles || true
+# wget ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glibc-common-2.15-60.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glibc-2.15-60.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glib2-devel-2.35.8-1.el6.x86_64.rpm ftp://fr2.rpmfind.net/linux/sourceforge/f/fu/fuduntu-el/el6/current/UNSTABLE/RPMS/glib2-2.35.8-1.el6.x86_64.rpm
+# find glib2*.rpm -exec  sh -c "rpm2cpio {} | cpio -idmv" \;
 
 # Workaround for:
 # Requested 'glibmm-2.4 >= 2.28' but version of glibmm is 2.22.1
