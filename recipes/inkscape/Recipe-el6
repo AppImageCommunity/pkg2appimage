@@ -5,8 +5,8 @@
 
 ###########################################
 
-yum -y install gcc ImageMagick-devel ImageMagick intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
-# ImageMagick-c++-devel ImageMagick-c++
+yum -y install gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+# ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
 URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
 wget -c "$URL"
