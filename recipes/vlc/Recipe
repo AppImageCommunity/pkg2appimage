@@ -4,7 +4,6 @@
 # which means we cannot use it for nightly builds
 # TODO: 
 # Make this run repeatedly and only compile what needs to be compiled (not everything) (FIXME)
-# Remove .la files
 # PulseAudio does not work (at least on debian sid)
 # libass plugin is broken (at least on debian sid)
 
@@ -271,6 +270,10 @@ for FILE in $BLACKLISTED_FILES ; do
     rm -f "${FOUND}"
   fi
 done
+
+# Remove .a and .la files
+find . -name *.la -exec rm {} \;
+find . -name *.a -exec rm {} \;
 
 # Workaround for:
 # On debian sid,
