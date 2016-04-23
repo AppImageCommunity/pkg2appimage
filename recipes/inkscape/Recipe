@@ -204,9 +204,9 @@ yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
 if [ ! -d /inkscape ] ; then
 	git clone  --depth 1 https://github.com/inkscape/inkscape.git /inkscape
 fi
-
 cd /inkscape/
 git_pull_rebase_helper
+REVISION=$(wget -q "https://github.com/inkscape/inkscape/commits/master" -O - | grep 'class="message"' | head -n 1 | cut -d ">" -f 2 | cut -d ":" -f 1)
 
 cd ./inkscape-launchpad
 
@@ -260,7 +260,7 @@ chmod a+x ./AppRun
 VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
 VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
 GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
+VERSION=$VER1.$VER2$REVISION.glibc$GLIBC_NEEDED
 echo $VERSION
 
 # Workaround for: https://launchpad.net/bugs/1545771
