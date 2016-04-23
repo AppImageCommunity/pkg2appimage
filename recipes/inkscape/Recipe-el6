@@ -25,9 +25,9 @@ cd -
 
 # Workaround for:
 # Requested 'cairomm-1.0 >= 1.9.8' but version of cairomm is 1.8.0
-wget -c http://cairographics.org/releases/cairomm-1.9.8.tar.gz
-tar xf cairomm-1.9.8.tar.gz
-cd cairomm-1.9.8
+wget -c 	cairomm-1.10.0.tar.gz
+tar xf cairomm-*.tar.gz
+cd cairomm-*
 ./configure --prefix=/usr --enable-static --disable-shared
 make
 sudo make install
