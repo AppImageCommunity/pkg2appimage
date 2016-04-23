@@ -159,7 +159,7 @@ fi
 cd /$APP/vlc-*/
 autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
 #Disable chromaprint for now, due to libavcodec link issue, http://forum.videolan.org/viewtopic.php?t=119954
-./configure --disable-chromaprint --prefix=/usr
+./configure --disable-chromaprint --disable-ncurses --prefix=/usr
 #Disable -liconv link flag
 sed -i 's/-liconv//g' Makefile
 sed -i 's/-liconv//g' modules/Makefile
