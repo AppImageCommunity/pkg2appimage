@@ -159,6 +159,8 @@ else
   cd inkscape
 fi
 
+./autogen.sh || true
+
 # Workaround for:
 # error: unknown type name 'G_CONST_RETURN'
 # when compiling Inkscape
