@@ -25,15 +25,15 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
 cd /
 
-if [ ! -d AppImages ] ; then
-git clone https://github.com/probonopd/AppImages.git
-fi
-cd AppImages/
-git_pull_rebase_helper
-cd ..
-
 yum -y remove qt5-qtbase # VLC cannot be built with Qt5 and export QT_SELECT=4 does not work for me
 yum -y install tar wget bzip2 make which libtool gcc-c++ git epel-release wget pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake mesa-libgbm mesa-libEGL fftw-devel
+
+# if [ ! -d AppImages ] ; then
+# git clone https://github.com/probonopd/AppImages.git
+# fi
+# cd AppImages/
+# git_pull_rebase_helper
+# cd ..
 
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Install AppImageKit build dependencies
@@ -285,19 +285,15 @@ wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppI
 chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
-# Remove blacklisted files - TODO: move to a library function
-if [ ! -e "../../AppImages/excludelist" ] ; then
-echo "excludelist missing, please install it"
-exit 1
-fi
-BLACKLISTED_FILES=$(cat "../../AppImages/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
-FOUND=""
+# Delete blacklisted files; TODO: Move to a library function
+BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+echo $BLACKLISTED_FILES
 for FILE in $BLACKLISTED_FILES ; do
-FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
-echo $FOUND
-if [ ! -z "$FOUND" ] ; then
-fatal "Blacklisted file ${FOUND} found"
-fi
+  FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)
+  if [ ! -z "$FOUND" ] ; then
+    echo "Deleting blacklisted ${FOUND}"
+    rm -f "${FOUND}"
+  fi
 done
 
 # Workaround for:
