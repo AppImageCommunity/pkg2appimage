@@ -140,6 +140,22 @@ make
 make install
 cd ..
 
+# Inkscape trunk needs the following too
+wget -c http://hboehm.info/gc/gc_source/gc-7.2f.tar.gz
+tar xf gc-*.tar.gz
+cd gc-*
+./configure --prefix=/usr --enable-static --disable-shared
+make
+make install
+cd ..
+
+# Newer version of boost is needed for Inkscape trunk
+wget -c https://sourceforge.net/projects/boost/files/boost/1.50.0/boost_1_50_0.tar.bz2/download
+tar xf download
+cd boost_*
+./bootstrap.sh
+./b2 install --prefix=/usr 
+
 # Get Inkscape
 
 # Latest released version
