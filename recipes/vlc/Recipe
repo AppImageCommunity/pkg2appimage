@@ -260,6 +260,16 @@ for FILE in $BLACKLISTED_FILES ; do
 done
 
 # Workaround for:
+# On debian sid,
+# symbol lookup error: /lib/x86_64-linux-gnu/libncurses.so.5: undefined symbol: _nc_putchar
+cp $(ldconfig -p | grep libncurses.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
+
+# Workaround for:
+# On debian sid,
+# Gtk-CRITICAL **: IA__gtk_widget_style_get: assertion 'GTK_IS_WIDGET (widget)' failed
+cp $(ldconfig -p | grep libtinfo.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
+
+# Workaround for:
 # symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libunity-gtk-module.so: undefined symbol: g_settings_newn
 #rm usr/lib/qt5/plugins/platformthemes/libqgtk* || true
 
