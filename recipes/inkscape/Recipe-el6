@@ -5,7 +5,7 @@
 
 ###########################################
 
-yum -y install gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
+yum -y install pango-devel gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel boost-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
 URL=$(wget -q "https://inkscape.org/cs/download/source/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
@@ -79,7 +79,7 @@ tar xf 0.9.10.tar.gz
 cd mm-common-0.9.10/
 ./autogen.sh
 ./configure --prefix=/usr --enable-static --disable-shared
-make
+make USE_NETWORK=yes
 sudo make install
 cd ..
 wget -c http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.28/pangomm-2.28.0.tar.bz2
