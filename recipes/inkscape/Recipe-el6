@@ -21,7 +21,7 @@ else
 	exit 1
 fi
 
-yum -y install wget make which libtool gcc-c++ pango-devel gcc intltool gc gc-devel lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
+yum -y install wget make which libtool gcc-c++ pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
 # Workaround for:
@@ -141,6 +141,7 @@ make install
 cd ..
 
 # Inkscape trunk needs the following too
+yum -y remove gc || true
 wget -c http://hboehm.info/gc/gc_source/gc-7.2f.tar.gz
 tar xf gc-*.tar.gz
 cd gc-*
@@ -150,7 +151,7 @@ make install
 cd ..
 
 # Newer version of boost is needed for Inkscape trunk
-yum -y remove boost-devel
+yum -y remove boost-devel || true
 wget -c https://sourceforge.net/projects/boost/files/boost/1.50.0/boost_1_50_0.tar.bz2/download
 tar xf download
 cd boost_*
