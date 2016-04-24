@@ -1,13 +1,21 @@
 # This file is supposed to be sourced by each Recipe
 # that wants to use the functions contained herein
 # like so:
-# wget -c -q https://github.com/probonopd/AppImages/raw/master/functions.sh
+# wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 # . ./functions.sh
 
 git_pull_rebase_helper()
 {
-	git reset --hard HEAD
+  git reset --hard HEAD
   git pull
+}
+
+# Patch /usr to ././ in ./usr
+# to make the contents of usr/ relocateable
+# (this requires us to cd ./usr before running the application; AppRun does that)
+patch_usr()
+{
+  find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
 }
 
 # Copy the library dependencies of all exectuable files in the current directory
