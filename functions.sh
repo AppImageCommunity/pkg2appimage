@@ -1,7 +1,7 @@
 # This file is supposed to be sourced by each Recipe
 # that wants to use the functions contained herein
 # like so:
-# wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh
+# wget -c -q https://github.com/probonopd/AppImages/raw/master/functions.sh
 # . ./functions.sh
 
 git_pull_rebase_helper()
