@@ -51,7 +51,7 @@ wget -c -T 10 http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
 tar xf autoconf-2.69.tar.gz
 cd autoconf-2.69
 ./configure --prefix=/usr
-make && make install
+make && sudo make install
 cd ..
 
 # Workaround for:
