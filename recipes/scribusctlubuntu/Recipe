@@ -25,7 +25,12 @@ libcdr-dev libvisio-dev
   cd ..
   
   sudo ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
-  
+
+  # Workaround for:
+  # checking for CPPUNIT... no
+  # configure: error: Package requirements (cppunit) were not met:
+  # TO BE FOUND (FIXME)
+
   if [ ! -d librevenge ] ; then
     git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
   fi
