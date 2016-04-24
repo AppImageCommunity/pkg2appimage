@@ -6,6 +6,9 @@
 
 set +e
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 mkdir -p ./Firefox/Firefox.AppDir/usr
 cd ./Firefox
 
