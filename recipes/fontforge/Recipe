@@ -10,6 +10,7 @@ APP=FontForge
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
 find /var/cache/apt/archives/fontforge* -exec dpkg -x {} . \;
+find /var/cache/apt/archives/libfontforge* -exec dpkg -x {} . \;
 
 cp ./usr/share/applications/fontforge.desktop .
 cp ./usr/share/icons/256x256/apps/fontforge.png .
