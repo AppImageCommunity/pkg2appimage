@@ -30,6 +30,7 @@ APP=VLC
 rm -rf /$APP/$APP.AppDir
 mkdir -p /$APP/$APP.AppDir
 
+echo "TRAVIS_JOB_ID: $TRAVIS_JOB_ID"
 if [ -z "$TRAVIS_JOB_ID" ] ; then
 
 cd /
