@@ -63,3 +63,12 @@ glibc_needed()
 {
   find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1
 }
+
+# Add desktop integration
+# Usage: get_desktopintegration name_of_desktop_file_and_exectuable
+get_desktopintegration()
+{
+  wget -O ./usr/bin/$1.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+  chmod a+x ./usr/bin/$1.wrapper
+  sed -i -e "s|Exec=$1|Exec=$1.wrapper|g" $1.desktop
+}
