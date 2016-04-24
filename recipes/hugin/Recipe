@@ -4,6 +4,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 APP=Hugin
 LOWERAPP=hugin
 
+sudo add-apt-repository -y ppa:hugin/hugin-builds
 sudo add-apt-repository -y ppa:hugin/nightly
 sudo apt-get update
 sudo apt-get -y install -t trusty $LOWERAPP
@@ -24,7 +25,7 @@ delete_blacklisted
 
 patch_usr
 
-VER1=$(ls /var/cache/apt/archives/$LOWERAPP_* | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
+VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
