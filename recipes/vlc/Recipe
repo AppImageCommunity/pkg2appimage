@@ -132,11 +132,16 @@ yum -y install libXpm-devel mesa-libEGL-devel libvdpau-devel gstreamer-devel gst
 
 cd /$APP/
 
+# Build latest released version
 LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
 wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/last/$LATEST"
 tar xf vlc-*.tar.xz
-
 cd vlc-*/
+
+# Or build git master
+# git clone https://github.com/videolan/vlc --depth 1
+# cd vlc
+
 #fix download link
 sed -i 's/ftp:/http:/g' contrib/src/x264/rules.mak
 # Workaround for:
