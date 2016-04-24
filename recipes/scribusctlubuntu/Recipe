@@ -15,8 +15,8 @@ libcdr-dev libvisio-dev
   cd autoconf-*
   ./configure --prefix=/usr
   make
-  make install
-  cd -
+  sudo make install
+  cd ..
   
   ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
   
@@ -28,7 +28,7 @@ libcdr-dev libvisio-dev
   ./autogen.sh
   ./configure --prefix=/usr --enable-static --disable-shared
   make
-  make install
+  sudo make install
   cd ..
 
 ldconfig
