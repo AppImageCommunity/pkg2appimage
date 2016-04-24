@@ -1,0 +1,32 @@
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+sudo add-apt-repository -y ppa:fontforge/fontforge;
+sudo apt-get update
+sudo apt-get -y install fontforge
+
+APP=FontForge
+
+mkdir -p $APP/$APP.AppDir
+cd $APP/$APP.AppDir
+find /var/cache/apt/archives/fontforge* -exec dpkg -x {} . \;
+
+cp ./usr/share/applications/fontforge.desktop .
+cp ./usr/share/icons/hicolor/48x48/apps/fontforge.png .
+
+get_apprun
+
+delete_blacklisted
+
+VER1=$(ls /var/cache/apt/archives/fontforge_* | cut -d "_" -f 2 | cut -d "-" -f 1)
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration fontforge
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
