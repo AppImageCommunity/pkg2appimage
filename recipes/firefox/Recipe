@@ -6,7 +6,7 @@
 
 set +e
 
-mkdir -p ./Firefox/Firefox.AppDir
+mkdir -p ./Firefox/Firefox.AppDir/usr
 cd ./Firefox
 
 wget -c --trust-server-names "https://download.mozilla.org/?product=firefox-latest&os=linux64"
@@ -15,7 +15,6 @@ VERSION=$(ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
 cd ./Firefox.AppDir
 tar xfj ../*.tar.bz2
 
-mkdir usr
 mv firefox usr/bin
 
 find . -name mozicon128.png -exec cp \{\} firefox.png \;
@@ -44,9 +43,5 @@ wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/de
 
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # 64-bit
-
-mkdir -p ../out/
-rm ../out/Firefox-* || true
-chmod a+x ./AppImageAssistant
-./AppImageAssistant ./Firefox.AppDir/ ../out/Firefox-$VERSION-x86_64.AppImage
+ARCH="x86_64"
+generate_appimage
