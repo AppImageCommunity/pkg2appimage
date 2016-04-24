@@ -22,6 +22,8 @@ copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
 mv ./lib/x86_64-linux-gnu/* ./usr/lib/x86_64-linux-gnu/ ; rm -rf ./lib
 
+patch_usr
+
 delete_blacklisted
 
 VER1=$(ls /var/cache/apt/archives/$LOWERAPP_* | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
