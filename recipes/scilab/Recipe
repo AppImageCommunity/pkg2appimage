@@ -1,3 +1,6 @@
+# Scilab provides binary builds that are very compatible,
+# so we use those binaries and encapsulate them in an AppImage
+
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
