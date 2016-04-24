@@ -1,3 +1,6 @@
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 # We are not allowed to redistribute Spotify.AppImage
 # but you can build your own by running this script on Ubuntu
 
@@ -15,29 +18,22 @@ wget -c --trust-server-names "$URL"
 cd $APP.AppDir/
 dpkg -x ../spotify*deb .
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
+
+delete_blacklisted
 
 cp ./usr/share/spotify/spotify.desktop .
-
 cp ./usr/share/spotify/icons/spotify-linux-256.png spotify-client.png
 
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+GLIBC_NEEDED=$(glibc_needed)
 VER1=$(ls ../spotify*deb | cut -d _ -f 2)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
 
-# Add desktop integration
-XAPP=spotify
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+get_desktopintegration spotify
 
 # Go out of AppImage
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+ARCH="x86_64"
+generate_appimage
