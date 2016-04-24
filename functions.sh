@@ -30,11 +30,10 @@ get_apprun()
 copy_deps()
 {
   FILES=$(find . -type f -executable)
-  DEPS=""
   for FILE in $FILES ; do
-    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
+    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' >> DEPSFILE
   done
-  DEPS=$(cat DEPSFILE  |sort | uniq)
+  DEPS=$(cat DEPSFILE | sort | uniq)
   for FILE in $DEPS ; do
     if [ -f $FILE ] ; then
       echo $FILE
