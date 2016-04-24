@@ -64,6 +64,10 @@ libgdk_pixbuf-2.0.so.0
 # Workaround for:
 # On Ubuntu, get (inkscape:25621): GdkPixbuf-WARNING **: Error loading XPM image loader: Image type 'xpm' is not supported
 
+libfontconfig.so.1
+# Workaround for:
+# Application stalls when loading fonts during application launch; e.g., KiCad on ubuntu-mate
+
 # The following are assumed to be part of the base system
 # Removing these has worked e.g., for Krita. Feel free to report if
 # you think that some of these should go into AppImages and why.
