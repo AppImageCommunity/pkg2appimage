@@ -4,7 +4,7 @@
 
 libc.so.6
 # Workaround for:
-relocation error: usr/lib/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
+# relocation error: usr/lib/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
 
 libstdc++.so.6
 # Workaround for:
