@@ -9,6 +9,30 @@ qttools5-dev qttools5-dev-tools libgraphicsmagick++1-dev \
 libopenscenegraph-dev librevenge-dev libpoppler-dev libcairo2-dev libwpg-dev libmspub-dev \
 libcdr-dev libvisio-dev
 
+  # Upgrade autoconf to 2.65 for librevenge-0.0.1
+  wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.65.tar.bz2
+  tar xf autoconf-2.65.tar.bz2 
+  cd autoconf-*
+  ./configure --prefix=/usr
+  make
+  make install
+  cd -
+  
+  ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
+  
+  if [ ! -d librevenge ] ; then
+    git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
+  fi
+  cd librevenge*
+  git_pull_rebase_helper
+  ./autogen.sh
+  ./configure --prefix=/usr --enable-static --disable-shared
+  make
+  make install
+  cd ..
+
+ldconfig
+
 git clone -b ctl https://github.com/HOST-Oman/scribus.git --depth 1
 
 cd scribus/
