@@ -59,6 +59,9 @@ mv ./lib/x86_64-linux-gnu/* ./usr/lib/x86_64-linux-gnu/ ; rm -rf ./lib
 # Patching only the executable files seems not to be enough for GIMP
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
+# Make sure complaints about the packaging don't go to the upstream packager
+sudo sed -i -e 's|Packaged by Otto Meier|Bundled as an AppImage|g' usr/bin/gimp-2.9
+
 delete_blacklisted
 
 VER1=$(ls /var/cache/apt/archives/$LOWERAPP_* | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
