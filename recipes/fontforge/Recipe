@@ -4,17 +4,17 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 APP=FontForge
 LOWERAPP=fontforge 
 
-sudo add-apt-repository -y ppa:fontforge/fontforge;
+sudo add-apt-repository -y ppa:fontforge/fontforge
 sudo apt-get update
 
-cat > ./ppa-pin-400 <<\EOF
-Package: *
-Pin: release o=LP-PPA-fontforge-fontforge
-Pin-Priority: 400
-EOF
-sudo mv ./ppa-pin-400 /etc/apt/preferences.d/
+#cat > ./ppa-pin-400 <<\EOF
+#Package: *
+#Pin: release o=LP-PPA-fontforge-fontforge
+#Pin-Priority: 400
+#EOF
+#sudo mv ./ppa-pin-400 /etc/apt/preferences.d/
 
-sudo apt-get -y install $LOWERAPP
+sudo apt-get -y -t trusty install $LOWERAPP
 
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
