@@ -26,6 +26,12 @@ ARCH="x86_64"
 # Now we are inside CentOS 6
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
+APP=VLC
+rm -rf /$APP/$APP.AppDir
+mkdir -p /$APP/$APP.AppDir
+
+if [ -z "$TRAVIS_JOB_ID" ] ; then
+
 cd /
 
 yum -y remove qt5-qtbase # VLC cannot be built with Qt5 and export QT_SELECT=4 does not work for me
@@ -67,9 +73,6 @@ export PATH=/usr/local/bin:$PATH
   make install
   cd ..
 
-APP=VLC
-rm -rf /$APP/$APP.AppDir
-mkdir -p /$APP/$APP.AppDir
 cd /$APP
 
 if [ -z "$NO_LIBS" ] ; then
@@ -162,6 +165,8 @@ rm -rf /usr/src || true # 337 MB
 rm -rf /VLC/vlc-2.2.2/contrib/tarballs || true # 94 MB
 rm -rf /VLC/vlc-2.2.2/contrib/src || true # 2 MB
 rm -rf /VLC/vlc-2.2.2/contrib/native || true # 1.4 GB
+
+fi # if [ -z "$TRAVIS_JOB_ID" ]
 
 cd /$APP/vlc-*/
 autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
