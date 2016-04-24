@@ -10,7 +10,7 @@ mkdir -p ./Firefox/Firefox.AppDir/usr
 cd ./Firefox
 
 wget -c --trust-server-names "https://download.mozilla.org/?product=firefox-latest&os=linux64"
-VERSION=$(ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
+VER1=$(ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
 
 cd ./Firefox.AppDir
 tar xfj ../*.tar.bz2
@@ -40,6 +40,12 @@ chmod a+x AppRun
 mkdir -p usr/share/appdata/
 rm usr/share/appdata/firefox.appdata.xml || true
 wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/desktop/firefox.appdata.xml" -O usr/share/appdata/firefox.appdata.xml
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration firefox
 
 cd ..
 
