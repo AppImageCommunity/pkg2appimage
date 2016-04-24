@@ -13,6 +13,9 @@
 
 ###########################################
 
+# Comment this if you want to build the Docker image (FIXME: determine automatically)
+export DO_NOT_BUILD_DEPENDENCIES=1
+
 # TODO: move to a library function
 git_pull_rebase_helper()
 {
@@ -34,7 +37,8 @@ fi
 # This is because .pc files have been installed in /usr/lib rather than /usr/lib64
 export PKG_CONFIG_PATH=/usr/lib/pkgconfig/
 
-if [ -z "$TRAVIS_JOB_ID" ] ; then
+echo "DO_NOT_BUILD_DEPENDENCIES: $DO_NOT_BUILD_DEPENDENCIES"
+if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ] ; then
 
 mkdir -p dependencies
 cd dependencies/
@@ -181,7 +185,7 @@ cd ..
 
 cd .. # go out of dependencies
 
-fi # if [ -z "$TRAVIS_JOB_ID" ]
+fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
 . /opt/rh/devtoolset-2/enable 
 
