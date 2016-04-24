@@ -22,7 +22,7 @@ find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \;
 find /var/cache/apt/archives/libfontforge* -exec dpkg -x {} . \;
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
-cp ./usr/share/icons/256x256/apps/$LOWERAPP.png .
+find /usr/share/icons/
 rm -rf ./usr/share/icons/48x48/apps
 
 get_apprun
@@ -40,8 +40,6 @@ VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
 
 get_desktopintegration fontforge
-
-find .
 
 # Go out of AppImage
 cd ..
