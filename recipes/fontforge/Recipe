@@ -33,8 +33,7 @@ copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 delete_blacklisted
 
 patch_usr
-
-VER1=$(ls /var/cache/apt/archives/$LOWERAPP_* | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
+VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
