@@ -30,6 +30,8 @@ echo $VERSION
 
 get_desktopintegration fontforge
 
+find .
+
 # Go out of AppImage
 cd ..
 
