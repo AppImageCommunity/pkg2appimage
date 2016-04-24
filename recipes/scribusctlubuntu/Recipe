@@ -6,7 +6,7 @@ sudo apt-get install -y cmake libboost-python-dev libcups2-dev libhunspell-dev \
 libhyphen-dev liblcms2-dev libpodofo-dev libtiff-dev libxml2-dev \
 python-all-dev zlib1g-dev qtbase5-dev qtdeclarative5-dev libqt5opengl5-dev \
 qttools5-dev qttools5-dev-tools libgraphicsmagick++1-dev \
-libopenscenegraph-dev libpoppler-dev libcairo2-dev libwpg-dev libmspub-dev \
+libopenscenegraph-dev librevenge-dev libpoppler-dev libcairo2-dev libwpg-dev libmspub-dev \
 libcdr-dev libvisio-dev
 
 git clone -b ctl https://github.com/HOST-Oman/scribus.git --depth 1
