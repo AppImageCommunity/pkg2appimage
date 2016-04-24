@@ -296,6 +296,7 @@ find . -name *.a -exec rm {} \;
 # Workaround for:
 # On debian sid,
 # symbol lookup error: /lib/x86_64-linux-gnu/libncurses.so.5: undefined symbol: _nc_putchar
+yum -y install ncurses
 cp $(ldconfig -p | grep libncurses.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
 
 # Workaround for:
