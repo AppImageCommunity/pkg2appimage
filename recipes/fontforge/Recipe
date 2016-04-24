@@ -18,6 +18,9 @@ rm -rf ./usr/share/icons/48x48/apps
 
 get_apprun
 
+# Copy in the indirect dependencies
+copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
+
 delete_blacklisted
 
 VER1=$(ls /var/cache/apt/archives/fontforge_* | cut -d "_" -f 2 | cut -d "-" -f 1)
