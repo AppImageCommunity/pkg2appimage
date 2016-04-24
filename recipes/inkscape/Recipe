@@ -39,7 +39,7 @@ if [ -z "$TRAVIS_JOB_ID" ] ; then
 mkdir -p dependencies
 cd dependencies/
 
-yum -y install tar wget bzip2 make which libtool gcc-c++ pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
+yum -y install tar wget bzip2 make which libtool gcc-c++ gtk2-devel pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
 # Workaround for:
