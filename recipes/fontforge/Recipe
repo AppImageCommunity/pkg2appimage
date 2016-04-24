@@ -30,6 +30,9 @@ get_apprun
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
+# Why is this not bundled automatically? (FIXME)
+cp $(ldconfig -p | grep libpng12.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+
 delete_blacklisted
 
 patch_usr
