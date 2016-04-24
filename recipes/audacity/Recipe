@@ -6,7 +6,7 @@ LOWERAPP=audacity
 
 sudo add-apt-repository -y ppa:audacity-team/daily 
 sudo apt-get update
-sudo apt-get -y install $LOWERAPP
+sudo apt-get -y install -t trusty $LOWERAPP
 
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
