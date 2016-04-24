@@ -193,6 +193,16 @@ cd ..
 
 cd .. # go out of dependencies
 
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+./build.sh
+cd ..
+fi
+
 fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
 . /opt/rh/devtoolset-2/enable 
@@ -279,7 +289,7 @@ chmod a+x ./AppRun
 VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
 VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
 GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=$VER1.$VER2$REVISION.glibc$GLIBC_NEEDED
+VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
 echo $VERSION
 
 # Workaround for: https://launchpad.net/bugs/1545771
