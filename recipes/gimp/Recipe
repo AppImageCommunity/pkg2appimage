@@ -16,9 +16,6 @@ find /var/cache/apt/archives/libbabl* -exec dpkg -x {} . \;
 find /var/cache/apt/archives/libgegl* -exec dpkg -x {} . \;
 find /var/cache/apt/archives/libgimp* -exec dpkg -x {} . \;
 
-cp ./usr/share/applications/$LOWERAPP.desktop .
-sed -i -e 's|env UBUNTU_MENUPROXY=0 ||g' $LOWERAPP.desktop
-
 rm -rf ./usr/share/icons/48x48/apps || true
 rm -rf ./usr/share/icons/hicolor/48x48/apps || true
 
@@ -38,7 +35,21 @@ exec gimp-2.9 "$@"
 EOF
 chmod a+x ./AppRun
 
-
+# The original desktop file is a bit strange, hence we provide our own
+cat > gimp.desktop <<\EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=GIMP
+GenericName=Image Editor
+Comment=Create images and edit photographs
+Exec=gimp
+Icon=gimp
+Terminal=false
+Categories=Graphics;2DGraphics;RasterGraphics;GTK;
+StartupNotify=true
+MimeType=image/bmp;image/g3fax;image/gif;image/x-fits;image/x-pcx;image/x-portable-anymap;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;image/x-psd;image/x-sgi;image/x-tga;image/x-xbitmap;image/x-xwindowdump;image/x-xcf;image/x-compressed-xcf;image/x-gimp-gbr;image/x-gimp-pat;image/x-gimp-gih;image/tiff;image/jpeg;image/x-psp;application/postscript;image/png;image/x-icon;image/x-xpixmap;image/x-exr;image/svg+xml;image/x-wmf;image/jp2;image/jpeg2000;image/jpx;image/x-xcursor;
+EOF
 
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
