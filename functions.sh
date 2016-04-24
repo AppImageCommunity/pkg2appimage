@@ -18,6 +18,13 @@ patch_usr()
   find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
 }
 
+# Download AppRun and make it executable
+get_apprun()
+{
+  wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun -O ./AppRun # 64-bit
+  chmod a+x AppRun
+}
+
 # Copy the library dependencies of all exectuable files in the current directory
 # (it can be beneficial to run this multiple times)
 copy_deps()
