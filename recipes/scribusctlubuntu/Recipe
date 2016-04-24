@@ -1,6 +1,12 @@
 # This runs on Travis-CI Ubuntu
 # Inspired by https://github.com/HOST-Oman/scribus/blob/ctl/.travis.yml
 
+git_pull_rebase_helper()
+{
+  git reset --hard HEAD
+  git pull
+}
+
 sudo apt-get update -qq
 sudo apt-get install -y cmake libboost-python-dev libcups2-dev libhunspell-dev \
 libhyphen-dev liblcms2-dev libpodofo-dev libtiff-dev libxml2-dev \
