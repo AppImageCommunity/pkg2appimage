@@ -14,7 +14,7 @@
 ###########################################
 
 # Comment this if you want to build the Docker image (FIXME: determine automatically)
-export DO_NOT_BUILD_DEPENDENCIES=1
+# export DO_NOT_BUILD_DEPENDENCIES=1
 
 # TODO: move to a library function
 git_pull_rebase_helper()
@@ -43,7 +43,7 @@ if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ] ; then
 mkdir -p dependencies
 cd dependencies/
 
-yum -y install tar wget bzip2 make which libtool gcc-c++ gtk2-devel pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
+yum -y install git tar wget bzip2 make which libtool gcc-c++ gtk2-devel pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
 # Workaround for:
