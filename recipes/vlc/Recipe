@@ -30,8 +30,8 @@ APP=VLC
 rm -rf /$APP/$APP.AppDir
 mkdir -p /$APP/$APP.AppDir
 
-echo "TRAVIS_JOB_ID: $TRAVIS_JOB_ID"
-if [ -z "$TRAVIS_JOB_ID" ] ; then
+echo "DO_NOT_BUILD_DEPENDENCIES: $DO_NOT_BUILD_DEPENDENCIES"
+if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ] ; then
 
 cd /
 
@@ -167,7 +167,7 @@ rm -rf /VLC/vlc-2.2.2/contrib/tarballs || true # 94 MB
 rm -rf /VLC/vlc-2.2.2/contrib/src || true # 2 MB
 rm -rf /VLC/vlc-2.2.2/contrib/native || true # 1.4 GB
 
-fi # if [ -z "$TRAVIS_JOB_ID" ]
+fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
 cd /$APP/vlc-*/
 autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
