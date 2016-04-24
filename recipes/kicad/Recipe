@@ -17,7 +17,7 @@ find /var/cache/apt/archives/kicad* -exec dpkg -x {} . \;
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
 # Why is this not bundled automatically? (FIXME)
-cp $(ldconfig -p | grep libpng12.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libpng12.so.0 | head -n 1 | cut -d ">" -f 2 | xargs) ./usr/lib/
 
 cp ./usr/share/applications/kicad.desktop .
 cp ./usr/share/icons/hicolor/48x48/apps/kicad.png .
