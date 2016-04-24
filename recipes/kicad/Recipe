@@ -5,7 +5,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 
 sudo bash -c 'echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list.d/wheezy-backports.list'
 sudo apt-get update
-sudo apt-get -y install -t wheezy-backports kicad
+sudo apt-get -y --force-yes install -t wheezy-backports kicad
 
 APP=KiCad
 mkdir -p $APP/$APP.AppDir
