@@ -21,7 +21,16 @@ cp ./usr/share/icons/hicolor/48x48/apps/kicad.png .
 
 patch_usr
 
-get_apprun
+# Workaround until 
+# AppRun.c exports rather than just sets environment variables
+cat > ./AppRun <<\EOF
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+export LD_LIBRARY_PATH="${HERE}/usr/lib/x86_64-linux-gnu":"${HERE}/usr/lib/"
+cd "${HERE}/usr"
+exec "./bin/kicad" "$@"
+EOF
+chmod a+x ./AppRun
 
 delete_blacklisted
 
