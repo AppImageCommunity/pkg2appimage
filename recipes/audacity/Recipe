@@ -13,7 +13,6 @@ cd $APP/$APP.AppDir
 find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \;
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
-cp ./usr/share/icons/256x256/apps/$LOWERAPP.png .
 rm -rf ./usr/share/icons/48x48/apps
 
 get_apprun
