@@ -46,6 +46,14 @@ cd dependencies/
 yum -y install git tar wget bzip2 make which libtool gcc-c++ gtk2-devel pango-devel gcc intltool lcms lcms-devel gsl gsl-devel libxml2-devel libxslt-devel popt-devel poppler-devel
 # ImageMagick-devel ImageMagick ImageMagick-c++-devel ImageMagick-c++
 
+# Update autoconf to 2.69, Inkscape needs newer one than what comes with CentOS 6.7
+wget -c -T 10 http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
+tar xf autoconf-2.69.tar.gz
+cd autoconf-2.69
+./configure --prefix=/usr
+make && make install
+cd ..
+
 # Workaround for:
 # Requested 'cairo >= 1.10' but version of cairo is 1.8.8
 cd /etc/yum.repos.d/
