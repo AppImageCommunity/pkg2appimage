@@ -9,13 +9,15 @@ set +e
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-mkdir -p ./Firefox/Firefox.AppDir/usr
-cd ./Firefox
+APP=Firefox
+
+mkdir -p ./Firefox/$APP.AppDir/usr
+cd ./$APP
 
 wget -c --trust-server-names "https://download.mozilla.org/?product=firefox-latest&os=linux64"
 VER1=$(ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
 
-cd ./Firefox.AppDir
+cd ./$APP.AppDir
 tar xfj ../*.tar.bz2
 
 mv firefox usr/bin
