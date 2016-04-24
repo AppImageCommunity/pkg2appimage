@@ -15,6 +15,7 @@
 | QCAD | [![Download](https://api.bintray.com/packages/probono/AppImages/Qcad/images/download.svg)](https://bintray.com/probono/AppImages/Qcad/_latestVersion#files) |
 | Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion#files)  |
 | Subsurface | [![Download](https://api.bintray.com/packages/probono/AppImages/Subsurface/images/download.svg)](https://bintray.com/probono/AppImages/Subsurface/_latestVersion#files) |
+| VLC | [![Download](https://api.bintray.com/packages/probono/AppImages/vlc/images/download.svg)](https://bintray.com/probono/AppImages/vlc/_latestVersion#files) |
 | wxHexEditor | [![Download](https://api.bintray.com/packages/probono/AppImages/wxHexEditor/images/download.svg)](https://bintray.com/probono/AppImages/wxHexEditor/_latestVersion#files) |
 
 Significant upstream projects have started providing their own AppImages of releases and/or nightly/continuous builds, see this [list of upstream-provided AppImages](https://github.com/probonopd/AppImageKit/wiki/AppImages#upstream-appimages).
