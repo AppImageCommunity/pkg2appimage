@@ -34,7 +34,7 @@ delete_blacklisted
 
 patch_usr
 
-VER1=$(ls "/var/cache/apt/archives/${LOWERAPP}_*" | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
+VER1=$(ls /var/cache/apt/archives/$LOWERAPP_* | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
