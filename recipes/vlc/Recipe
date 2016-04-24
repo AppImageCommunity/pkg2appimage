@@ -172,6 +172,7 @@ rm -rf /VLC/vlc-2.2.2/contrib/native || true # 1.4 GB
 
 fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
+ls -l /$APP/
 cd /$APP/vlc-*/
 autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
 # Disable chromaprint for now, due to libavcodec link issue, http://forum.videolan.org/viewtopic.php?t=119954
