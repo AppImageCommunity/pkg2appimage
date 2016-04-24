@@ -34,7 +34,7 @@ chmod a+x ./AppRun
 
 delete_blacklisted
 
-VER1=$(ls /var/cache/apt/archives/kicad_* | cut -d "_" -f 2)
+VER1=$(ls /var/cache/apt/archives/kicad_* | cut -d "_" -f 2 | cut -d "~" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
