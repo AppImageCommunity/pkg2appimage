@@ -21,7 +21,7 @@ rm -rf ./usr/share/icons/hicolor/48x48/apps || true
 
 # Need to patch etc, otherwise it does not find its defaults; found with "grep -r /etc/gimp"
 sed -i -e 's|/etc/gimp|./et/gimp|g' ./usr/bin/gimp-2.9
-# sed -i -e 's|/etc/gimp|./et/gimp|g' ./lib/x86_64-linux-gnu/libgimpbase-*
+sed -i -e 's|/etc/gimp|./et/gimp|g' ./usr/lib/libgimpbase-*
 sudo mv etc/ usr/et
 
 cat > ./AppRun <<\EOF
@@ -29,7 +29,7 @@ cat > ./AppRun <<\EOF
 cd "$(dirname "${0}")/usr"
 export BABL_PATH=./lib/x86_64-linux-gnu/babl-0.1/
 export GEGL_PATH=./lib/x86_64-linux-gnu/gegl-0.3/
-export LD_LIBRARY_PATH="./lib:./lib32:./lib64:${LD_LIBRARY_PATH}" 
+export LD_LIBRARY_PATH="./lib:./lib32:./lib64:./lib/x86_64-linux-gnu/:${LD_LIBRARY_PATH}"
 export PATH="./bin/:./sbin/:./games/:../bin/:../sbin/:${PATH}"
 exec gimp-2.9 "$@"
 EOF
