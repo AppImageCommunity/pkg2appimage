@@ -201,7 +201,6 @@ cd AppImageKit/
 git_pull_rebase_helper
 ./build.sh
 cd ..
-fi
 
 fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
