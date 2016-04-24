@@ -72,3 +72,13 @@ get_desktopintegration()
   chmod a+x ./usr/bin/$1.wrapper
   sed -i -e "s|Exec=$1|Exec=$1.wrapper|g" $1.desktop
 }
+
+# Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
+generate_appimage()
+{
+  wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+  chmod a+x ./AppImageAssistant
+  mkdir -p ../out
+  rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+  ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
+}
