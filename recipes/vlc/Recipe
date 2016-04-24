@@ -7,6 +7,9 @@
 # PulseAudio does not work (at least on debian sid)
 # libass plugin is broken (at least on debian sid)
 
+# Comment this if you want to build the Docker image (FIXME: determine automatically)
+export DO_NOT_BUILD_DEPENDENCIES=1
+
 # Halt on errors
 set -e
 
