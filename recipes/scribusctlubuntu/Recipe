@@ -1,0 +1,20 @@
+# This runs on Travis-CI Ubuntu
+
+sudo apt-get update -qq
+sudo apt-get install -y cmake libboost-python-dev libcups2-dev libhunspell-dev \
+libhyphen-dev liblcms2-dev libpodofo-dev libtiff-dev libxml2-dev \
+python-all-dev zlib1g-dev qtbase5-dev qtdeclarative5-dev libqt5opengl5-dev \
+qttools5-dev qttools5-dev-tools libgraphicsmagick++1-dev \
+libopenscenegraph-dev libpoppler-dev libcairo2-dev libwpg-dev libmspub-dev \
+libcdr-dev libvisio-dev
+
+git clone -b ctl https://github.com/HOST-Oman/scribus.git --depth 1
+
+cd scribus/
+
+export NPROC=8;
+cmake . -DCMAKE_INSTALL_PREFIX:PATH=Scribus.AppDir/usr -DWANT_HUNSPELL=1 -DWITH_PODOFO=1 -DWANT_GRAPHICSMAGICK=1 -DWANT_DEBUG=0 -DWANT_SVNVERSION=0 -DWANT_GUI_LANG=en_US -DWANT_NOEXAMPLES=1 -DWANT_NOTEMPLATES=1
+make -j"$NPROC"
+make install
+
+ls Scribus.AppDir/usr
