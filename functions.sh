@@ -57,3 +57,9 @@ delete_blacklisted()
     fi
   done
 }
+
+# Echo highest glibc version needed by the executable files in the current directory
+glibc_needed()
+{
+  find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1
+}
