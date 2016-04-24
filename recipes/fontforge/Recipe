@@ -18,6 +18,10 @@ rm -rf ./usr/share/icons/48x48/apps
 
 get_apprun
 
+# Why are the following not copied in automatically? (FIXME)
+cp $(ldconfig -p | grep libgdraw.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
+cp $(ldconfig -p | grep libgif.so.4 | cut -d ">" -f 2 | xargs) ./usr/lib/
+
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
