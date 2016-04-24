@@ -139,8 +139,11 @@ tar xf vlc-*.tar.xz
 cd vlc-*/
 
 # Or build git master
-# git clone https://github.com/videolan/vlc --depth 1
-# cd vlc
+# if [ ! -d vlc-git ] ; then
+#   git clone https://github.com/videolan/vlc vlc-git --depth 1
+# fi
+# cd vlc-git
+# git_pull_rebase_helper
 
 #fix download link
 sed -i 's/ftp:/http:/g' contrib/src/x264/rules.mak
