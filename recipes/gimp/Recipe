@@ -56,7 +56,8 @@ copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
 mv ./lib/x86_64-linux-gnu/* ./usr/lib/x86_64-linux-gnu/ ; rm -rf ./lib
 
-patch_usr
+# Patching only the executable files seems not to be enough for GIMP
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 delete_blacklisted
 
