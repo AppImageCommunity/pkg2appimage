@@ -1,0 +1,95 @@
+# This is an example for using debian backports
+
+echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list.d/wheezy-backports.list
+sudo apt-get update
+sudo apt-get -y install -t wheezy-backports kicad
+
+APP=KiCad
+mkdir -p $APP/$APP.AppDir
+cd $APP/$APP.AppDir
+find /var/cache/apt/archives/libwx* -exec dpkg -x {} . \;
+find /var/cache/apt/archives/kicad* -exec dpkg -x {} . \;
+
+# Copy in the indirect dependencies
+FILES=$(find . -type f -executable)
+DEPS=""
+for FILE in $FILES ; do
+  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
+done
+DEPS=$(cat DEPSFILE  |sort | uniq)
+for FILE in $DEPS ; do
+  if [ -f $FILE ] ; then
+    echo $FILE
+    cp --parents -rfL $FILE ./
+  fi
+done
+rm -f DEPSFILE
+
+# Copy in the indirect dependencies - second run
+FILES=$(find . -type f -executable)
+DEPS=""
+for FILE in $FILES ; do
+  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
+done
+DEPS=$(cat DEPSFILE  |sort | uniq)
+for FILE in $DEPS ; do
+  if [ -f $FILE ] ; then
+    echo $FILE
+    cp --parents -rfL $FILE ./
+  fi
+done
+rm -f DEPSFILE
+
+# Copy in the indirect dependencies - third run
+FILES=$(find . -type f -executable)
+DEPS=""
+for FILE in $FILES ; do
+  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
+done
+DEPS=$(cat DEPSFILE  |sort | uniq)
+for FILE in $DEPS ; do
+  if [ -f $FILE ] ; then
+    echo $FILE
+    cp --parents -rfL $FILE ./
+  fi
+done
+rm -f DEPSFILE
+
+cp ./usr/share/applications/kicad.desktop .
+
+# Patch usr
+find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
+
+ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
+chmod a+x AppRun
+
+# Delete blacklisted files; TODO: Move to a library function
+BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+echo $BLACKLISTED_FILES
+for FILE in $BLACKLISTED_FILES ; do
+  FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)
+  if [ ! -z "$FOUND" ] ; then
+    echo "Deleting blacklisted ${FOUND}"
+    rm -f "${FOUND}"
+  fi
+done
+
+VER1=$(ls /var/cache/apt/archives/kicad_* | cut -d "_" -f 2)
+GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+# Add desktop integration
+XAPP=kicad
+wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$XAPP.wrapper
+sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+
+# Go out of AppImage
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
