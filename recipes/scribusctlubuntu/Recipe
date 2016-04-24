@@ -18,7 +18,7 @@ libcdr-dev libvisio-dev
   sudo make install
   cd ..
   
-  ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
+  sudo ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
   
   if [ ! -d librevenge ] ; then
     git clone git://git.code.sf.net/p/libwpd/librevenge librevenge
