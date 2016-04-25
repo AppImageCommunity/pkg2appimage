@@ -23,6 +23,8 @@ find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \;
 cp ./usr/share/applications/$LOWERAPP.desktop .
 rm -rf ./usr/share/icons/48x48/apps || true
 rm -rf ./usr/share/pixmaps || true
+find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
 
 get_apprun
 
