@@ -15,6 +15,12 @@ find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
 rm -rf ./usr/share/icons/48x48/apps || true
+find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
+
+# The following lines can be removed once AppRun covers these paths, too
+mv lib/* usr/lib/
+mv lib/x86_64-linux-gnu/* usr/lib/x86_64-linux-gnu/
 
 get_apprun
 
