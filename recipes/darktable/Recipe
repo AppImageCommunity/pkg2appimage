@@ -24,8 +24,8 @@ get_apprun
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
 # The following lines can be removed once AppRun covers these paths, too
-mv lib/x86_64-linux-gnu/* usr/lib/x86_64-linux-gnu/
-mv lib/* usr/lib/
+mv lib/x86_64-linux-gnu/* usr/lib/x86_64-linux-gnu/ || true
+mv lib/* usr/lib/ || true
 
 delete_blacklisted
 
