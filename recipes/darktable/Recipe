@@ -7,13 +7,6 @@ LOWERAPP=${APP,,}
 sudo add-apt-repository -y ppa:pmjdebruijn/darktable-release
 sudo apt-get update
 
-# cat > preferences <<EOF
-# Package: *
-# Pin: release l=$APP
-# Pin-Priority: 700
-# EOF
-# sudo mv preferences /etc/apt/
-
 sudo apt-get -y install $LOWERAPP
 
 mkdir -p $APP/$APP.AppDir
