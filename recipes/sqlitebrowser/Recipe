@@ -14,6 +14,8 @@ cd $APP/$APP.AppDir
 find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
+sed -i -e 's|Name=.*|Name='$APP'|g' $LOWERAPP.desktop # We really want the name of the App there and not some random crap
+
 rm -rf ./usr/share/icons/48x48/apps || true
 cp usr/share/icons/128x128/apps/$LOWERAPP.png . || true
 cp usr/share/icons/256x256/apps/$LOWERAPP.png . || true
