@@ -3,21 +3,25 @@
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-sudo bash -c 'echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list.d/wheezy-backports.list'
-sudo apt-get update
-sudo apt-get -y --force-yes install -t wheezy-backports kicad
+TITLE=KiCad
+APP=${TITLE,,}
 
-APP=KiCad
+sudo add-apt-repository -y ppa:js-reynaud/ppa-kicad
+sudo apt-get update
+
+sudo apt-get -y install $APP
+
+# sudo bash -c 'echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list.d/wheezy-backports.list'
+# sudo apt-get update
+# sudo apt-get -y --force-yes install -t wheezy-backports kicad
+
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
 find /var/cache/apt/archives/libwx* -exec dpkg -x {} . \;
-find /var/cache/apt/archives/kicad* -exec dpkg -x {} . \;
+find /var/cache/apt/archives/*$APP* -exec dpkg -x {} . \; || true
 
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
-
-# Why is this not bundled automatically? (FIXME)
-cp $(ldconfig -p | grep libpng12.so.0 | head -n 1 | cut -d ">" -f 2 | xargs) ./usr/lib/
 
 cp ./usr/share/applications/kicad.desktop .
 cp ./usr/share/icons/hicolor/48x48/apps/kicad.png .
@@ -34,6 +38,10 @@ cd "${HERE}/usr"
 exec "./bin/kicad" "$@"
 EOF
 chmod a+x ./AppRun
+
+# The following lines can be removed once AppRun covers these paths, too
+mv lib/x86_64-linux-gnu/* usr/lib/x86_64-linux-gnu/ || true
+mv lib/* usr/lib/ || true
 
 delete_blacklisted
 
