@@ -23,6 +23,10 @@ get_apprun
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
+# The following lines can be removed once AppRun covers these paths, too
+mv lib/* usr/lib/
+mv lib/x86_64-linux-gnu/* usr/lib/x86_64-linux-gnu/
+
 delete_blacklisted
 
 patch_usr
