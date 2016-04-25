@@ -2,7 +2,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 . ./functions.sh
 
 APP=Darktable
-LOWERAPP=${APP=,,} 
+LOWERAPP=${APP,,} 
 
 sudo add-apt-repository -y ppa:pmjdebruijn/darktable-release
 sudo apt-get update
