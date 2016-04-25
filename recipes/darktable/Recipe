@@ -12,7 +12,7 @@ sudo apt-get -y install $LOWERAPP
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
 find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \; || true
-find /var/cache/apt/archives/libf$LOWERAPP* -exec dpkg -x {} . \; || true
+find /var/cache/apt/archives/lib$LOWERAPP* -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
 rm -rf ./usr/share/icons/48x48/apps || true
