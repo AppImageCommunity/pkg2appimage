@@ -21,7 +21,16 @@ cp usr/share/icons/256x256/apps/$LOWERAPP.png . || true
 get_apprun
 
 # Copy in the indirect dependencies
-copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
+copy_deps ; copy_deps # Two runs to ensure we catch indirect ones
+
+# Qt plugins are not automatically copied in, so we have to do it manually
+if [ -e ./usr/lib/x86_64-linux-gnu/libQt5Core.so.5 ] ; then
+  cp -r /usr/lib/x86_64-linux-gnu/qt5 ./usr/lib/x86_64-linux-gnu/
+  cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
+fi
+
+# Copy in the indirect Qt dependencies too
+copy_deps
 
 # The following lines can be removed once AppRun covers these paths, too
 mv lib/* usr/lib/
