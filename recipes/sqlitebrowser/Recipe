@@ -12,8 +12,7 @@ sudo apt-get -y install $LOWERAPP
 
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
-find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \; || true
-find /var/cache/apt/archives/libf$LOWERAPP* -exec dpkg -x {} . \; || true
+find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
 rm -rf ./usr/share/icons/48x48/apps || true
@@ -26,7 +25,7 @@ copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 delete_blacklisted
 
 patch_usr
-VER1=$(find /var/cache/apt/archives/ -name fontforge_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
+VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
