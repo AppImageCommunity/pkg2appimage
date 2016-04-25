@@ -27,7 +27,7 @@ cp $(ldconfig -p | grep libpng12.so.0 | head -n 1 | cut -d ">" -f 2 | xargs) ./u
 delete_blacklisted
 
 patch_usr
-VER1=$(find /var/cache/apt/archives/ -name fontforge_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
+VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
