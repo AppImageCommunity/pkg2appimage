@@ -1,4 +1,5 @@
-# This is an example for using debian backports
+# Might be necessary to bundle Python - to be investigated
+###############################################################
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
@@ -10,10 +11,6 @@ sudo add-apt-repository -y ppa:js-reynaud/ppa-kicad
 sudo apt-get update
 
 sudo apt-get -y install $APP
-
-# sudo bash -c 'echo "deb http://ftp.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list.d/wheezy-backports.list'
-# sudo apt-get update
-# sudo apt-get -y --force-yes install -t wheezy-backports kicad
 
 mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
