@@ -102,7 +102,7 @@ libpthread.so.0
 libresolv.so.2
 libroken.so.18
 librt.so.1
-libsasl2.so.2
+# libsasl2.so.2 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libSM.so.6
 libusb-1.0.so.0
 libuuid.so.1
