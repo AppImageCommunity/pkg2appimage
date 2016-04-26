@@ -29,7 +29,7 @@ get_apprun()
 # (it can be beneficial to run this multiple times)
 copy_deps()
 {
-  FILES=$(find . -type f -executable)
+  FILES=$(find . -type f -executable -or -path *lib* -name *.so.* | wc -l)
   for FILE in $FILES ; do
     ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' >> DEPSFILE
   done
