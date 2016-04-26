@@ -83,7 +83,7 @@ libgcc_s.so.1
 libglib-2.0.so.0
 libgpg-error.so.0
 libgssapi_krb5.so.2
-libgssapi.so.3
+# libgssapi.so.3 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libhcrypto.so.4
 libheimbase.so.1
 libheimntlm.so.0
