@@ -68,6 +68,10 @@ libfontconfig.so.1
 # Workaround for:
 # Application stalls when loading fonts during application launch; e.g., KiCad on ubuntu-mate
 
+libselinux.so.1
+# Workaround for:
+# sed: error while loading shared libraries: libpcre.so.3: cannot open shared object file: No such file or directory
+
 # The following are assumed to be part of the base system
 # Removing these has worked e.g., for Krita. Feel free to report if
 # you think that some of these should go into AppImages and why.
