@@ -23,17 +23,13 @@ get_apprun
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
-# The following lines can be removed once AppRun covers these paths, too
-mv lib/x86_64-linux-gnu/* usr/lib/x86_64-linux-gnu/ || true
-mv lib/* usr/lib/ || true
+move_lib
 
 delete_blacklisted
 
 # patch_usr
 # Patching only the executable files seems not to be enough for darktable
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
-
-move_lib
 
 VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
