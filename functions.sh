@@ -29,18 +29,23 @@ get_apprun()
 # (it can be beneficial to run this multiple times)
 copy_deps()
 {
-  FILES=$(find . -type f -executable -or -path *lib* -name *.so.*)
+  FILES=$(find . -type f -executable -or -name *.so.* -or -name *.so | sort | uniq )
   for FILE in $FILES ; do
     ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' >> DEPSFILE
   done
   DEPS=$(cat DEPSFILE | sort | uniq)
   for FILE in $DEPS ; do
-    if [ -f $FILE ] ; then
-      echo $FILE
-      cp --parents -rfL $FILE ./
+    if [ -e $FILE ] ; then
+      cp -v --parents -rfL $FILE ./
     fi
   done
   rm -f DEPSFILE
+}
+
+# Move ./lib/ tree to ./usr/lib/
+move_lib()
+{
+  mkdir -p ./usr/lib ./lib && find ./lib/ -exec cp -v --parents -rfL {} ./usr/ \; && rm -rf ./lib
 }
 
 # Delete blacklisted files
