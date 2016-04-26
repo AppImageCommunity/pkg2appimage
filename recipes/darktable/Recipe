@@ -33,6 +33,8 @@ delete_blacklisted
 # Patching only the executable files seems not to be enough for darktable
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
+move_lib
+
 VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
