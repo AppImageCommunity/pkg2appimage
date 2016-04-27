@@ -28,6 +28,11 @@ move_lib
 
 delete_blacklisted
 
+# Workaround for:
+# libsoftokn3.so: cannot open shared object file: No such file or directory
+# [7746:7778:0427/202822:ERROR:nss_util.cc(209)] Error initializing NSS without a persistent database: NSS error code: -5925
+rm ./usr/lib/x86_64-linux-gnu/libnss3.so
+
 # patch_usr
 # Patching only the executable files seems not to be enough for darktable
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
