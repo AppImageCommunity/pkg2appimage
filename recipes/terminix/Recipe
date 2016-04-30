@@ -1,3 +1,7 @@
+# Note that Terminix has dependencies on components that are only present in very new distros
+# which we are not bundling here (e.g., GTK3 and VTE). Do not expect this to run on 
+# distributions before 2015-16ish.
+
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
