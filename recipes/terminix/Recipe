@@ -8,9 +8,9 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 APP=Terminix
 LOWERAPP=${APP,,} 
 
-URL=https://copr-be.cloud.fedoraproject.org/results/heikoada/terminix/epel-7-x86_64/00180528-terminix/terminix-0.58.1-1.el7.centos.x86_64.rpm
-
-sudo apt-get -y install rpm2cpio
+VERSION=$(wget -q "https://github.com/gnunn1/terminix/releases" -O - | grep "/releases/tag" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1 | sed 's|Beta ||g')
+ZIP_PATH=$(wget -q "https://github.com/gnunn1/terminix/releases" -O - | grep terminix.zip | grep href | head -n 1 | cut -d '"' -f 2)
+URL=https://github.com/$ZIP_PATH
 
 mkdir -p $APP/$APP.AppDir
 
@@ -19,7 +19,7 @@ wget -c "$URL"
 
 cd $APP.AppDir
 
-rpm2cpio ../*.rpm | cpio -idmv
+unzip ../terminix.zip
 
 cp ./usr/share/applications/com.gexperts.Terminix.desktop terminix.desktop
 rm -rf usr/share/icons/hicolor/48x48/
@@ -29,10 +29,6 @@ get_apprun
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 ( mkdir -p usr/share/glib-2.0/schemas/ ; cd usr/share/glib-2.0/schemas/ ; glib-compile-schemas . )
-
-VER1=$(ls ../terminix-*.rpm | head -n 1 | cut -d "-" -f 2)
-VERSION=$VER1
-echo $VERSION
 
 get_desktopintegration $LOWERAPP
 
