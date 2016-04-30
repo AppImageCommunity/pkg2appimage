@@ -31,8 +31,7 @@ find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 ( mkdir -p usr/share/glib-2.0/schemas/ ; cd usr/share/glib-2.0/schemas/ ; glib-compile-schemas . )
 
 VER1=$(ls ../terminix-*.rpm | head -n 1 | cut -d "-" -f 2)
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$VER1
 echo $VERSION
 
 get_desktopintegration $LOWERAPP
