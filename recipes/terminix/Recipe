@@ -17,7 +17,7 @@ cd $APP.AppDir
 
 rpm2cpio ../*.rpm | cpio -idmv
 
-cp ./usr/share/applications/com.gexperts.Terminix.desktop .
+cp ./usr/share/applications/com.gexperts.Terminix.desktop terminix.desktop
 rm -rf usr/share/icons/hicolor/48x48/
 
 get_apprun
