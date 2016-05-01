@@ -13,7 +13,7 @@
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-REDIR=$(wget -U x86_64 -q -O - "http://www.opera.com/download/get/?partner=www&opsys=Linux" | grep download/get | head -n 1 | grep -Poe "href.*?\ " | cut -d '"' -f 2)
+REDIR=$(wget -U x86_64 -q -O - "http://www.opera.com/download/get/?partner=www&opsys=Linux&product=Opera%20developer" | grep download/get | head -n 1 | grep -Poe "href.*?\ " | cut -d '"' -f 2)
 
 APP=Opera
 LOWERAPP=${APP,,}
