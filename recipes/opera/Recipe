@@ -23,6 +23,12 @@ dpkg -x ../*.deb .
 get_apprun
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
+
+# Workaround for:
+# error: file contains key "TargetEnvironment" in group 
+# "Desktop Action NewWindow", but keys extending the format should start with "X-"
+sed -i -e 's|TargetEnvironment|X-TargetEnvironment|g' $LOWERAPP.desktop
+
 cp ./usr/share/icons/hicolor/256x256/apps/$LOWERAPP.png .
 rm -rf ./usr/share/icons/hicolor/48x48
 
