@@ -1,0 +1,48 @@
+# We are not allowed to redistribute Opera.AppImage
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+REDIR=$(wget -U x86_64 -q -O - "http://www.opera.com/download/get/?partner=www&opsys=Linux" | grep download/get | head -n 1 | grep -Poe "href.*?\ " | cut -d '"' -f 2)
+
+APP=Opera
+LOWERAPP=${APP,,}
+
+mkdir -p $APP/$APP.AppDir
+
+cd $APP/
+
+wget -c --trust-server-names "http://www.opera.com/$REDIR"
+
+VER1=$(ls *deb | cut -d "_" -f 2 | head -n 1)
+
+cd $APP.AppDir
+
+dpkg -x ../*.deb .
+
+get_apprun
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+cp ./usr/share/icons/hicolor/256x256/apps/$LOWERAPP.png .
+rm -rf ./usr/share/icons/hicolor/48x48
+
+# Copy in the indirect dependencies
+copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
+
+move_lib
+
+delete_blacklisted
+
+patch_usr
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
