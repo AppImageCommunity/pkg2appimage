@@ -1,4 +1,14 @@
-# We are not allowed to redistribute Opera.AppImage
+# The Opera EULA chrome://about/eula allows:
+# "to reproduce and distribute the Software without modification, 
+# provided that any such reproduction or distribution of the Software by you: 
+# (a) must be in an application repository for a desktop 
+# Open Source OS distribution (expressly excluding distribution 
+# for embedded Open Source OS); 
+# (b) must be made available free of charge for end-users; 
+# (c) must be subject to and distributed with a copy of this Agreement; and 
+# (d) no automatic modification of the default search engines in the 
+# Software settings is done at any time, including but not limited 
+# to after the Software is installed.
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
