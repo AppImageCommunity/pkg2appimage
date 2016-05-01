@@ -42,8 +42,9 @@ cp ./usr/share/applications/$LOWERAPP*.desktop $LOWERAPP.desktop
 sed -i -e 's|TargetEnvironment|X-TargetEnvironment|g' $LOWERAPP.desktop
 sed -i -e 's|-developer||g' $LOWERAPP.desktop
 
-cp ./usr/share/icons/hicolor/256x256/apps/$LOWERAPP*.png .
+cp ./usr/share/icons/hicolor/128x128/apps/$LOWERAPP*.png $LOWERAPP.png
 rm -rf ./usr/share/icons/hicolor/48x48
+rm -rf home/ || true # Likely a bug
 
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
