@@ -174,9 +174,9 @@ fi
 # not sure if it will work with the below deleted (to be verified)
 rm -rf /var/cache/yum || true # 75 MB
 rm -rf /usr/src || true # 337 MB
-rm -rf /VLC/vlc-2.2.2/contrib/tarballs || true # 94 MB
-rm -rf /VLC/vlc-2.2.2/contrib/src || true # 2 MB
-rm -rf /VLC/vlc-2.2.2/contrib/native || true # 1.4 GB
+rm -rf /VLC/vlc-*/contrib/tarballs || true # 94 MB
+rm -rf /VLC/vlc-*/contrib/src || true # 2 MB
+rm -rf /VLC/vlc-*/contrib/native || true # 1.4 GB
 
 fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
