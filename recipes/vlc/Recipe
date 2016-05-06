@@ -132,6 +132,7 @@ yum -y install libXpm-devel mesa-libEGL-devel libvdpau-devel gstreamer-devel gst
 
 cd /$APP/
 
+fi # if [ -z "$NO_DOWNLOAD" ]
 # Build latest released version
 rm -rf vlc* #####
 ##### LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
@@ -139,6 +140,7 @@ rm -rf vlc* #####
 wget -c "http://download.videolan.org/pub/videolan/vlc/2.2.3/vlc-2.2.3.tar.xz"
 tar xf vlc-*.tar.xz
 cd vlc-*/
+if [ -z "$NO_DOWNLOAD" ] ; then
 
 # Or build git master
 # if [ ! -d vlc-git ] ; then
