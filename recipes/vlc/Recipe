@@ -8,7 +8,7 @@
 # libass plugin is broken (at least on debian sid)
 
 # Comment this if you want to build the Docker image (FIXME: determine automatically)
-export DO_NOT_BUILD_DEPENDENCIES=1
+# export DO_NOT_BUILD_DEPENDENCIES=1
 
 # Halt on errors
 set -e
@@ -32,9 +32,6 @@ grep -r "CentOS release 6" /etc/redhat-release || exit 1
 APP=VLC
 rm -rf /$APP/$APP.AppDir
 mkdir -p /$APP/$APP.AppDir
-
-
-yum -y install xz tar wget bzip2 
 
 echo "DO_NOT_BUILD_DEPENDENCIES: $DO_NOT_BUILD_DEPENDENCIES"
 if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ] ; then
@@ -140,7 +137,7 @@ fi # if [ -z "$NO_DOWNLOAD" ]
 rm -rf vlc* #####
 ##### LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
 ##### wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/last/$LATEST"
-wget -c "http://download.videolan.org/pub/videolan/vlc/2.2.3/vlc-2.2.3.tar.xz"
+wget -c "http://download.videolan.org/pub/videolan/vlc/2.2.3/vlc-2.2.3.tar.xz" #####
 tar xf vlc-*.tar.xz
 cd vlc-*/
 if [ -z "$NO_DOWNLOAD" ] ; then
