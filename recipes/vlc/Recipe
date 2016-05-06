@@ -33,6 +33,9 @@ APP=VLC
 rm -rf /$APP/$APP.AppDir
 mkdir -p /$APP/$APP.AppDir
 
+
+yum -y install xz tar wget bzip2 
+
 echo "DO_NOT_BUILD_DEPENDENCIES: $DO_NOT_BUILD_DEPENDENCIES"
 if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ] ; then
 
