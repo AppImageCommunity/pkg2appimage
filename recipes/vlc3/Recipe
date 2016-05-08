@@ -1,342 +1,96 @@
-#!/bin/bash
 
-# NOTE: This script currently only runs ONCE
-# which means we cannot use it for nightly builds
-# TODO: 
-# Make this run repeatedly and only compile what needs to be compiled (not everything) (FIXME)
-# PulseAudio does not work (at least on debian sid)
-# libass plugin is broken (at least on debian sid)
+sudo apt-get update
+sudo apt-get -y install git libtool build-essential pkg-config autoconf
 
-# Comment this if you want to build the Docker image (FIXME: determine automatically)
-export DO_NOT_BUILD_DEPENDENCIES=1
+########################################################################
+# Install newer versions of some build-time dependencies
+# "Contrib" does not seem to build these for me, should it?
+########################################################################
 
-# Halt on errors
-set -e
+# Workaround for:
+# Getting warning about outdated gettext
+# Update gettext to 0.19.6
+cd /usr/src
+wget -c -T 10 ftp://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.gz
+tar xvf gettext-0.19.6.tar.gz
+cd /usr/src/gettext-0.19.6
+./configure --prefix=/usr --libdir=/usr/lib64
+make && make install
 
-# Be verbose
-set -x
+########################################################################
+# Get VLC
+########################################################################
 
-# TODO: move to a library function
-git_pull_rebase_helper()
-{
-git reset --hard HEAD
-git pull
-}
+git clone git://git.videolan.org/vlc.git --depth 1
+cd vlc
 
-# Determine which architecture should be built
-ARCH="x86_64"
+########################################################################
+# To-be-built packages: autoconf automake cmake yasm ragel protoc ant
+########################################################################
 
-# Now we are inside CentOS 6
-grep -r "CentOS release 6" /etc/redhat-release || exit 1
+# Workaround for:
+# Connecting to cmake.org (cmake.org)|66.194.253.19|:443... connected.
+# ERROR: no certificate subject alternative name matches
+# 	requested host name `cmake.org'.
+# To connect to cmake.org insecurely, use `--no-check-certificate'.
+alias wget="wget --no-check-certificate"
 
-APP=VLC
-rm -rf /$APP/$APP.AppDir
-mkdir -p /$APP/$APP.AppDir
-
-echo "DO_NOT_BUILD_DEPENDENCIES: $DO_NOT_BUILD_DEPENDENCIES"
-if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ] ; then
-
-cd /
-
-yum -y remove qt5-qtbase # VLC cannot be built with Qt5 and export QT_SELECT=4 does not work for me
-yum -y install xz tar wget bzip2 make which libtool gcc-c++ git epel-release wget pulseaudio-libs-devel qt-devel libgcrypt-devel libX11-devel libxcb-devel freetype-devel libjpeg-turbo-devel libpng-devel libxml2-devel zlib lua lua-devel libnotify-devel libva-devel gnome-vfs2-devel librsvg2-devel libudev-devel avahi-devel libmtp-devel patch libtool pkgconfig fribidi-devel gettext-devel cmake mesa-libgbm mesa-libEGL fftw-devel
-
-# if [ ! -d AppImages ] ; then
-# git clone https://github.com/probonopd/AppImages.git
-# fi
-# cd AppImages/
-# git_pull_rebase_helper
-# cd ..
-
-if [ -z "$NO_DOWNLOAD" ] ; then
-# Install AppImageKit build dependencies
-yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
-
-# Build AppImageKit
-if [ ! -d AppImageKit ] ; then
-git clone https://github.com/probonopd/AppImageKit.git
-fi
-cd AppImageKit/
-git_pull_rebase_helper
-cmake .
-make clean
+export PATH=/vlc/extras/tools/build/bin:$PATH
+export LD_LIBRARY_PATH=/vlc/extras/tools/build/bin:$LD_LIBRARY_PATH
+cd extras/tools/
+./bootstrap
 make
-cd ..
-fi
-
-#for ragel
-export PATH=/usr/local/bin:$PATH
-
-  # Compile and install yasm 1.2.0 (or newer)
-  cd /usr/src
-  wget -c -T 10 http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz
-  tar -xzf yasm-1.2.0.tar.gz
-  cd yasm-1.2.0
-  ./configure --prefix=/usr
-  make
-  make install
-  cd ..
-
-cd /$APP
-
-if [ -z "$NO_LIBS" ] ; then
-  #ragel
-  cd /usr/src
-  wget -c -T 10 http://www.colm.net/files/ragel/ragel-6.9.tar.gz
-  tar -xvf ragel-6.9.tar.gz
-  cd /usr/src/ragel-6.9
-  ./configure && make && make install
-
-  #update autoconf to 2.69
-  cd /usr/src
-  wget -c -T 10 http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
-  tar xvfvz autoconf-2.69.tar.gz
-  cd /usr/src/autoconf-2.69
-  ./configure --prefix=/usr
-  make && make install
-
-  #update automake to 1.15
-  cd /usr/src
-  wget -c -T 10 http://ftp.gnu.org/gnu/automake/automake-1.15.tar.gz
-  tar xvfvz automake-1.15.tar.gz
-  cd /usr/src/automake-1.15
-  ./configure --prefix=/usr
-  make && make install
-
-  #update libtool to 2.4.6
-  cd /usr/src
-  wget -c -T 10 http://ftpmirror.gnu.org/libtool/libtool-2.4.6.tar.gz
-  tar xvfvz libtool-2.4.6.tar.gz
-  cd /usr/src/libtool-2.4.6
-  ./configure --prefix=/usr
-  make && make install
-
-  #update gettext to 0.19.6
-  cd /usr/src
-  wget -c -T 10 ftp://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.gz
-  tar xvfvz gettext-0.19.6.tar.gz
-  cd /usr/src/gettext-0.19.6
-  ./configure --prefix=/usr --libdir=/usr/lib64
-  make && make install
-
-  #update alsa-lib to 1.0.24.1
-  cd /usr/src
-  wget -c -T 10 ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.0.24.1.tar.bz2
-  tar xvfvj alsa-lib-1.0.24.1.tar.bz2
-  cd /usr/src/alsa-lib-1.0.24.1
-  ./configure --prefix=/usr --libdir=/usr/lib64
-  make && make install
-fi
-
-yum -y install libXpm-devel mesa-libEGL-devel libvdpau-devel gstreamer-devel gstreamer-plugins-base-devel libdc1394-devel libraw1394-devel libbluray-devel libsmbclient-devel libvncserver-devel freerdp-devel xcb-util-keysyms-devel librsvg2-devel cairo-devel libcaca-devel jack-audio-connection-kit-devel kdelibs libavc1394-devel libtar-devel
-
-cd /$APP/
-
-# Build latest snapshot version
-rm -rf vlc* #####
-LATEST=$(wget -q "http://nightlies.videolan.org/build/source/?C=M;O=D" -O - | grep 3.0.0 | head -n 1 | cut -d '"' -f 6)
-wget -T 10 -c "http://nightlies.videolan.org/build/source/$LATEST"
-tar xf vlc-*.tar.xz
-cd vlc-*/
-
-# Or build git master
-# if [ ! -d vlc-git ] ; then
-#   git clone https://github.com/videolan/vlc vlc-git --depth 1
-# fi
-# cd vlc-git
-# git_pull_rebase_helper
-
-#fix download link
-sed -i 's/ftp:/http:/g' contrib/src/x264/rules.mak
-# Workaround for:
-# ass_shaper.c:31:19: error: hb-ft.h: No such file or directory
-sed -i 's|install|install \&\& cp -rf ./src/*.h /VLC/vlc-*/contrib/x86_64-redhat-linux/include/harfbuzz/|g' ./contrib/src/harfbuzz/rules.mak
-
-if [ -z "$NO_LIBS" ] ; then
-  cd contrib
-  # rm -rf ./x86_64-redhat-linux/ || true
-  mkdir native
-  cd native
-  ../bootstrap
-  #Disable curl, since it fails on some HTTPS sites
-  echo "Disable curl, use wget"
-  sed -i 's/shell curl/shell curl1/g' Makefile
-  #set wget timeout and retries
-  sed -i 's/wget --passive/wget --passive --timeout=30/g' Makefile
-
-  # Disable bluray because it depends on java which is large (can enable it later again)
-  sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak 
-  make
-  cd ../../
-fi
-
-# Clean up so that the Docker image won't be so large
-# as without cleaning it has over 5 GB; 
-# not sure if it will work with the below deleted (to be verified)
-rm -rf /var/cache/yum || true # 75 MB
-rm -rf /usr/src || true # 337 MB
-rm -rf /VLC/vlc-*/contrib/tarballs || true # 94 MB
-rm -rf /VLC/vlc-*/contrib/src || true # 2 MB
-rm -rf /VLC/vlc-*/contrib/native || true # 1.4 GB
-
-fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
-
-ls -l /$APP/
-cd /$APP/vlc-*/
-autoreconf -fiv -I/VLC/vlc-*/contrib/x86_64-redhat-linux/share/aclocal
-# Disable chromaprint for now, due to libavcodec link issue, http://forum.videolan.org/viewtopic.php?t=119954
-# Workaround for:
-# On debian sid:
-# symbol lookup error: /lib/x86_64-linux-gnu/libncurses.so.5: undefined symbol: _nc_putchar
-./configure --disable-chromaprint --disable-ncurses --prefix=/usr
-#Disable -liconv link flag
-sed -i 's/-liconv//g' Makefile
-sed -i 's/-liconv//g' modules/Makefile
 make
-make install DESTDIR=/$APP/$APP.AppDir
+make
+make
+make
+make
+wget --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.3.tar.gz
+make
+# Why do I have to run make repeatedly on Trusty but not on Xenial?
 
-cp ./share/icons/128x128/vlc.png /$APP/$APP.AppDir
+cd ../..
 
-# Bundle dependency libraries into the AppDir
-cd /$APP/$APP.AppDir/
-cp ../../AppImageKit/AppRun .
-chmod a+x AppRun
+# Did I get "You are ready to build VLC and its contribs"?
+# On Xenial, yes. Only then proceed.
 
-#Desktop file
-cat > ./vlc.desktop <<\EOF
-[Desktop Entry]
-Name=VLC
-Type=Application
-Comment=Multimedia player
-Exec=vlc
-Categories=Audio;Video;
-Icon=vlc.png
-EOF
+# On trusty, cmake doesn't get built.
 
-rm -rf usr/share/icons/hicolor/48x48/
+########################################################################
+# Bootstrap
+########################################################################
 
-mkdir -p ./usr/lib/qt4
-cp -r /usr/lib64/qt4/plugins ./usr/lib/qt4/
+./bootstrap
 
-export LD_LIBRARY_PATH=./usr/lib/:../../4/gc*/lib/:$LD_LIBRARY_PATH
-ldd usr/bin/vlc | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
+# Did I get "Successfully bootstrapped"?
+# On Xenial, yes. Only then proceed.
 
-# Copy in the indirect dependencies
-FILES=$(find . -type f -executable)
 
-for FILE in $FILES ; do
-    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
-done
+########################################################################
+# The "Contrib" method.
+# If the libraries are not provided by your distribution, 
+# you may be better off linking VLC with them statically. 
+########################################################################
 
-# Delete potentially dangerous libraries
-rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
-# Do NOT delete libX* because otherwise on Ubuntu 11.04:
-# loaded library "Xcursor" malloc.c:3096: sYSMALLOc: Assertion (...) Aborted
+cd contrib
+mkdir native
+cd native
+../bootstrap
 
-# We don't bundle the developer stuff
-rm -rf usr/include || true
-rm -rf usr/lib/cmake || true
-rm -rf usr/lib/pkgconfig || true
+# Disable bluray because it depends on java which is large (can enable it later again)
+sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak 
 
-find /VLC/VLC.AppDir/usr/lib/ -name '*.la' | xargs -i rm {}
+make
 
-strip usr/bin/* usr/lib/* usr/lib/vlc/plugins/*/* || true
+# autoreconf: running: /vlc/extras/tools/build/bin/autoconf 
+#       --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
+# configure.in:74: error: possibly undefined macro: AC_DISABLE_SHARED
+#       If this token and others are legitimate, please use m4_pattern_allow.
+#       See the Autoconf documentation.
+# configure.in:75: error: possibly undefined macro: AC_LIBTOOL_WIN32_DLL
+# 
+# autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
+# make: *** [.a52] Error 1
 
-# Fix GDK_IS_PIXBUF errors on older distributions
-
-# TODO: Move all cp lib things to using ldconfig because it is more robust
-# across different build system distributions and architectures.
-# It is the equivalent for "find" for libraries.
-cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
-cp $(ldconfig -p | grep libpng12.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
-# cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
-cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
-# Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
-# This application failed to start because it could not find or load the Qt platform plugin "xcb".
-# Setting export QT_DEBUG_PLUGINS=1 revealed the cause.
-# QLibraryPrivate::loadPlugin failed on "/usr/lib64/qt5/plugins/platforms/libqxcb.so" :
-# "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
-# Which means that we have to copy libEGL.so.1 in too
-cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
-# cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/
-
-# I have no clue why but on i386 systems this seems to be required
-if [[ "$ARCH" = "i686" ]] ; then
-        cp $(ldconfig -p | grep libgbm.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/
-fi
-
-# On openSUSE Qt is picking up the wrong libqxcb.so
-# (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
-# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
-# the current working directory is set to usr/ inside the AppImage before running the app
-#cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
-
-cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
-
-# Add desktop integration - TODO: move to a library function
-XAPP=vlc
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
-
-# Delete blacklisted files; TODO: Move to a library function
-BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
-echo $BLACKLISTED_FILES
-for FILE in $BLACKLISTED_FILES ; do
-  FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)
-  if [ ! -z "$FOUND" ] ; then
-    echo "Deleting blacklisted ${FOUND}"
-    rm -f "${FOUND}"
-  fi
-done
-
-# Remove .a and .la files
-find . -name *.la -exec rm {} \;
-find . -name *.a -exec rm {} \;
-
-# Workaround for:
-# On debian sid,
-# symbol lookup error: /lib/x86_64-linux-gnu/libncurses.so.5: undefined symbol: _nc_putchar
-yum -y install ncurses
-cp $(ldconfig -p | grep libncurses.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
-
-# Workaround for:
-# On debian sid,
-# Gtk-CRITICAL **: IA__gtk_widget_style_get: assertion 'GTK_IS_WIDGET (widget)' failed
-cp $(ldconfig -p | grep libtinfo.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
-
-# Workaround for:
-# symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libunity-gtk-module.so: undefined symbol: g_settings_newn
-#rm usr/lib/qt5/plugins/platformthemes/libqgtk* || true
-
-# Workaround for:
-# GTK theme is broken
-rm -rf usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
-
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=3.0.0.glibc$GLIBC_NEEDED # FIXME
-
-cd ..
-find $APP.AppDir/
-
-if [[ "$ARCH" = "x86_64" ]] ; then
-APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
-fi
-if [[ "$ARCH" = "i686" ]] ; then
-APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
-fi
-
-# Put this script into the AppImage for debugging
-# FIXME: The follwing line does not work
-# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
-
-mkdir -p ../out
-
-rm -f ../out/*.AppImage || true
-
-# Convert the AppDir into an AppImage
-rm -rf $APPIMAGE
-../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
-
-chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
-ls -lh ../out/$APPIMAGE
+# libtool --version
+# libtool (GNU libtool) 2.4.6
