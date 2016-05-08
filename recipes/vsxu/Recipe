@@ -1,3 +1,8 @@
+# This recipe uses binaries from the project's ppa for trusty,
+# and uses a trusty system to bundle the dependencies.
+# As a result, the AppImage will not be compatible with distributions
+# older than trusty. To achieve that, we could compile e.g., on CentOS 6.
+
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
