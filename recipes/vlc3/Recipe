@@ -146,7 +146,7 @@ make
 # No package 'xcb' found".
 # Found this path with:
 # find /usr/ | grep xcb.pc
-export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/vlc/contrib/x86_64-linux-gnu/lib/pkgconfig/
 
 ./configure --disable-chromaprint --disable-ncurses --disable-xcb --enable-qt --prefix=/usr
 
