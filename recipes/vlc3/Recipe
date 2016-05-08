@@ -112,3 +112,5 @@ make
 # 
 # gettext --version
 # gettext (GNU gettext-runtime) 0.19.6
+#
+# For now, skip cddb
