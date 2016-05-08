@@ -149,6 +149,11 @@ make
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/
 
 ./configure --disable-chromaprint --disable-ncurses --disable-xcb --enable-qt --prefix=/usr
+
+# Should say:
+# "vlc aliases : cvlc rvlc qvlc svlc"
+# Don't proceed if qvlc is not listed.
+
 make
 
 # Workaround for:
