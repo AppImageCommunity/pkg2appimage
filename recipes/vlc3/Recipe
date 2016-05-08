@@ -85,6 +85,9 @@ cd ../..
 cd contrib
 mkdir native
 cd native
+
+export CFLAGS=-fPIC # Does this help against "relocation R_X86_64_32S against `zcalloc'"?
+
 ../bootstrap
 
 # Workaround needed for:
@@ -214,3 +217,9 @@ chmod a+x /usr/bin/g++
 # /usr/bin/ld: /vlc/contrib/x86_64-linux-gnu/lib/libz.a(deflate.o): relocation R_X86_64_32S against `zcalloc' can not be used when making a shared object; recompile with -fPIC
 # /vlc/contrib/x86_64-linux-gnu/lib/libz.a: could not read symbols: Bad value
 # collect2: error: ld returned 1 exit status
+##########
+# Rebuild libz with:
+# CFLAGS=-fPIC ./configure
+# make
+# make install
+# cp /usr/local/lib/libz.* /vlc/contrib/x86_64-linux-gnu/lib/
