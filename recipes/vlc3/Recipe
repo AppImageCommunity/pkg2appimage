@@ -140,7 +140,7 @@ make
 # hence disabling it
 
 ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
-
+./configure --disable-chromaprint --disable-ncurses --disable-xcb --enable-qt --prefix=/usr
 make
 
 # Workaround for:
