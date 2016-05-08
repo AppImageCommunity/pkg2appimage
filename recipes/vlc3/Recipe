@@ -81,6 +81,11 @@ sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak
 
 make
 
+# Workaround for:
+# libtool issues
+# If the following is happening, then uninstall the system-provided libtool 
+# and make sure that libtool gets built by extras/tools above and that this
+# version is used
 # autoreconf: running: /vlc/extras/tools/build/bin/autoconf 
 #       --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
 # configure.in:74: error: possibly undefined macro: AC_DISABLE_SHARED
@@ -90,6 +95,3 @@ make
 # 
 # autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
 # make: *** [.a52] Error 1
-
-# libtool --version
-# libtool (GNU libtool) 2.4.6
