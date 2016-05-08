@@ -150,8 +150,10 @@ make
 # `clock_gettime@@GLIBC_2.2.5' can not be used when making 
 # a shared object; recompile with -fPIC
 # /usr/bin/ld: final link failed: Bad value
-sudo apt-get -y install libz-dev
-rm /vlc/contrib/x86_64-linux-gnu/lib/libz.a
+# Use "CFLAGS=-fPIC ./configure" when building libz
+############# The following is hopefully no longer needed
+# sudo apt-get -y install libz-dev
+# rm /vlc/contrib/x86_64-linux-gnu/lib/libz.a
 
 # Workaround needed for:
 # /usr/include/c++/4.6/bits/atomic_2.h:458:7: note: C++0x 'constexpr' only available with -std=c++0x or -std=gnu++0x
