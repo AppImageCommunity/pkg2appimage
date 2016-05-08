@@ -176,11 +176,17 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave 
 # configure: error: Cannot find native C99 compiler: please define BUILDCC.
 BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
 
-# Need a workaround for:
+# Workaround for:
 # make[2]: Entering directory `/vlc/src'
 #   CC       fourcc_gen
 # /bin/bash: c99-gcc: command not found
-ln -s /usr/bin/gcc-4.9 /usr/bin/c99-gcc
+# (As per GNU guidelines) GCC ignores its argv[0]. You need a script here
+# https://mailman.videolan.org/pipermail/vlc-devel/2016-May/107533.html
+echo > /usr/bin/c99-gcc <<\EOF
+#!/bin/bash
+gcc -std=gnu99 "$@"
+EOF
+chmod a+x /usr/bin/c99-gcc
 
 # make[2]: Entering directory `/vlc/src'
 #   CC       fourcc_gen
