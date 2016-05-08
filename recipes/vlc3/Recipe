@@ -47,7 +47,6 @@ make
 make
 make
 make
-wget --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.3.tar.gz
 make
 # Why do I have to run make repeatedly on Trusty but not on Xenial?
 
