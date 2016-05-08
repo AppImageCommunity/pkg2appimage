@@ -140,10 +140,12 @@ make
 
 make
 
-# Need workaround for:
+# Workaround for:
 # CCLD libvlccore.la
 # /usr/bin/ld: ../compat/.libs/libcompat.a(timespec_get.o): 
 # relocation R_X86_64_PC32 against undefined symbol 
 # `clock_gettime@@GLIBC_2.2.5' can not be used when making 
 # a shared object; recompile with -fPIC
 # /usr/bin/ld: final link failed: Bad value
+sudo apt-get -y install libz-dev
+rm /vlc/contrib/x86_64-linux-gnu/lib/libz.a
