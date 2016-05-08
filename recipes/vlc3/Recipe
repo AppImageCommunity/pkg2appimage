@@ -159,3 +159,8 @@ rm /vlc/contrib/x86_64-linux-gnu/lib/libz.a
 #                  from demux/adaptive/playlist/BasePeriod.cpp:31:
 # /usr/include/c++/4.6/atomic:68:5: error: 'constexpr' does not name a type
 # /usr/include/c++/4.6/atomic:68:5: note: C++0x 'constexpr' only available with -std=c++0x or -std=gnu++0x
+sudo apt-get --yes remove gcc g++
+sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get --yes install gcc-4.9 g++-4.9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
