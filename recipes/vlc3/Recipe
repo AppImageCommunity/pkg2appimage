@@ -205,3 +205,12 @@ cat > /usr/bin/g++ <<\EOF
 /usr/bin/g++-4.9 -std=c++11 "$@"
 EOF
 chmod a+x /usr/bin/g++
+
+# Workaround for:
+# make[4]: Entering directory `/vlc/modules'
+#  CCLD     libgnutls_plugin.la
+# *** Warning: Linking the shared library libgnutls_plugin.la against the
+# *** static library /vlc/contrib/x86_64-linux-gnu/lib/libz.a is not portable!
+# /usr/bin/ld: /vlc/contrib/x86_64-linux-gnu/lib/libz.a(deflate.o): relocation R_X86_64_32S against `zcalloc' can not be used when making a shared object; recompile with -fPIC
+# /vlc/contrib/x86_64-linux-gnu/lib/libz.a: could not read symbols: Bad value
+# collect2: error: ld returned 1 exit status
