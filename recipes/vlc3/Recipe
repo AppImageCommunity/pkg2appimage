@@ -159,7 +159,6 @@ rm /vlc/contrib/x86_64-linux-gnu/lib/libz.a
 #                  from demux/adaptive/playlist/BasePeriod.cpp:31:
 # /usr/include/c++/4.6/atomic:68:5: error: 'constexpr' does not name a type
 # /usr/include/c++/4.6/atomic:68:5: note: C++0x 'constexpr' only available with -std=c++0x or -std=gnu++0x
-sudo apt-get --yes remove gcc g++ gcc-4.6 c++-4.6
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
 sudo apt-get update
 sudo apt-get --yes install gcc-4.9 g++-4.9
@@ -188,10 +187,7 @@ gcc -std=gnu99 "$@"
 EOF
 chmod a+x /usr/bin/c99-gcc
 
-# make[2]: Entering directory `/vlc/src'
-#   CC       fourcc_gen
-# misc/fourcc_gen.c: In function 'process_list':
-# misc/fourcc_gen.c:74:5: error: 'for' loop initial declarations are only allowed in C99 or C11 mode
-#      for (size_t i = 0; i < n; i++)
-#      ^
+# Workaround for:
+# g++: error: /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o: No such file or directory
+# Do NOT do: sudo apt-get --yes remove gcc g++ gcc-4.6 c++-4.6 
 
