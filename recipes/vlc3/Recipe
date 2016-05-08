@@ -220,7 +220,7 @@ chmod a+x /usr/bin/g++
 # /vlc/contrib/x86_64-linux-gnu/lib/libz.a: could not read symbols: Bad value
 # collect2: error: ld returned 1 exit status
 ##########
-# Rebuild libz with:
+# Rebuild libz with (this worked; hopefully the CFLAGS=-fPIC above makes this unneccessary) :
 # cd /vlc/contrib/native/zlib
 # CFLAGS=-fPIC ./configure
 # make
@@ -228,3 +228,10 @@ chmod a+x /usr/bin/g++
 # cp /usr/local/lib/libz.* /vlc/contrib/x86_64-linux-gnu/lib/
 # cd -
 ##########
+
+# Workaround needed for:
+#   CC       video_output/libvout_sdl_plugin_la-sdl.lo
+# video_output/sdl.c:45:4: error: #error Xlib required due to XInitThreads
+#  #  error Xlib required due to XInitThreads
+#     ^
+# make[4]: *** [video_output/libvout_sdl_plugin_la-sdl.lo] Error 1
