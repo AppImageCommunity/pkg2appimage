@@ -242,5 +242,13 @@ chmod a+x /usr/bin/g++
 # cd -
 ##########
 
-make install DESTDIR=/$APP/$APP.AppDir
+# Workaround needed for:
+# In file included from ../include/vlc_common.h:895:0,
+#                  from demux/mkv/mkv.hpp:38,
+#                  from demux/mkv/util.cpp:24:
+# demux/mkv/util.cpp: In function 'void handle_real_audio(demux_t*, mkv_track_t*, block_t*, mtime_t)':
+# demux/mkv/util.cpp:192:79: error: expected ')' before 'PRId64'
+#              msg_Dbg( p_demux, "discard non-key preroll block in track %d at%" PRId64,
+#                                                                                ^
 
+make install DESTDIR=/$APP/$APP.AppDir
