@@ -87,26 +87,6 @@ mkdir native
 cd native
 ../bootstrap
 
-# Disable bluray because it depends on java which is large (can enable it later again)
-sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak 
-
-make
-
-# Workaround for:
-# libtool issues
-# If the following is happening, then uninstall the system-provided libtool 
-# and make sure that libtool gets built by extras/tools above and that this
-# version is used
-# autoreconf: running: /vlc/extras/tools/build/bin/autoconf 
-#       --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
-# configure.in:74: error: possibly undefined macro: AC_DISABLE_SHARED
-#       If this token and others are legitimate, please use m4_pattern_allow.
-#       See the Autoconf documentation.
-# configure.in:75: error: possibly undefined macro: AC_LIBTOOL_WIN32_DLL
-# 
-# autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
-# make: *** [.a52] Error 1
-
 # Workaround needed for:
 # mkdir -p -- /vlc/contrib/x86_64-linux-gnu/share/aclocal && cd cddb && autoreconf -fiv -I/vlc/contrib/x86_64-linux-gnu/share/aclocal
 # autoreconf: Entering directory `.'
@@ -125,7 +105,27 @@ make
 # gettext --version
 # gettext (GNU gettext-runtime) 0.19.6
 #
-# For now, skip cddb
+# For now, disable cddb
+
+# Disable bluray because it depends on java which is large (can enable it later again)
+sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak 
+
+make
+
+# Workaround for:
+# libtool issues
+# If the following is happening, then uninstall the system-provided libtool 
+# and make sure that libtool gets built by extras/tools above and that this
+# version is used
+# autoreconf: running: /vlc/extras/tools/build/bin/autoconf 
+#       --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
+# configure.in:74: error: possibly undefined macro: AC_DISABLE_SHARED
+#       If this token and others are legitimate, please use m4_pattern_allow.
+#       See the Autoconf documentation.
+# configure.in:75: error: possibly undefined macro: AC_LIBTOOL_WIN32_DLL
+# 
+# autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
+# make: *** [.a52] Error 1
 
 ########################################################################
 # Build VLC itself
