@@ -2,7 +2,7 @@
 # TODO: Try on older versions
 
 sudo apt-get update
-sudo apt-get -y install git libtool build-essential pkg-config autoconf
+sudo apt-get -y install git libtool build-essential pkg-config autoconf libx11-dev
 
 ########################################################################
 # Install newer versions of some build-time dependencies
@@ -219,7 +219,10 @@ chmod a+x /usr/bin/g++
 # collect2: error: ld returned 1 exit status
 ##########
 # Rebuild libz with:
+# cd /vlc/contrib/native/zlib
 # CFLAGS=-fPIC ./configure
 # make
 # make install
 # cp /usr/local/lib/libz.* /vlc/contrib/x86_64-linux-gnu/lib/
+# cd -
+##########
