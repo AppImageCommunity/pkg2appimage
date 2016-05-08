@@ -2,7 +2,7 @@
 # TODO: Try on older versions
 
 sudo apt-get update
-sudo apt-get -y install git libtool build-essential pkg-config autoconf libx11-dev
+sudo apt-get -y install git libtool build-essential pkg-config autoconf libx11-dev libqt4-dev
 
 ########################################################################
 # Install newer versions of some build-time dependencies
@@ -235,3 +235,9 @@ chmod a+x /usr/bin/g++
 #  #  error Xlib required due to XInitThreads
 #     ^
 # make[4]: *** [video_output/libvout_sdl_plugin_la-sdl.lo] Error 1
+##########
+# Manually patched if clause in 
+# ./modules/video_output/sdl.c
+
+make install DESTDIR=/$APP/$APP.AppDir
+
