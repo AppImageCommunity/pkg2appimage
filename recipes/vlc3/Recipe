@@ -35,7 +35,7 @@ cd vlc
 # ERROR: no certificate subject alternative name matches
 # 	requested host name `cmake.org'.
 # To connect to cmake.org insecurely, use `--no-check-certificate'.
-alias wget="wget --no-check-certificate"
+echo "check_certificate = off" > $HOME/.wgetrc
 
 export PATH=/vlc/extras/tools/build/bin:$PATH
 export LD_LIBRARY_PATH=/vlc/extras/tools/build/bin:$LD_LIBRARY_PATH
