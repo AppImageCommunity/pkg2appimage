@@ -15,7 +15,18 @@ sudo apt-get -y install git libtool build-essential pkg-config autoconf
 cd /usr/src
 wget -c -T 10 ftp://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.gz
 tar xvf gettext-0.19.6.tar.gz
-cd /usr/src/gettext-0.19.6
+cd gettext-0.19.6
+./configure --prefix=/usr --libdir=/usr/lib64
+make && make install
+
+# Workaround for:
+# configure: error: No package 'alsa' found. alsa-lib 1.0.24 or later required.
+# sudo apt-get -y install libasound2-dev
+# does not seem to be sufficient
+cd /usr/src
+wget -c -T 10 ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.0.24.1.tar.bz2
+tar xvf alsa-lib-1.0.24.1.tar.bz2
+cd alsa-lib-1.0.24.1
 ./configure --prefix=/usr --libdir=/usr/lib64
 make && make install
 
@@ -23,6 +34,7 @@ make && make install
 # Get VLC
 ########################################################################
 
+cd /
 git clone git://git.videolan.org/vlc.git --depth 1
 cd vlc
 
@@ -114,3 +126,24 @@ make
 # gettext (GNU gettext-runtime) 0.19.6
 #
 # For now, skip cddb
+
+########################################################################
+# Build VLC itself
+########################################################################
+
+# According to 
+# https://mailman.videolan.org/pipermail/vlc-devel/2016-May/107520.html
+# "XVideo is not a problem because XVideo is dead"
+# hence disabling it
+
+./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
+
+make
+
+# Need workaround for:
+# CCLD libvlccore.la
+# /usr/bin/ld: ../compat/.libs/libcompat.a(timespec_get.o): 
+# relocation R_X86_64_PC32 against undefined symbol 
+# `clock_gettime@@GLIBC_2.2.5' can not be used when making 
+# a shared object; recompile with -fPIC
+# /usr/bin/ld: final link failed: Bad value
