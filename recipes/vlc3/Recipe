@@ -96,6 +96,12 @@ make
 # make: *** [.a52] Error 1
 
 # Workaround needed for:
+# mkdir -p -- /vlc/contrib/x86_64-linux-gnu/share/aclocal && cd cddb && autoreconf -fiv -I/vlc/contrib/x86_64-linux-gnu/share/aclocal
+# autoreconf: Entering directory `.'
+# autoreconf: configure.ac: not using Gettext
+# autoreconf: running: aclocal -I /vlc/contrib/x86_64-linux-gnu/share/aclocal --force 
+# configure.ac:133: warning: macro 'AM_ICONV' not found in library
+# ...
 # autoreconf: running: /vlc/extras/tools/build/bin/autoconf --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
 # configure.ac:23: error: possibly undefined macro: AM_GNU_GETTEXT_VERSION
 #       If this token and others are legitimate, please use m4_pattern_allow.
