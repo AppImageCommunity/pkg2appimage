@@ -242,15 +242,5 @@ chmod a+x /usr/bin/g++
 # cd -
 ##########
 
-# Workaround needed for:
-#   CC       video_output/libvout_sdl_plugin_la-sdl.lo
-# video_output/sdl.c:45:4: error: #error Xlib required due to XInitThreads
-#  #  error Xlib required due to XInitThreads
-#     ^
-# make[4]: *** [video_output/libvout_sdl_plugin_la-sdl.lo] Error 1
-##########
-# Manually patched if clause in 
-# ./modules/video_output/sdl.c
-
 make install DESTDIR=/$APP/$APP.AppDir
 
