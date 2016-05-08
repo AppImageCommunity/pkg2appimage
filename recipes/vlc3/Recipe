@@ -149,3 +149,13 @@ make
 # /usr/bin/ld: final link failed: Bad value
 sudo apt-get -y install libz-dev
 rm /vlc/contrib/x86_64-linux-gnu/lib/libz.a
+
+# Workaround needed for:
+# /usr/include/c++/4.6/bits/atomic_2.h:458:7: note: C++0x 'constexpr' only available with -std=c++0x or -std=gnu++0x
+# In file included from ../include/vlc_atomic.h:221:0,
+#                  from demux/adaptive/playlist/../plumbing/CommandsQueue.hpp:25,
+#                  from demux/adaptive/playlist/../plumbing/FakeESOut.hpp:23,
+#                  from demux/adaptive/playlist/../Streams.hpp:30,
+#                  from demux/adaptive/playlist/BasePeriod.cpp:31:
+# /usr/include/c++/4.6/atomic:68:5: error: 'constexpr' does not name a type
+# /usr/include/c++/4.6/atomic:68:5: note: C++0x 'constexpr' only available with -std=c++0x or -std=gnu++0x
