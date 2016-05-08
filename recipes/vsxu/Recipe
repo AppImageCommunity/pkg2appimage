@@ -20,8 +20,8 @@ mkdir -p $APP/$APP.AppDir
 cd $APP/$APP.AppDir
 find /var/cache/apt/archives/*deb -exec dpkg -x {} . \;
 
-cp ./usr/share/applications/vsxu-player.desktop .
-sed -i -e "s|Exec=.*|Exec=vsxu_player|g" vsxu-player.desktop 
+cp ./usr/share/applications/vsxu-player.desktop vsxu.desktop
+sed -i -e "s|Exec=.*|Exec=vsxu_player|g" vsxu.desktop
 
 cp usr/share/pixmaps/hicolor/apps/256x256/$LOWERAPP.png .
 rm -rf ./usr/share/icons/48x48/apps || true
