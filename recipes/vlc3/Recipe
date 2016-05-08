@@ -191,3 +191,12 @@ chmod a+x /usr/bin/c99-gcc
 # g++: error: /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o: No such file or directory
 # Do NOT do: sudo apt-get --yes remove gcc g++ gcc-4.6 c++-4.6 
 
+# Workaround needed for:
+# In file included from /usr/include/c++/4.9/atomic:38:0,
+#                  from ../include/vlc_atomic.h:221,
+#                  from demux/adaptive/playlist/../plumbing/CommandsQueue.hpp:25,
+#                  from demux/adaptive/playlist/../plumbing/FakeESOut.hpp:23,
+#                  from demux/adaptive/playlist/../Streams.hpp:30,
+#                  from demux/adaptive/playlist/BasePeriod.cpp:31:
+# /usr/include/c++/4.9/bits/c++0x_warning.h:32:2: error: #error This file requires compiler and library support for the ISO C++ 2011 standard. This support is currently experimental, and must be enabled with the -std=c++11 or -std=gnu++11 compiler options.
+
