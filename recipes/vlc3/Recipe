@@ -94,3 +94,15 @@ make
 # 
 # autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
 # make: *** [.a52] Error 1
+
+# Workaround needed for:
+# autoreconf: running: /vlc/extras/tools/build/bin/autoconf --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
+# configure.ac:23: error: possibly undefined macro: AM_GNU_GETTEXT_VERSION
+#       If this token and others are legitimate, please use m4_pattern_allow.
+#       See the Autoconf documentation.
+# configure.ac:133: error: possibly undefined macro: AM_ICONV
+# autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
+# make: *** [.cddb] Error 1
+# 
+# gettext --version
+# gettext (GNU gettext-runtime) 0.19.6
