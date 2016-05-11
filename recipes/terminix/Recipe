@@ -32,6 +32,9 @@ find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 get_desktopintegration $LOWERAPP
 
+# https://github.com/gnunn1/terminix/issues/25#issuecomment-218013837
+sed -i -e 's|exec $BIN $ARGS|exec $BIN -w $HOME $ARGS|g' ./usr/bin/terminix.wrapper
+
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
