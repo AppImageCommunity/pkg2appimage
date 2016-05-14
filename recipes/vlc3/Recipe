@@ -246,4 +246,5 @@ chmod a+x /usr/bin/g++
 #              msg_Dbg( p_demux, "discard non-key preroll block in track %d at%" PRId64,
 # Use Ubuntu 14.04
 
+APP=VLC
 make install DESTDIR=/$APP/$APP.AppDir
