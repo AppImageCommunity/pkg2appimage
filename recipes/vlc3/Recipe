@@ -115,8 +115,6 @@ export CFLAGS=-fPIC # Does this help against "relocation R_X86_64_32S against `z
 # Disable bluray because it depends on java which is large (can enable it later again)
 sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak 
 
-make -j 16
-
 # Workaround for:
 # libtool issues
 # If the following is happening, then uninstall the system-provided libtool 
@@ -148,8 +146,6 @@ make -j 16
 # Found this path with:
 # find /usr/ | grep xcb.pc
 export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/vlc/contrib/x86_64-linux-gnu/lib/pkgconfig/:/usr/src/alsa-lib-*/utils/
-
-./configure --disable-chromaprint --disable-ncurses --disable-xcb --enable-qt --prefix=/usr
 
 # Should say:
 # "vlc aliases : cvlc rvlc qvlc svlc"
@@ -183,8 +179,6 @@ sudo apt-get update
 sudo apt-get --yes install gcc-4.9 g++-4.9
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 
 
-./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
-
 # Workaround for:
 # checking for desktop-file-validate... desktop-file-validate
 # checking for c11-gcc... no
@@ -192,7 +186,7 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave 
 # checking for c99-gcc... no
 # checking for c99... no
 # configure: error: Cannot find native C99 compiler: please define BUILDCC.
-BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
+BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --disable-lua --prefix=/usr
 
 # Workaround for:
 # make[2]: Entering directory `/vlc/src'
