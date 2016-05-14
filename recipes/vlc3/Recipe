@@ -19,7 +19,7 @@ wget -c -T 10 ftp://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.gz
 tar xvf gettext-0.19.6.tar.gz
 cd gettext-0.19.6
 ./configure --prefix=/usr --libdir=/usr/lib64
-make && make install
+make -j 16 && make install
 
 # Workaround for:
 # configure: error: No package 'alsa' found. alsa-lib 1.0.24 or later required.
@@ -30,7 +30,7 @@ wget -c -T 10 ftp://ftp.alsa-project.org/pub/lib/alsa-lib-1.0.24.1.tar.bz2
 tar xvf alsa-lib-1.0.24.1.tar.bz2
 cd alsa-lib-1.0.24.1
 ./configure --prefix=/usr --libdir=/usr/lib64
-make && make install
+make -j 16 && make install
 
 ########################################################################
 # Get VLC
@@ -55,7 +55,7 @@ export PATH=/vlc/extras/tools/build/bin:$PATH
 export LD_LIBRARY_PATH=/vlc/extras/tools/build/bin:$LD_LIBRARY_PATH
 cd extras/tools/
 ./bootstrap
-make
+make -j 16
 make
 make
 make
@@ -115,7 +115,7 @@ export CFLAGS=-fPIC # Does this help against "relocation R_X86_64_32S against `z
 # Disable bluray because it depends on java which is large (can enable it later again)
 sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak 
 
-make
+make -j 16
 
 # Workaround for:
 # libtool issues
@@ -155,7 +155,7 @@ export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig
 # "vlc aliases : cvlc rvlc qvlc svlc"
 # Don't proceed if qvlc is not listed.
 
-make
+make -j 16
 
 # Workaround for:
 # CCLD libvlccore.la
@@ -237,7 +237,7 @@ chmod a+x /usr/bin/g++
 # Rebuild libz with (this worked; hopefully the CFLAGS=-fPIC above makes this unneccessary) :
 # cd /vlc/contrib/native/zlib
 # CFLAGS=-fPIC ./configure
-# make
+# make -j 16
 # make install
 # cp /usr/local/lib/libz.* /vlc/contrib/x86_64-linux-gnu/lib/
 # cd -
