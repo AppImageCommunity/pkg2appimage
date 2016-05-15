@@ -244,7 +244,10 @@ chmod a+x /usr/bin/g++
 # demux/mkv/util.cpp: In function 'void handle_real_audio(demux_t*, mkv_track_t*, block_t*, mtime_t)':
 # demux/mkv/util.cpp:192:79: error: expected ')' before 'PRId64'
 #              msg_Dbg( p_demux, "discard non-key preroll block in track %d at%" PRId64,
-# No workaround known; for now use Ubuntu 14.04 which does not have this issue
+# For now use Ubuntu 14.04 which does not have this issue or upgrade libc6-dev (which we really want to avoid; FIXME)
+sed -i -e 's|precise|trusty|'g /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get -y install libc6-dev
 
 cd ../..
 
