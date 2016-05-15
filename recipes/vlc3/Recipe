@@ -2,7 +2,7 @@
 # TODO: Try on older versions
 
 # I have successfully built VLC on EC2 using
-# https://us-west-1.console.aws.amazon.com/ec2/v2/home?region=us-west-1#LaunchInstanceWizard:ami=ami-6781f807
+# https://console.aws.amazon.com/ec2/home?region=us-west-1#launchAmi=ami-c4fb82a4
 # c3.2xlarge = 8 CPUs
 
 sudo apt-get update
@@ -324,3 +324,6 @@ generate_appimage
 ########################################################################
 
 transfer ../out/*
+
+# Try to power down Amazon AWS (no guarantees; need to check for yourself!)
+grep -r compute.internal /etc/resolv.conf && halt
