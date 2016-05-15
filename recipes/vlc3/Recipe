@@ -56,13 +56,13 @@ export LD_LIBRARY_PATH=/vlc/extras/tools/build/bin:$LD_LIBRARY_PATH
 cd extras/tools/
 ./bootstrap
 make -j 16
-make
-make
-make
-make
-make
-make
-# Why do I have to run make repeatedly on Trusty but not on Xenial?
+# make
+# make
+# make
+# make
+# make
+# make
+# Why do I have to run make repeatedly on Trusty but not on Precise or Xenial?
 
 cd ../..
 
