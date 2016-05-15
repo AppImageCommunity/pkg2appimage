@@ -1,0 +1,66 @@
+sudo apt-get update
+sudo apt-get -y install python-virtualenv
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+APP=PythonGTK3Hello
+LOWERAPP=${APP,,} 
+
+mkdir -p $APP/$APP.AppDir/
+
+cd $APP/
+
+cd $APP.AppDir/
+
+virtualenv usr
+
+cp avahi-discover usr/bin/
+
+# Install python dependencies into the virtualenv
+# ./usr/bin/pip install ...
+
+# The following ones cannot be installed using pip
+mkdir -p usr/share/pyshared/
+mkdir -p usr/lib/python2.7/site-packages
+cp -r /usr/lib/python2.7/dist-packages/gi usr/lib/python2.7/site-packages/
+cp -r /usr/lib/python2.7/dist-packages/gobject/ usr/lib/python2.7/site-packages/
+cp -r /usr/lib/python2.7/dist-packages/glib/ usr/lib/python2.7/site-packages/
+
+get_apprun
+
+cat > $LOWERAPP.desktop <<EOF
+[Desktop Entry]
+Name=$APP
+Exec=$LOWERAPP
+Icon=$LOWERAPP
+Comment=A hello world app written in GTK3 and Python
+EOF
+
+mkdir -p usr/bin/
+cat > usr/bin/$LOWERAPP <<\EOF
+#!/usr/bin/env python
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+win = Gtk.Window()
+win.connect("delete-event", Gtk.main_quit)
+win.show_all()
+Gtk.main()
+EOF
+chmod a+x usr/bin/$LOWERAPP
+
+get_apprun
+
+copy_deps ; copy_deps ; copy_deps
+
+delete_blacklisted
+move_lib
+
+cp /usr/share/icons/hicolor/256x256/apps/logview.png $LOWERAPP.png
+
+VERSION=1
+
+cd ..
+
+generate_appimage
