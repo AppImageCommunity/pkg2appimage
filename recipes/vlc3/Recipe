@@ -248,6 +248,10 @@ chmod a+x /usr/bin/g++
 
 cd ../..
 
+# Workaround for:
+# Does not find protoc
+export PATH=/vlc/extras/tools/build/bin/:$PATH
+
 BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
 
 APP=VLC
