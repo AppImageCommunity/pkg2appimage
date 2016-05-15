@@ -376,6 +376,3 @@ VERSION=3.0.0.git.glibc$GLIBC_NEEDED # FIXME
 cd ..
 
 generate_appimage
-
-chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
-ls -lh ../out/$APPIMAGE
