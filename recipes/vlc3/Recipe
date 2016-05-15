@@ -145,7 +145,7 @@ sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak
 # No package 'xcb' found".
 # Found this path with:
 # find /usr/ | grep xcb.pc
-export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/vlc/contrib/x86_64-linux-gnu/lib/pkgconfig/:/usr/src/alsa-lib-1.0.24.1/utils/
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/vlc/contrib/x86_64-linux-gnu/lib/pkgconfig/:/usr/lib64/pkgconfig/
 
 # Should say:
 # "vlc aliases : cvlc rvlc qvlc svlc"
@@ -186,7 +186,7 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave 
 # checking for c99-gcc... no
 # checking for c99... no
 # configure: error: Cannot find native C99 compiler: please define BUILDCC.
-BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --disable-lua --disable-avcodec --disable-swscale --disable-a52  --prefix=/usr
+# BUILDCC="/usr/bin/gcc -std=gnu99" ./configure ...
 
 # Workaround for:
 # make[2]: Entering directory `/vlc/src'
@@ -237,14 +237,18 @@ chmod a+x /usr/bin/g++
 # cd -
 ##########
 
-# Workaround needed for:
+# Workaround for (FIXME):
 # In file included from ../include/vlc_common.h:895:0,
 #                  from demux/mkv/mkv.hpp:38,
 #                  from demux/mkv/util.cpp:24:
 # demux/mkv/util.cpp: In function 'void handle_real_audio(demux_t*, mkv_track_t*, block_t*, mtime_t)':
 # demux/mkv/util.cpp:192:79: error: expected ')' before 'PRId64'
 #              msg_Dbg( p_demux, "discard non-key preroll block in track %d at%" PRId64,
-# Use Ubuntu 14.04
+# No workaround known; for now use Ubuntu 14.04 which does not have this issue
+
+cd ../..
+
+BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
 
 APP=VLC
 make install DESTDIR=/$APP/$APP.AppDir
