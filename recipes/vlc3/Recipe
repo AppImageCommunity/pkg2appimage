@@ -2,7 +2,7 @@
 # TODO: Try on older versions
 
 sudo apt-get update
-sudo apt-get -y install git build-essential pkg-config autoconf libxcb-composite0-dev libxcb-randr0-dev libqt4-dev libxcb1-dev 
+sudo apt-get -y install git build-essential pkg-config autoconf libxcb-shm0-dev libxcb-xv0-dev libxcb-composite0-dev libxcb-randr0-dev libqt4-dev libxcb1-dev 
 # Don't use ubuntu libtool
 # Really needed? # libx11-dev xorg-dev
 
@@ -255,7 +255,7 @@ cd ../..
 # Does not find protoc
 export PATH=/vlc/extras/tools/build/bin/:$PATH
 
-BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --disable-xcb --prefix=/usr
+BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --prefix=/usr
 
 APP=VLC
 make install DESTDIR=/$APP/$APP.AppDir
