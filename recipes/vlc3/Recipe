@@ -255,7 +255,7 @@ chmod a+x /usr/bin/g++
 # For now use Ubuntu 14.04 which does not have this issue or upgrade libc6-dev (which we really want to avoid; FIXME)
 sed -i -e 's|precise|trusty|'g /etc/apt/sources.list
 sudo apt-get update
-sudo apt-get -y install libc6-dev
+sudo apt-get -y --force-yes install libc6-dev
 
 cd ../..
 
