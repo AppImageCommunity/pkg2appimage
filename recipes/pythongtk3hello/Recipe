@@ -1,3 +1,8 @@
+# This is a very simple example on how to bundle a Python application as an AppImage
+# using virtualenv and AppImageKit
+# NOTE: Please test the resulting AppImage on your target systems and copy in any additional
+# libraries and/or dependencies that might be missing on your target system(s).
+
 sudo apt-get update
 sudo apt-get -y install python-virtualenv
 
@@ -61,6 +66,9 @@ cp /usr/share/icons/hicolor/256x256/apps/logview.png $LOWERAPP.png
 
 VERSION=1
 ARCH=$(arch)
+
+# At this point, you should be able to run the application by executing
+# ./AppRun
 
 cd ..
 
