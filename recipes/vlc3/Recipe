@@ -262,32 +262,28 @@ make install DESTDIR=/$APP/$APP.AppDir
 
 #################################################################
 
+LOWERAPP=${APP,,} 
+cd /$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+cd $APP.AppDir
+
 export ARCH=x86_64
 
-cp ./share/icons/128x128/vlc.png /$APP/$APP.AppDir
+cp usr/share/icons/hicolor/128x128/apps/vlc.png .
 
-# Bundle dependency libraries into the AppDir
-cd /$APP/$APP.AppDir/
-cp ../../AppImageKit/AppRun .
-chmod a+x AppRun
+get_apprun
 
-#Desktop file
-cat > ./vlc.desktop <<\EOF
-[Desktop Entry]
-Name=VLC
-Type=Application
-Comment=Multimedia player
-Exec=vlc
-Categories=Audio;Video;
-Icon=vlc.png
-EOF
+cp ./usr/share/applications/vlc.desktop .
 
 rm -rf usr/share/icons/hicolor/48x48/
 
 mkdir -p ./usr/lib/qt4
-cp -r /usr/lib64/qt4/plugins ./usr/lib/qt4/
+cp -r /usr/lib/x86_64-linux-gnu/qt4/plugins/ ./usr/lib/qt4/
 
-export LD_LIBRARY_PATH=./usr/lib/:../../4/gc*/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=./usr/lib/:$LD_LIBRARY_PATH
 ldd usr/bin/vlc | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
 # Copy in the indirect dependencies
@@ -306,6 +302,7 @@ rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
 rm -rf usr/include || true
 rm -rf usr/lib/cmake || true
 rm -rf usr/lib/pkgconfig || true
+rm -rf rm -rf ./usr/share/doc/vlc/libvlc/ || true
 
 find /VLC/VLC.AppDir/usr/lib/ -name '*.la' | xargs -i rm {}
 
@@ -348,16 +345,7 @@ wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppI
 chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
-# Delete blacklisted files; TODO: Move to a library function
-BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
-echo $BLACKLISTED_FILES
-for FILE in $BLACKLISTED_FILES ; do
-  FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)
-  if [ ! -z "$FOUND" ] ; then
-    echo "Deleting blacklisted ${FOUND}"
-    rm -f "${FOUND}"
-  fi
-done
+delete_blacklisted
 
 # Remove .a and .la files
 find . -name *.la -exec rm {} \;
@@ -383,29 +371,11 @@ cp $(ldconfig -p | grep libtinfo.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
 rm -rf usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
 
 GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=2.2.3.glibc$GLIBC_NEEDED # FIXME
+VERSION=3.0.0.git.glibc$GLIBC_NEEDED # FIXME
 
 cd ..
-find $APP.AppDir/
 
-if [[ "$ARCH" = "x86_64" ]] ; then
-APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
-fi
-if [[ "$ARCH" = "i686" ]] ; then
-APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
-fi
-
-# Put this script into the AppImage for debugging
-# FIXME: The follwing line does not work
-# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
-
-mkdir -p ../out
-
-rm -f ../out/*.AppImage || true
-
-# Convert the AppDir into an AppImage
-rm -rf $APPIMAGE
-../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
+generate_appimage
 
 chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
 ls -lh ../out/$APPIMAGE
