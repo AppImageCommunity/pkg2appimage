@@ -1,10 +1,13 @@
 # This is meant to be run on Ubuntu 12.04.5
 # TODO: Try on older versions
 
+# I have successfully built VLC on EC2 using
+# https://us-west-1.console.aws.amazon.com/ec2/v2/home?region=us-west-1#LaunchInstanceWizard:ami=ami-6781f807
+# c3.2xlarge = 8 CPUs
+
 sudo apt-get update
 sudo apt-get -y install git build-essential pkg-config autoconf libxcb-shm0-dev libxcb-xv0-dev libxcb-composite0-dev libxcb-randr0-dev libqt4-dev libxcb1-dev 
 # Don't use ubuntu libtool
-# Really needed? # libx11-dev xorg-dev
 
 ########################################################################
 # Install newer versions of some build-time dependencies
