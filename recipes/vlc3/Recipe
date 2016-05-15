@@ -260,7 +260,10 @@ BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-nc
 APP=VLC
 make install DESTDIR=/$APP/$APP.AppDir
 
-#################################################################
+########################################################################
+# Build complete
+# Now creating the AppDir
+########################################################################
 
 LOWERAPP=${APP,,} 
 cd /$APP/
@@ -284,95 +287,35 @@ mkdir -p ./usr/lib/qt4
 cp -r /usr/lib/x86_64-linux-gnu/qt4/plugins/ ./usr/lib/qt4/
 
 export LD_LIBRARY_PATH=./usr/lib/:$LD_LIBRARY_PATH
-ldd usr/bin/vlc | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 
-# Copy in the indirect dependencies
-FILES=$(find . -type f -executable)
-
-for FILE in $FILES ; do
-    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
-done
-
-# Delete potentially dangerous libraries
-rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
-# Do NOT delete libX* because otherwise on Ubuntu 11.04:
-# loaded library "Xcursor" malloc.c:3096: sYSMALLOc: Assertion (...) Aborted
+copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
+move_lib
+delete_blacklisted
 
 # We don't bundle the developer stuff
 rm -rf usr/include || true
 rm -rf usr/lib/cmake || true
 rm -rf usr/lib/pkgconfig || true
 rm -rf rm -rf ./usr/share/doc/vlc/libvlc/ || true
-
 find /VLC/VLC.AppDir/usr/lib/ -name '*.la' | xargs -i rm {}
-
 strip usr/bin/* usr/lib/* usr/lib/vlc/plugins/*/* || true
 
-# Fix GDK_IS_PIXBUF errors on older distributions
-
-# TODO: Move all cp lib things to using ldconfig because it is more robust
-# across different build system distributions and architectures.
-# It is the equivalent for "find" for libraries.
-cp $(ldconfig -p | grep libsasl2.so.2 | cut -d ">" -f 2 | xargs) ./usr/lib/
-cp $(ldconfig -p | grep libpng12.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
-# cp $(ldconfig -p | grep libGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
-cp $(ldconfig -p | grep libGLU.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # otherwise segfaults!?
-# Fedora 23 seemed to be missing SOMETHING from the Centos 6.7. The only message was:
-# This application failed to start because it could not find or load the Qt platform plugin "xcb".
-# Setting export QT_DEBUG_PLUGINS=1 revealed the cause.
-# QLibraryPrivate::loadPlugin failed on "/usr/lib64/qt5/plugins/platforms/libqxcb.so" :
-# "Cannot load library /usr/lib64/qt5/plugins/platforms/libqxcb.so: (/lib64/libEGL.so.1: undefined symbol: drmGetNodeTypeFromFd)"
-# Which means that we have to copy libEGL.so.1 in too
-cp $(ldconfig -p | grep libEGL.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/ # Otherwise F23 cannot load the Qt platform plugin "xcb"
-# cp $(ldconfig -p | grep libxcb.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/
-
-# I have no clue why but on i386 systems this seems to be required
-if [[ "$ARCH" = "i686" ]] ; then
-        cp $(ldconfig -p | grep libgbm.so.1 | cut -d ">" -f 2 | xargs) ./usr/lib/
-fi
-
-# On openSUSE Qt is picking up the wrong libqxcb.so
-# (the one from the system when in fact it should use the bundled one) - is this a Qt bug?
-# Hence, we binary patch /usr/lib* to $CWD/lib* which works because at runtime,
-# the current working directory is set to usr/ inside the AppImage before running the app
-#cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
-
-cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
-
-# Add desktop integration - TODO: move to a library function
-XAPP=vlc
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
-
-delete_blacklisted
-
-# Remove .a and .la files
-find . -name *.la -exec rm {} \;
-find . -name *.a -exec rm {} \;
-
-# Workaround for:
-# On debian sid,
-# symbol lookup error: /lib/x86_64-linux-gnu/libncurses.so.5: undefined symbol: _nc_putchar
-yum -y install ncurses
-cp $(ldconfig -p | grep libncurses.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
-
-# Workaround for:
-# On debian sid,
-# Gtk-CRITICAL **: IA__gtk_widget_style_get: assertion 'GTK_IS_WIDGET (widget)' failed
-cp $(ldconfig -p | grep libtinfo.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
-
-# Workaround for:
-# symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libunity-gtk-module.so: undefined symbol: g_settings_newn
-#rm usr/lib/qt5/plugins/platformthemes/libqgtk* || true
-
-# Workaround for:
-# GTK theme is broken
-rm -rf usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
+get_desktopintegration vlc
 
 GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=3.0.0.git.glibc$GLIBC_NEEDED # FIXME
+VERSION=3.0.0.git$(cat /vlc/src/revision.txt).glibc$GLIBC_NEEDED # FIXME
 
 cd ..
 
+########################################################################
+# AppDir complete
+# Now packaging it as an AppImage
+########################################################################
+
 generate_appimage
+
+########################################################################
+# Upload the AppDir
+########################################################################
+
+transfer ../out/*
