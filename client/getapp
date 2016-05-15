@@ -3,10 +3,12 @@
 # Usage:
 # getapp Firefox
 # For the list of available apps, see https://bintray.com/probono/AppImages/
-set +e
+
+set -e
 ARCH=$(arch)
-PKGPATH=$(wget -c "https://bintray.com/probono/AppImages/$1/_latestVersion#files" -O - | grep pkgPath | cut -d '"' -f 6)
+PKGPATH=$(wget -q "https://bintray.com/probono/AppImages/$1/_latestVersion#files" -O - | grep pkgPath | cut -d '"' -f 6)
 VERSION=$(echo $PKGPATH | cut -d "/" -f 5)
-ls "$1-$VERSION-$ARCH.AppImage"|| wget "https://bintray.com/probono/AppImages/download_file?file_path=$1-$VERSION-"$(arch)".AppImage" -O "$1-$VERSION-$ARCH.AppImage"
+URL="https://bintray.com/probono/AppImages/download_file?file_path=$1-$VERSION-$ARCH.AppImage"
+ls "$1-$VERSION-$ARCH.AppImage" || wget "$URL" -O "$1-$VERSION-$ARCH.AppImage"
 chmod a+x "$1-$VERSION-$ARCH.AppImage"
-exec ./"$1-$VERSION-$ARCH.AppImage"
+./"$1-$VERSION-$ARCH.AppImage"
