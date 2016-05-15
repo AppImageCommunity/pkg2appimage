@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Usage:
+# getapp Firefox
+# For the list of available apps, see https://bintray.com/probono/AppImages/
 set +e
 ARCH=$(arch)
 PKGPATH=$(wget -c "https://bintray.com/probono/AppImages/$1/_latestVersion#files" -O - | grep pkgPath | cut -d '"' -f 6)
