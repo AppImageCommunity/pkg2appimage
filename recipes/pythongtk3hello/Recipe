@@ -60,6 +60,7 @@ move_lib
 cp /usr/share/icons/hicolor/256x256/apps/logview.png $LOWERAPP.png
 
 VERSION=1
+ARCH=$(arch)
 
 cd ..
 
