@@ -4,6 +4,11 @@
 # I have successfully built VLC on EC2 using
 # https://console.aws.amazon.com/ec2/home?region=us-west-1#launchAmi=ami-c4fb82a4
 # c3.2xlarge = 8 CPUs
+# Run there with:
+# sudo su
+# wget -c https://github.com/probonopd/AppImages/raw/master/recipes/vlc3/Recipe
+# bash -ex Recipe
+# Make sure to delete the cloud instance after building in order not to incur additional cost
 
 sudo apt-get update
 sudo apt-get -y install git build-essential pkg-config autoconf libxcb-shm0-dev libxcb-xv0-dev libxcb-composite0-dev libxcb-randr0-dev libqt4-dev libxcb1-dev 
