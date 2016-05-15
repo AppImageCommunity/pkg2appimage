@@ -145,7 +145,7 @@ sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak
 # No package 'xcb' found".
 # Found this path with:
 # find /usr/ | grep xcb.pc
-export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/vlc/contrib/x86_64-linux-gnu/lib/pkgconfig/:/usr/src/alsa-lib-*/utils/
+export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/share/pkgconfig/:/vlc/contrib/x86_64-linux-gnu/lib/pkgconfig/:/usr/src/alsa-lib-1.0.24.1/utils/
 
 # Should say:
 # "vlc aliases : cvlc rvlc qvlc svlc"
