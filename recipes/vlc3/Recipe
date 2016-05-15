@@ -290,6 +290,7 @@ cp usr/share/icons/hicolor/128x128/apps/vlc.png .
 get_apprun
 
 cp ./usr/share/applications/vlc.desktop .
+sed -i -e "s|Exec=.*|Exec=vlc|g" vlc.desktop
 
 rm -rf usr/share/icons/hicolor/48x48/
 
