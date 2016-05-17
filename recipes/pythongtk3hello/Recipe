@@ -78,7 +78,7 @@ Comment=A hello world app written in GTK3 and Python
 EOF
 
 # Make the AppImage ask to "install" itself into the menu
-get_desktopintegration
+get_desktopintegration $LOWERAPP
 
 cp /usr/share/icons/hicolor/256x256/apps/logview.png $LOWERAPP.png
 
