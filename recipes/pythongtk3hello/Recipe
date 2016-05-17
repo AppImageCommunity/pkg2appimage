@@ -1,5 +1,5 @@
 # This is a very simple example on how to bundle a Python application as an AppImage
-# using virtualenv and AppImageKit
+# using virtualenv and AppImageKit using Ubuntu
 # NOTE: Please test the resulting AppImage on your target systems and copy in any additional
 # libraries and/or dependencies that might be missing on your target system(s).
 
@@ -76,6 +76,9 @@ Exec=$LOWERAPP
 Icon=$LOWERAPP
 Comment=A hello world app written in GTK3 and Python
 EOF
+
+# Make the AppImage ask to "install" itself into the menu
+get_desktopintegration
 
 cp /usr/share/icons/hicolor/256x256/apps/logview.png $LOWERAPP.png
 
