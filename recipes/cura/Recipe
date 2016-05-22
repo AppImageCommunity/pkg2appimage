@@ -55,7 +55,7 @@ virtualenv usr
 # The following ones cannot be installed using pip
 find /var/cache/apt/archives/ -name *deb -exec dpkg -x {} . \;
 
-mv ./usr/lib/python2.7/dist-packages/wx-3.0-gtk2/wx/ ./usr/lib/python2.7/dist-packages/
+mv ./usr/lib/python2.7/dist-packages/wx-2.8-gtk2/wx/ ./usr/lib/python2.7/dist-packages/
 
 ########################################################################
 # "Install" a simple sample app in the AppDir
