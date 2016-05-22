@@ -45,8 +45,6 @@ cd $APP.AppDir/
 # Create a virtualenv inside the AppDir
 ########################################################################
 
-( mkdir -p usr/lib/python2.7 ; cd usr/lib/python2.7 ; ln -s site-packages dist-packages)
-
 virtualenv usr
 
 # Install python dependencies into the virtualenv
