@@ -1,0 +1,104 @@
+# This is a very simple example on how to bundle a Python application as an AppImage
+# using virtualenv and AppImageKit using Ubuntu
+# NOTE: Please test the resulting AppImage on your target systems and copy in any additional
+# libraries and/or dependencies that might be missing on your target system(s).
+
+########################################################################
+# Get virtualenv on the target system
+########################################################################
+
+sudo apt-get update
+sudo apt-get -y install python-virtualenv
+
+########################################################################
+# Create the AppDir
+########################################################################
+
+APP=Cura
+LOWERAPP=${APP,,} 
+
+mkdir -p $APP/$APP.AppDir/
+
+cd $APP/
+
+########################################################################
+# Source some helper functions
+########################################################################
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+########################################################################
+# Download debs
+########################################################################
+
+DEB=$(wget -c "http://software.ultimaker.com/current/?C=M;O=D" -O - | grep debian_amd64.deb | head -n 1 | cut -d '"' -f 8)
+URL="http://software.ultimaker.com/current/$DEB"
+wget -c "$URL"
+
+sudo apt-get clean
+sudo apt-get -y install --download-only python-setuptools python-wxgtk3.0 python-serial python-numpy python-opengl
+
+cd $APP.AppDir/
+
+########################################################################
+# Create a virtualenv inside the AppDir
+########################################################################
+
+( mkdir -p usr/lib/python2.7 ; cd usr/lib/python2.7 ; ln -s site-packages dist-packages)
+
+virtualenv usr
+
+# Install python dependencies into the virtualenv
+# ./usr/bin/pip install ...
+
+# The following ones cannot be installed using pip
+find /var/cache/apt/archives/ -name *deb -exec dpkg -x {} . \;
+
+mv ./usr/lib/python2.7/dist-packages/wx-3.0-gtk2/wx/ ./usr/lib/python2.7/dist-packages/
+
+########################################################################
+# "Install" a simple sample app in the AppDir
+########################################################################
+
+find ../ -name *.deb -exec dpkg -x {} . \;
+sed -i -e 's|/usr|././|g' usr/bin/cura
+
+########################################################################
+# Finalize the AppDir
+########################################################################
+
+get_apprun
+
+find . -name *.desktop -exec cp {} . \;
+sed -i -e 's|/usr/bin/python /usr/share/cura/cura.py|cura|g' $LOWERAPP.desktop
+sed -i -e 's|/usr/share/cura/resources/images/c.png|cura|g' $LOWERAPP.desktop
+sed -i -e 's|/usr/share/cura/|./share/cura/|g' $LOWERAPP.desktop
+
+cp usr/share/cura/resources/images/c.png $LOWERAPP.png
+
+# Make the AppImage ask to "install" itself into the menu
+get_desktopintegration $LOWERAPP
+
+########################################################################
+# Bundle dependencies
+########################################################################
+
+copy_deps
+
+delete_blacklisted
+move_lib
+
+VERSION=$(ls ../cura_*.deb | cut -d _ -f 2 | cut -d "-" -f 1)
+ARCH=$(arch)
+
+########################################################################
+# Package the AppDir as an AppImage
+########################################################################
+
+# At this point, you should be able to run the application by executing
+# ./AppRun
+
+cd ..
+
+generate_appimage
