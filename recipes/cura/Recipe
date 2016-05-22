@@ -54,6 +54,9 @@ virtualenv usr
 
 # The following ones cannot be installed using pip
 find /var/cache/apt/archives/ -name *deb -exec dpkg -x {} . \;
+cp /usr/lib/python2.7/lib-dynload/* ./usr/lib/python2.7/lib-dynload
+cp /usr/lib/python2.7/hashlib.py usr/lib/python2.7/
+cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 ./usr/lib/
 
 mv ./usr/lib/python2.7/dist-packages/wx*/wx/ ./usr/lib/python2.7/dist-packages/
 
