@@ -64,6 +64,7 @@ mv ./usr/lib/python2.7/dist-packages/wx*/wx/ ./usr/lib/python2.7/dist-packages/
 ########################################################################
 
 find ../ -name *.deb -exec dpkg -x {} . \;
+find /var/cache/apt/archives/ -name *.deb -exec dpkg -x {} . \;
 sed -i -e 's|/usr|././|g' usr/bin/cura
 
 ########################################################################
