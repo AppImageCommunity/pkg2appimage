@@ -54,7 +54,8 @@ virtualenv usr
 
 # The following ones cannot be installed using pip
 find /var/cache/apt/archives/ -name *deb -exec dpkg -x {} . \;
-cp /usr/lib/python2.7/lib-dynload/* ./usr/lib/python2.7/lib-dynload
+rm -rf ./usr/lib/python2.7/lib-dynload/ # pip created a symlink to /usr there; stupid
+cp -r /usr/lib/python2.7/lib-dynload ./usr/lib/python2.7/
 cp /usr/lib/python2.7/hashlib.py usr/lib/python2.7/
 cp /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 ./usr/lib/
 
