@@ -37,7 +37,7 @@ URL="http://software.ultimaker.com/current/$DEB"
 wget -c "$URL"
 
 sudo apt-get clean
-sudo apt-get -y install --download-only python-setuptools python-wxgtk2.8 python-serial python-numpy python-opengl
+sudo apt-get -y install --download-only python-setuptools python-wxgtk2.8 python-serial python-numpy python-opengl freeglut3
 
 cd $APP.AppDir/
 
