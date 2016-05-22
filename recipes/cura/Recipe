@@ -73,7 +73,8 @@ get_apprun
 find . -name *.desktop -exec cp {} . \;
 sed -i -e 's|/usr/bin/python /usr/share/cura/cura.py|cura|g' $LOWERAPP.desktop
 sed -i -e 's|/usr/share/cura/resources/images/c.png|cura|g' $LOWERAPP.desktop
-sed -i -e 's|/usr/share/cura/|./share/cura/|g' $LOWERAPP.desktop
+sed -i -e 's|Path=|X-Disabled-Path=|g' $LOWERAPP.desktop
+sed -i -e 's|Comment=Cura|Comment=Ultimaker Cura|g' $LOWERAPP.desktop
 
 cp usr/share/cura/resources/images/c.png $LOWERAPP.png
 
