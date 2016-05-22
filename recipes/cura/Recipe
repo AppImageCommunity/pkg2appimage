@@ -36,6 +36,7 @@ DEB=$(wget -c "http://software.ultimaker.com/current/?C=M;O=D" -O - | grep debia
 URL="http://software.ultimaker.com/current/$DEB"
 wget -c "$URL"
 
+sudo apt-get -y  remove python-serial
 sudo apt-get clean
 sudo apt-get -y install --download-only python-setuptools python-wxgtk2.8 python-serial python-numpy python-opengl freeglut3
 
