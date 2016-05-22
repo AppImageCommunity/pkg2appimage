@@ -92,6 +92,11 @@ get_desktopintegration $LOWERAPP
 copy_deps
 
 delete_blacklisted
+
+# Workaround for:
+# /usr/lib/x86_64-linux-gnu/libgdk-x11-2.0.so.0: error: symbol lookup error: undefined symbol: XRRGetMonitors (fatal)
+rm 'usr/lib/x86_64-linux-gnu/libXrandr.so.2'
+
 move_lib
 
 VERSION=$(ls ../cura_*.deb | cut -d _ -f 2 | cut -d "-" -f 1)
