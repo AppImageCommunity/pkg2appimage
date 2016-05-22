@@ -8,7 +8,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 APP=Terminix
 LOWERAPP=${APP,,} 
 
-VERSION=$(wget -q "https://github.com/gnunn1/terminix/releases" -O - | grep "/releases/tag" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1 | sed 's|Beta ||g')
+VERSION=$(wget -q "https://github.com/gnunn1/terminix/releases" -O - | grep "/releases/tag" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1 | sed 's|Beta ||g' | sed 's|Stable ||g')
 ZIP_PATH=$(wget -q "https://github.com/gnunn1/terminix/releases" -O - | grep terminix.zip | grep href | head -n 1 | cut -d '"' -f 2)
 URL=https://github.com/$ZIP_PATH
 
