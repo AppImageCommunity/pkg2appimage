@@ -24,6 +24,18 @@ get_apprun
 # Copy in the indirect dependencies
 copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
+# Workaround for:
+# run-parts: failed to open directory
+# /etc/iridium-browser/customizations: No such file or directory
+mv etc usr/et
+sed -i -e 's|/etc|./et|g' ./usr/bin/iridium-browser
+( cd ./usr/et/ ; ln -sf /etc/lsb-release . )
+
+# Workaround for:
+# ././/lib/iridium-browser/iridium-browser: ./lib/x86_64-linux-gnu/libnssutil3.so:
+# version `NSSUTIL_3.21' not found (required by /usr/lib/x86_64-linux-gnu/libnss3.so)
+rm -rf ./usr/lib/x86_64-linux-gnu/libnssutil3.so
+
 move_lib
 
 delete_blacklisted
