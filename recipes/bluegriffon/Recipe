@@ -31,13 +31,18 @@ EOF
 
 wget -c "http://sources.disruptive-innovations.com/bluegriffon/branches/multichar/branding/mozicon128.png" -O $LOWERAPP.png
 
-get_apprun
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+"$HERE"/usr/bin/bluegriffon "$@"
+EOF
+chmod a+x AppRun
 
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
 
-get_desktopintegration firefox
+get_desktopintegration $LOWERAPP
 
 cd ..
 
