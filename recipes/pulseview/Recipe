@@ -63,6 +63,7 @@ VER1=$(./AppRun --version | cut -d " "  -f 2)
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
+ARCH=$(arch)
 
 cd ..
 
