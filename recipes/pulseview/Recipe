@@ -32,9 +32,14 @@ strip usr/bin/pulseview
 cd usr/lib/
 wget http://sigrok.org/jenkins/job/libsigrok/buildtype=shared,compiler=gcc,platform=native-amd64/ws/_inst/lib/libsigrok.so.3
 wget http://sigrok.org/jenkins/job/libsigrok/buildtype=shared,compiler=gcc,platform=native-amd64/ws/_inst/lib/libsigrokcxx.so.3
-wget http://sigrok.org/jenkins/job/libsigrokdecode/buildtype=shared,compiler=gcc,platform=native-amd64/ws/_inst/lib/libsigrokdecode.so.3
 wget http://sigrok.org/jenkins/job/libserialport/buildtype=shared,compiler=gcc,platform=native-amd64/lastSuccessfulBuild/artifact/_inst/lib/libserialport.so.0
 cd ../../
+
+wget "http://sigrok.org/jenkins/job/libsigrokdecode/buildtype=shared,compiler=gcc,platform=native-amd64/lastSuccessfulBuild/artifact/*zip*/archive.zip"
+unzip archive.zip
+mv archive/_inst/share/libsigrokdecode usr/share/
+mv archive/_inst/lib/libsigrokdecode.so.3 usr/lib/
+rm -rf archive*
 
 strip usr/lib/*
 
