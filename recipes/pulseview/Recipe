@@ -17,7 +17,7 @@ unzip bin.zip
 
 sudo sed -i -e 's|trusty|xenial|g' /etc/apt/sources.list
 sudo apt-get update
-sudo apt-get -y --force-yes install libqt5svg5 libqt5gui5 libboost-thread1.58.0 libboost-test1.58.0 libboost-chrono1.58.0 libboost-atomic1.58.0 libftdi1-2 libzip4
+echo "Y" | sudo apt-get -y --force-yes install libqt5svg5 libqt5gui5 libboost-thread1.58.0 libboost-test1.58.0 libboost-chrono1.58.0 libboost-atomic1.58.0 libftdi1-2 libzip4
 
 FW=$(wget -q "http://sigrok.org/download/binary/sigrok-firmware-fx2lafw/?C=M;O=D" -O - | grep .tar.gz | head -n 1 | cut -d '"' -f 13 | cut -d ">" -f 2 | cut -d "<" -f 1)
 wget -c "http://sigrok.org/download/binary/sigrok-firmware-fx2lafw/$FW"
