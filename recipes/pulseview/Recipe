@@ -40,6 +40,7 @@ unzip archive.zip
 mv archive/_inst/share/libsigrokdecode usr/share/
 mv archive/_inst/lib/libsigrokdecode.so.3 usr/lib/
 rm -rf archive*
+sed -i -e 's|/home/jenkins_slave/fsroot/workspace/libsigrokdecode/buildtype/shared/compiler/gcc/platform/native-amd64/_inst/share/libsigrokdecode/decoders|.//////////////////////////////////////////////////////////////////////////////////////////////////////////////share/libsigrokdecode/decoders|g' usr/lib/libsigrokdecode.so.3
 
 strip usr/lib/*
 
