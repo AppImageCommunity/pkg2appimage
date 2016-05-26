@@ -1,0 +1,59 @@
+# Integrate texlive into pre-existing TeXstudio AppImage
+
+APP=TeXstudio
+LOWERAPP=${APP,,} 
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin ./$APP/$APP.AppDir/usr/lib
+cd ./$APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar xf install-tl-unx.tar.gz
+
+wget -c "https://bintray.com/unruhschuh/AppImages/download_file?file_path=TeXstudio-2.10.8-x86_64.AppImage" -O TeXstudio-2.10.8-x86_64.AppImage
+
+cd $APP.AppDir/
+
+# Install texlive relative to usr/
+# [X] basic scheme (plain and latex)
+# 2 collections out of 48, disk space required: 165 MB
+# Its bin/ just needs to be put on $PATH, then existing TeXstudio AppImage works with it
+mkdir -p usr/
+cd usr/
+echo "I
+n" | TEXLIVE_INSTALL_PREFIX=../texlive ../../install-tl-20160405/install-tl -portable -scheme basic
+cd ..
+
+sudo apt-get install -y bsdtar
+bsdtar xf ../TeXstudio-2.10.8-x86_64.AppImage
+
+find . -type f -executable -exec strip {} \;
+
+# If we can use the below then we don't need our custom AppRun
+# ( cd usr/bin ; ln -s ln -s ../../texlive/bin/x86_64-linux/* . )
+
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+cd "${HERE}/usr/"
+export PATH=./bin/:./sbin/:./games/:../texlive/bin/x86_64-linux/:$PATH
+export XDG_DATA_DIRS=./share/:$XDG_DATA_DIRS
+export LD_LIBRARY_PATH=./lib/:./lib/i386-linux-gnu/:./lib/x86_64-linux-gnu/:./lib32/:./lib64/:$LD_LIBRARY_PATH
+export QT_PLUGIN_PATH=./lib/qt4/plugins/:./lib/qt5/plugins/:$QT_PLUGIN_PATH
+export PERLLIB=./share/perl5/:./lib/perl5/:$PERLLIB
+exec texstudio "$@"
+EOF
+chmod a+x AppRun
+
+cd ..
+
+ARCH=$(arch)
+VER1=$(ls TeXstudio*AppImage | cut -d "-" -f 2)
+VER2=$(ls | grep install-tl-2 | cut -d "-" -f 3)
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.tl$VER2.glibc$GLIBC_NEEDED
+echo $VERSION
+
+generate_appimage
