@@ -1,0 +1,28 @@
+# Work in progress. Not picking up texlive yet despite its bin/ being on the $PATH.
+# Despite usr/share/lyx2.2/configure.py 2>&1 | grep pdf
+# saying
+# checking for the pdflatex program...
+# +checking for "pdflatex"...  yes
+
+DURL="http://ppa.launchpad.net/lyx-devel/daily/ubuntu/pool/main/l/lyx2.2/"
+DEBS=$(wget -q "$DURL/?C=M;O=D" -O - | grep "14.04.*.deb" | cut -d ">" -f 6 | cut -d '"' -f 2 | grep -v i386)
+for DEB in $DEBS; do
+  wget "$DURL/$DEB"
+done
+
+VERSION=$(ls lyx2.2_* | cut -d "_" -f 2 | sed -e 's|~git|.git|g' | cut -d "~" -f 1)
+
+for DEB in $DEBS; do
+  echo ""
+  echo $DEB
+  dpkg --info $DEB | grep -e "^ Depends:"
+  dpkg -x $DEB .
+done
+
+patch_usr
+
+( cd usr/bin ; ln -s /usr/bin/env . )
+
+# Install prerequisites but not LaTeX (gathered from the output above)
+# sudo sed -i -e 's|xenial|trusty|g' /etc/apt/sources.list
+sudo apt-get -y install libaspell15 libboost-regex1.54.0 libboost-signals1.54.0 libenchant1c2a libgcc1 libhunspell-1.3-0  libmagic1 libmythes-1.2-0 libqtcore4 libqtgui4 libstdc++6 zlib1g
