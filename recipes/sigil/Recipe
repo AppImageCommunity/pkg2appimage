@@ -1,0 +1,132 @@
+# In this example, we bundle so many libraries (down to glibc)
+# that the resulting AppImage runs even on
+# ubuntu-10.04.1-desktop-amd64.iso
+# although it is using 16.04 components from 6 years later!
+# Note the special AppRun that is needed in order for it not to crash
+
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+APP=Sigil
+LOWERAPP=sigil
+
+mkdir -p tmp/archives/ tmp/lists/
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+cat > status <<EOF
+Package: debconf
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: dpkg
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: libcups2
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: dbus
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: fontconfig
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: passwd
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: uuid-runtime
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: libgl1-mesa
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+Comment: Draws in 100 MB of dependencies
+
+Package: dictionaries-common
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: mime-support
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+EOF
+
+echo "deb http://archive.ubuntu.com/ubuntu/ xenial main universe
+deb http://ppa.launchpad.net/sunab/sigil-release/ubuntu xenial main " > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=$HERE/sources.list
+-o Dir::State=$HERE/tmp
+-o Dir::Cache=$HERE/tmp
+-o Dir::State::status=$HERE/status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \;
+
+find . -name $LOWERAPP.desktop -exec cp {} . \;
+
+get_apprun
+patch_usr
+
+rm -rf ./usr/lib/apt/ ./usr/lib/dpkg/ ./bin ./sbin ./var ./usr/share/man ./usr/sbin ./usr/include || true
+
+# Save > 100 MB
+rm -rf ./usr/lib/x86_64-linux-gnu/dri
+
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+cd "$HERE/usr"
+export GCONV_PATH=./lib/x86_64-linux-gnu/gconv
+export QT_PLUGIN_PATH=./lib/x86_64-linux-gnu/qt5/plugins/
+export LD_LIBRARY_PATH=./lib/x86_64-linux-gnu/qt5/plugins/platforms:$LD_LIBRARY_PATH
+export PYTHONPATH=./lib/python3.5
+exec ../lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --library-path ../lib:../lib/x86_64-linux-gnu:./lib:./lib/x86_64-linux-gnu  ./lib/sigil/sigil "$@"
+EOF
+chmod a+x ./AppRun
+
+cp ./usr/share/pixmaps/sigil.png .
+
+cd ..
+
+VERSION=$(ls "${LOWERAPP}"_*deb | head -n 1 | cut -d "_" -f 2 | cut -d "+" -f 1)
+ARCH=$(arch)
+
+generate_appimage
