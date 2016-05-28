@@ -86,7 +86,7 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Suggests=0
 "
 
-ls -lh  /home/travis/build/probonopd/AppImages/recipes/sigil/Sigil/tmp/lists/partial
+find  /home/travis/build/probonopd/AppImages/recipes/sigil
 
 apt-get $OPTIONS update
 
