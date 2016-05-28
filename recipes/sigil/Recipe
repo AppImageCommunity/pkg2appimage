@@ -9,6 +9,8 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 APP=Sigil
 LOWERAPP=sigil
 
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
 cd ./$APP/
 
 mkdir -p ./tmp/archives/
@@ -91,8 +93,6 @@ ls -lh  /home/travis/build/probonopd/AppImages/recipes/sigil/Sigil/tmp/lists/par
 apt-get $OPTIONS update
 
 URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
-
-mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
