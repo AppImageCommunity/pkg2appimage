@@ -9,7 +9,7 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 APP=Sigil
 LOWERAPP=sigil
 
-mkdir -p tmp/archives/ tmp/lists/
+mkdir -p tmp/archives/ tmp/lists/partial
 touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 
 cat > status <<EOF
