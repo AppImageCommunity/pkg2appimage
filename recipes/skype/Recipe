@@ -1,0 +1,147 @@
+# WORK IN PROGRESS
+# The result is still too large and I get no sound on Ubuntu 12.04
+# In this example, we bundle so many libraries (down to glibc)
+# that the resulting AppImage runs even on
+# ubuntu-10.04.1-desktop-amd64.iso
+# although it is using 16.04 components from 6 years later!
+# Note the special usr/bin/skype that is used to pull this magic
+
+APP=Skype
+LOWERAPP=${APP,,} 
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+cat > status <<EOF
+Package: debconf
+Status: install ok installed
+Architecture: i386
+Version: 9999.9999.9999
+
+Package: dpkg
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: libcups2
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: dbus
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: fontconfig
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: passwd
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: uuid-runtime
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: libgl1-mesa
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+Comment: Draws in 100 MB of dependencies
+
+Package: dictionaries-common
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: mime-support
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+EOF
+
+echo "deb http://archive.ubuntu.com/ubuntu/ xenial main universe
+deb http://archive.canonical.com/ubuntu xenial partner" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+apt-get $OPTIONS update
+
+URLS=$(echo "Yes, do as I say!
+" | apt-get $OPTIONS -y  --force-yes install --print-uris gcc-multilib $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \;
+
+find . -name $LOWERAPP.desktop -exec cp {} . \;
+sed -i -e 's|^Exec=.*|Exec=skype|g' skype.desktop
+
+get_apprun
+patch_usr
+
+rm -rf ./usr/lib/apt/ ./usr/lib/dpkg/ ./bin ./sbin ./var ./usr/share/man ./usr/sbin ./usr/include || true
+
+# Save > 100 MB
+rm -rf ./usr/lib/x86_64-linux-gnu/dri
+
+# The following does the magic of running the bundled ld-linux-x86-64.so.2
+# so that it can load a newer glibc than what is present on the host system.
+# Crashes if GCONV_PATH is not set to match, and if its location 
+# is not on the --library-path.
+
+mv usr/bin/skype usr/bin/skype.bin
+
+cat > ./usr/bin/skype <<\EOF
+#!/bin/bash
+export GCONV_PATH=./lib/i386-linux-gnu/gconv
+export QT_PLUGIN_PATH=./lib/x86_64-linux-gnu/qt4/plugins/
+export LD_LIBRARY_PATH=./lib/i386-linux-gnu/qt5/plugins/platforms:./lib/i386-linux-gnu/mesa/:$LD_LIBRARY_PATH
+export PYTHONPATH=./lib/python3.5:./lib/python3.5/plat-x86_64-linux-gnu/:./lib/python3/dist-packages/
+exec ../lib/i386-linux-gnu/ld-linux.so.2 --library-path ../lib:../lib/i386-linux-gnu:./lib:./lib/i386-linux-gnu:./lib/i386-linux-gnu/mesa/  ./bin/skype.bin "$@"
+EOF
+chmod a+x ./usr/bin/skype
+
+cp ./share/icons/hicolor/256x256/apps/skype.png .
+rm -rf ./usr/share/icons/hicolor/48x48/
+
+get_desktopintegration $LOWERAPP
+
+cd ..
+
+VERSION=$(ls "${LOWERAPP}"_*deb | head -n 1 | cut -d "_" -f 2 | cut -d "+" -f 1)
+ARCH=$(arch)
+
+generate_appimage
