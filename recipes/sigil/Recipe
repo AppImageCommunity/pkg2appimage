@@ -111,17 +111,15 @@ rm -rf ./usr/lib/apt/ ./usr/lib/dpkg/ ./bin ./sbin ./var ./usr/share/man ./usr/s
 # Save > 100 MB
 rm -rf ./usr/lib/x86_64-linux-gnu/dri
 
-cat > AppRun <<\EOF
+cat > ./usr/bin/sigil <<\EOF
 #!/bin/bash
-HERE="$(dirname "$(readlink -f "${0}")")"
-cd "$HERE/usr"
 export GCONV_PATH=./lib/x86_64-linux-gnu/gconv
 export QT_PLUGIN_PATH=./lib/x86_64-linux-gnu/qt5/plugins/
 export LD_LIBRARY_PATH=./lib/x86_64-linux-gnu/qt5/plugins/platforms:$LD_LIBRARY_PATH
 export PYTHONPATH=./lib/python3.5:./lib/python3.5/plat-x86_64-linux-gnu/:./lib/python3/dist-packages/
 exec ../lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 --library-path ../lib:../lib/x86_64-linux-gnu:./lib:./lib/x86_64-linux-gnu  ./lib/sigil/sigil "$@"
 EOF
-chmod a+x ./AppRun
+chmod a+x ./usr/bin/sigil
 
 cp ./usr/share/pixmaps/sigil.png .
 
