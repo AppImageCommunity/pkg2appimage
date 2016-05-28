@@ -4,8 +4,6 @@
 # although it is using 16.04 components from 6 years later!
 # Note the special AppRun that is needed in order for it not to crash
 
-HERE="$(dirname "$(readlink -f "${0}")")"
-
 APP=Sigil
 LOWERAPP=sigil
 
@@ -75,10 +73,10 @@ deb http://ppa.launchpad.net/sunab/sigil-release/ubuntu xenial main " > sources.
 
 OPTIONS="-o Debug::NoLocking=1
 -o APT::Cache-Limit=125829120
--o Dir::Etc::sourcelist=$HERE/sources.list
--o Dir::State=$HERE/tmp
--o Dir::Cache=$HERE/tmp
--o Dir::State::status=$HERE/status
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
 -o Dir::Etc::sourceparts=-
 -o APT::Get::List-Cleanup=0
 -o APT::Get::AllowUnauthenticated=1
