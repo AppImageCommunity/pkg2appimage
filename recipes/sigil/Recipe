@@ -61,11 +61,6 @@ Architecture: all
 Version: 9999.9999.9999
 Comment: Draws in 100 MB of dependencies
 
-Package: dictionaries-common
-Status: install ok installed
-Architecture: all
-Version: 9999.9999.9999
-
 Package: mime-support
 Status: install ok installed
 Architecture: all
@@ -120,6 +115,7 @@ rm -rf ./usr/lib/x86_64-linux-gnu/dri
 
 cat > ./usr/bin/sigil <<\EOF
 #!/bin/bash
+export LD_PRELOAD=./lib/sigil/libsigilgumbo.so # Why is this needed? Bug? FIXME
 export GCONV_PATH=./lib/x86_64-linux-gnu/gconv
 export QT_PLUGIN_PATH=./lib/x86_64-linux-gnu/qt5/plugins/
 export LD_LIBRARY_PATH=./lib/x86_64-linux-gnu/qt5/plugins/platforms:$LD_LIBRARY_PATH
