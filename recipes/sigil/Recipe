@@ -87,7 +87,7 @@ OPTIONS="-o Debug::NoLocking=1
 
 apt-get $OPTIONS update
 
-URLS=$(apt-get $OPTIONS -y install --print-uris python3-chardet python3-pil python3-cssselect python3-cssutils python3-html5lib python3-regex python3-chardet python3-six $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+URLS=$(apt-get $OPTIONS -y install --print-uris hunspell-en-us python3-chardet python3-pil python3-cssselect python3-cssutils python3-html5lib python3-regex python3-chardet python3-six $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
@@ -116,6 +116,7 @@ rm -rf ./usr/lib/x86_64-linux-gnu/dri
 cat > ./usr/bin/sigil <<\EOF
 #!/bin/bash
 export LD_PRELOAD=./lib/sigil/libsigilgumbo.so # Why is this needed? Bug? FIXME
+export SIGIL_DICTIONARIES=./share/hunspell/
 export GCONV_PATH=./lib/x86_64-linux-gnu/gconv
 export QT_PLUGIN_PATH=./lib/x86_64-linux-gnu/qt5/plugins/
 export LD_LIBRARY_PATH=./lib/x86_64-linux-gnu/qt5/plugins/platforms:$LD_LIBRARY_PATH
