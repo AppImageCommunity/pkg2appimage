@@ -16,6 +16,7 @@
 | QCAD | [![Download](https://api.bintray.com/packages/probono/AppImages/Qcad/images/download.svg)](https://bintray.com/probono/AppImages/Qcad/_latestVersion#files) |
 | Scilab | [![Download](https://api.bintray.com/packages/probono/AppImages/Scilab/images/download.svg)](https://bintray.com/probono/AppImages/Scilab/_latestVersion#files)  |
 | Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion#files)  |
+| Sigil | [![Download](https://api.bintray.com/packages/probono/AppImages/Sigil/images/download.svg)](https://bintray.com/probono/AppImages/Sigil/_latestVersion#files)  |
 | Subsurface | [![Download](https://api.bintray.com/packages/probono/AppImages/Subsurface/images/download.svg)](https://bintray.com/probono/AppImages/Subsurface/_latestVersion#files) |
 | VLC | [![Download](https://api.bintray.com/packages/probono/AppImages/VLC/images/download.svg)](https://bintray.com/probono/AppImages/VLC/_latestVersion#files) |
 | wxHexEditor | [![Download](https://api.bintray.com/packages/probono/AppImages/wxHexEditor/images/download.svg)](https://bintray.com/probono/AppImages/wxHexEditor/_latestVersion#files) |
