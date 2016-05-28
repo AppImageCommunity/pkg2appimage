@@ -125,6 +125,8 @@ chmod a+x ./AppRun
 
 cp ./usr/share/pixmaps/sigil.png .
 
+get_desktopintegration $LOWERAPP
+
 cd ..
 
 VERSION=$(ls "${LOWERAPP}"_*deb | head -n 1 | cut -d "_" -f 2 | cut -d "+" -f 1)
