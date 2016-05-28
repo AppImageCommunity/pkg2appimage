@@ -113,6 +113,11 @@ rm -rf ./usr/lib/apt/ ./usr/lib/dpkg/ ./bin ./sbin ./var ./usr/share/man ./usr/s
 # Save > 100 MB
 rm -rf ./usr/lib/x86_64-linux-gnu/dri
 
+# The following does the magic of running the bundled ld-linux-x86-64.so.2
+# so that it can load a newer glibc than what is present on the host system.
+# Crashes if GCONV_PATH is not set to match, and if its location 
+# is not on the --library-path.
+
 cat > ./usr/bin/sigil <<\EOF
 #!/bin/bash
 export GCONV_PATH=./lib/x86_64-linux-gnu/gconv
