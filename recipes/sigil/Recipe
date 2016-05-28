@@ -2,7 +2,7 @@
 # that the resulting AppImage runs even on
 # ubuntu-10.04.1-desktop-amd64.iso
 # although it is using 16.04 components from 6 years later!
-# Note the special AppRun that is needed in order for it not to crash
+# Note the special usr/bin/sigil that is used to pull this magic
 
 APP=Sigil
 LOWERAPP=sigil
@@ -10,6 +10,10 @@ LOWERAPP=sigil
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
 
 mkdir -p ./tmp/archives/
 mkdir -p ./tmp/lists/partial
@@ -85,8 +89,6 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Recommends=0
 -o APT::Install-Suggests=0
 "
-
-find  /home/travis/build/probonopd/AppImages/recipes/sigil
 
 apt-get $OPTIONS update
 
