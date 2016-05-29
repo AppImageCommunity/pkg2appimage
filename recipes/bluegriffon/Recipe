@@ -67,18 +67,21 @@ sed -i -e 's|^ac_add_options --enable-canvas|#ac_add_options --enable-canvas|g' 
 sed -i -e 's|^ac_add_options --disable-javaxpcom|#ac_add_options --disable-javaxpcom|g' .mozconfig
 # ... FIXME!
 
-# Update the compiler from what comes with trusty
+# Update the compiler from what comes with trusty; TODO: Is this necessary?
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 sudo apt-get update
 sudo apt-get -y install gcc-4.9 g++-4.9
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
 # build the bluegriffon-ng or the bg2 branch
-./mach build
+./mach clobber # = "make clean"
+./mach build # = "make"
 
-# Workaround needed for:
+# On precise I get:
 # c++ -o host_stdc++compat.o -c -std=gnu++0x -D_GLIBCXX_USE_CXX11_ABI=0 -MD -MP -MF .deps/host_stdc++compat.o.pp -DNDEBUG=1 -DTRIMMED=1 -DMOZ_LIBSTDCXX_VERSION=197654 -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/build/unix/stdc++compat -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/build/unix/stdc++compat -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/dist/include -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/dist/include/nspr /media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/build/unix/stdc++compat/stdc++compat.cpp
 # bluegriffon-source/build/unix/stdc++compat/stdc++compat.cpp:181:5: error: ‘runtime_error’ does not name a type
 #      runtime_error::runtime_error(char const* s)
 #     ^
-# This error does NOT seem to appear on travis-ci; strange!
+# Does this mean that precise is too old?
+
+# Actually on trusty I get the same error, but I didn't get it when using trusty on Travis CI; that is strange!
