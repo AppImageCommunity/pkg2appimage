@@ -4,7 +4,8 @@
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-URL="http://repository.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.0.27.71.g0a26e3b2-9_amd64.deb"
+DEB=$(wget http://repository.spotify.com/pool/non-free/s/spotify-client/ -O - | grep deb | cut -d ">" -f 2 | cut -d "<" -f 1 | grep amd64.deb | sort --version-sort -r | head -n 1)
+URL="http://repository.spotify.com/pool/non-free/s/spotify-client/$DEB"
 
 echo $URL
 
