@@ -6,7 +6,16 @@
 
 # sudo apt-get update
 # sudo apt-get -y install git mercurial
-yum -y install mercurial git || true
+
+# On Ubuntu 10.04:
+cat > cat /etc/apt/sources.list <<EOF
+deb http://archive.ubuntu.com/ubuntu lucid main universe restricted
+EOF
+sudo apt-get update
+sudo apt-get -y install git-core mercurial
+
+# On Cent=S: 
+# yum -y install mercurial git
 
 # Update to Python 2.7
 yum install -y centos-release-scl
