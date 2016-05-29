@@ -1,6 +1,10 @@
 # sudo apt-get update
 sudo apt-get -y install git mercurial
 
+# Workaround for:
+# *** MERCURIAL NOT CONFIGURED ***
+export NO_MERCURIAL_SETUP_CHECK=1
+
 # https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
 # Install all system prerequisites
 wget -O bootstrap.py https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py 
