@@ -23,7 +23,8 @@ git clone -b bg2 --single-branch https://github.com/therealglazou/bluegriffon --
 # The bg2 branch
 # cd bluegriffon; git checkout bg2; cd ..
 
-hg update -r $(cat bluegriffon/config/mozilla_central_revision.txt)
+# TODO: 
+# hg update -r $(cat bluegriffon/config/mozilla_central_revision.txt) # What is the GIT counterpart of this?
 patch -p 1 < bluegriffon/config/content.patch
 
 # Workaround for:
