@@ -27,9 +27,8 @@ git clone -b bg2 --single-branch https://github.com/therealglazou/bluegriffon --
 patch -p 1 < bluegriffon/config/content.patch
 
 # Workaround for:
-# client.mk:199: .mozconfig.mk: No such file or directory
-# Still needed (FIXME)
+cp ./bluegriffon/config/mozconfig.ubuntu .mozconfig
+sed -i -e 's|^mk_add_options MOZ_OBJDIR|#mk_add_options MOZ_OBJDIR|g' .mozconfig
 
 # build the bluegriffon-ng or the bg2 branch
 ./mach build
-
