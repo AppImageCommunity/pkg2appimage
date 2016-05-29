@@ -9,7 +9,7 @@
 # yum install -y python27
 
 cat > /etc/apt/sources.list <<EOF
-deb http://archive.ubuntu.com/ubuntu/ precise main restricted universe
+deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe
 EOF
 
 sudo apt-get update
