@@ -2,7 +2,8 @@
 # The job exceeded the maximum time limit for jobs, and has been terminated.
 
 # sudo apt-get update
-sudo apt-get -y install git mercurial
+# sudo apt-get -y install git mercurial
+yum -y install mercurial git || true
 
 # Workaround for:
 # *** MERCURIAL NOT CONFIGURED ***
