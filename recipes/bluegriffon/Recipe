@@ -5,6 +5,10 @@
 # sudo apt-get -y install git mercurial
 yum -y install mercurial git || true
 
+# Update tp Python 2.7
+yum install -y centos-release-scl
+yum install -y python27
+
 # Workaround for:
 # *** MERCURIAL NOT CONFIGURED ***
 export NO_MERCURIAL_SETUP_CHECK=1
