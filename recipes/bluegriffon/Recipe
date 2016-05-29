@@ -1,5 +1,5 @@
 # sudo apt-get update
-sudo apt-get -y install git
+sudo apt-get -y install git mercurial
 
 # https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
 # Install all system prerequisites
