@@ -16,7 +16,7 @@ python bootstrap.py --application-choice=browser --no-interactive
 
 # Get mozilla-central from Mozilla through Mercurial
 REV=$(wget -q https://github.com/therealglazou/bluegriffon/raw/bg2/config/mozilla_central_revision.txt -O -)
-hg --debug clone http://hg.mozilla.org/mozilla-central bluegriffon-source -r $REV
+hg clone http://hg.mozilla.org/mozilla-central bluegriffon-source -r $REV
 # git clone https://github.com/mozilla/gecko-dev bluegriffon-source --depth 1 
 
 # Get BlueGriffon's tree through
