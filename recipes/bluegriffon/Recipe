@@ -11,20 +11,14 @@ python bootstrap.py --application-choice=browser --no-interactive
 # "Your system should be ready to build Firefox for Desktop!"
 
 # Get mozilla-central from Mozilla through Mercurial
-# hg clone http://hg.mozilla.org/mozilla-central bluegriffon-source
-git clone https://github.com/mozilla/gecko-dev bluegriffon-source --depth 1 
+REV=$(wget -q https://github.com/therealglazou/bluegriffon/raw/bg2/config/mozilla_central_revision.txt -O -)
+hg clone http://hg.mozilla.org/mozilla-central bluegriffon-source -r $REV
+# git clone https://github.com/mozilla/gecko-dev bluegriffon-source --depth 1 
 
 # Get BlueGriffon's tree through
 cd bluegriffon-source
-# git clone https://github.com/therealglazou/bluegriffon
-# or:
 git clone -b bg2 --single-branch https://github.com/therealglazou/bluegriffon --depth 1
 
-# The bg2 branch
-# cd bluegriffon; git checkout bg2; cd ..
-
-# TODO: 
-# hg update -r $(cat bluegriffon/config/mozilla_central_revision.txt) # What is the GIT counterpart of this?
 patch -p 1 < bluegriffon/config/content.patch
 
 # Workaround for:
