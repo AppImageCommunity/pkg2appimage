@@ -1,6 +1,9 @@
 # On Tracis CI:
 # The job exceeded the maximum time limit for jobs, and has been terminated.
 
+# On CentOS 6.7:
+# Pyhton 2.7 installation woes
+
 # sudo apt-get update
 # sudo apt-get -y install git mercurial
 yum -y install mercurial git || true
