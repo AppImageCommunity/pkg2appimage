@@ -1,6 +1,5 @@
 # On Tracis CI:
 # The job exceeded the maximum time limit for jobs, and has been terminated.
-# VERSION="12.04.5 LTS, Precise Pangolin"
 
 # On CentOS 6.7:
 # Python 2.7 installation woes
@@ -76,3 +75,10 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave 
 
 # build the bluegriffon-ng or the bg2 branch
 ./mach build
+
+# Workaround needed for:
+# c++ -o host_stdc++compat.o -c -std=gnu++0x -D_GLIBCXX_USE_CXX11_ABI=0 -MD -MP -MF .deps/host_stdc++compat.o.pp -DNDEBUG=1 -DTRIMMED=1 -DMOZ_LIBSTDCXX_VERSION=197654 -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/build/unix/stdc++compat -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/build/unix/stdc++compat -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/dist/include -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/dist/include/nspr /media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/build/unix/stdc++compat/stdc++compat.cpp
+# bluegriffon-source/build/unix/stdc++compat/stdc++compat.cpp:181:5: error: ‘runtime_error’ does not name a type
+#      runtime_error::runtime_error(char const* s)
+#     ^
+# This error does NOT seem to appear on travis-ci; strange!
