@@ -7,8 +7,8 @@ LOWERAPP=${APP,,}
 mkdir -p $APP/$APP.AppDir/usr/bin
 cd $APP/
 
-wget -c "https://build.tox.chat/job/uTox_build_linux_x86-64_release/lastSuccessfulBuild/artifact/utox_linux_x86-64.tar.xz"
-tar xf utox_linux_x86-64.tar.xz
+wget -c "https://build.tox.chat/view/Clients/job/qTox_build_linux_x86-64_release/lastSuccessfulBuild/artifact/qTox_build_linux_x86-64_release.tar.xz"
+tar xf *.tar.xz
 cp ./qtox ./$APP.AppDir/usr/bin/
 
 cd $APP.AppDir/
