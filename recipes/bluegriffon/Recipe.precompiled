@@ -1,0 +1,50 @@
+APP=BlueGriffon
+LOWERAPP=${APP,,} 
+
+mkdir -p ./$APP/$APP.AppDir/usr
+
+cd ./$APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+VER1=$(wget -c "http://bluegriffon.org/freshmeat/?C=M;O=D" -O - | grep href | head -n 2 | tail -n 1 | cut -d '"' -f 2 | cut -d / -f 1)
+FILE=$(wget "http://bluegriffon.org/freshmeat/$VER1/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
+URL="http://bluegriffon.org/freshmeat/$VER1/$FILE"
+
+wget -c "$URL"
+tar xf *.tar.bz2
+
+cd $APP.AppDir/
+
+mv ../$LOWERAPP ./usr/bin
+
+cat > $LOWERAPP.desktop <<EOF
+[Desktop Entry]
+Name=$APP
+Type=Application
+Comment=The next-generation Web Editor
+Exec=$LOWERAPP
+Icon=$LOWERAPP
+Categories=Development;
+EOF
+
+wget -c "http://sources.disruptive-innovations.com/bluegriffon/branches/multichar/branding/mozicon128.png" -O $LOWERAPP.png
+
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+"$HERE"/usr/bin/bluegriffon "$@"
+EOF
+chmod a+x AppRun
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+cd ..
+
+ARCH="x86_64"
+generate_appimage

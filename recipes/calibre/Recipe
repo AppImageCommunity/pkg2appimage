@@ -1,0 +1,49 @@
+# Calibre provides binaries that are very compatible with older systems
+# which is great, so we don't have to compile ourselves
+
+APP=Calibre
+LOWERAPP=${APP,,} 
+
+mkdir -p ./$APP/$APP.AppDir/usr
+
+cd ./$APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+VER1=$(wget -q http://code.calibre-ebook.com/latest -O -)
+
+wget -c https://calibre-ebook.com/dist/linux64 --trust-server-names
+
+cd $APP.AppDir/
+
+( cd usr/ ; tar xf ../../calibre-*-x86_64.txz )
+mkdir -p ./usr/lib/qt5/
+mv ./usr/lib/qt_plugins ./usr/lib/qt5/plugins
+
+get_apprun
+
+cat > $LOWERAPP.desktop <<\EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Calibre
+GenericName=E-book library management
+Comment=E-book library management: Convert, view, share, catalog all your e-books
+Exec=calibre %F
+Icon=calibre
+Categories=Office;
+EOF
+
+cp usr/resources/content-server/calibre.png .
+
+get_desktopintegration $LOWERAPP
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+ARCH=$(arch)
+
+cd ..
+
+generate_appimage

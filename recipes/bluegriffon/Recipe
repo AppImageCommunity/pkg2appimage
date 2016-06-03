@@ -1,50 +1,87 @@
-APP=BlueGriffon
-LOWERAPP=${APP,,} 
+# On Tracis CI:
+# The job exceeded the maximum time limit for jobs, and has been terminated.
 
-mkdir -p ./$APP/$APP.AppDir/usr
+# On CentOS 6.7:
+# Python 2.7 installation woes
+# yum -y install mercurial git
+# Update to Python 2.7
+# yum install -y centos-release-scl
+# yum install -y python27
 
-cd ./$APP
-
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
-. ./functions.sh
-
-VER1=$(wget -c "http://bluegriffon.org/freshmeat/?C=M;O=D" -O - | grep href | head -n 2 | tail -n 1 | cut -d '"' -f 2 | cut -d / -f 1)
-FILE=$(wget "http://bluegriffon.org/freshmeat/$VER1/" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
-URL="http://bluegriffon.org/freshmeat/$VER1/$FILE"
-
-wget -c "$URL"
-tar xf *.tar.bz2
-
-cd $APP.AppDir/
-
-mv ../$LOWERAPP ./usr/bin
-
-cat > $LOWERAPP.desktop <<EOF
-[Desktop Entry]
-Name=$APP
-Type=Application
-Comment=The next-generation Web Editor
-Exec=$LOWERAPP
-Icon=$LOWERAPP
-Categories=Development;
+cat > /etc/apt/sources.list <<EOF
+deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe
 EOF
 
-wget -c "http://sources.disruptive-innovations.com/bluegriffon/branches/multichar/branding/mozicon128.png" -O $LOWERAPP.png
+sudo apt-get update
+sudo apt-get -y install git mercurial
 
-cat > AppRun <<\EOF
-#!/bin/bash
-HERE="$(dirname "$(readlink -f "${0}")")"
-"$HERE"/usr/bin/bluegriffon "$@"
-EOF
-chmod a+x AppRun
+# Workaround for:
+# *** MERCURIAL NOT CONFIGURED ***
+export NO_MERCURIAL_SETUP_CHECK=1
 
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
-echo $VERSION
+# https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
+# Install all system prerequisites
+wget -O bootstrap.py https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py 
 
-get_desktopintegration $LOWERAPP
+python bootstrap.py --application-choice=browser --no-interactive
 
-cd ..
+# Only continue if we get:
+# "Your system should be ready to build Firefox for Desktop!"
 
-ARCH="x86_64"
-generate_appimage
+# Get mozilla-central from Mozilla through Mercurial
+REV=$(wget -q https://github.com/therealglazou/bluegriffon/raw/bg2/config/mozilla_central_revision.txt -O -)
+hg clone http://hg.mozilla.org/mozilla-central bluegriffon-source -r $REV
+# TODO: http://stackoverflow.com/questions/14872486/retrieve-specific-commit-from-a-remote-git-repository
+# git clone https://github.com/mozilla/gecko-dev bluegriffon-source ...
+
+# Get BlueGriffon's tree through
+cd bluegriffon-source
+# git too old # git clone -b bg2 --single-branch https://github.com/therealglazou/bluegriffon --depth 1
+git clone -b bg2 https://github.com/therealglazou/bluegriffon --depth 1
+
+patch -p 1 < bluegriffon/config/content.patch
+
+# Workaround for:
+cp ./bluegriffon/config/mozconfig.ubuntu .mozconfig
+
+# Workaround for:
+# mozbuild.configure.options.InvalidOptionError: Unknown option: ...
+sed -i -e 's|^mk_add_options MOZ_OBJDIR|#mk_add_options MOZ_OBJDIR|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-cpp-exceptions|#ac_add_options --disable-cpp-exceptions|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-libnotify|#ac_add_options --enable-libnotify|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-system-lcms|#ac_add_options --enable-system-lcms|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-activex|#ac_add_options --disable-activex|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-activex-scripting|#ac_add_options --disable-activex-scripting|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-airbag|#ac_add_options --disable-airbag|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-places|#ac_add_options --enable-places|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-storage|#ac_add_options --enable-storage|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-shared|#ac_add_options --disable-shared|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-static|#ac_add_options --enable-static|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-mochitest|#ac_add_options --disable-mochitest|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-installer|#ac_add_options --enable-installer|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-xinerama|#ac_add_options --enable-xinerama|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-xprint|#ac_add_options --disable-xprint|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-pango|#ac_add_options --enable-pango|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-svg|#ac_add_options --enable-svg|g' .mozconfig
+sed -i -e 's|^ac_add_options --enable-canvas|#ac_add_options --enable-canvas|g' .mozconfig
+sed -i -e 's|^ac_add_options --disable-javaxpcom|#ac_add_options --disable-javaxpcom|g' .mozconfig
+# ... FIXME!
+
+# Update the compiler from what comes with trusty; TODO: Is this necessary?
+sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get -y install gcc-4.9 g++-4.9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
+
+# build the bluegriffon-ng or the bg2 branch
+./mach clobber # = "make clean"
+./mach build # = "make"
+
+# On precise I get:
+# c++ -o host_stdc++compat.o -c -std=gnu++0x -D_GLIBCXX_USE_CXX11_ABI=0 -MD -MP -MF .deps/host_stdc++compat.o.pp -DNDEBUG=1 -DTRIMMED=1 -DMOZ_LIBSTDCXX_VERSION=197654 -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/build/unix/stdc++compat -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/build/unix/stdc++compat -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/dist/include -I/media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/obj-x86_64-unknown-linux-gnu/dist/include/nspr /media/20c95b94-60bb-42af-807b-0baccadb5f18/home/user/bluegriffon-source/build/unix/stdc++compat/stdc++compat.cpp
+# bluegriffon-source/build/unix/stdc++compat/stdc++compat.cpp:181:5: error: ‘runtime_error’ does not name a type
+#      runtime_error::runtime_error(char const* s)
+#     ^
+# Does this mean that precise is too old?
+
+# Actually on trusty I get the same error, but I didn't get it when using trusty on Travis CI; that is strange!

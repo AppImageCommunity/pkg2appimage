@@ -3,8 +3,10 @@
 set +e
 
 APP=LibreOffice
-VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
-OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
+# VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
+# OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
+VERSION="5.2.0.beta1"
+OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/testing/5.2.0/deb/x86_64/LibreOfficeDev_5.2.0.0.beta1_Linux_x86-64_deb.tar.gz"
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
