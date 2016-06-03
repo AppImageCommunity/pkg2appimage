@@ -13,8 +13,8 @@ cp ./qtox ./$APP.AppDir/usr/bin/
 
 cd $APP.AppDir/
 
-wget -c "https://raw.githubusercontent.com/tux3/qTox/master/qTox.desktop" $LOWERAPP.desktop
-wget -c "https://raw.githubusercontent.com/tux3/qTox/master/img/icons/256x256/qtox.png" $LOWERAPP.png
+wget -c "https://raw.githubusercontent.com/tux3/qTox/master/qTox.desktop" -O $LOWERAPP.desktop
+wget -c "https://raw.githubusercontent.com/tux3/qTox/master/img/icons/256x256/qtox.png" -O $LOWERAPP.png
 
 get_apprun
 
