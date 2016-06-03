@@ -10,7 +10,7 @@ sudo sh -c "echo 'deb http://nightly.apt.ring.cx/ubuntu_14.04/ ring main' > /etc
 sudo apt-key adv --keyserver pgp.mit.edu --recv-keys A295D773307D25A33AE72F2F64CD5FA175348F84
 sudo add-apt-repository universe
 sudo apt-get update
-sudo apt-get install ring-gnome
+sudo apt-get -y install ring-gnome
 sudo apt-get clean
 
 sudo apt-get -y install $LOWERAPP
