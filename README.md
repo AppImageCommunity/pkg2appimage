@@ -19,7 +19,6 @@
 | Sigil | [![Download](https://api.bintray.com/packages/probono/AppImages/Sigil/images/download.svg)](https://bintray.com/probono/AppImages/Sigil/_latestVersion#files)  |
 | Thunderbird | [![Download](https://api.bintray.com/packages/probono/AppImages/Thunderbird/images/download.svg)](https://bintray.com/probono/AppImages/Thunderbird/_latestVersion#files) |
 | VLC | [![Download](https://api.bintray.com/packages/probono/AppImages/VLC/images/download.svg)](https://bintray.com/probono/AppImages/VLC/_latestVersion#files) |
-| VLC | [![Download](https://api.bintray.com/packages/probono/AppImages/VLC/images/download.svg)](https://bintray.com/probono/AppImages/VLC/_latestVersion#files) |
 | wxHexEditor | [![Download](https://api.bintray.com/packages/probono/AppImages/wxHexEditor/images/download.svg)](https://bintray.com/probono/AppImages/wxHexEditor/_latestVersion#files) |
 
 Significant upstream projects have started providing their own AppImages of releases and/or nightly/continuous builds, see this [list of upstream-provided AppImages](https://github.com/probonopd/AppImageKit/wiki/AppImages#upstream-appimages).
