@@ -1,0 +1,116 @@
+# In this example, we use a Precise PPA - keep providing these!
+
+APP=SimpleScreenRecorder
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+cat > status <<EOF
+Package: debconf
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: dpkg
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: libcups2
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: dbus
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: fontconfig
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: passwd
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: uuid-runtime
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+
+Package: libgl1-mesa
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+Comment: Draws in 100 MB of dependencies
+
+Package: mime-support
+Status: install ok installed
+Architecture: all
+Version: 9999.9999.9999
+EOF
+
+echo "deb http://archive.ubuntu.com/ubuntu/ precise main universe
+deb http://ppa.launchpad.net/maarten-baert/simplescreenrecorder/ubuntu/ precise main" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \;
+
+find . -name $LOWERAPP.desktop -exec cp {} . \;
+
+get_apprun
+patch_usr
+
+rm -rf ./usr/lib/apt/ ./usr/lib/dpkg/ ./bin ./sbin ./var ./usr/share/man ./usr/sbin ./usr/include || true
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+rm -rf ./usr/share/icons/48x48/apps ./usr/share/icons/hicolor/48x48/apps || true
+find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
+
+get_desktopintegration $LOWERAPP
+
+cd ..
+
+VERSION=$(ls "${LOWERAPP}"_*deb | head -n 1 | cut -d "_" -f 2 | cut -d "+" -f 1)
+ARCH=$(arch)
+
+generate_appimage
