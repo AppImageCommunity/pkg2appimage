@@ -1,4 +1,4 @@
-# https://ring.cx/en/download/gnu-linux
+# Using bintries from trusty here
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
