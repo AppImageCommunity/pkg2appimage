@@ -33,6 +33,22 @@ sed -i -e "s|Exec=$APP |Exec=$APP.wrapper |g" $APP.desktop
 wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
 chmod a+x AppRun
 
+###############################################################
+# Experimental autorun support
+###############################################################
+cat > autorun.inf <<EOF
+[AutoRun]
+label=$APP
+icon=.DirIcon
+
+[Content] 
+MusicFiles=false 
+PictureFiles=false 
+VideoFiles=false
+EOF
+ln -s AppRun autorun.sh
+###############################################################
+
 cd ..
 
 VERSION=$(echo $URL | cut -d "_" -f 2 | cut -d "-" -f 1 | head -n 1 | xargs)
