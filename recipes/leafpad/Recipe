@@ -40,13 +40,17 @@ cat > autorun.inf <<EOF
 [AutoRun]
 label=$APP
 icon=.DirIcon
-
 [Content] 
 MusicFiles=false 
 PictureFiles=false 
 VideoFiles=false
 EOF
-ln -s AppRun autorun.sh
+
+cat > autorun.sh <<\EOF
+HERE="$(dirname "$(readlink -f "${0}")")"
+exec "${HERE}/AppRun" "$@"
+EOF
+chmod a+x autorun.sh
 ###############################################################
 
 cd ..
