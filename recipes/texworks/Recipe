@@ -1,0 +1,62 @@
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+APP=TeXworks
+LOWERAPP=${APP,,}
+
+sudo add-apt-repository -y ppa:texworks/stable
+sudo apt-get update
+sudo apt-get -y install $LOWERAPP
+
+wget -c http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+tar xf install-tl-unx.tar.gz
+
+mkdir -p $APP/$APP.AppDir
+cd $APP/$APP.AppDir
+
+# Install texlive relative to usr/
+# [X] basic scheme (plain and latex)
+# 2 collections out of 48, disk space required: 165 MB
+# Its bin/ just needs to be put on $PATH, then existing TeXstudio AppImage works with it
+mkdir -p usr/
+cd usr/
+echo "I" | TEXLIVE_INSTALL_PREFIX=../texlive ../../../install-tl-20160405/install-tl -portable -scheme basic
+cd ..
+
+find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \; || true
+
+# Copy in the indirect dependencies
+copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
+
+# Extra dependencies
+mv ./lib/x86_64-linux-gnu/* ./usr/lib/x86_64-linux-gnu/
+rm -rf ./lib
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+cp ./usr/share/pixmaps/$APP.png .
+rm -rf ./usr/share/icons/hicolor/48x48/
+
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+cd "${HERE}/usr/"
+export PATH=./bin/:./sbin/:./games/:../texlive/bin/x86_64-linux/:$PATH
+exec texworks.wrapper "$@"
+EOF
+chmod a+x AppRun
+#get_apprun
+
+delete_blacklisted
+
+VER1=$(ls /var/cache/apt/archives/texworks_* | cut -d "_" -f 2 | cut -d "-" -f 1 | cut -d "+" -f 1 | sed 's/~/-/g' )
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
