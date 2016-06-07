@@ -1,0 +1,259 @@
+# Not working on non-Ubuntu systems smoothly yet (crashing due to missing icons and/or libs)
+# TO BE WORKED ON
+##################################################################################################
+
+# In this example, we use a trusty PPA - keep providing these!
+# Based on the Wireshark recipe
+
+APP=MyPaint
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+cat > status <<EOF
+
+Package: libtasn1-6
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgstreamer1.0-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgstreamer-plugins-base1.0-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: gstreamer1.0-pulseaudio
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: gstreamer1.0-plugins-base
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: gstreamer1.0-plugins-good
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: gstreamer1.0-plugins-ugly
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: gconf2
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: glib-networking
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgdk-pixbuf2.0-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgtk-3-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libglib2.0-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libglib2.0-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgtk2.0-0
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libegl1-mesa
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgbm1
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libdrm2
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libdbm2
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgl1-mesa-glx
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgcc1
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: lsb-base
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libc6
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libstdc++6
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: debconf
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: dpkg
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libcups2
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: dbus
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libfontconfig1
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: fontconfig-config
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: passwd
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: uuid-runtime
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libgl1-mesa
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+Comment: Draws in 100 MB of dependencies
+
+Package: mime-support
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+EOF
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/achadwick/mypaint-testing/ubuntu trusty main
+" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris mypaint-data-extras $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+rm -rf ./usr/share/icons/48x48/apps || true
+find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
+
+get_apprun
+
+# Copy in the indirect dependencies
+# copy_deps # not needed here due to the way we use apt to download everything
+
+move_lib
+mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/ # AppRun sets Qt env here
+
+mv ./usr/lib/pulseaudio/* ./usr/lib/ || true
+mv ./usr/lib/libblas/* usr/lib/ || true
+mv ./mv usr/lib/lapack/* usr/lib/ || true
+
+delete_blacklisted
+rm -rf ./etc/ ./home/ ./lib/ || true
+
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
+
+VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
