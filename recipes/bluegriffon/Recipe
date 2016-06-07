@@ -8,9 +8,10 @@
 # yum install -y centos-release-scl
 # yum install -y python27
 
-cat > /etc/apt/sources.list <<EOF
+cat > sources.list <<EOF
 deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe
 EOF
+sudo mv sources.list /etc/apt/
 
 sudo apt-get update
 sudo apt-get -y install git mercurial
