@@ -41,31 +41,26 @@ git clone -b bg2 https://github.com/therealglazou/bluegriffon --depth 1
 
 patch -p 1 < bluegriffon/config/content.patch
 
-# Workaround for:
-cp ./bluegriffon/config/mozconfig.ubuntu .mozconfig
-
-# Workaround for:
-# mozbuild.configure.options.InvalidOptionError: Unknown option: ...
-sed -i -e 's|^mk_add_options MOZ_OBJDIR|#mk_add_options MOZ_OBJDIR|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-cpp-exceptions|#ac_add_options --disable-cpp-exceptions|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-libnotify|#ac_add_options --enable-libnotify|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-system-lcms|#ac_add_options --enable-system-lcms|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-activex|#ac_add_options --disable-activex|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-activex-scripting|#ac_add_options --disable-activex-scripting|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-airbag|#ac_add_options --disable-airbag|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-places|#ac_add_options --enable-places|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-storage|#ac_add_options --enable-storage|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-shared|#ac_add_options --disable-shared|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-static|#ac_add_options --enable-static|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-mochitest|#ac_add_options --disable-mochitest|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-installer|#ac_add_options --enable-installer|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-xinerama|#ac_add_options --enable-xinerama|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-xprint|#ac_add_options --disable-xprint|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-pango|#ac_add_options --enable-pango|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-svg|#ac_add_options --enable-svg|g' .mozconfig
-sed -i -e 's|^ac_add_options --enable-canvas|#ac_add_options --enable-canvas|g' .mozconfig
-sed -i -e 's|^ac_add_options --disable-javaxpcom|#ac_add_options --disable-javaxpcom|g' .mozconfig
-# ... FIXME!
+cat > .mozconfig <<EOF
+mk_add_options MOZ_OBJDIR=$HOME/bin/opt/trunk
+ac_add_options --disable-debug
+ac_add_options --enable-optimize
+ac_add_options --enable-strip
+ac_add_options --enable-elf-hack
+export LDFLAGS="-static-libstdc++"
+export HOST_LDFLAGS="-static-libstdc++"
+mk_add_options MOZ_MAKE_FLAGS="-s -j8"
+ac_add_options --enable-application=bluegriffon
+mk_add_options MOZ_TOOLKIT_SEARCH=
+ac_add_options --disable-tests
+ac_add_options --enable-default-toolkit=cairo-gtk2
+ac_add_options --disable-crashreporter
+ac_add_options --disable-updater
+ac_add_options --disable-update-packaging
+ac_add_options --disable-webrtc
+ac_add_options --enable-media-navigator
+mk_add_options MOZ_MEDIA_NAVIGATOR=1
+EOF
 
 # Update the compiler from what comes with trusty; TODO: Is this necessary?
 sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
