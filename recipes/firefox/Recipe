@@ -26,6 +26,7 @@ find . -name mozicon128.png -exec cp \{\} firefox.png \;
 
 cat > firefox.desktop <<EOF
 [Desktop Entry]
+Type=Application
 Name=Firefox
 Icon=firefox
 Exec=firefox %u
@@ -37,7 +38,7 @@ EOF
 cat > AppRun <<\EOF
 #!/bin/bash
 HERE="$(dirname "$(readlink -f "${0}")")"
-"$HERE"/usr/bin/firefox $@
+"$HERE"/usr/bin/firefox.wrapper $@
 EOF
 chmod a+x AppRun
 
