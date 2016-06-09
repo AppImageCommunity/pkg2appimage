@@ -185,3 +185,11 @@ export BINTRAY_API_KEY=<Your Bintray API Key>
 ```
 
 If you use Travis for CI, you can define these variables in the Travis control panel, specially the `BINTRAY_API_KEY`, in order to keep it secure.
+
+## Acknowledgments
+
+This project would not have been possible without the contributors to AppImageKit and without the services which generously support Open Source projects:
+
+* [JFrog](https://www.jfrog.com) for providing [Bintray](https://bintray.com), the distribution platform used to distribute AppImages built by the recipes in this project to users. Bintray has been truly invaluable for this project since it not only provides us with free hosting and traffic for our AppImages, but also makes it really easy to set up a repository for custom binary formats such as AppImage, and to maintain the metadata associated with the downloads. Thanks to the easy-to use REST API, we were able to set up an automated workflow involving GitHub and Travis CI to build, upload and catalog AppImages in no time. Also, JFrog Bintray relieved us from the burden to create a web UI for the repository by providing a generic one out-of-the-box. 
+* [Travis CI](https://travis-ci.org) for providing cloud-based test and build services that are easy to integrate with GitHub.
+* [GitHub](https://travis-ci.org) for making it possible to work on Code in the Cloud, and for making it super easy to contribute to Open Source projects.
