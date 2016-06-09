@@ -1,0 +1,61 @@
+#!/bin/bash -x
+
+# We do not have to build this ourselves since the upstream project 
+# does a great job in providing binaries that run on a great number of systems
+# other upstream projects could learn from Mozilla - how do they do it?
+
+set +e
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+APP=Firefox-Dev
+
+mkdir -p ./$APP/$APP.AppDir/usr
+cd ./$APP
+
+wget -c --trust-server-names "https://download.mozilla.org/?product=firefox-aurora-latest-ssl&os=linux64"
+VER1=$(ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
+
+cd ./$APP.AppDir
+tar xfj ../*.tar.bz2
+
+mv firefox usr/bin
+
+find . -name mozicon128.png -exec cp \{\} firefox.png \;
+
+cat > firefox-dev.desktop <<EOF
+[Desktop Entry]
+Type=Application
+Name=Firefox Developer
+Icon=firefox
+Exec=firefox %u
+Categories=GNOME;GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+StartupNotify=true
+EOF
+
+cat > AppRun <<\EOF
+#!/bin/bash
+HERE="$(dirname "$(readlink -f "${0}")")"
+cd $HERE/usr
+"$HERE"/usr/bin/firefox.wrapper $@
+EOF
+chmod a+x AppRun
+
+# Firefox does not ship with appdata yet, so we fetch it from fedora-appstream upstream
+mkdir -p usr/share/appdata/
+rm usr/share/appdata/firefox.appdata.xml || true
+wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/desktop/firefox.appdata.xml" -O usr/share/appdata/firefox.appdata.xml
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration firefox
+sed -i -e 's|--set-icon=$ICONFILE|--set-name="Firefox Developer" --set-icon=$ICONFILE|g' ./usr/bin/firefox.wrapper
+
+cd ..
+
+ARCH="x86_64"
+generate_appimage
