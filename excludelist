@@ -8,7 +8,7 @@ libc.so.6
 
 libdl.so.2
 # Workaround for:
-Segmentation fault
+# Segmentation fault
 
 libstdc++.so.6
 # Workaround for:
