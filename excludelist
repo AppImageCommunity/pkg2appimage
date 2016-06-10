@@ -6,6 +6,10 @@ libc.so.6
 # Workaround for:
 # relocation error: usr/lib/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
 
+libdl.so.2
+# Workaround for:
+Segmentation fault
+
 libstdc++.so.6
 # Workaround for:
 # usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.21' not found
@@ -77,7 +81,6 @@ libselinux.so.1
 # you think that some of these should go into AppImages and why.
 libcom_err.so.2
 libcrypt.so.1
-libdl.so.2
 libexpat.so.1
 libgcc_s.so.1
 libglib-2.0.so.0
