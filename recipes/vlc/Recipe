@@ -8,7 +8,7 @@
 # libass plugin is broken (at least on debian sid)
 
 # Comment this if you want to build the Docker image (FIXME: determine automatically)
-# export DO_NOT_BUILD_DEPENDENCIES=1
+export DO_NOT_BUILD_DEPENDENCIES=1
 
 # Halt on errors
 set -e
@@ -135,9 +135,9 @@ cd /$APP/
 # Build latest released version
 rm -rf vlc* #####
 # LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
-VER1="2.2.4"
+VER1=$(wget -q "https://www.videolan.org/vlc/#download" -O - | grep -o -E '"Linux","latestVersion":"([^"#]+)"' | cut -d'"' -f6)
 LATEST="vlc-${VER1}.tar.xz" # Because the link above is outdated (FIXME)
-wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/last/$LATEST"
+wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/$VER1/$LATEST"
 tar xf vlc-*.tar.xz
 cd vlc-*/
 
