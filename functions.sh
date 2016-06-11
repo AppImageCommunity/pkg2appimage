@@ -82,7 +82,6 @@ get_desktopintegration()
 generate_appimage()
 {
   if [[ "$RECIPE" == *ecipe ]] ; then
-  then
     echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
     echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
     echo "# See http://appimage.org for more information." >> ./$APP.AppDir/Recipe
