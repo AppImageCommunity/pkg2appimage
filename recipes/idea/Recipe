@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# This is an example for packaging a Java application as an AppImage.
+# This application comes with a JRE.
+
+APP=IDEA
+LOWERAPP=${APP,,} 
+
+mkdir -p $APP/$APP.AppDir/usr/bin
+
+cd $APP/
+
+wget -c "https://download.jetbrains.com/idea/ideaIC-2016.1.3.tar.gz"
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+tar xf ../ideaIC-*.tar.gz 
+( mkdir -p usr/bin/bin ; cd usr/bin; ln -s ../../*/bin/*.sh . )
+
+cat > $LOWERAPP.desktop <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=$APP
+Icon=$LOWERAPP
+Exec=$LOWERAPP.sh
+Categories=Development;IDE;
+Terminal=false
+EOF
+
+cp *.*/bin/$LOWERAPP.png .
+
+VERSION=$(ls ../$LOWERAPP*-* | cut -d - -f 2 | sed 's|.tar.gz||g')
+echo $VERSION
+
+# Do not add desktop integration since it comes with its own
+
+cd .. # Go out of AppDir
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
