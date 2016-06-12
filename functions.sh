@@ -4,7 +4,7 @@
 # wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 # . ./functions.sh
 
-# RECIPE=$(realpath "$0") # does not work in all cases
+# RECIPE=$(realpath "$0")
 
 git_pull_rebase_helper()
 {
@@ -81,18 +81,30 @@ get_desktopintegration()
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
 generate_appimage()
 {
-#  if [[ "$RECIPE" == *ecipe ]] ; then
-#    echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
-#    echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
-#    echo "# See http://appimage.org for more information." >> ./$APP.AppDir/Recipe
-#    echo "" >> ./$APP.AppDir/Recipe
-#    cat $RECIPE >> ./$APP.AppDir/Recipe
-#  fi
+  # if [[ "$RECIPE" == *ecipe ]] ; then
+  #   echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
+  #   echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
+  #   echo "# See http://appimage.org for more information." >> ./$APP.AppDir/Recipe
+  #   echo "" >> ./$APP.AppDir/Recipe
+  #   cat $RECIPE >> ./$APP.AppDir/Recipe
+  # fi
   wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
   chmod a+x ./AppImageAssistant
   mkdir -p ../out
   rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
+}
+
+# Generate status file for use by apt-get; assuming that the recipe uses no newer
+# ingredients than what would require more recent dependencies than what we assume 
+# to be part of the base system
+generate_status()
+{
+  wget -q -c "https://github.com/probonopd/AppImages/raw/master/excludedeblist"
+  rm status || true
+  for PACKAGE in $(cat excludedeblist | cut -d "#" -f 1) ; do
+    printf "Package: $PACKAGE\nStatus: install ok installed\nArchitecture: all\nVersion: 9:9999.9999.9999\n\n" >> status
+  done
 }
 
 # transfer.sh
