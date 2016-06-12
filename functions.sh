@@ -4,7 +4,7 @@
 # wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 # . ./functions.sh
 
-RECIPE=$(realpath "$0")
+# RECIPE=$(realpath "$0") # does not work in all cases
 
 git_pull_rebase_helper()
 {
@@ -81,13 +81,13 @@ get_desktopintegration()
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
 generate_appimage()
 {
-  if [[ "$RECIPE" == *ecipe ]] ; then
-    echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
-    echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
-    echo "# See http://appimage.org for more information." >> ./$APP.AppDir/Recipe
-    echo "" >> ./$APP.AppDir/Recipe
-    cat $RECIPE >> ./$APP.AppDir/Recipe
-  fi
+#  if [[ "$RECIPE" == *ecipe ]] ; then
+#    echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
+#    echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
+#    echo "# See http://appimage.org for more information." >> ./$APP.AppDir/Recipe
+#    echo "" >> ./$APP.AppDir/Recipe
+#    cat $RECIPE >> ./$APP.AppDir/Recipe
+#  fi
   wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
   chmod a+x ./AppImageAssistant
   mkdir -p ../out
