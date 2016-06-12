@@ -1,0 +1,53 @@
+# The files contained in these debian packages are 
+# assumed to be present in the base system (distribution)
+# in a "recent enough" version (or the end user has to install
+# missing ones from this manually using the distribution's
+# package manager if required). Note that this only works if
+# the ingredients to the AppImage do not require newer versions
+# of these packages than what can safely be assumed to be part
+# of the base system. This is why we recommend oldstable
+# ingredients for AppImages
+dbus
+debconf
+dictionaries-common
+dpkg
+fontconfig
+fontconfig-config
+gconf2
+gconf2-common
+gconf-service
+gksu
+glib-networking
+gstreamer1.0-plugins-base
+gstreamer1.0-plugins-good
+gstreamer1.0-plugins-ugly
+gstreamer1.0-pulseaudio
+kde-runtime
+libatk1.0-0
+libc6
+libcairo2
+libcups2
+libdbm2
+libdbus-1-3
+libdrm2
+libegl1-mesa
+libfontconfig1
+libgbm1
+libgcc1
+libgconf-2-4
+libgdk-pixbuf2.0-0
+libgl1-mesa
+libgl1-mesa-glx
+libglib2.0-0
+libglu1-mesa
+libgstreamer1.0-0
+libgtk2.0-0
+libgtk-3-0
+libnss3
+libpango1.0-0
+libstdc++6
+libtasn1-6
+lsb-base
+mime-support
+passwd
+uuid-runtime
