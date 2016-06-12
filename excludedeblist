@@ -1,5 +1,5 @@
-# The files contained in these debian packages are 
-# assumed to be present in the base system (distribution)
+# The files contained in these debian packages and their dependencies 
+# are assumed to be present in the base system (distribution)
 # in a "recent enough" version (or the end user has to install
 # missing ones from this manually using the distribution's
 # package manager if required). Note that this only works if
