@@ -11,6 +11,9 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 # We get this app and almost all its dependencies via apt-get
 # but not using the host system's information about what is
 # installed on the system but our own assumptions instead
@@ -19,168 +22,7 @@ mkdir -p ./tmp/archives/
 mkdir -p ./tmp/lists/partial
 touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 
-cat > status <<EOF
-Package: libdbus-1-3
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libnss3
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libatk1.0-0
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libcairo2
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgconf-2-4
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: gconf2-common
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgdk-pixbuf2.0-0
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libglu1-mesa
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libpango1.0-0
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: gconf-service
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: gksu
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libglib2.0-0
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgtk2.0-0
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libegl1-mesa
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgbm1
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libdrm2
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libdbm2
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgl1-mesa-glx
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgcc1
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: lsb-base
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libc6
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libstdc++6
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: debconf
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: dpkg
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libcups2
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: dbus
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libfontconfig1
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: fontconfig-config
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: passwd
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: uuid-runtime
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libgl1-mesa
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-Comment: Draws in 100 MB of dependencies
-
-Package: mime-support
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-EOF
+get_status
 
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 " > sources.list
@@ -211,8 +53,6 @@ apt-get $OPTIONS update
 
 URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
 exit 0
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
-. ./functions.sh
 
 wget -c $URLS
 
