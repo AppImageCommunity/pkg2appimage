@@ -22,7 +22,7 @@ mkdir -p ./tmp/archives/
 mkdir -p ./tmp/lists/partial
 touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 
-get_status
+generate_status
 
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 " > sources.list
