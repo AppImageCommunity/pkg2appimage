@@ -52,7 +52,6 @@ echo "deb file:$(readlink -e $PWD) ./" >> sources.list
 apt-get $OPTIONS update
 
 URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
-exit 0
 
 wget -c $URLS
 
