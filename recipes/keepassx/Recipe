@@ -1,0 +1,42 @@
+# This is an example on how to convert a Canonical Snap to an AppImage
+# The result currently segfaults on Fedora 23
+# and refuses to run on "too old" distributions like CentOS 7
+# because it doesn't have the Ubuntu Snappy Core runtime bundled
+
+APP=KeePassX
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget -c https://public.apps.ubuntu.com/anon/download-snap/xlZwsUn7GO6Kr2pB5nYZXVx04gilSytB_1.snap
+
+cd ./$APP.AppDir/
+
+unsquashfs ../*.snap
+mv squashfs-root/* . && rm -r squashfs-root/
+
+find . -wholename "*applications/$LOWERAPP.desktop" -exec cp {} . \;
+
+find . -wholename "*/256x256/apps/$LOWERAPP.png" -exec cp {} . \;
+
+mv bin/* usr/bin/ || true
+
+get_apprun
+
+get_desktopintegration $LOWERAPP
+
+VER1=$(cat meta/snap.yaml | grep version | cut -d " " -f 2)
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
