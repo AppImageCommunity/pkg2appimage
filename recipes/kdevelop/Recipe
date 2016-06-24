@@ -6,6 +6,8 @@
 # sudo yum -y install docker
 # sudo service docker start
 # sudo docker run -i -t scummos/centos6.8-qt5.7
+# wget -c https://github.com/probonopd/AppImages/raw/master/recipes/kdevelop/Recipe
+# bash -ex Recipe
 
 # Halt on errors
 set -e
@@ -366,6 +368,9 @@ rm -rf /out/*
 /AppImageKit/AppImageAssistant.AppDir/package KDevelop.AppDir/ /out/$APP-$VERSION-$ARCH.AppImage
 
 transfer ../out/* # Upload to transfer.io for testing
+
+# Try to power down Amazon AWS (no guarantees; need to check for yourself!)
+grep -r compute.internal /etc/resolv.conf && halt
 
 # Test the resulting AppImage on my local system
 # sudo /tmp/*/union/AppImageKit/AppImageAssistant.AppDir/testappimage /isodevice/boot/iso/Fedora-Live-Workstation-x86_64-22-3.iso /tmp/*/union/Scribus.AppDir/
