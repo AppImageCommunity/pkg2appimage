@@ -2,7 +2,7 @@
 
 # Based on http://files.svenbrauch.de/kdevelop-linux/kdevelop-recipe-centos6.sh
 
-# On Amazon AWS start an Amazon Linux instance and run:
+# On Amazon AWS start an Amazon Linux instance (I used c4.2xlarge) and run:
 # sudo yum -y install docker
 # sudo service docker start
 # sudo docker run -i -t scummos/centos6.8-qt5.7
