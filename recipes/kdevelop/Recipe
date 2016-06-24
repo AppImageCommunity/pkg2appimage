@@ -329,7 +329,7 @@ rm -Rf usr/lib/libLTO.so
 rm -f /app/usr/bin/llc
 rm -f /app/usr/bin/bugpoint
 
-rm -Rf usr/lib/libxcb* # TODO: Can we be sure about that? If yes, inform probono in order to add to the global blacklist
+# rm -Rf usr/lib/libxcb* # Don't do this, because then it will no longer run on Arch
 
 # add that back in
 cp /usr/lib64/libxcb-keysyms.so.1 usr/lib/
