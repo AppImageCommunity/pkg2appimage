@@ -70,6 +70,11 @@ git_pull_rebase_helper()
 
 export PATH=/bin:/sbin:$PATH # For CentOS 6
 
+# Source helper functions
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+rm functions.sh
+
 if [ -z "$NO_DOWNLOAD" ] ; then
 # Enable EPEL repository; needed for recent Qt and
 # install dependencies
@@ -178,14 +183,7 @@ else
   PLUGINS=../../5.5/gc*/plugins/
 fi
 echo $PLUGINS # /usr/lib64/qt5/plugins if build system Qt is found
-cp -r $PLUGINS/bearer ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/iconengines ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/imageformats ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/platforminputcontexts ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/platforms ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/platformthemes ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/sensors ./usr/lib/qt5/plugins/
-cp -r $PLUGINS/xcbglintegrations ./usr/lib/qt5/plugins/
+cp -r $PLUGINS/{bearer,iconengines,imageformats,platforminputcontexts,platforms,platformthemes,sensors,xcbglintegrations} ./usr/lib/qt5/plugins/
 
 if [ -e $(dirname /usr/li*/libicudata.so.42) ] ; then
   LIB=$(dirname /usr/li*/libicudata.so.42)
@@ -198,44 +196,6 @@ cp -a $LIB/libicu* usr/lib
 export LD_LIBRARY_PATH=./usr/lib/:../../5.5/gc*/lib/:$LD_LIBRARY_PATH
 ldd usr/bin/subsurface | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
 ldd usr/lib/qt5/plugins/platforms/libqxcb.so | grep "=>" | awk '{print $3}'  |  xargs -I '{}' cp -v '{}' ./usr/lib || true
-
-# The following are assumed to be part of the base system
-rm -f usr/lib/libcom_err.so.2 || true
-rm -f usr/lib/libcrypt.so.1 || true
-rm -f usr/lib/libdl.so.2 || true
-rm -f usr/lib/libexpat.so.1 || true
-rm -f usr/lib/libfontconfig.so.1 || true
-rm -f usr/lib/libgcc_s.so.1 || true
-rm -f usr/lib/libglib-2.0.so.0 || true
-rm -f usr/lib/libgpg-error.so.0 || true
-rm -f usr/lib/libgssapi_krb5.so.2 || true
-rm -f usr/lib/libgssapi.so.3 || true
-rm -f usr/lib/libhcrypto.so.4 || true
-rm -f usr/lib/libheimbase.so.1 || true
-rm -f usr/lib/libheimntlm.so.0 || true
-rm -f usr/lib/libhx509.so.5 || true
-rm -f usr/lib/libICE.so.6 || true
-rm -f usr/lib/libidn.so.11 || true
-rm -f usr/lib/libk5crypto.so.3 || true
-rm -f usr/lib/libkeyutils.so.1 || true
-rm -f usr/lib/libkrb5.so.26 || true
-rm -f usr/lib/libkrb5.so.3 || true
-rm -f usr/lib/libkrb5support.so.0 || true
-# rm -f usr/lib/liblber-2.4.so.2 || true # needed for debian wheezy
-# rm -f usr/lib/libldap_r-2.4.so.2 || true # needed for debian wheezy
-rm -f usr/lib/libm.so.6 || true
-rm -f usr/lib/libp11-kit.so.0 || true
-rm -f usr/lib/libpcre.so.3 || true
-rm -f usr/lib/libpthread.so.0 || true
-rm -f usr/lib/libresolv.so.2 || true
-rm -f usr/lib/libroken.so.18 || true
-rm -f usr/lib/librt.so.1 || true
-rm -f usr/lib/libsasl2.so.2 || true
-rm -f usr/lib/libSM.so.6 || true
-rm -f usr/lib/libusb-1.0.so.0 || true
-rm -f usr/lib/libuuid.so.1 || true
-rm -f usr/lib/libwind.so.0 || true
-rm -f usr/lib/libz.so.1 || true
 
 # These seem to be available on most systems but not Ubuntu 11.04
 # rm -f usr/lib/libffi.so.6 usr/lib/libGL.so.1 usr/lib/libglapi.so.0 usr/lib/libxcb.so.1 usr/lib/libxcb-glx.so.0 || true
@@ -300,26 +260,11 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
 
-# Add desktop integration - TODO: move to a library function
-XAPP=subsurface
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+# Add desktop integration
+get_desktopintegration subsurface
 
-# Remove blacklisted files - TODO: move to a library function
-if [ ! -e "../../AppImages/excludelist" ] ; then
-  echo "excludelist missing, please install it"
-  exit 1
-fi
-BLACKLISTED_FILES=$(cat "../../AppImages/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
-FOUND=""
-for FILE in $BLACKLISTED_FILES ; do
-  FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
-  echo $FOUND
-  if [ ! -z "$FOUND" ] ; then
-    fatal "Blacklisted file ${FOUND} found"
-  fi
-done
+# Remove blacklisted files
+delete_blacklisted
 
 cd ..
 find $APP.AppDir/
