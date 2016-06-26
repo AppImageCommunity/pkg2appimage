@@ -38,32 +38,9 @@ EOF
 
 get_apprun
 
-# Thunderbird does not ship with appdata yet so we use
-# information that we got on Fedora from
-# appstreamcli dump thunderbird.desktop
+# Thunderbird does not ship with appdata yet
 mkdir -p usr/share/appdata/
-cat > usr/share/appdata/thunderbird.appdata.xml <<\EOF
-<?xml version="1.0" encoding="utf-8"?>
-<component type="desktop">
-  <id>thunderbird.desktop</id>
-  <name>Thunderbird Mail</name>
-  <summary>Send and receive mail with Thunderbird</summary>
-  <description>
-    <p>Thunderbird is a full-featured email, RSS and newsgroup client that makes emailing safer, faster and easier than ever before. It supports different mail accounts (POP, IMAP, Gmail), has a simple mail account setup wizard, one- click address book, tabbed interface, an integrated learning spam filter, advanced search and indexing capabilities, and offers easy organization of mails with tagging and virtual folders. It also features unrivalled extensibility.</p>
-  </description>
-  <pkgname>thunderbird</pkgname>
-  <categories>
-    <category>Application</category>
-    <category>Network</category>
-    <category>Email</category>
-    <category></category>
-  </categories>
-  <icon type="cached" width="64" height="64">thunderbird_thunderbird.png</icon>
-  <screenshots>
-    <screenshot type="default"><caption/><image type="source" width="800" height="600">http://screenshots.ubuntu.com/screenshot/thunderbird</image><image type="thumbnail" width="160" height="120">http://screenshots.ubuntu.com/thumbnail/thunderbird</image></screenshot>
-  </screenshots>
-</component>
-EOF
+wget -c "https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appdata-extra/desktop/mozilla-thunderbird.appdata.xml" -O usr/share/appdata/mozilla-thunderbird.appdata.xml
 
 # Icon according to https://github.com/hughsie/appstream-glib#guidelines-for-applications
 mkdir -p usr/share/icons/hicolor/256x256/apps/
