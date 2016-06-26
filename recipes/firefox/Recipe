@@ -48,8 +48,8 @@ rm usr/share/appdata/firefox.appdata.xml || true
 wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/desktop/firefox.appdata.xml" -O usr/share/appdata/firefox.appdata.xml
 
 # Conform to https://github.com/hughsie/appstream-glib#guidelines-for-applications
-mkdir -p usr/share/icons/hicolor/256x256/apps/
-cp usr/bin/chrome/icons/default/default256.png usr/share/icons/hicolor/256x256/apps/firefox.png
+mkdir -p usr/share/icons/hicolor/128x128/apps/
+cp /mnt/usr/bin/browser/icons/mozicon128.png usr/share/icons/hicolor/128x128/apps/firefox.png
 mkdir -p usr/share/applications
 cp firefox.desktop usr/share/applications
 
