@@ -40,7 +40,10 @@ get_apprun
 
 # Thunderbird does not ship with appdata yet
 mkdir -p usr/share/appdata/
-wget -c "https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appdata-extra/desktop/mozilla-thunderbird.appdata.xml" -O usr/share/appdata/mozilla-thunderbird.appdata.xml
+wget -c "https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appdata-extra/desktop/mozilla-thunderbird.appdata.xml" -O usr/share/appdata/thunderbird.appdata.xml
+
+# https://github.com/hughsie/fedora-appstream/issues/165
+sed -i -e 's|mozilla-thunderbird.desktop|thunderbird.desktop|g' usr/share/appdata/thunderbird.appdata.xml
 
 # Icon according to https://github.com/hughsie/appstream-glib#guidelines-for-applications
 mkdir -p usr/share/icons/hicolor/256x256/apps/
