@@ -177,6 +177,8 @@ data="{
 ${CURL} -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}"
 
 if [ "$IS_AN_APPIMAGE" ] ; then
+  echo "Embedding magic into ${FILE}..."
+  printf "\x41\x49\x01" | dd bs=1 seek=8 conv=notrunc of="$FILE"
   if which zsyncmake > /dev/null 2>&1; then
     echo ""
     echo "Embedding update information into ${FILE}..."
