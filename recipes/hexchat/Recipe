@@ -88,13 +88,13 @@ if [ ! -x usr/bin/$EXEC ] ; then
 fi
 
 # If there is no AppData, we use AppData from Fedora Rawhide
-APPDATAFILE=usr/share/appdata/$APP.appdata.xml
+APPDATAFILE=usr/share/metainfo/$APP.appdata.xml
 if [ ! -f $APPDATAFILE ] ; then
-  mkdir -p usr/share/appdata/
+  mkdir -p usr/share/metainfo/
   zcat /usr/share/app-info/xmls/fedora.xml.gz | head -n 2 > $APPDATAFILE
   zcat /usr/share/app-info/xmls/fedora.xml.gz | xmlstarlet sel -t -c "//id[text()='$APP.desktop']/.." >> $APPDATAFILE
   zcat /usr/share/app-info/xmls/fedora.xml.gz | tail -n 1 >> $APPDATAFILE
-  [ $(cat usr/share/appdata/$APP.appdata.xml | wc -l) -lt 7 ] && rm usr/share/appdata/$APP.appdata.xml
+  [ $(cat usr/share/metainfo/$APP.appdata.xml | wc -l) -lt 7 ] && rm usr/share/metainfo/$APP.appdata.xml
 fi
 
 # If we have AppData, then we should use the name from there
