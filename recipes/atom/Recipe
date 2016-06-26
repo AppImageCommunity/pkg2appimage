@@ -26,8 +26,8 @@ chmod a+x ./AppRun
 cp ./usr/share/pixmaps/atom.png .
 
 # TODO: Get appdata
-# mkdir -p ./usr/share/appdata/
-# wget -q "..." -O ./usr/share/appdata/atom.appdata.xml
+# mkdir -p ./usr/share/metainfo/
+# wget -q "..." -O ./usr/share/metainfo/atom.appdata.xml
 
 # Get desktop file
 cp ./usr/share/applications/atom.desktop .
