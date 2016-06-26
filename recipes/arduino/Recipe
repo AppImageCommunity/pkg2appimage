@@ -25,9 +25,9 @@ mv usr/bin/lib/icons usr/share/icons/hicolor
 cat usr/share/icons/hicolor/128x128/apps/arduino.png > arduino.png
 
 # Get appdata - why is it missing in the binary distribution?
-mkdir -p usr/share/appdata/
-rm usr/share/appdata/arduino.appdata.xml || true
-wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/appdata/arduino.appdata.xml
+mkdir -p usr/share/metainfo/
+rm usr/share/metainfo/arduino.appdata.xml || true
+wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/metainfo/arduino.appdata.xml
 
 # Get desktop file
 find . -name desktop.template -exec cp {} arduino.desktop \;
