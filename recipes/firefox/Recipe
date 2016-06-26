@@ -43,9 +43,9 @@ EOF
 chmod a+x AppRun
 
 # Firefox does not ship with appdata yet, so we fetch it from fedora-appstream upstream
-mkdir -p usr/share/appdata/
-rm usr/share/appdata/firefox.appdata.xml || true
-wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/desktop/firefox.appdata.xml" -O usr/share/appdata/firefox.appdata.xml
+mkdir -p usr/share/metainfo/
+rm usr/share/metainfo/firefox.appdata.xml || true
+wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/desktop/firefox.appdata.xml" -O usr/share/metainfo/firefox.appdata.xml
 
 # Conform to https://github.com/hughsie/appstream-glib#guidelines-for-applications
 mkdir -p usr/share/icons/hicolor/128x128/apps/
