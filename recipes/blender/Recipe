@@ -28,8 +28,8 @@ chmod a+x ./AppRun
 cp ./usr/bin/icons/scalable/apps/blender.svg .
 
 # Get appdata
-mkdir -p ./usr/share/appdata/
-wget -q "https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appdata-extra/desktop/blender.appdata.xml" -O ./usr/share/appdata/blender.appdata.xml
+mkdir -p ./usr/share/metainfo/
+wget -q "https://raw.githubusercontent.com/hughsie/fedora-appstream/master/appdata-extra/desktop/blender.appdata.xml" -O ./usr/share/metainfo/blender.appdata.xml
 
 # Get desktop file
 # wget -q "https://git.blender.org/gitweb/gitweb.cgi/blender.git/blob_plain/HEAD:/release/freedesktop/blender.desktop"
