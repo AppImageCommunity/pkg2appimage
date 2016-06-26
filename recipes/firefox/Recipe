@@ -47,6 +47,10 @@ mkdir -p usr/share/appdata/
 rm usr/share/appdata/firefox.appdata.xml || true
 wget -c "https://github.com/hughsie/fedora-appstream/raw/master/appdata-extra/desktop/firefox.appdata.xml" -O usr/share/appdata/firefox.appdata.xml
 
+# Icon according to https://github.com/hughsie/appstream-glib#guidelines-for-applications
+mkdir -p usr/share/icons/hicolor/256x256/apps/
+cp usr/bin/chrome/icons/default/default256.png usr/share/icons/hicolor/256x256/apps/firefox.png
+
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
