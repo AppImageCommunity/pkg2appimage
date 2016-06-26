@@ -68,7 +68,7 @@ num_keys_fatal Icon
 num_keys_fatal Categories
 num_keys_warn Comment
 
-NUM_APPDATA=$(ls "${APPDIR}"/usr/share/appdata/.xml 2>/dev/null | wc -l)
+NUM_APPDATA=$(ls "${APPDIR}"/usr/metainfo/appdata/*.xml 2>/dev/null | wc -l)
 if [ ! ${NUM_APPDATA} -gt 1 ] ; then
   warn 'No appdata file(s) present. Get some from upstream, https://github.com/hughsie/fedora-appstream/tree/master/appdata-extra/desktop or debian packages'
 fi
