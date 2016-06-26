@@ -68,7 +68,7 @@ chmod a+x ./AppRun
 cp ./usr/bin/images/icon.png robocut.png
 
 # TODO: Get appdata
-# mkdir -p ./usr/share/appdata/
+# mkdir -p ./usr/metainfo/appdata/
 # ...
 
 # Get desktop file
