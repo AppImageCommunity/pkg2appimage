@@ -61,7 +61,7 @@ if [ ! $(env | grep BINTRAY_API_KEY ) ] ; then
   exit 1
 fi
 
-CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Content-Type:application/json -H Accept:application/json -w \n"
+CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Accept:application/json -w \n"
 
 IS_AN_APPIMAGE=$(file -kib "$FILE" | grep -q "application/x-executable" && file -kib "$FILE" | grep -q "application/x-iso9660-image" && echo 1 || true);
 if [ "$IS_AN_APPIMAGE" ] ; then
@@ -174,7 +174,7 @@ data="{
     \"licenses\": [\"MIT\"],
     \"labels\": [\"AppImage\", \"AppImageKit\"]
     }"
-${CURL} -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}"
+${CURL} -H Content-Type:application/json -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}"
 
 if [ "$IS_AN_APPIMAGE" ] ; then
   # Eventually AppImageAssistant/package should do this. Do it manually in the meantime.
@@ -196,7 +196,7 @@ if [ "$IS_AN_APPIMAGE" ] ; then
     # Workaround for:
     # https://github.com/probonopd/zsync-curl/issues/1
     zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
-    ${CURL} -T "${FILE}.zsync" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE").zsync?publish=1&override=1"
+    ${CURL} -H Content-Type:application/octet-stream -T "${FILE}.zsync" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE").zsync?publish=1&override=1"
   else
     echo "zsyncmake not found, skipping zsync file generation and upload"
   fi
@@ -204,7 +204,7 @@ fi
 
 echo ""
 echo "Uploading and publishing ${FILE}..."
-${CURL} -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
+${CURL} -H Content-Type:application/x-iso9660-appimage -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
 
 if [ $(env | grep TRAVIS_JOB_ID ) ] ; then
 echo ""
@@ -216,7 +216,7 @@ BUILD_LOG="https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true"
     "content": "'${BUILD_LOG}'"
   }
 }'
-${CURL} -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes"
+${CURL} -H Content-Type:application/json -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes"
 fi
 
 HERE="$(dirname "$(readlink -f "${0}")")"
@@ -229,7 +229,7 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 #     data="{
 #     \"list_in_downloads\": true
 #     }"
-# ${CURL} -X PUT -d "${data}" ${API}/file_metadata/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename ${FILE})
+# ${CURL} -H Content-Type:application/json -X PUT -d "${data}" ${API}/file_metadata/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename ${FILE})
 # echo "TODO: Remove earlier versions of the same architecture from the download list"
 
 # echo ""
