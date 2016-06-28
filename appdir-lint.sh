@@ -17,7 +17,7 @@ warn () {
   echo "WARNING: $1"
 }
 
-which desktop-file-validate
+which desktop-file-validate >/dev/null
 if [ ! $? -eq 0 ] ; then
   fatal "desktop-file-validate is missing, please install it"
 fi
@@ -68,17 +68,23 @@ num_keys_fatal Icon
 num_keys_fatal Categories
 num_keys_warn Comment
 
-NUM_APPDATA=$(ls "${APPDIR}"/usr/metainfo/appdata/*.xml 2>/dev/null | wc -l)
-if [ ! ${NUM_APPDATA} -gt 1 ] ; then
-  warn 'No appdata file(s) present. Get some from upstream, https://github.com/hughsie/fedora-appstream/tree/master/appdata-extra/desktop or debian packages'
+# Find the relevant appdata.xml file;
+# according to ximion, usr/share/appdata is a legacy path replaced by usr/share/metainfo
+APPDATA=$(ls "${APPDIR}"/usr/share/metainfo/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
+if [ -z "$APPDATA" ] ; then
+  APPDATA=$(ls "${APPDIR}"/usr/share/appdata/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
+fi
+if [ -z "$APPDATA" ] ; then
+  warn 'No appdata file present. Get one from upstream.'
 fi
 
 BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
+BUNDLEDLIBS=$(ls "${APPDIR}"/usr/lib/)
 FOUND=""
 for FILE in $BLACKLISTED_FILES ; do
-  FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
-  echo $FOUND
-  if [ ! -z "$FOUND" ] ; then
-    fatal "Blacklisted file ${FOUND} found"
-  fi
+  for LIB in $BUNDLEDLIBS ; do
+    if [ "${FILE}" == "${LIB}" ] ; then
+      warn "Blacklisted library $LIB found"
+    fi
+  done
 done
