@@ -17,9 +17,9 @@ warn () {
   echo "WARNING: $1"
 }
 
-which desktop-file-edit
+which desktop-file-validate
 if [ ! $? -eq 0 ] ; then
-  fatal "desktop-file-edit is missing, please install it"
+  fatal "desktop-file-validate is missing, please install it"
 fi
 
 if [ ! -e "${HERE}/excludelist" ] ; then
@@ -50,9 +50,9 @@ num_keys_fatal () {
   fi
 }
 
-desktop-file-edit "${APPDIR}"/*.desktop
+desktop-file-validate "${APPDIR}"/*.desktop
 if [ ! $? -eq 0 ] ; then
-  fatal "desktop-file-edit did not exit cleanly on the .desktop file"
+  fatal "desktop-file-validate did not exit cleanly on the .desktop file"
 fi
 
 num_keys_warn () {
