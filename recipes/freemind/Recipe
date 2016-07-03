@@ -1,4 +1,4 @@
-# In this example, we use a trusty PPA - keep providing these!
+# In this example, we use precise
 # Based on the Wireshark recipe
 
 APP=Freemind
@@ -126,7 +126,6 @@ Version: 9:9999.9999.9999
 EOF
 
 echo "deb http://archive.ubuntu.com/ubuntu/ precise main universe
-deb http://ppa.launchpad.net/wireshark-dev/stable/ubuntu precise main
 " > sources.list
 
 OPTIONS="-o Debug::NoLocking=1
