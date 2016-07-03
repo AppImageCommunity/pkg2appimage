@@ -125,8 +125,8 @@ Architecture: all
 Version: 9:9999.9999.9999
 EOF
 
-echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-deb http://ppa.launchpad.net/wireshark-dev/stable/ubuntu trusty main
+echo "deb http://archive.ubuntu.com/ubuntu/ precise main universe
+deb http://ppa.launchpad.net/wireshark-dev/stable/ubuntu precise main
 " > sources.list
 
 OPTIONS="-o Debug::NoLocking=1
