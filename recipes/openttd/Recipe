@@ -27,6 +27,7 @@ find . -name $LOWERAPP.desktop -exec cp {} . \;
 cp ./usr/bin/media/openttd.256.png $LOWERAPP.png
 
 copy_deps ; delete_blacklisted ; move_lib ; get_apprun
+mv usr/lib/x86_64-linux-gnu/pulseaudio/* usr/lib/x86_64-linux-gnu/ && rm -r usr/lib/x86_64-linux-gnu/pulseaudio/
 get_desktopintegration $LOWERAPP
 
 ARCH=$(arch)
