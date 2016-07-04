@@ -1,0 +1,39 @@
+# In response to https://plus.google.com/+AlanPope/posts/UYfkp4GfVwb
+
+sudo apt-get -y install sdl1.2
+
+APP=OpenTTD
+LOWERAPP=${APP,,} 
+
+DLD=$(wget -q "https://www.openttd.org/en/download-stable" -O - |  grep -Poe "binaries.*linux-generic-amd64.tar.gz")
+URL="https://$DLD"
+VER1=$(echo $URL | cut -d "/" -f 5)
+
+mkdir -p $APP/$APP.AppDir/usr/bin/
+
+cd $APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+cd $APP
+
+wget -c "$URL"
+
+cd $APP.AppDir/
+
+tar xf ../openttd-*-linux-generic-amd64.tar.gz
+mv ./openttd-*-linux-generic-amd64/* ./usr/bin/ && rm -r ./openttd-*-linux-generic-amd64/
+
+find . -name $LOWERAPP.desktop -exec cp {} . \;
+cp ./usr/bin/media/openttd.256.png $LOWERAPP.png
+
+copy_deps ; delete_blacklisted ; move_lib ; get_apprun
+get_desktopintegration $LOWERAPP
+
+ARCH=$(arch)
+VERSION=$VER1.glibc$(glibc_needed)
+
+cd ..
+
+generate_appimage
