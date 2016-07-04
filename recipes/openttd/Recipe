@@ -13,6 +13,9 @@ mkdir -p $APP/$APP.AppDir/usr/bin/
 
 cd $APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "$URL"
 
 cd $APP.AppDir/
