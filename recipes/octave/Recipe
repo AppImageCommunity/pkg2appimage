@@ -1,0 +1,131 @@
+# Octave recipe
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+#begin
+if [ ! -d AppImages ] ; then
+  git clone https://github.com/probonopd/AppImages.git
+fi
+cd AppImages/
+git_pull_rebase_helper
+cd ..
+
+yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 cmake
+
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+  git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+cmake .
+make clean
+make
+cd ..
+
+
+#end
+
+APP=Octave
+mkdir -p /$APP/$APP.AppDir/
+cd /$APP/
+
+URL=https://ftp.gnu.org/gnu/octave/octave-4.0.3.tar.gz
+VER1=4.0.3
+
+yum -y install epel-release gcc-gfortran pcre-devel blas-devel lapack-devel readline-devel fftw-devel zlib-devel \
+gnuplot-devel qhull-devel glpk-devel curl-devel qrupdate-devel suitesparse-devel \
+arpack-devel mesa-libGLU-devel  mesa-libGL-devel mesa-libOSMesa-devel freetype-devel fontconfig-devel \
+hdf5-devel gnuplot texinfo java-1.8.0-openjdk-devel fltk-devel qt-devel \
+gperf flex bison ghostscript texinfo-text texinfo-tex icoutils librsvg2 gl2ps-devel qscintilla-devel desktop-file-utils fuse-libs
+
+wget -c "$URL"
+tar xzf octave-*.tar.gz
+
+cd octave-*
+
+export CFLAGS="-O2"
+export CXXFLAGS="-O2"
+
+./configure --prefix=/usr
+make
+make install DESTDIR=/$APP/$APP.AppDir/
+
+cd /$APP/$APP.AppDir/
+
+# Copy in the indirect dependencies
+copy_deps
+
+#cp /$APP/octave-*/etc/icons/octave.desktop .
+#sed -i 's|usr/local|usr|g' octave.desktop
+
+#Desktop file
+cat > ./octave.desktop <<EOF
+[Desktop Entry]
+Name=GNU Octave
+Comment=Scientific Computing using GNU Octave
+TryExec=octave
+Exec=octave --force-gui %f
+Icon=octave.png
+Terminal=false
+Type=Application
+Categories=Education;Science;Math;
+StartupNotify=false
+MimeType=text/x-octave;text/x-matlab;
+Keywords=science;math;matrix;numerical computation;plotting;
+EOF
+
+cp ./usr/share/icons/hicolor/256x256/apps/octave.png .
+
+get_apprun
+
+delete_blacklisted
+
+#Get makeinfo inside
+#cp $(which makeinfo) ./usr/bin
+
+# Move libraries in place
+mv lib64/* usr/lib && rm -r lib64/
+mv ./usr/lib64/atlas/* usr/lib && rm -r ./usr/lib64/atlas/
+mv ./usr/lib64/* usr/lib && rm -r ./usr/lib64/
+
+# Remove developer stuff
+rm -rf usr/include/
+find . -name '*.la' -delete
+find . -type f -executable -exec strip {} \; || true
+
+# Patch absolute /usr away; make relative to usr/ inside the AppDir
+find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration octave
+
+# Go out of AppImage
+cd ..
+
+ARCH=$(/bin/arch)
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+# Put this script into the AppImage for debugging
+# FIXME: The follwing line does not work
+# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
+
+mkdir -p ../out
+
+rm -f ../out/*.AppImage || true
+
+# Convert the AppDir into an AppImage
+rm -rf $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
+
+chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
