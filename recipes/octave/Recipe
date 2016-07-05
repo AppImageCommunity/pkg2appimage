@@ -82,6 +82,22 @@ get_apprun
 
 delete_blacklisted
 
+#Get makeinfo inside
+#cp $(which makeinfo) ./usr/bin
+
+# Move libraries in place
+mv lib64/* usr/lib && rm -r lib64/
+mv ./usr/lib64/atlas/* usr/lib && rm -r ./usr/lib64/atlas/
+mv ./usr/lib64/* usr/lib && rm -r ./usr/lib64/
+
+# Remove developer stuff
+rm -rf usr/include/
+find . -name '*.la' -delete
+find . -type f -executable -exec strip {} \; || true
+
+# Patch absolute /usr away; make relative to usr/ inside the AppDir
+find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
+
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
