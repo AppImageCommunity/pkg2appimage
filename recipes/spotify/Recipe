@@ -26,6 +26,16 @@ delete_blacklisted
 cp ./usr/share/spotify/spotify.desktop .
 cp ./usr/share/spotify/icons/spotify-linux-256.png spotify-client.png
 
+install -d ./usr/lib
+cp -Lv /lib/x86_64-linux-gnu/libssl.so.1.0.0 ./usr/lib/
+cp -Lv /lib/x86_64-linux-gnu/libcrypto.so.1.0.0 ./usr/lib/
+cp -Lv /usr/lib/x86_64-linux-gnu/libcurl.so.3 ./usr/lib/libcurl.so.4
+cp -Lv /usr/lib/x86_64-linux-gnu/librtmp.so.0 ./usr/lib/
+cp -Lv /usr/lib/x86_64-linux-gnu/libgnutls.so.26 ./usr/lib/
+cp -Lv /lib/x86_64-linux-gnu/libgcrypt.so.11 ./usr/lib
+cp -Lv /usr/lib/x86_64-linux-gnu/libgconf-2.so.4 ./usr/lib
+cp -Lv /usr/lib/x86_64-linux-gnu/libXss.so.1 ./usr/lib
+
 GLIBC_NEEDED=$(glibc_needed)
 VER1=$(ls ../spotify*deb | cut -d _ -f 2)
 VERSION=$VER1.glibc$GLIBC_NEEDED
