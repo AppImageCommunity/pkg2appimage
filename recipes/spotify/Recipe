@@ -1,5 +1,10 @@
+#########################################################################################################################
 # We are not allowed to redistribute Spotify.AppImage
-# but you can build your own by running this script on Ubuntu
+# but you can build your own by running this script on Ubuntu.
+# If you would like to see an official Spotify AppImage, vote on
+# https://community.spotify.com/t5/Live-Ideas/Desktop-Other-Linux-Provide-Spotify-Desktop-Client-in-cross/idi-p/1337399
+# and let https://twitter.com/SpotifyCares 
+#########################################################################################################################
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
