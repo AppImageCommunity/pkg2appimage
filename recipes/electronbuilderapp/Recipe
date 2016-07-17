@@ -16,5 +16,8 @@ sed -i -e 's|"electron-builder": ".*",|"electron-builder": "next",|g' package.js
 npm install
 npm run dist -- --linux=AppImage
 
+# Workaround for https://github.com/electron-userland/electron-builder/issues/594
+FILENAME=$(ls dist/*AppImage | head -n 1 | cut -d "/" -f 2 | sed -e 's|.AppImage|-'$(arch)'.AppImage|g')
+
 mkdir -p ../out
-mv ./dist/*.AppImage ../out
+mv ./dist/*.AppImage ../out/"${FILENAME}"
