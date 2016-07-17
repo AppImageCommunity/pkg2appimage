@@ -1,0 +1,20 @@
+# This is a generic recipe that can build electron-builder apps
+# thanks to the AppImage support built into electron-builder
+
+REPO=ahdriel/thesis-lab
+
+# Install npm 6 and other prerequisites
+# curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y icnsutils graphicsmagick # nodejs
+
+wget https://github.com/$REPO/archive/master.zip
+unzip master.zip
+cd *-master/
+
+sed -i -e 's|"electron-builder": ".*",|"electron-builder": "next",|g' package.json
+
+npm install
+npm run dist -- --linux=AppImage
+
+mkdir -p ../out
+mv ./dist/*.AppImage ../out
