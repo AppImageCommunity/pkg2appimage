@@ -25,7 +25,7 @@ touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 
 generate_status
 
-# Workaround for bug in the package (libfontconfig should be libfontconfig1)
+# Workaround for bug in the package (depends on both Pyhton 2 and 3)
 cat >> status <<\EOF
 
 Package: python3-tk
