@@ -1,0 +1,110 @@
+# In this example, we use non-repo .deb
+# Some projects provide raw .deb files without a repository
+# hence we create our own local repository as part of
+# the AppImage creation process in order to "install"
+# the package using apt-get as normal
+# using debian oldstable (wheezy)
+
+APP=xdgurl
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+generate_status
+
+# Workaround for bug in the package (libfontconfig should be libfontconfig1)
+cat >> status <<\EOF
+
+Package: python3-tk
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+Comment: Dummy
+EOF
+
+echo "deb http://ftp.de.debian.org/debian/ wheezy main
+" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+wget -c "https://dl.opendesktop.org/api/files/download/id/1468612049/xdgurl_1.0.1-0ubuntu1_amd64.deb"
+
+# Add local repository so that we can install deb files
+# that were downloaded outside of a repository
+dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+echo "deb file:$(readlink -e $PWD) ./" >> sources.list
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+wget "https://cn.pling.com/img/5/2/7/e/a647a312c99fd385c1989e1f4baf2eedfb6a.png" -O $LOWERAPP.png
+echo "Icon=$LOWERAPP" >> $LOWERAPP.desktop
+
+get_apprun
+
+move_lib
+
+delete_blacklisted
+rm -rf ./etc/ ./home/ ./lib/ || true
+
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+# find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
+
+# Workaround for:
+# find: ‘/tmp/.mount_T1Wwtc/usr/share/icons/’: No such file or directory
+mkdir -p ./usr/share/icons/hicolor/128x128/apps/
+cp $LOWERAPP.png ./usr/share/icons/hicolor/128x128/apps/
+
+# Workaround for:
+# _tkinter.TclError: Can't find a usable init.tcl
+( mkdir -p usr/lib/tcl8.5 ; cd usr/lib/tcl8.5 ; ln -s ../../share/tcltk/tcl8.5/* . )
+
+# Workaround for:
+# _tkinter.TclError: Can't find a usable tk.tcl
+( mkdir -p usr/lib/tcl8.5/tk8.5 ; cd usr/lib/tcl8.5/tk8.5 ; ln -s ../../../share/tcltk/tk8.5/* . )
+
+VERSION=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
