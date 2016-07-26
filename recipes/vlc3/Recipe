@@ -1,5 +1,17 @@
-# This is meant to be run on Ubuntu 12.04.5
-# TODO: Try on older versions
+########################################################################
+# TODO:
+# j-b on #videolan:
+# Ubuntu 14.04 is the oldest version supported by VLC 3
+# <j-b> use extras/tools;
+# <j-b> use contribs (for alsa)
+# <j-b> use contribs with --disable to disable bluray
+# <j-b> don't disable cddb
+# <j-b> don't compile with gcc 4.9 but 6.1
+# <j-b> don't build with Qt4, but qith qt5
+# <j-b> once this is done, we can retalk :0
+########################################################################
+
+# The below was meant to be run on Ubuntu 12.04.5 but as stated above this is not supported by VLC
 
 # I have successfully built VLC on EC2 using
 # https://console.aws.amazon.com/ec2/home?region=us-west-1#launchAmi=ami-c4fb82a4
