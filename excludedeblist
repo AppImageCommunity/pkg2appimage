@@ -7,6 +7,7 @@
 # of these packages than what can safely be assumed to be part
 # of the base system. This is why we recommend oldstable
 # ingredients for AppImages
+apt-transport-https
 dbus
 debconf
 dictionaries-common
@@ -23,6 +24,7 @@ gstreamer1.0-plugins-good
 gstreamer1.0-plugins-ugly
 gstreamer1.0-pulseaudio
 kde-runtime
+libasound2
 libatk1.0-0
 libc6
 libcairo2
