@@ -1,0 +1,99 @@
+# WORK IN PROGRESS - SEE LAST LINES
+
+# In this example, we use non-repo .deb
+# Some projects provide raw .deb files without a repository
+# hence we create our own local repository as part of
+# the AppImage creation process in order to "install"
+# the package using apt-get as normal
+# using debian oldstable (wheezy)
+
+APP=MonoDevelop
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+generate_status
+
+echo "deb http://ftp.de.debian.org/debian/ wheezy main
+" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+wget -c "deb http://download.mono-project.com/repo/debian alpha main"
+
+# Add local repository so that we can install deb files
+# that were downloaded outside of a repository
+dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+echo "deb file:$(readlink -e $PWD) ./" >> sources.list
+
+apt-get $OPTIONS update
+
+# Workaround for broken packages:
+# Set version in status file to the exact version needed for some packages (see error messages)
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+cp ./usr/share/icons/hicolor/48x48/apps/$LOWERAPP.png . # It's a shame there is no 256 or 512 one
+
+get_apprun
+
+# Workaround for:
+# Cannot open assembly './bin//monodevelop/lib/monodevelop/bin/MonoDevelop.exe': Not a directory.
+# Change EXE_PATH="lib/monodevelop/bin/MonoDevelop.exe" in usr/bin/monodevelop
+sed -i -e 's|${0%%/bin/monodevelop}/||g' usr/bin/monodevelop
+
+# Workaround for:
+# Unhandled Exception: System.IO.FileNotFoundException:
+# Could not load file or assembly 'Mono.Addins, Version=0.6.0.0,
+# Culture=neutral, PublicKeyToken=0738eb9f132ed756' or one of its dependencies.
+# despite it being in
+# ./usr/lib/cli/Mono.Addins-0.2/Mono.Addins.dll
+# Why isn't it found there?
+mv ./usr/lib/cli/Mono.Addins-0.2/* usr/lib/
+
+# Bundle etc
+mv etc/ usr/et
+sed -i -e 's|/etc|./et|g' usr/bin/mono
+sed -i -e 's|/etc|./et|g' usr/bin/monodevelop
+
+# Workaround for
+# MonoDevelop failed to start. Some of the assemblies required to run MonoDevelop
+# (for example gtk-sharp, gnome-sharp or gtkhtml-sharp) may not be properly
+# installed in the GAC.
+
+# PLEASE SUBMIT A PULL REQUEST IF YOU KNOW THE WORKAROUND
+
+# To be continued
