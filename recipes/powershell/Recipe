@@ -1,8 +1,26 @@
-# In this example, we use non-repo .deb
-# Some projects provide raw .deb files without a repository
-# hence we create our own local repository as part of
-# the AppImage creation process in order to "install"
-# the package using apt-get as normal
+# Known to run on
+# CentOS-7.0-1406-x86_64-GnomeLive.iso
+# CentOS-7-x86_64-LiveGNOME-1511.iso
+# Chromixium-1.5-amd64.iso
+# Fedora-Live-Workstation-x86_64-22-3.iso
+# Fedora-Live-Workstation-x86_64-23-10.iso
+# SL-72-x86_64-2016-02-03-LiveDVDgnome.iso
+# debian-live-8.0.0-amd64-xfce-desktop+nonfree.iso
+# debian-live-8.4.0-amd64-gnome-desktop.iso
+# elementary_OS_0.3_freya_amd64.iso
+# kali-linux-2.0-amd64.iso
+# kali-linux-2016.1-amd64.iso
+# kubuntu-14.04.4-desktop-amd64.iso
+# kubuntu-15.04-desktop-amd64.iso
+# kubuntu-16.04-desktop-amd64.iso
+# linuxmint-17.3-cinnamon-64bit.iso
+# neon-devedition-gitunstable-20160814-0806-amd64.iso
+# netrunner-17-64bit.iso
+# ubuntu-14.04.1-desktop-amd64.iso
+# ubuntu-16.04-desktop-amd64.iso
+# ubuntu-gnome-16.04-desktop-amd64.iso
+# ubuntu-mate-16.04-desktop-amd64.iso
+# xubuntu-16.04-desktop-amd64.iso
 
 APP=PowerShell
 LOWERAPP=${APP,,}
