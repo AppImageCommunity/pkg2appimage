@@ -79,8 +79,6 @@ StartupNotify=true
 Terminal=true
 EOF
 
-( cd usr/bin ; ln -sf ../../opt/microsoft/powershell/6.0.0-alpha.9/powershell . )
-
 wget -c "https://github.com/PowerShell/PowerShell/blob/master/assets/Powershell_256.png" -O $LOWERAPP.png
 
 get_apprun
