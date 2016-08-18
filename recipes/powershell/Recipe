@@ -81,7 +81,14 @@ EOF
 
 wget -c "https://github.com/PowerShell/PowerShell/blob/master/assets/Powershell_256.png" -O $LOWERAPP.png
 
-get_apprun
+cat > ./AppRun <<\EOF
+#!/bin/sh
+HERE=$(dirname $(readlink -f "${0}"))
+export PATH="${HERE}/usr/bin/":$PATH
+export LD_LIBRARY_PATH="${HERE}/usr/lib/":$LD_LIBRARY_PATH
+exec "${HERE}/usr/bin/powershell" "$@"
+EOF
+chmod a+x ./AppRun
 
 # Copy in the indirect dependencies
 # copy_deps # not needed here due to the way we use apt to download everything
@@ -91,8 +98,11 @@ mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/ # AppRun sets Qt env here
 
 mv ./usr/lib/pulseaudio/*.so usr/lib/ || true
 
+mv usr/local/share/man usr/share/
+
 delete_blacklisted
 rm -rf ./etc/ ./home/ ./lib/ || true
+rm -r opt/ usr/lib/x86_64-linux-gnu/ usr/lib64 usr/share/
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps
