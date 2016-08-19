@@ -1,5 +1,5 @@
-APP=Sublime_Text
-LOWERAPP=${APP,,}
+APP=Sublime-Text
+LOWERAPP=sublime_text # ${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 
