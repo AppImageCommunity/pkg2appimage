@@ -23,7 +23,8 @@ chmod a+x ./AppRun
 # Move icons into place so that AppImageAssistant finds them
 mkdir -p usr/share/icons
 mv usr/bin/lib/icons usr/share/icons/hicolor
-cat usr/share/icons/hicolor/256x256/apps/arduino.png > arduino.png
+cat usr/share/icons/hicolor/128x128/apps/arduino.png > arduino.png
+rm -rf ./usr/share/icons/hicolor/48x48
 
 # Get appdata - why is it missing in the binary distribution?
 mkdir -p usr/share/metainfo/
