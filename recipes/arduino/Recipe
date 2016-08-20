@@ -45,11 +45,12 @@ rm ./dist/*
 cd ../../../../../../
 
 # Add Arduino ESP8266 filesystem uploader
-cd usr/bin/tools
+cd usr/bin/tools/
 DLD=$(wget -q "https://github.com/esp8266/arduino-esp8266fs-plugin/releases/" -O - | grep ".zip" | head -n 1 | cut -d '"' -f 2)
 wget -c "https://github.com/$DLD"
 unzip ESP8266FS-*.zip
-rm unzip ESP8266FS-*.zip
+rm ESP8266FS-*.zip
+cd ../../../
 
 # Add desktop integration
 XAPP=arduino
