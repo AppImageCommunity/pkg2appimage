@@ -2,8 +2,8 @@
 
 set +e
 
-# URL="http://downloads.arduino.cc/arduino-nightly-linux64.tar.xz"
-URL="http://downloads.arduino.cc/arduino-1.6.8-linux64.tar.xz"
+URL="http://downloads.arduino.cc/arduino-nightly-linux64.tar.xz"
+# URL="http://downloads.arduino.cc/arduino-1.6.8-linux64.tar.xz"
 APP=Arduino
 mkdir -p ./$APP
 cd ./$APP
