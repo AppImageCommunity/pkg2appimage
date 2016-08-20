@@ -23,7 +23,7 @@ chmod a+x ./AppRun
 # Move icons into place so that AppImageAssistant finds them
 mkdir -p usr/share/icons
 mv usr/bin/lib/icons usr/share/icons/hicolor
-cat usr/share/icons/hicolor/128x128/apps/arduino.png > arduino.png
+cat usr/share/icons/hicolor/256x256/apps/arduino.png > arduino.png
 
 # Get appdata - why is it missing in the binary distribution?
 mkdir -p usr/share/metainfo/
@@ -43,6 +43,13 @@ ESPVER=$(git rev-parse --short HEAD)
 sed -i  -r "s|^name=.*?|name=ESP8266 Modules (git $ESPVER)|g" ../platform.txt
 rm ./dist/*
 cd ../../../../../../
+
+# Add Arduino ESP8266 filesystem uploader
+cd usr/bin/tools
+DLD=$(wget -q "https://github.com/esp8266/arduino-esp8266fs-plugin/releases/" -O - | grep ".zip" | head -n 1 | cut -d '"' -f 2)
+wget -c "https://github.com/$DLD"
+unzip ESP8266FS-*.zip
+rm unzip ESP8266FS-*.zip
 
 # Add desktop integration
 XAPP=arduino
