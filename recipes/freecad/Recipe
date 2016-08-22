@@ -1,4 +1,6 @@
 # In this example, we use a trusty PPA - keep providing these!
+# Dear upstream developers, if you want the AppImage to run on distributions
+# older than trusty, then please provide binaries compiled e.g., on debian oldstable
 # Based on the Wireshark recipe
 
 APP=FreeCAD
