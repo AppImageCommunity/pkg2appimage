@@ -1,46 +1,91 @@
-# This recipe does not work yet:
-# Could not find platform independent libraries <prefix>
-# Could not find platform dependent libraries <exec_prefix>
-# Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]
-# ImportError: No module named site
-#########################################
+# In this example, we use a trusty PPA - keep providing these!
+# Based on the Wireshark recipe
+
+APP=FreeCAD
+LOWERAPP=freecad-daily # ${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/freecad-maintainers/freecad-daily/ubuntu trusty main
+" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-APP=FreeCAD
-LOWERAPP=${APP,,} 
+wget -c $URLS
 
-sudo add-apt-repository -y ppa:freecad-maintainers/freecad-daily
-sudo apt-get update
-sudo apt-get clean
+cd ./$APP.AppDir/
 
-sudo apt-get -y install $LOWERAPP
-
-mkdir -p $APP/$APP.AppDir
-cd $APP/$APP.AppDir
-find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \; || true
-find /var/cache/apt/archives/*-data* -exec dpkg -x {} . \; || true
+find ../*.deb -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
+
+# Dear upstream developers, please
+# fix the desktop file so that the following becomes unneccessary
+sed -i -e 's|/usr/bin/||g' $LOWERAPP.desktop
+sed -i -e 's|Path=|# Path=|g' $LOWERAPP.desktop
+sed -i -e 's|Icon=freecad|Icon=freecad-daily|g' $LOWERAPP.desktop
+
 rm -rf ./usr/share/icons/48x48/apps || true
 find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
 find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
 
+# Dear upstream developers, please put an icon in one of the locations above
+# so that the following is not needed
+cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
+
 get_apprun
 
 # Copy in the indirect dependencies
-copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
+# copy_deps # not needed here due to the way we use apt to download everything
 
 move_lib
+mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/ || true # AppRun sets Qt env here
+
+mv ./usr/lib/pulseaudio/*.so usr/lib/ || true
 
 delete_blacklisted
+rm -rf ./etc/ ./home/ ./lib/ || true
 
-# patch_usr
-# Patching only the executable files seems not to be enough for some apps
-find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
+# Dear upstream developers, please use relative rather than absolute paths
+# then binary patching like this will become unneccessary
+find usr/ -type f -exec sed -i -e "s|/usr/lib/freecad-daily|././/lib/freecad-daily|g" {} \;
+find usr/ -type f -exec sed -i -e "s|/usr/share/freecad-daily|././/share/freecad-daily|g" {} \;
+( cd ./usr/lib/freecad-daily/ ; ln -s ../../share/ . ) # Why?
 
-VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
