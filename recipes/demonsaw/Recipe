@@ -1,0 +1,97 @@
+APP=Demonsaw
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+mkdir -p ./tmp/archives/
+mkdir -p ./tmp/lists/partial
+touch tmp/pkgcache.bin tmp/srcpkgcache.bin
+
+generate_status
+
+echo "deb http://ftp.de.debian.org/debian/ wheezy main
+deb http://repo.dsrouters.com/ debian demonsaw
+" > sources.list
+
+OPTIONS="-o Debug::NoLocking=1
+-o APT::Cache-Limit=125829120
+-o Dir::Etc::sourcelist=./sources.list
+-o Dir::State=./tmp
+-o Dir::Cache=./tmp
+-o Dir::State::status=./status
+-o Dir::Etc::sourceparts=-
+-o APT::Get::List-Cleanup=0
+-o APT::Get::AllowUnauthenticated=1
+-o Debug::pkgProblemResolver=true
+-o Debug::pkgDepCache::AutoInstall=true
+-o APT::Install-Recommends=0
+-o APT::Install-Suggests=0
+"
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+sed -i -e 's|/opt/demonsaw/||g' $LOWERAPP.desktop
+sed -i -e 's|.ico||g' $LOWERAPP.desktop
+
+# Dear upstream developers, you should deliver icons in the following locations...
+rm -rf ./usr/share/icons/48x48/apps || true
+find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
+
+wget -c "https://www.demonsaw.com/img/logo_1024.png" -O $LOWERAPP.png
+sudo apt-get -y install imagemagick
+mogrify -resize 256x256 $LOWERAPP.png
+
+get_apprun 
+
+mv opt/demonsaw usr/bin
+sed -i -e 's|/opt/demonsaw|bin/|g' usr/bin/start
+sed -i -e 's| &||g' usr/bin/start
+
+# Copy in the indirect dependencies
+# copy_deps # not needed here due to the way we use apt to download everything
+
+move_lib
+mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/ # AppRun sets Qt env here
+
+delete_blacklisted
+rm -rf ./etc/ ./home/ ./lib/ || true
+
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+# find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
+
+VER1=$( find ../*.deb -name $LOWERAPP"*deb" | head -n 1 | cut -d "~" -f 1 | cut -d "-" -f 2 | cut -d "-" -f 1 ) # Dear upstream developers, this file is not named according to the debian naming scheme
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+sed -i -e 's|Exec=start|Exec=start.wrapper|g' $LOWERAPP.desktop
+mv usr/bin/demonsaw.wrapper usr/bin/start.wrapper
+
+rm -r opt/
+
+# Go out of AppImage
+cd ..
+
+ARCH="x86_64"
+generate_appimage
