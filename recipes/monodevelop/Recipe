@@ -28,6 +28,9 @@ touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 generate_status
 
 echo "deb http://ftp.de.debian.org/debian/ wheezy main
+deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main
+deb http://download.mono-project.com/repo/debian alpha main
+deb http://download.mono-project.com/repo/debian wheezy-libtiff-compat main
 " > sources.list
 
 OPTIONS="-o Debug::NoLocking=1
@@ -44,8 +47,6 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Recommends=0
 -o APT::Install-Suggests=0
 "
-
-wget -c "deb http://download.mono-project.com/repo/debian alpha main"
 
 # Add local repository so that we can install deb files
 # that were downloaded outside of a repository
