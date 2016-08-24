@@ -2,8 +2,8 @@
 # that should run on most not-too-outdated Linux distributions (not just
 # debian-derived ones).
 
-APP=Code
-LOWERAPP=${APP,,}
+APP=VSCode
+LOWERAPP=code # ${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 
@@ -59,6 +59,14 @@ cd ./$APP.AppDir/
 find ../*.deb -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
+
+# Dear upstream developers, in debian, binaries ought to be in usr/bin
+# and without a path in the .desktop files
+sed -i -e 's|/usr/share/code/||g' $LOWERAPP.desktop
+
+# Currently the Bintray upload script doesn't deal with blanks
+# in an application name correctly (FIXME)
+sed -i -e 's|Visual Studio Code|VSCode|g' $LOWERAPP.desktop
 
 cp ./usr/share/pixmaps/code.png .
 
