@@ -44,7 +44,7 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Suggests=0
 "
 
-LINK=$(wget -q https://github.com/adobe/brackets/releases -O - | grep Extract | grep download | grep 64-bit.deb | head -n 1 | cut -d '"' -f 2)
+LINK=$(wget -q https://github.com/adobe/brackets/releases -O - | grep download | grep 64-bit.deb | head -n 1 | cut -d '"' -f 2)
 URL="https://github.com${LINK}"
 echo $URL
 wget -c  --trust-server-names "$URL"
