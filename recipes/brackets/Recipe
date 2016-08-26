@@ -52,6 +52,7 @@ wget -c  --trust-server-names "$URL"
 # Add local repository so that we can install deb files
 # that were downloaded outside of a repository
 dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+zcat Packages.gz
 echo "deb file:$(readlink -e $PWD) ./" >> sources.list
 
 apt-get $OPTIONS update
