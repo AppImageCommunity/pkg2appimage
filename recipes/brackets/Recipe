@@ -7,7 +7,7 @@
 # debian-derived ones).
 
 APP=Brackets
-LOWERAPP=code # ${APP,,}
+LOWERAPP=${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 
