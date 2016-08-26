@@ -47,7 +47,8 @@ OPTIONS="-o Debug::NoLocking=1
 LINK=$(wget -q https://github.com/adobe/brackets/releases -O - | grep download | grep 64-bit.deb | head -n 1 | cut -d '"' -f 2)
 URL="https://github.com${LINK}"
 echo $URL
-wget -c  --trust-server-names "$URL"
+# wget -c  --trust-server-names "$URL" # broken
+wget -c "$URL" -O $LOWERAPP.deb
 
 # Add local repository so that we can install deb files
 # that were downloaded outside of a repository
