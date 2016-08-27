@@ -275,7 +275,7 @@ cd ../..
 # Does not find protoc
 export PATH=/vlc/extras/tools/build/bin/:$PATH
 
-BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --disable-chromaprint --disable-ncurses --disable-cddb --prefix=/usr
+BUILDCC="/usr/bin/gcc -std=gnu99" ./configure --enable-pulse --disable-chromaprint --disable-ncurses --disable-cddb --prefix=/usr
 
 make -j 16
 
