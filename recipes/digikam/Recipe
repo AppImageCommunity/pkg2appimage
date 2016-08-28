@@ -1,8 +1,7 @@
-# In this example, we use a trusty PPA - keep providing these!
-# Based on the Stellarium recipe
+# In this example, we use a wily 15.10  PPA - would really prefer trusty
 
 APP=digiKam
-LOWERAPP=${APP,,}
+LOWERAPP=digikam5 # ${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 
@@ -21,8 +20,8 @@ touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 
 generate_status
 
-echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-deb http://ppa.launchpad.net/philip5/extra/ubuntu trusty main
+echo "deb http://archive.ubuntu.com/ubuntu/ wily main universe
+deb http://ppa.launchpad.net/philip5/extra/ubuntu wily main
 " > sources.list
 
 OPTIONS="-o Debug::NoLocking=1
