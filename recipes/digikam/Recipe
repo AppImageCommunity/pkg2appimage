@@ -8,6 +8,9 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 # We get this app and almost all its dependencies via apt-get
 # but not using the host system's information about what is
 # installed on the system but our own assumptions instead
