@@ -23,7 +23,9 @@ copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
 delete_blacklisted
 
-patch_usr
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
 VER1=$(find /var/cache/apt/archives/ -name hugin_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 GLIBC_NEEDED=$(glibc_needed)
