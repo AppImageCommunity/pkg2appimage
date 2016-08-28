@@ -7,7 +7,8 @@ mkdir -p $APP/$APP.AppDir/usr/bin
 
 cd $APP/
 
-wget -c "https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz"
+# wget -c "https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz"
+wget -c "https://download.jetbrains.com/python/pycharm-community-2016.2.2.tar.gz"
 
 # Get Java
 wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
@@ -18,7 +19,7 @@ wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # 
 chmod a+x ./AppRun
 
 tar xf ../pycharm-*.tar.gz 
-( mkdir -p usr/bin/bin ; cd usr/bin; ln -s ../../pycharm-community-5.0.4/bin/pycharm.sh . )
+( mkdir -p usr/bin/bin ; cd usr/bin; ln -s ../../pycharm-community-*/bin/pycharm.sh . )
 
 # Install java
 tar xf ../jre*
