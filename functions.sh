@@ -102,6 +102,9 @@ generate_appimage()
 # to be part of the base system
 generate_status()
 {
+  mkdir -p ./tmp/archives/
+  mkdir -p ./tmp/lists/partial
+  touch tmp/pkgcache.bin tmp/srcpkgcache.bin
   wget -q -c "https://github.com/probonopd/AppImages/raw/master/excludedeblist"
   rm status 2>/dev/null || true
   for PACKAGE in $(cat excludedeblist | cut -d "#" -f 1) ; do
