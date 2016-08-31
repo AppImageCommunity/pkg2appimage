@@ -14,10 +14,6 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 # but not using the host system's information about what is
 # installed on the system but our own assumptions instead
 
-mkdir -p ./tmp/archives/
-mkdir -p ./tmp/lists/partial
-touch tmp/pkgcache.bin tmp/srcpkgcache.bin
-
 generate_status
 
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
