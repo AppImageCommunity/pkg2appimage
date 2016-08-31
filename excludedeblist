@@ -23,6 +23,7 @@ gstreamer1.0-plugins-base
 gstreamer1.0-plugins-good
 gstreamer1.0-plugins-ugly
 gstreamer1.0-pulseaudio
+gtk2-engines-pixbuf
 kde-runtime
 libasound2
 libatk1.0-0
