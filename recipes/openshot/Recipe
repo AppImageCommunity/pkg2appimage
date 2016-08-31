@@ -21,7 +21,7 @@ touch tmp/pkgcache.bin tmp/srcpkgcache.bin
 
 generate_status
 
-echo "deb http://archive.ubuntu.com/ubuntu/ trusty trusty universe
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty universe
 deb http://ppa.launchpad.net/openshot.developers/ppa/ubuntu trusty main
 " > sources.list
 
