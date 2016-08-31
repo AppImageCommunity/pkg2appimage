@@ -23,7 +23,8 @@ patch_usr()
 # Download AppRun and make it executable
 get_apprun()
 {
-  wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun -O ./AppRun # 64-bit
+  # wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun -O ./AppRun # 64-bit
+  wget -c https://github.com/probonopd/AppImageKit/releases/download/6/AppRun_6-x86_64 -O AppRun # 64-bit
   chmod a+x AppRun
 }
 
