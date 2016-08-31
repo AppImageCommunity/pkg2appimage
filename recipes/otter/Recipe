@@ -10,10 +10,6 @@ cd ./$APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-# We get this app and almost all its dependencies via apt-get
-# but not using the host system's information about what is
-# installed on the system but our own assumptions instead
-
 generate_status
 
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
@@ -21,7 +17,6 @@ deb http://ppa.launchpad.net/otter-browser/daily/ubuntu trusty main
 " > sources.list
 
 apt-get $OPTIONS update
-
 URLS=$(apt-get $OPTIONS -y install --print-uris otter-browser-git | cut -d "'" -f 2 | grep -e "^http")
 
 wget -c $URLS
