@@ -1,3 +1,5 @@
+# In this example, we use a trusty PPA - keep providing these!
+
 APP=Otter
 LOWERAPP=otter-browser # ${APP,,}
 
