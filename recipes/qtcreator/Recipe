@@ -89,7 +89,7 @@ EOoF
 chmod a+x *
 
 mkdir -p ./QtExtracted
-./extract-qt-installer ./*.run "$(dirname $(readlink -e ./QtExtracted))"
+./extract-qt-installer ./*.run "$(readlink -e ./*.run | sed -e 's|.run||g')"
 
 find ./QtExtracted | wc -l
 exit 0
