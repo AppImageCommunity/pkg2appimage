@@ -87,11 +87,9 @@ EOoF
 
 chmod a+x *
   
-../extract-qt-installer ../*.run "$(dirname $(readlink -e ./usr/bin))" &
-sleep 150 # The action above must be completed within that time or gets killed
-sh -e /etc/init.d/xvfb stop
+../extract-qt-installer ../*.run "$(dirname $(readlink -e ./usr/bin))"
 
-find .
+find . | wc -l
 exit 0
 
 ###############################################
