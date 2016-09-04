@@ -83,6 +83,7 @@ EOF
 
 chmod u+x $1
 $1 --script $SCRIPT -platform minimal
+# Qt bug? Says "Unknown option: p, l, a, t, f, o, r, m" but it actually works; does not need an X server this way
 EOoF
 
 chmod a+x *
