@@ -1,23 +1,16 @@
 # To get the payload files out of the Qt installer is somewhat tricky but doable.
 
-set +e
 APP=QtCreator
-
-sudo apt-get -y install xvfb
 
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+# Pick best mirror (Travis CI can then download this in 9 seconds)
 URL=$(wget -q "http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run.mirrorlist" -O - | grep "run<" | head -n 2 | tail -n 1 | cut -d '"' -f 2)
 wget -c "$URL"
 
 cat > extract-qt-installer <<\EOoF
 #!/bin/bash
-# QT-CI Project
-# License: Apache-2.0
-# https://github.com/benlau/qtci
-
-set -e #quit on error
 
 if [ $# -lt 2 ];
 then
@@ -32,10 +25,14 @@ OUTPUT=$2
 SCRIPT="$(mktemp)"
 
 cat <<EOF > $SCRIPT
+// Unattentended install script for Qt
+// Based on http://stackoverflow.com/questions/25105269/silent-install-qt-run-installer-on-ubuntu-server
+
 function Controller() {
+    installer.autoRejectMessageBoxes();
     installer.installationFinished.connect(function() {
         gui.clickButton(buttons.NextButton);
-    });
+    })
 }
 
 Controller.prototype.WelcomePageCallback = function() {
@@ -43,14 +40,6 @@ Controller.prototype.WelcomePageCallback = function() {
 }
 
 Controller.prototype.CredentialsPageCallback = function() {
-    gui.clickButton(buttons.CommitButton);
-}
-
-Controller.prototype.ComponentSelectionPageCallback = function() {
-    var widget = gui.currentPageWidget();
-
-    // widget.deselectAll();
-
     gui.clickButton(buttons.NextButton);
 }
 
@@ -58,53 +47,47 @@ Controller.prototype.IntroductionPageCallback = function() {
     gui.clickButton(buttons.NextButton);
 }
 
-
-Controller.prototype.TargetDirectoryPageCallback = function() {
-    var widget = gui.currentPageWidget();
-
-    if (widget != null) {
-        widget.TargetDirectoryLineEdit.setText("$OUTPUT");
-    }
-
+Controller.prototype.TargetDirectoryPageCallback = function()
+{
+    gui.currentPageWidget().TargetDirectoryLineEdit.setText(installer.value("HomeDir") + "/QtTravis");
     gui.clickButton(buttons.NextButton);
+}
 
+Controller.prototype.ComponentSelectionPageCallback = function() {
+    var widget = gui.currentPageWidget();
+    gui.clickButton(buttons.NextButton);
 }
 
 Controller.prototype.LicenseAgreementPageCallback = function() {
-    var widget = gui.currentPageWidget();
-
-    if (widget != null) {
-        widget.AcceptLicenseRadioButton.setChecked(true);
-    }
-
+    gui.currentPageWidget().AcceptLicenseRadioButton.setChecked(true);
     gui.clickButton(buttons.NextButton);
-
 }
 
-Controller.prototype.ReadyForInstallationPageCallback = function() {
+Controller.prototype.StartMenuDirectoryPageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
 
-    gui.clickButton(buttons.CommitButton);
+Controller.prototype.ReadyForInstallationPageCallback = function()
+{
+    gui.clickButton(buttons.NextButton);
 }
 
 Controller.prototype.FinishedPageCallback = function() {
-    var widget = gui.currentPageWidget();
+var checkBoxForm = gui.currentPageWidget().LaunchQtCreatorCheckBoxForm
+if (checkBoxForm && checkBoxForm.launchQtCreatorCheckBox) {
+    checkBoxForm.launchQtCreatorCheckBox.checked = false;
+}
     gui.clickButton(buttons.FinishButton);
 }
 EOF
 
 chmod u+x $1
-$1 --script $SCRIPT
+$1 --script $SCRIPT -platform minimal
 EOoF
 
 chmod a+x *
-
-cd $APP.AppDir
-
-export DISPLAY=:99.0
-sh -e /etc/init.d/xvfb start
-sleep 3 # give xvfb some time to start
   
-../extract-qt-installer ../*.run "$(dirname $(readlink -e ./usr/bin))/$(basename ./usr/bin)" &
+../extract-qt-installer ../*.run "$(dirname $(readlink -e ./usr/bin))" &
 sleep 150 # The action above must be completed within that time or gets killed
 sh -e /etc/init.d/xvfb stop
 
@@ -120,16 +103,8 @@ cp ../opt/google/chrome/lib/libstdc++.so.6 usr/lib/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
 
-cat > obpm.desktop <<\EOF
-[Desktop Entry]
-Type=Application
-Name=OBPM
-Categories=Utility;
-Exec=obpm
-Icon=obpm
-EOF
 
-cp ./usr/bin/obpm.png .
+
 
 # Add desktop integration
 XAPP=obpm
