@@ -87,7 +87,7 @@ EOoF
 
 chmod a+x *
   
-../extract-qt-installer ../*.run "$(dirname $(readlink -e ./usr/bin))"
+./extract-qt-installer ./*.run "$(dirname $(readlink -e ./QtExtracted))"
 
 find . | wc -l
 exit 0
