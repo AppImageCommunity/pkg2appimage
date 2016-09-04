@@ -87,10 +87,11 @@ $1 --script $SCRIPT -platform minimal
 EOoF
 
 chmod a+x *
-  
+
+mkdir -p ./QtExtracted
 ./extract-qt-installer ./*.run "$(dirname $(readlink -e ./QtExtracted))"
 
-find . | wc -l
+find ./QtExtracted | wc -l
 exit 0
 
 ###############################################
