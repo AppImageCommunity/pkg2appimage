@@ -88,10 +88,11 @@ EOoF
 
 chmod a+x *
 
+TARGETDIR=$(readlink -e ./*.run | sed -e 's|.run||g')
 mkdir -p ./QtExtracted
-./extract-qt-installer ./*.run "$(readlink -e ./*.run | sed -e 's|.run||g')"
+./extract-qt-installer ./*.run "$TARGETDIR"
 
-find ./QtExtracted | wc -l
+find "$TARGETDIR" | wc -l
 exit 0
 
 ###############################################
