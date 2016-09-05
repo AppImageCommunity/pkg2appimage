@@ -1,4 +1,6 @@
-# To get the payload files out of the Qt installer is somewhat tricky but doable.
+# Blocked by https://github.com/probonopd/AppImageKit/issues/83#issuecomment-244680617
+
+# To get the payload files out of the Qt installer is somewhat tricky but doable as can be seen below
 
 APP=QtCreator
 LOWERAPP=${APP,,} 
