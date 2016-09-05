@@ -1,6 +1,7 @@
 # https://github.com/LazyT/obpm
 # Example of a really lean Qt application that comes with an Installer and bundled Qt files.
-# To get the payload files out of the Qt installer is somewhat tricky but doable.
+# To get the payload files out of the Qt installer is somewhat tricky but doable -
+# for an example to do this without Xvfb see the qtcreator recipe.
 
 set +e
 APP=OBPM
