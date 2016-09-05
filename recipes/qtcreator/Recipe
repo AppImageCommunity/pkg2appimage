@@ -114,7 +114,7 @@ ln -s Tools/QtCreator/bin/qtcreator.sh AppRun
 cp $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
 cp $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
 
-VERSION=$(ls ../*.run | cut -d "-" -f 2)
+VERSION=$(ls ../*.run | cut -d "-" -f 5)
 ARCH=$(arch)
 
 # Go out of AppImage
