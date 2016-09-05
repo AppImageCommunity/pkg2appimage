@@ -114,6 +114,7 @@ mv $TARGETDIR/* .
 ( cd usr/bin ; ln -s ../../Tools/QtCreator/bin/qtcreator.sh qtcreator )
 
 # Ubuntu puts this in another location than where QtCreator expects it
+mkdir usr/lib
 ( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 . )
 ( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa-egl/libEGL.so.1 . )
 
