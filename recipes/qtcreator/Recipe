@@ -49,7 +49,7 @@ Controller.prototype.IntroductionPageCallback = function() {
 
 Controller.prototype.TargetDirectoryPageCallback = function()
 {
-    gui.currentPageWidget().TargetDirectoryLineEdit.setText("$OUTPUT);
+    gui.currentPageWidget().TargetDirectoryLineEdit.setText("$OUTPUT");
     gui.clickButton(buttons.NextButton);
 }
 
