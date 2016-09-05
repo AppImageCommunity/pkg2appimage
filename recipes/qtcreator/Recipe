@@ -107,7 +107,20 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 
 ls -lh "$TARGETDIR/"
 
-cd $APP.AppDir
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/otter-browser/daily/ubuntu trusty main
+" > sources.list
+
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris libgl1-mesa-glx libegl1-mesa | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
 
 mv $TARGETDIR/* .
 
