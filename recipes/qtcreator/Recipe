@@ -22,7 +22,7 @@ export PATH=$PATH:$PWD
 export WORKDIR=$PWD
 INSTALLER=$1
 OUTPUT=$2
-SCRIPT=script.qs
+SCRIPT="$(mktemp)"
 
 cat <<EOF > $SCRIPT
 // Unattentended install script for Qt
@@ -49,7 +49,7 @@ Controller.prototype.IntroductionPageCallback = function() {
 
 Controller.prototype.TargetDirectoryPageCallback = function()
 {
-    gui.currentPageWidget().TargetDirectoryLineEdit.setText("REPLACEMEWITHABSPATH");
+    gui.currentPageWidget().TargetDirectoryLineEdit.setText("$OUTPUT);
     gui.clickButton(buttons.NextButton);
 }
 
@@ -90,11 +90,10 @@ chmod a+x *
 
 TARGETDIR=$(readlink -e ./*.run | sed -e 's|.run||g')
 mkdir -p "$TARGETDIR"
-sed -i -e 's|REPLACEMEWITHABSPATH|'$TARGETDIR'|g' script.qs
-cat script.qs
+
 ./extract-qt-installer ./*.run "$TARGETDIR/"
 ls -lh .
-ls -lh "$TARGETDIR"
+ls -lh "$TARGETDIR/"
 exit 0
 
 ###############################################
