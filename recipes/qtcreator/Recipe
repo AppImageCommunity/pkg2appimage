@@ -1,9 +1,13 @@
 # To get the payload files out of the Qt installer is somewhat tricky but doable.
 
 APP=QtCreator
+LOWERAPP=${APP,,} 
 
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
 
 # Pick best mirror (Travis CI can then download this in 9 seconds)
 URL=$(wget -q "http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run.mirrorlist" -O - | grep "run<" | head -n 2 | tail -n 1 | cut -d '"' -f 2)
@@ -92,34 +96,28 @@ TARGETDIR=$(readlink -e ./*.run | sed -e 's|.run||g')
 mkdir -p "$TARGETDIR"
 
 ./extract-qt-installer ./*.run "$TARGETDIR/"
-ls -lh .
+
+# Since unchecking options in the installer might break in newer Qt versions
+# due to changing component names, we simply install the default set and now
+# delete what we don't want. Not elegant but more robust.
+# Qt Installer should really provide a sane CLI.
+rm -rf "$TARGETDIR/{Docs,Examples,MaintenanceTool*}"
+
 ls -lh "$TARGETDIR/"
-exit 0
 
-###############################################
+cd $APP.AppDir
 
-mkdir usr/lib
-mv usr/bin/lib* usr/lib/
-cp ../opt/google/chrome/lib/libstdc++.so.6 usr/lib/
+mv $TARGETDIR/* .
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+ln -s Tools/QtCreator/bin/qtcreator.sh AppRun
 
-
-
-
-# Add desktop integration
-XAPP=obpm
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+cp $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
+cp $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
 
 VERSION=$(ls ../*.run | cut -d "-" -f 2)
+ARCH=$(arch)
 
 # Go out of AppImage
 cd ..
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+
+generate_appimage
