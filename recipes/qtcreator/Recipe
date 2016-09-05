@@ -6,8 +6,6 @@ LOWERAPP=${APP,,}
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
-get_apprun
-
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
@@ -121,6 +119,8 @@ wget -c $URLS
 cd ./$APP.AppDir/
 
 find ../*.deb -exec dpkg -x {} . \; || true
+
+get_apprun
 
 mv $TARGETDIR/* .
 
