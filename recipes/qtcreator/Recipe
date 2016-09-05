@@ -6,6 +6,8 @@ LOWERAPP=${APP,,}
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+get_apprun
+
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
