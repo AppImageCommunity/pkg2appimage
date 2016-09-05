@@ -105,26 +105,17 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 
 ls -lh "$TARGETDIR/"
 
-generate_status
-
-echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-deb http://ppa.launchpad.net/otter-browser/daily/ubuntu trusty main
-" > sources.list
-
-apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris libgl1-mesa-glx libegl1-mesa | cut -d "'" -f 2 | grep -e "^http")
-
-wget -c $URLS
-
 cd ./$APP.AppDir/
-
-find ../*.deb -exec dpkg -x {} . \; || true
 
 get_apprun
 
 mv $TARGETDIR/* .
 
 ( cd usr/bin ; ln -s ../../Tools/QtCreator/bin/qtcreator.sh qtcreator )
+
+# Ubuntu puts this in another location than where QtCreator expects it
+( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 . )
+( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa-egl/libEGL.so.1 . )
 
 cp $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
 cp $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
