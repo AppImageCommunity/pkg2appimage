@@ -101,7 +101,7 @@ mkdir -p "$TARGETDIR"
 # due to changing component names, we simply install the default set and now
 # delete what we don't want. Not elegant but more robust.
 # Qt Installer should really provide a sane CLI.
-rm -rf "$TARGETDIR/{Docs,Examples,MaintenanceTool*}"
+rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,MaintenanceTool.ini}
 
 ls -lh "$TARGETDIR/"
 
