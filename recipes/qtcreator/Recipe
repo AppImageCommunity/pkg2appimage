@@ -140,6 +140,9 @@ cat > AppRun <<\EOF
 
 LINK="/tmp/.mount_QtCreator-5.7.0-x86_64"
 
+# Make it posible to run compiled apps from inside Qt Creator
+export QT_PLUGIN_PATH=/tmp/.mount_QtCreator-5.7.0-x86_64/plugins:$QT_PLUGIN_PATH
+
 # QtCreator uses hardcoded paths. Hence we are using this workaround. At AppImage creation time, did:
 # find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
 
