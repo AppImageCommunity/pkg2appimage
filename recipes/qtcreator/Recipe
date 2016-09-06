@@ -203,12 +203,12 @@ atexit()
 
 if [ "" == "$APPDIR" ] ; then
   ln -s  "$HERE" "$LINK"
-  "$LINK"/usr/bin/qtcreator "$@"
+  "$LINK"/usr/bin/qtcreator.wrapper "$@"
   exit $?
 fi
 
 ln -s  "$APPDIR" "$LINK"
-"$LINK"/usr/bin/qtcreator "$@"
+"$LINK"/usr/bin/qtcreator.wrapper "$@"
 exit $?
 EOF
 chmod a+x AppRun
