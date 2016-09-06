@@ -3,8 +3,10 @@
 # This is an example for packaging a Java application as an AppImage.
 
 APP="eclipse-cpp"
-LAPP=${APP//-cpp/}
+LOWERAPP=${APP//-cpp/}
 VERSION=4.6.0 # FIXME: Do not hardcode the version number
+
+sudo apt-get install bsdtar
 
 rm -rf $APP/$APP.AppDir
 rm -rf out
@@ -12,7 +14,7 @@ mkdir -p $APP/$APP.AppDir/usr/bin
 
 cd $APP/
 
-wget -c "http://mirror.internode.on.net/pub/$LAPP/technology/epp/downloads/release/neon/R/$LAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
+wget -c "http://mirror.internode.on.net/pub/$LLOWERAPP/technology/epp/downloads/release/neon/R/$LOWERAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
 
 # Get Java
 wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
@@ -22,9 +24,9 @@ cd $APP.AppDir/
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
 chmod a+x ./AppRun
 
-bsdtar -xf ../$LAPP-*.tar.gz -C usr
-cp -r usr/$LAPP/* usr/bin
-rm -rf usr/$LAPP
+bsdtar -xf ../$LOWERAPP-*.tar.gz -C usr
+cp -r usr/$LOWERAPP/* usr/bin
+rm -rf usr/$LOWERAPP
 
 mv usr/bin/eclipse usr/bin/eclipse-cpp
 
@@ -43,22 +45,17 @@ Categories=Development;IDE;C;C++
 Terminal=false
 EOF
 
-cp usr/bin/plugins/org.eclipse.epp.package.cpp_*/eclipse256.png > ../$LAPP.png
+cp usr/bin/plugins/org.eclipse.epp.package.cpp_*/eclipse256.png $LOWERAPP.png
 
 find usr \
   -name "*.html" -exec rm '{}' \; \
   -or -name "*.bat" -exec rm '{}' \; \
-  -or -name "eclipse*.png" -exec rm '{}' \; \
   -or -name "mac*.png" -exec rm '{}' \; \
   -or -name "win*.png" -exec rm '{}' \; \
   -or -name "eclipse*.gif" -exec rm '{}' +
 
-# Move out of $APPDIR
-wget -O ./usr/bin/$APP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$APP.wrapper
-cd ..
+get_desktopintegration $APP
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-./AppImageAssistant ./$APP.AppDir/ ../out/"$APP-$VERSION-x86_64.AppImage"
+cd .. # Move out of the AppDir
+
+generate_appimage
