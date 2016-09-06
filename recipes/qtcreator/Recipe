@@ -145,11 +145,11 @@ deb http://ftp.debian.org/debian wheezy-backports main
 " > sources.list
 apt-get $OPTIONS update
 URLS=$(apt-get $OPTIONS -y install --print-uris g++ libgl1-mesa-dev | cut -d "'" -f 2 | grep -e "^http")
-wget -c $URLS
+# wget -c $URLS
 
 cd ./$APP.AppDir/
 
-find ../*.deb -exec dpkg -x {} . \; || true
+# find ../*.deb -exec dpkg -x {} . \; || true
 
 mv $TARGETDIR/* .
 
