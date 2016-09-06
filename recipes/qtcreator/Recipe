@@ -151,8 +151,6 @@ cd ./$APP.AppDir/
 
 find ../*.deb -exec dpkg -x {} . \; || true
 
-get_apprun
-
 mv $TARGETDIR/* .
 
 ( cd usr/bin ; ln -s ../../Tools/QtCreator/bin/qtcreator.sh qtcreator )
@@ -177,15 +175,11 @@ ARCH=$(arch)
 find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
 
 # Since the AppImage mountpoint changes on each execution, we use a workaround
-mv AppRun AppRun.real
 
 cat > AppRun <<\EOF
 #!/bin/bash
 
 LINK="/tmp/.mount_QtCreator-5.7.0-x86_64"
-
-# Make it posible to run compiled apps from inside Qt Creator
-export QT_PLUGIN_PATH=/tmp/.mount_QtCreator-5.7.0-x86_64/plugins:$QT_PLUGIN_PATH
 
 # QtCreator uses hardcoded paths. Hence we are using this workaround. At AppImage creation time, did:
 # find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
@@ -205,12 +199,12 @@ atexit()
 
 if [ "" == "$APPDIR" ] ; then
   ln -s  "$HERE" "$LINK"
-  "$LINK"/AppRun.real "$@"
+  "$LINK"/usr/bin/qtcreator "$@"
   exit $?
 fi
 
 ln -s  "$APPDIR" "$LINK"
-"$LINK"/AppRun.real "$@"
+"$LINK"/usr/bin/qtcreator "$@"
 exit $?
 EOF
 chmod a+x AppRun
