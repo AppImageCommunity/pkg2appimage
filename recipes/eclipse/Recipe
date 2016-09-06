@@ -17,7 +17,7 @@ cd $APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-wget -c "http://mirror.internode.on.net/pub/$LLOWERAPP/technology/epp/downloads/release/neon/R/$LOWERAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
+wget -c "http://mirror.internode.on.net/pub/$LOWERAPP/technology/epp/downloads/release/neon/R/$LOWERAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
 
 # Get Java
 wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
