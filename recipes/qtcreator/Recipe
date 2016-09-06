@@ -1,5 +1,3 @@
-# Blocked by https://github.com/probonopd/AppImageKit/issues/83#issuecomment-244680617
-
 # To get the payload files out of the Qt installer is somewhat tricky but doable as can be seen below
 
 APP=QtCreator
@@ -129,6 +127,46 @@ get_desktopintegration $LOWERAPP
 
 VERSION=$(ls ../*.run | cut -d "-" -f 5 | sed -e 's|.run||g')
 ARCH=$(arch)
+
+# Qt Creator installer has placed hardcoded absolute paths to the installation location into the AppImgae
+# which we need to patch away
+find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
+
+# Since the AppImage mountpoint changes on each execution, we use a workaround
+mv AppRun AppRun.real
+
+cat > AppRun <<\EOF
+#!/bin/bash
+
+LINK="/tmp/.mount_QtCreator-5.7.0-x86_64"
+
+# QtCreator uses hardcoded paths. Hence we are using this workaround. At AppImage creation time, did:
+# find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
+
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+if [ -L "$LINK" ] ; then
+  echo "QtCreator seems to be already running or there is a leftover $LINK file; delete it and try again"
+  exit 1
+fi
+
+trap atexit EXIT
+atexit()
+{
+  rm "$LINK"
+}
+
+if [ "" == "$APPDIR" ] ; then
+  ln -s  "$HERE" "$LINK"
+  "$LINK"/AppRun.real "$@"
+  exit $?
+fi
+
+ln -s  "$APPDIR" "$LINK"
+"$LINK"/AppRun.real "$@"
+exit $?
+EOF
+chmod a+x AppRun
 
 # Go out of AppImage
 cd ..
