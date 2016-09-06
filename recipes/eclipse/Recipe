@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This is an example for packaging a Java application as an AppImage.
+# This is not working yet, look at other recipes for examples
 
 APP="eclipse-cpp"
 LOWERAPP=${APP//-cpp/}
@@ -17,6 +17,7 @@ cd $APP/
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
+# FIXME: Never hardcode download links in this way; get from "official" URL
 wget -c "http://mirror.internode.on.net/pub/$LOWERAPP/technology/epp/downloads/release/neon/R/$LOWERAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
 
 # Get Java
@@ -32,7 +33,7 @@ rm -rf usr/$LOWERAPP
 
 mv usr/bin/eclipse usr/bin/eclipse-cpp
 
-# Install java
+# FIXME: Actually put Java somewhere it is really picked up by Eclipse; this doesn't seem to work
 tar xf ../jre*
 ( cd ./eclipse-* ; mkdir -p jre ; cd jre ; mv ../../jre* ./jre )
 
