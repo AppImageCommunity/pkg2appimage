@@ -223,6 +223,7 @@ rm ./*/gcc_64/translations/qtwebengine_locales/*
 mv  ./*/gcc_64/translations/en-US.pak ./*/gcc_64/translations/qtwebengine_locales/
 echo "The rest of the gcc_64/translations/qtwebengine_locales have been deleted to shrink the AppImage size; edit the recipe to change this." > MISSING_TRANSLATIONS.txt
 find . -name  *Qt3D* -exec rm -r {} \; || true
+find . -name  *Qt53D* -exec rm -r {} \; || true
 echo "Qt3D been deleted to shrink the AppImage size; edit the recipe to change this." > MISSING_Qt3D.txt
 
 # Go out of AppImage
