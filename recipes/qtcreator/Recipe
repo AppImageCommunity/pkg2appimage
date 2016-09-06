@@ -192,6 +192,9 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 export PATH=$LINK/5.7/gcc_64/plugins/usr/bin/:$LINK/bin/:$PATH
 # Do not export LD_LIBRARY_PATH as the libraries pulled in by wheezy g++ lead to segfaults of Qt Creator
 # TODO: Try using rpath or another compiler, e.g., from CentOS 6 devtoolset
+
+# The following is not needed to run Qt Creator, but it allows binaries compiled by it to run
+# from the Run button in the IDE
 export QT_PLUGIN_PATH=$LINK/5.7/gcc_64/plugins:$QT_PLUGIN_PATH
 
 if [ -L "$LINK" ] ; then
