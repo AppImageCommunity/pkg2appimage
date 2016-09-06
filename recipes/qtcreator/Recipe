@@ -105,7 +105,19 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 
 ls -lh "$TARGETDIR/"
 
+# The Qt Creator installer does not install a compiler
+# so we do in order to have a fully working out-of-the-box experience
+
+generate_status
+echo "deb http://ftp.de.debian.org/debian/ oldstable main contrib non-free
+" > sources.list
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris c++ | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
+
 cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
 
 get_apprun
 
