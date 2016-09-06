@@ -186,6 +186,10 @@ LINK="/tmp/.mount_QtCreator-5.7.0-x86_64"
 
 HERE="$(dirname "$(readlink -f "${0}")")"
 
+export PATH=$LINK/5.7/gcc_64/plugins/usr/bin/:$LINK/bin/:$PATH
+export LD_LIBRARY_PATH=$LINK/usr/lib/x86_64-linux-gnu:$LINK/lib/x86_64-linux-gnu:$LINK/usr/lib/:$LINK/lib/:$LD_LIBRARY_PATH
+export QT_PLUGIN_PATH=$LINK/5.7/gcc_64/plugins:$QT_PLUGIN_PATH
+
 if [ -L "$LINK" ] ; then
   echo "QtCreator seems to be already running or there is a leftover $LINK file; delete it and try again"
   exit 1
@@ -208,6 +212,10 @@ ln -s  "$APPDIR" "$LINK"
 exit $?
 EOF
 chmod a+x AppRun
+
+# Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
+# and AppImage size grows over 250 MB. So we deduplicate them
+( cd Tools/QtCreator/ ; mv -R libold/ lib/ ; ln -s ../../*/gcc_64/lib . ; cp -Rv libold/* lib/ ; rm -rf libold/ )
 
 # Go out of AppImage
 cd ..
