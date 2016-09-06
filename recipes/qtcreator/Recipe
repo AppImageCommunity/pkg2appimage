@@ -105,7 +105,51 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 
 ls -lh "$TARGETDIR/"
 
+# The Qt Creator installer does not install a compiler
+# so we do in order to have a fully working out-of-the-box experience
+
+generate_status
+cat > status<<\EOF
+Package: apt-transport-https
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: debconf
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: dictionaries-common
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: dpkg
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+
+Package: libc6
+Status: install ok installed
+Architecture: all
+Version: 2.13-38+deb7u10
+
+Package: libstdc++6
+Status: install ok installed
+Architecture: all
+Version: 9:9999.9999.9999
+EOF
+echo "deb http://ftp.de.debian.org/debian/ wheezy main
+deb http://ftp.debian.org/debian wheezy-backports main
+" > sources.list
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris g++ libgl1-mesa-dev | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
+
 cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
 
 get_apprun
 
