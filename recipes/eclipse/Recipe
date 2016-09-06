@@ -14,6 +14,9 @@ mkdir -p $APP/$APP.AppDir/usr/bin
 
 cd $APP/
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "http://mirror.internode.on.net/pub/$LLOWERAPP/technology/epp/downloads/release/neon/R/$LOWERAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
 
 # Get Java
@@ -21,8 +24,7 @@ wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=acce
 
 cd $APP.AppDir/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 bsdtar -xf ../$LOWERAPP-*.tar.gz -C usr
 cp -r usr/$LOWERAPP/* usr/bin
