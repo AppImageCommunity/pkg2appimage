@@ -215,7 +215,7 @@ chmod a+x AppRun
 
 # Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
 # and AppImage size grows over 250 MB. So we deduplicate them
-( cd Tools/QtCreator/ ; cp -Rv libold/ lib/ ; ln -s ../../*/gcc_64/lib . ; cp -Rv libold/* lib/ ; rm -rf libold/ )
+( cd Tools/QtCreator/ ; mv lib/ libold/ ; ln -s ../../*/gcc_64/lib . ; cp -Rv libold/* lib/ ; rm -rf libold/ )
 
 # Go out of AppImage
 cd ..
