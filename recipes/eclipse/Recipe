@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# This is an example for packaging a Java application as an AppImage.
+# This application comes with a JRE.
+
+sudo apt-get -y install bsdtar
+
+APP="eclipse-cpp"
+LAPP=${APP//-cpp/}
+VERSION=4.6.0
+echo $VERSION
+
+mkdir -p $APP/$APP.AppDir/usr/bin
+
+# FIXME: Use official icon instead, and a png
+wget -cO- https://worldvectorlogo.com/logos/$LAPP-11.svg > $APP/$APP.AppDir/$LAPP.svg
+
+cd $APP/
+
+wget -c "http://mirror.internode.on.net/pub/$LAPP/technology/epp/downloads/release/neon/R/$LAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
+
+cd $APP.AppDir/
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
+chmod a+x ./AppRun
+
+bsdtar -xf ../$LAPP-*.tar.gz -C usr
+cp -r usr/$LAPP/* usr/bin
+rm -rf usr/$LAPP
+
+mv usr/bin/eclipse usr/bin/eclipse-cpp
+
+cat > $APP.desktop <<EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Eclipse
+Icon=$LAPP
+Exec=$APP.wrapper
+Categories=Development;IDE;
+Terminal=false
+EOF
+
+# Move out of $APPDIR
+wget -O ./usr/bin/$APP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+chmod a+x ./usr/bin/$APP.wrapper
+cd ..
+
+wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+chmod a+x ./AppImageAssistant
+mkdir -p ../out
+./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
