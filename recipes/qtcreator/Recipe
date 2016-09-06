@@ -217,6 +217,12 @@ chmod a+x AppRun
 # and AppImage size grows over 250 MB. So we deduplicate them
 ( cd Tools/QtCreator/ ; mv lib/ libold/ ; ln -s ../../*/gcc_64/lib . ; cp -Rv libold/* lib/ ; rm -rf libold/ )
 
+# It is still too large for Bintray...
+mv ./*/gcc_64/translations/qtwebengine_locales/en-US.pak ./*/gcc_64/translations/
+rm ./*/gcc_64/translations/qtwebengine_locales/*
+mv  ./*/gcc_64/translations/en-US.pak ./*/gcc_64/translations/qtwebengine_locales/
+echo "The rest of the gcc_64/translations/qtwebengine_locales have been deleted to shrink the AppImage size; edit the recipe to change this." > MISSING_TRANSLATIONS.txt
+
 # Go out of AppImage
 cd ..
 
