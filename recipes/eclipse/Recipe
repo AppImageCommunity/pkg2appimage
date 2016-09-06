@@ -1,23 +1,21 @@
 #!/bin/bash
 
 # This is an example for packaging a Java application as an AppImage.
-# This application comes with a JRE.
-
-sudo apt-get -y install bsdtar
 
 APP="eclipse-cpp"
 LAPP=${APP//-cpp/}
-VERSION=4.6.0
-echo $VERSION
+VERSION=4.6.0 # FIXME: Do not hardcode the version number
 
+rm -rf $APP/$APP.AppDir
+rm -rf out
 mkdir -p $APP/$APP.AppDir/usr/bin
-
-# FIXME: Use official icon instead, and a png
-wget -cO- https://worldvectorlogo.com/logos/$LAPP-11.svg > $APP/$APP.AppDir/$LAPP.svg
 
 cd $APP/
 
 wget -c "http://mirror.internode.on.net/pub/$LAPP/technology/epp/downloads/release/neon/R/$LAPP-cpp-neon-R-linux-gtk-x86_64.tar.gz"
+
+# Get Java
+wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
 
 cd $APP.AppDir/
 
@@ -30,6 +28,10 @@ rm -rf usr/$LAPP
 
 mv usr/bin/eclipse usr/bin/eclipse-cpp
 
+# Install java
+tar xf ../jre*
+( cd ./eclipse-* ; mkdir -p jre ; cd jre ; mv ../../jre* ./jre )
+
 cat > $APP.desktop <<EOF
 [Desktop Entry]
 Version=1.0
@@ -37,9 +39,19 @@ Type=Application
 Name=Eclipse
 Icon=$LAPP
 Exec=$APP.wrapper
-Categories=Development;IDE;
+Categories=Development;IDE;C;C++
 Terminal=false
 EOF
+
+cp usr/bin/plugins/org.eclipse.epp.package.cpp_*/eclipse256.png > ../$LAPP.png
+
+find usr \
+  -name "*.html" -exec rm '{}' \; \
+  -or -name "*.bat" -exec rm '{}' \; \
+  -or -name "eclipse*.png" -exec rm '{}' \; \
+  -or -name "mac*.png" -exec rm '{}' \; \
+  -or -name "win*.png" -exec rm '{}' \; \
+  -or -name "eclipse*.gif" -exec rm '{}' +
 
 # Move out of $APPDIR
 wget -O ./usr/bin/$APP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
@@ -49,4 +61,4 @@ cd ..
 wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
 chmod a+x ./AppImageAssistant
 mkdir -p ../out
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+./AppImageAssistant ./$APP.AppDir/ ../out/"$APP-$VERSION-x86_64.AppImage"
