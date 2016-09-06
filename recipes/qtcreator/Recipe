@@ -1,3 +1,6 @@
+# This recipe bundles the Qt Creator IDE and Qt libraries that can be used for compiling
+# It does currently not contain a compiler; although this might be changed in the future
+
 # To get the payload files out of the Qt installer is somewhat tricky but doable as can be seen below
 
 APP=QtCreator
@@ -187,7 +190,8 @@ LINK="/tmp/.mount_QtCreator-5.7.0-x86_64"
 HERE="$(dirname "$(readlink -f "${0}")")"
 
 export PATH=$LINK/5.7/gcc_64/plugins/usr/bin/:$LINK/bin/:$PATH
-export LD_LIBRARY_PATH=$LINK/usr/lib/x86_64-linux-gnu:$LINK/lib/x86_64-linux-gnu:$LINK/usr/lib/:$LINK/lib/:$LD_LIBRARY_PATH
+# Do not export LD_LIBRARY_PATH as the libraries pulled in by wheezy g++ lead to segfaults of Qt Creator
+# TODO: Try using rpath or another compiler, e.g., from CentOS 6 devtoolset
 export QT_PLUGIN_PATH=$LINK/5.7/gcc_64/plugins:$QT_PLUGIN_PATH
 
 if [ -L "$LINK" ] ; then
