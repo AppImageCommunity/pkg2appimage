@@ -11,9 +11,11 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 wget -c https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb
 
 # Compile patchelf
-wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
-tar xf patchelf-0.9.tar.bz2
-( cd patchelf-0.9/ && ./configure  && make && sudo make install )
+if [ "" == "$(which patchelf)" ] ; then
+  wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
+  tar xf patchelf-0.9.tar.bz2
+  ( cd patchelf-0.9/ && ./configure  && make && sudo make install )
+fi
 
 cd ./$APP.AppDir/
 find ../*.deb -exec dpkg -x {} . \; || true
@@ -32,9 +34,8 @@ rm -rf etc usr
 mkdir -p usr
 mv opt/google/earth/free usr/bin
 
-# Fix symlinks
-( cd usr/bin ; ln -sf googleearth google-earth )
-( cd usr/ ; ln -s bin/googleearth-bin . )
+# Nice script @icculus but no longer needed
+( cd usr/bin ; mv -f googleearth-bin google-earth )
 
 cp ./usr/bin/product_logo_128.png google-earth.png
 cp ./usr/bin/google-earth.desktop .
@@ -42,8 +43,10 @@ sed -i -e 's|^Exec=.*|Exec=google-earth|g' google-earth.desktop
 
 get_desktopintegration google-earth
 
+# Fix .desktop file so that it passes validation
+sed -i -e 's|MultipleArgs|X-MultipleArgs|g' google-earth.desktop
+
 ln -s ./usr/bin/google-earth.wrapper AppRun
-ln -s usr/bin/googleearth-bin .
 
 VERSION=$(strings ./usr/bin/libgoogleearth_free.so | grep SetupVersionInfo -C 1 | head -n 3 | tail -n 1)
 ARCH=$(arch)
