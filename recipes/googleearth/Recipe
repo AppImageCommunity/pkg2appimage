@@ -11,7 +11,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 wget -c https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb
 
 # Compile patchelf
-if [ ! -f ./patchelf-0.9/patchelf ] ; then
+if [ ! -f ./patchelf-0.9/src/patchelf ] ; then
   wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
   tar xf patchelf-0.9.tar.bz2
   ( cd patchelf-0.9/ && ./configure  && make )
@@ -22,12 +22,12 @@ find ../*.deb -exec dpkg -x {} . \; || true
 
 # Change the interpreter; Google Earth uses an unusual one that is
 # installed on almost no system out-of-the-box
-../patchelf-0.9/patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 opt/google/earth/free/googleearth-bin
+../patchelf-0.9/src/patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 opt/google/earth/free/googleearth-bin
 
 # Set the rpath so that libraries in the same directory as the executable
 # are also found. Note that we also need to do this on libraries that load
 # other libraries.
-find opt/google/earth/ -type f -executable -exec ../patchelf-0.9/patchelf --set-rpath \$ORIGIN {} \;
+find opt/google/earth/ -type f -executable -exec ../patchelf-0.9/src/patchelf --set-rpath \$ORIGIN {} \;
 
 # Clean up the directory structure
 rm -rf etc usr
