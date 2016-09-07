@@ -20,7 +20,7 @@ if [ ! -f ./patchelf-0.9/src/patchelf ] ; then
 fi
 
 cd ./$APP.AppDir/
-ar p ../*.deb data.tar.xz | tar xJ
+find ../*.deb -exec ar p {} data.tar.xz \; | tar xJ || true
 
 # Change the interpreter; Google Earth uses an unusual one that is
 # installed on almost no system out-of-the-box
@@ -49,6 +49,8 @@ get_desktopintegration google-earth
 sed -i -e 's|MultipleArgs|X-MultipleArgs|g' google-earth.desktop
 
 ln -s ./usr/bin/google-earth.wrapper AppRun
+
+rm -rf ./opt/
 
 VERSION=$(strings ./usr/bin/libgoogleearth_free.so | grep SetupVersionInfo -C 1 | head -n 3 | tail -n 1)
 ARCH=$(arch)
