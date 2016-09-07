@@ -23,11 +23,9 @@ get_apprun
 # delete_blacklisted
 rm -rf ./etc/ ./home/ || true
 
-VERSION=$(find ../*.deb -name $LOWERAPP_"*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
-
+# VERSION=$(find ../*.deb -name $LOWERAPP_"*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 # Slack doesn't follow deb naming conventions, workaround:
-if [ -z "$VERSION" ]; then ; VERSION=$(find ../*.deb -name $LOWERAPP-"*" | head -n 1 | cut -d "-" -f 3)
-
+VERSION=$(find ../*.deb -name $LOWERAPP-"*" | head -n 1 | cut -d "-" -f 3)
 echo $VERSION
 
 get_desktopintegration $LOWERAPP
