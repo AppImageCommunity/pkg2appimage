@@ -20,7 +20,7 @@ if [ ! -f ./patchelf-0.9/src/patchelf ] ; then
 fi
 
 cd ./$APP.AppDir/
-find ../*.deb -exec dpkg -x {} . \; || true
+ar p ../*.deb data.tar.xz | tar xJ
 
 # Change the interpreter; Google Earth uses an unusual one that is
 # installed on almost no system out-of-the-box
