@@ -1,3 +1,11 @@
+################################################################################################
+# The Google Earth license does not allow to redistribute it, but you can generate
+# your own Google Earth AppImage by running this script:
+#
+# wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/googleearth/Recipe
+# bash -ex Recipe
+################################################################################################
+
 APP=GoogleEarth
 LOWERAPP=${APP,,}
 
