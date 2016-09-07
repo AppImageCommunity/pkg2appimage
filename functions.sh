@@ -109,7 +109,7 @@ generate_appimage()
   wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
   chmod a+x ./AppImageAssistant
   mkdir -p ../out
-  rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
+  rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
 }
 
