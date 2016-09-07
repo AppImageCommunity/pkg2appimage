@@ -11,7 +11,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 wget -c https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb
 
 # Compile patchelf
-if [ "" == "$(which patchelf)" ] ; then
+if [ ! -f ./patchelf-0.9/patchelf ] ; then
   wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
   tar xf patchelf-0.9.tar.bz2
   ( cd patchelf-0.9/ && ./configure  && make )
