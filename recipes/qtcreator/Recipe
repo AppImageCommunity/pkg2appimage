@@ -197,6 +197,10 @@ export PATH=$LINK/5.7/gcc_64/plugins/usr/bin/:$LINK/bin/:$PATH
 # from the Run button in the IDE
 export QT_PLUGIN_PATH=$LINK/5.7/gcc_64/plugins:$QT_PLUGIN_PATH
 
+# Make sure Qt Creator can find its executables
+export PATH=$LINK/5.7/gcc_64/bin:$PATH
+export QTWEBENGINEPROCESS_PATH=$LINK/5.7/gcc_64/libexec/QtWebEngineProcess
+
 if [ -L "$LINK" ] ; then
   echo "QtCreator seems to be already running or there is a leftover $LINK file; delete it and try again"
   exit 1
