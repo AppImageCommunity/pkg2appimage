@@ -61,5 +61,4 @@ rm -rf thunderbird
 
 cd ..
 
-ARCH="x86_64"
 generate_appimage

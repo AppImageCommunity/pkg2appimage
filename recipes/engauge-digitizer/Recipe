@@ -38,7 +38,7 @@ sudo yum -y install wget epel-release git make libtool \
 
 # Determine which architecture should be built
 if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
-	ARCH=$(/bin/arch)
+	
 else
 	echo "Architecture could not be determined"
 	exit 1
@@ -272,7 +272,6 @@ rm usr/lib/qt5/plugins/platformthemes/libqgtk* || true
 # Workaround for:
 # GTK theme is broken
 rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
-
 
 cd ..
 find $APP.AppDir/

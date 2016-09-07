@@ -6,7 +6,7 @@
 VERSION=$(wget -q https://www.torproject.org/download/download.html.en -O - | grep " - Linux, BSD, and Unix" | xargs | cut -d " " -f 2)
 
 if [[ "x$ARCH" == "x" ]] ; then
-  ARCH="x86_64"
+
 fi
 
 APP=torbrowser

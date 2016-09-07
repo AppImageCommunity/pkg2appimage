@@ -46,5 +46,4 @@ get_desktopintegration $LOWERAPP
 
 cd ..
 
-ARCH="x86_64"
 generate_appimage

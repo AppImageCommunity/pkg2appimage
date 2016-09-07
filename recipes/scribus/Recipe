@@ -87,7 +87,6 @@ cd ..
 
 ldconfig
 
-
 if [ ! -d libmspub ] ; then
   git clone http://anongit.freedesktop.org/git/libreoffice/libmspub.git
 fi
@@ -368,8 +367,6 @@ VER=$(grep "#define VERSION" ./scribus1*/config.h | cut -d '"' -f 2)
 REVISION=$(svn info scribus1* |grep Revision: | cut -c11-)
 VERSION=$VER.$REVISION
 echo $VERSION
-
-ARCH=$(arch)
 
 if [[ "$ARCH" = "x86_64" ]] ; then
 	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"

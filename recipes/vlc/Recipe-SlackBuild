@@ -22,7 +22,7 @@
 # some dependencies that cannot be assumed to be present everywhere (FIXME)
 
 if [[ "x$ARCH" == "x" ]] ; then
-  ARCH="x86_64"
+
 fi
 
 APP=vlc

@@ -24,7 +24,6 @@ make clean
 make
 cd ..
 
-
 #end
 
 APP=Octave
@@ -106,8 +105,6 @@ get_desktopintegration octave
 
 # Go out of AppImage
 cd ..
-
-ARCH=$(/bin/arch)
 
 if [[ "$ARCH" = "x86_64" ]] ; then
 	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"

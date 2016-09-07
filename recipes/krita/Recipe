@@ -30,7 +30,7 @@ export LANG=en_us.UTF-8
 
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
-  ARCH=$(arch)
+  
 else
   echo "Architecture could not be determined"
   exit 1
@@ -70,19 +70,16 @@ git_pull_rebase_helper
 cd /
 fi # [ -z "$NO_DOWNLOAD" ]
 
-
 # Workaround for:
 # /usr/lib/librevenge-stream-0.0.so: undefined reference to `std::__detail::_List_node_base::_M_hook(std::__detail::_List_node_base*)'
 # Use the new compiler
 . /opt/rh/devtoolset-2/enable
-
 
 # Workaround for: On CentOS 6, .pc files in /usr/lib/pkgconfig are not recognized
 # However, this is where .pc files get installed when bulding libraries... (FIXME)
 # I found this by comparing the output of librevenge's "make install" command
 # between Ubuntu and CentOS 6
 ln -sf /usr/share/pkgconfig /usr/lib/pkgconfig
-
 
 # A krita build layout looks like this:
 # krita/ -- the source directory
@@ -232,7 +229,6 @@ done
 #done
 #rm -f DEPSFILE
 
-
 # The following are assumed to be part of the base system
 rm -f usr/lib/libcom_err.so.2 || true
 rm -f usr/lib/libcrypt.so.1 || true
@@ -319,7 +315,6 @@ rm -f ./usr/lib/libdbus-1.so.3 || true
 cp ../AppImageKit/AppRun .
 cp ./usr/share/applications/krita.desktop krita.desktop
 cp /krita/krita/pics/app/64-apps-calligrakrita.png calligrakrita.png
-
 
 # replace krita with the lib-checking startup script.
 #cd /krita.appdir/usr/bin

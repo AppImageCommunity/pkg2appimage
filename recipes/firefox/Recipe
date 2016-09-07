@@ -61,5 +61,4 @@ get_desktopintegration firefox
 
 cd ..
 
-ARCH="x86_64"
 generate_appimage

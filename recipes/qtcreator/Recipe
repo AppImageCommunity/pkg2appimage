@@ -171,7 +171,6 @@ sed -i -e 's|^Name=.*|Name=QtCreator|g' $LOWERAPP.desktop
 get_desktopintegration $LOWERAPP
 
 VERSION=$(ls ../*.run | cut -d "-" -f 5 | sed -e 's|.run||g')
-ARCH=$(arch)
 
 # Qt Creator installer has placed hardcoded absolute paths to the installation location into the AppImgae
 # which we need to patch away

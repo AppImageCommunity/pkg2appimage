@@ -30,7 +30,6 @@ copy_deps ; delete_blacklisted ; move_lib ; get_apprun
 mv usr/lib/x86_64-linux-gnu/pulseaudio/* usr/lib/x86_64-linux-gnu/ && rm -r usr/lib/x86_64-linux-gnu/pulseaudio/
 get_desktopintegration $LOWERAPP
 
-ARCH=$(arch)
 VERSION=$VER1.glibc$(glibc_needed)
 
 cd ..

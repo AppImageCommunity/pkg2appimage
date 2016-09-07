@@ -142,6 +142,5 @@ get_desktopintegration $LOWERAPP
 cd ..
 
 VERSION=$(ls "${LOWERAPP}"_*deb | head -n 1 | cut -d "_" -f 2 | cut -d "+" -f 1)
-ARCH=$(arch)
 
 generate_appimage

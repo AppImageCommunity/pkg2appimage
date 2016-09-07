@@ -255,5 +255,4 @@ get_desktopintegration $LOWERAPP
 # Go out of AppImage
 cd ..
 
-ARCH="x86_64"
 generate_appimage

@@ -42,7 +42,6 @@ get_desktopintegration $LOWERAPP
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
-ARCH=$(arch)
 
 cd ..
 

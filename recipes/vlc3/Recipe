@@ -77,11 +77,6 @@ cd extras/tools/
 ./bootstrap
 make -j 16
 # make
-# make
-# make
-# make
-# make
-# make
 # Why do I have to run make repeatedly on Trusty but not on Precise or Xenial?
 
 cd ../..
@@ -158,7 +153,6 @@ sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak
 # https://mailman.videolan.org/pipermail/vlc-devel/2016-May/107520.html
 # "XVideo is not a problem because XVideo is dead"
 # hence disabling it
-
 
 # Workaround for:
 # "configure: error: Package requirements (xcb >= 1.6) were not met:
@@ -294,8 +288,6 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 . ./functions.sh
 
 cd $APP.AppDir
-
-export ARCH=x86_64
 
 cp usr/share/icons/hicolor/128x128/apps/vlc.png .
 

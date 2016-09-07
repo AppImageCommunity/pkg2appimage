@@ -61,7 +61,6 @@ ln -s ./usr/bin/google-earth.wrapper AppRun
 rm -rf ./opt/
 
 VERSION=$(strings ./usr/bin/libgoogleearth_free.so | grep SetupVersionInfo -C 1 | head -n 3 | tail -n 1)
-ARCH=$(arch)
 
 cd .. # Get out of the AppImage
 

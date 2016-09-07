@@ -42,7 +42,7 @@ export LANG=en_us.UTF-8
 
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
-  ARCH=$(arch)
+  
 else
   echo "Architecture could not be determined"
   exit 1
@@ -90,7 +90,6 @@ if [ ! -d /kdev-python ] ; then
 fi
 cd /kdev-python/
 git_pull_rebase_helper
-
 
 # Prepare the install location
 rm -rf /app/ || true
@@ -361,7 +360,6 @@ cd /$APP/
 mv ../app/* $APP.AppDir/
 
 VERSION="git"
-ARCH=$(arch)
 
 mkdir -p /out
 rm -rf /out/*

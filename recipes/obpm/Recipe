@@ -65,7 +65,6 @@ Controller.prototype.IntroductionPageCallback = function() {
     gui.clickButton(buttons.NextButton);
 }
 
-
 Controller.prototype.TargetDirectoryPageCallback = function() {
     var widget = gui.currentPageWidget();
 

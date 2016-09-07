@@ -57,5 +57,4 @@ sed -i -e 's|--set-icon=$ICONFILE|--set-name="Firefox Developer" --set-icon=$ICO
 
 cd ..
 
-ARCH="x86_64"
 generate_appimage

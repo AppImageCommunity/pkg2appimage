@@ -92,7 +92,6 @@ delete_blacklisted
 move_lib
 
 VERSION=1
-ARCH=$(arch)
 
 ########################################################################
 # Package the AppDir as an AppImage

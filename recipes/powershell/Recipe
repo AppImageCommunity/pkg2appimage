@@ -137,5 +137,4 @@ sed -i -e 's|^echo|# echo|g' usr/bin/$LOWERAPP.wrapper # Make less verbose
 # Go out of AppImage
 cd ..
 
-ARCH="x86_64"
 generate_appimage

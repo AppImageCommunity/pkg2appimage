@@ -85,7 +85,7 @@ sudo yum -y install wget epel-release git make autoconf automake libtool \
 
 # Determine which architecture should be built
 if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
-	ARCH=$(/bin/arch)
+	
 else
 	echo "Architecture could not be determined"
 	exit 1
