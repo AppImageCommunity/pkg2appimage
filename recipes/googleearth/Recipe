@@ -42,7 +42,8 @@ sed -i -e 's|^Exec=.*|Exec=google-earth|g' google-earth.desktop
 
 get_desktopintegration google-earth
 
-ln -sf ./usr/bin/google-earth.wrapper  AppRun
+ln -s ./usr/bin/google-earth.wrapper AppRun
+ln -s usr/bin/googleearth-bin .
 
 VERSION=$(strings ./usr/bin/libgoogleearth_free.so | grep SetupVersionInfo -C 1 | head -n 3 | tail -n 1)
 ARCH=$(arch)
