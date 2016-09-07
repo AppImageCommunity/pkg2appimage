@@ -106,6 +106,22 @@ generate_appimage()
   #   echo "" >> ./$APP.AppDir/Recipe
   #   cat $RECIPE >> ./$APP.AppDir/Recipe
   # fi
+  #
+  # Detect the architecture of what we are packaging.
+  # The main binary could be a script, so let's use a .so library
+  BIN=$(find -name *.so* -type f -executable | head -n 1)
+  INFO=$(file "$BIN")
+  if [[ $INFO == *"x86-64"* ]] ; then
+    ARCH=x86_64
+  elif [[ $INFO == *"i686"* ]] ; then
+    ARCH=i686
+  elif [[ $INFO == *"armv6l"* ]] ; then
+    ARCH=armhf
+  else
+    echo "Could not automatically detect the architecture."
+    echo "Please set the \$ARCH environment variable."
+    exit 1
+  fi
   wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
   chmod a+x ./AppImageAssistant
   mkdir -p ../out
