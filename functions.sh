@@ -111,7 +111,7 @@ generate_appimage()
   # The main binary could be a script, so let's use a .so library
   BIN=$(find . -name *.so* -type f -executable | head -n 1)
   INFO=$(file "$BIN")
-  if [ -z $ARCH ]
+  if [ -z $ARCH ] ; then
     if [[ $INFO == *"x86-64"* ]] ; then
       ARCH=x86_64
     elif [[ $INFO == *"i686"* ]] ; then
