@@ -36,7 +36,7 @@ get_apprun
 mv ./usr/lib/x86_64-linux-gnu/pulseaudio/*.so usr/lib/x86_64-linux-gnu/ || true
 
 delete_blacklisted
-rm -rf ./etc/ ./home/ ./lib/ || true
+rm -rf ./etc/ ./home/ || true
 
 # patch_usr
 # find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;

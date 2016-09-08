@@ -223,7 +223,7 @@ mv ./usr/lib/libblas/* usr/lib/ || true
 mv ./mv usr/lib/lapack/* usr/lib/ || true
 
 delete_blacklisted
-rm -rf ./etc/ ./home/ ./lib/ || true
+rm -rf ./etc/ ./home/ || true
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps

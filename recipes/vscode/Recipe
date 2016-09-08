@@ -59,7 +59,7 @@ move_lib
 mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/ # AppRun sets Qt env here
 
 delete_blacklisted
-rm -rf ./etc/ ./home/ ./lib/ || true
+rm -rf ./etc/ ./home/ || true
 
 VERSION=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 echo $VERSION
