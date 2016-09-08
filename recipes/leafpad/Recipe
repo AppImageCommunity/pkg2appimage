@@ -11,6 +11,9 @@ export APP=leafpad
 mkdir -p $APP/$APP.AppDir
 cd $APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 # Note we are using a really old binary so that it runs hopefully everywhere
 # ALso note this is a very simplistic example as we assume this package has no dependencies
 # that are not part of the base system - unlike most other packages
@@ -24,14 +27,9 @@ dpkg -x ../$APP_*.deb .
 cp ./usr/share/icons/hicolor/scalable/apps/$APP.svg .
 cp ./usr/share/applications/$APP.desktop .
 
-# Add desktop integration
-wget -O ./usr/bin/$APP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$APP.wrapper
-sed -i -e "s|Exec=$APP |Exec=$APP.wrapper |g" $APP.desktop
+get_desktopintegration name $APP.desktop
 
-# Put in AppRun file
-wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
-chmod a+x AppRun
+get_apprun
 
 ###############################################################
 # Experimental autorun support
@@ -57,9 +55,4 @@ cd ..
 
 VERSION=$(echo $URL | cut -d "_" -f 2 | cut -d "-" -f 1 | head -n 1 | xargs)
 
-wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant # 64-bit
-chmod a+x AppImageAssistant
-
-mkdir -p ../out
-rm ../out/Leafpad-$VERSION-x86_64.AppImage || true
-./AppImageAssistant $APP.AppDir ../out/Leafpad-$VERSION-x86_64.AppImage
+generate_appimage

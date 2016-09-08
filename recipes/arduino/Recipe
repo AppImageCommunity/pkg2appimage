@@ -8,6 +8,9 @@ APP=Arduino
 mkdir -p ./$APP
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "$URL"
 tar xf *.tar.xz
 
@@ -17,8 +20,7 @@ mv ardu*/* $APP.AppDir/usr/bin/
 
 cd $APP.AppDir/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # Move icons into place so that AppImageAssistant finds them
 mkdir -p usr/share/icons
@@ -67,8 +69,4 @@ HOUR=$(cat $APP.AppDir/usr/bin/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's
 VERSION=$VER".hourly"$HOUR".esp"$ESPVER
 echo $VERSION
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

@@ -1,6 +1,3 @@
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
-. ./functions.sh
-
 APP=GIMP
 LOWERAPP=gimp
 
@@ -10,7 +7,13 @@ sudo apt-get update
 sudo apt-get -y install $LOWERAPP
 
 mkdir -p $APP/$APP.AppDir
-cd $APP/$APP.AppDir
+
+cd $APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+cd $APP.AppDir
 find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \;
 find /var/cache/apt/archives/libbabl* -exec dpkg -x {} . \;
 find /var/cache/apt/archives/libgegl* -exec dpkg -x {} . \;

@@ -10,6 +10,9 @@ OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/testing/5.2.
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "$OOODOWNLOADLINK"
 
 tar xfvz *.tar.gz
@@ -32,8 +35,7 @@ rm ./$BINARY
 find ../../opt -name soffice -path *program* -exec ln -s \{\} ./$BINARY \;
 cd ../../
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # The following is a real dirty hack to stay under the Bintray 250 MB file size limit 
 # We are deleting some of the largest Python binary libraries
@@ -46,8 +48,4 @@ find . -name _hashlib.cpython* -exec rm {} \; || true
 
 cd ..
 
-mkdir -p ../out
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # 64-bit
-chmod a+x AppImageAssistant
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

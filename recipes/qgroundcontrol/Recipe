@@ -10,6 +10,10 @@ APP=QGroundControl
 
 mkdir -p $APP/$APP.AppDir
 cd $APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "http://qgroundcontrol.s3.amazonaws.com/master/qgroundcontrol.tar.bz2"
 tar xf ./qgroundcontrol.tar.bz2
 wget -c http://ftp.us.debian.org/debian/pool/main/u/udev/udev_175-7.2_amd64.deb
@@ -50,13 +54,11 @@ Categories=Utility;
 Keywords=computer;
 EOF
 
+get_desktopintegration qgroundcontrol
+
 VERSION=$(strings qgroundcontrol | grep v[0-9*]\.[0-9*]\.[0-9*]-[0-9*] | head -n 1)
 
 # Go out of AppImage
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

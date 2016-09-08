@@ -10,6 +10,9 @@ LOWERAPP=${APP,,}
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 # Get Java
 wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
 
@@ -48,8 +51,7 @@ GenericName=FreeMind
 Comment=A free mind mapping tool
 EOF
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # Add desktop integration
 XAPP=freemind.sh
@@ -66,8 +68,4 @@ wget -c "http://t2.gstatic.com/images?q=tbn:ANd9GcTHxEdwvl5T_99IMX8DWhZuxf-eCkBH
 # Go out of AppImage
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

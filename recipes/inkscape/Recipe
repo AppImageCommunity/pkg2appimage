@@ -25,7 +25,7 @@ git_pull_rebase_helper()
 
 # Determine which architecture should be built
 if [[ "$(/bin/arch)" = "i686" ||  "$(/bin/arch)" = "x86_64" ]] ; then
-	
+	ARCH=$(arch)
 else
 	echo "Architecture could not be determined"
 	exit 1

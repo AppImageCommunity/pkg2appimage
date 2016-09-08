@@ -14,13 +14,15 @@ APP=Atom
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c --trust-server-names "$URL"
 
 cd $APP.AppDir/
 dpkg -x ../atom*deb* .
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # Move icon into place so that AppImageAssistant finds them
 cp ./usr/share/pixmaps/atom.png .
@@ -51,8 +53,4 @@ echo $VERSION
 # Go out of AppImage
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

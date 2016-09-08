@@ -1,3 +1,6 @@
+# Note: Etcher now provides an official AppImage,
+# so this is for historic reasons only. Use the official Etcher AppImage from their website instead.
+#
 # This is an example for an Electron-based app that is not a text editor.
 # We are using their precompiled binaries.
 
@@ -5,6 +8,9 @@ APP=Etcher
 
 mkdir -p $APP/$APP.AppDir
 cd $APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
 
 # Get the current version from the GitHub Releases page
 # since on http://www.etcher.io/ it is not accessible
@@ -25,8 +31,7 @@ mkdir -p usr/bin
 mv etcher-release/Etcher-linux-x64/* usr/bin/
 rm -r etcher-release/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 cat > Etcher.desktop <<EOF
 [Desktop Entry]
@@ -51,8 +56,4 @@ VERSION=$VERSION-glibc$GLIBC_NEEDED
 
 cd .. # Go out of AppDir
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

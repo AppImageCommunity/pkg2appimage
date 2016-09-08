@@ -10,6 +10,10 @@ URL="https://ricochet.im/releases/latest/${FILE}"
 APP=Ricochet
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "$URL"
 
 tar xf *tar.bz2
@@ -18,8 +22,7 @@ mv ricochet/* $APP.AppDir/usr/bin/
 
 cd $APP.AppDir
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 wget https://raw.githubusercontent.com/ricochet-im/ricochet/master/src/ricochet.desktop
 
@@ -30,9 +33,7 @@ VERSION=$(ls ../ricochet-*.tar.bz2 | cut -d "-" -f 2)
 
 # Add desktop integration
 XAPP=ricochet
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+get_desktopintegration $XAPP
 
 # If built in portable mode (default), configuration 
 # is stored in the 'config' directory next to the binary.
@@ -44,8 +45,4 @@ sed -i -e 's|exec $BIN "$@"|exec $BIN $HOME/.ricochet|g' usr/bin/ricochet.wrappe
 # Go out of AppImage
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

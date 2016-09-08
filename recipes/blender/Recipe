@@ -14,6 +14,9 @@ APP=Blender
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "$URL"
 
 tar xf *.tar.bz2
@@ -21,8 +24,7 @@ mv blender-*/* $APP.AppDir/usr/bin/
 
 cd $APP.AppDir/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # Move icons into place so that AppImageAssistant finds them
 cp ./usr/bin/icons/scalable/apps/blender.svg .
@@ -62,8 +64,4 @@ cd ..
 VERSION=$(ls blender-*.bz2 | cut -d "-" -f 2)
 echo $VERSION
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

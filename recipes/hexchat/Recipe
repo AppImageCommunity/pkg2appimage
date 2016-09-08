@@ -7,7 +7,7 @@ fi
 
 # Determine which architecture should be built
 if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
-  
+  ARCH=$(arch)
 else
   echo "Architecture could not be determined"
   exit 1

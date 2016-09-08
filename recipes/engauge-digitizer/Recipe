@@ -62,20 +62,9 @@ sudo yum -y install qt5-qtbase-devel  \
 fi
 
 if [ -z "$NO_DOWNLOAD" ] ; then
-# Install AppImageKit build dependencies
-sudo yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 # Fedora, RHEL, CentOS
 
-# Build AppImageKit
-if [ ! -d AppImageKit ] ; then
-  git clone https://github.com/probonopd/AppImageKit.git
-fi
-cd AppImageKit/
-git_pull_rebase_helper
-cmake .
-make clean
-make
-cd ..
-fi
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
 
 APP=Engauge-Digitizer
 rm -rf /$APP/$APP.AppDir
@@ -244,26 +233,9 @@ cd usr/ ; find . -type f -exec sed -i -e 's|/usr/lib|././/lib|g' {} \; ; cd ..
 
 cp $(ldconfig -p | grep libfreetype.so.6 | cut -d ">" -f 2 | xargs) ./usr/lib/ # For Fedora 20
 
-# Add desktop integration - TODO: move to a library function
-XAPP=engauge
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+get_desktopintegration
 
-# Remove blacklisted files - TODO: move to a library function
-if [ ! -e "../../AppImages/excludelist" ] ; then
-  echo "excludelist missing, please install it"
-  exit 1
-fi
-BLACKLISTED_FILES=$(cat "../../AppImages/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
-FOUND=""
-for FILE in $BLACKLISTED_FILES ; do
-  FOUND=$(find "${APPDIR}" -type f -name "${FILE}" 2>/dev/null)
-  echo $FOUND
-  if [ ! -z "$FOUND" ] ; then
-    fatal "Blacklisted file ${FOUND} found"
-  fi
-done
+delete_blacklisted
 
 # Workaround for:
 # symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libunity-gtk-module.so: undefined symbol: g_settings_newn
@@ -287,13 +259,7 @@ fi
 # FIXME: The follwing line does not work
 # cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
 
-mkdir -p ../out
-
-rm -f ../out/*.AppImage || true
-
-# Convert the AppDir into an AppImage
-rm -rf $APPIMAGE
-../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
+generate_appimage
 
 chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
 ls -lh ../out/$APPIMAGE

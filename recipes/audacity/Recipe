@@ -1,5 +1,4 @@
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
-. ./functions.sh
+# To be rewritten so that packages are not installed into the system and ldd is not needed
 
 APP=Audacity
 LOWERAPP=audacity
@@ -10,7 +9,14 @@ sudo apt-get update
 sudo apt-get -y install $LOWERAPP
 
 mkdir -p $APP/$APP.AppDir
-cd $APP/$APP.AppDir
+
+cd $APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+cd $APP.AppDir
+
 find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \;
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
@@ -22,9 +28,7 @@ rm -rf ./usr/share/icons/hicolor/48x48/apps || true
 get_apprun
 
 # Copy in the indirect dependencies
-copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
-
-mv ./lib/x86_64-linux-gnu/* ./usr/lib/x86_64-linux-gnu/ ; rm -rf ./lib
+copy_deps # Three runs to ensure we catch indirect ones
 
 patch_usr
 

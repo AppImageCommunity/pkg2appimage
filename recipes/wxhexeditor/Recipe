@@ -3,12 +3,14 @@ mkdir -p $APP/$APP.AppDir/usr/bin
 
 cd $APP/
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "http://downloads.sourceforge.net/project/wxhexeditor/wxHexEditor/v0.23%20Beta/wxHexEditor-v0.23-Linux_x86_64.tar.bz2"
 
 cd $APP.AppDir/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 tar xf ../wxHexEditor-*.tar.bz2
 mv wxHexEditor/* usr/bin/
@@ -36,14 +38,8 @@ echo $VERSION
 
 # Add desktop integration
 XAPP=wxHexEditor
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+get_desktopintegration $XAPP.desktop
 
 cd .. # Go out of AppDir
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

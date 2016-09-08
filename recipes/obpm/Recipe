@@ -11,6 +11,9 @@ sudo apt-get -y install xvfb rpm2cpio
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 FILEPATH=$(wget -q "https://github.com/LazyT/obpm/releases" -O - | grep lin.run | grep href | head -n 1 | cut -d '"' -f 2)
 URL=https://github.com/$FILEPATH
 wget -c "$URL"
@@ -118,8 +121,7 @@ mkdir usr/lib
 mv usr/bin/lib* usr/lib/
 cp ../opt/google/chrome/lib/libstdc++.so.6 usr/lib/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 cat > obpm.desktop <<\EOF
 [Desktop Entry]
@@ -134,16 +136,11 @@ cp ./usr/bin/obpm.png .
 
 # Add desktop integration
 XAPP=obpm
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+get_desktopintegration $XAPP
 
 VERSION=$(ls ../*.run | cut -d "-" -f 2)
 
 # Go out of AppImage
 cd ..
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+
+generate_appimage

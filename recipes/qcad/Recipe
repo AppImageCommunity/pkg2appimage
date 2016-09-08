@@ -15,6 +15,9 @@ APP=QCAD
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c "$URL"
 
 tar xf *.tar.gz
@@ -22,8 +25,7 @@ mv qcad-*-linux-*/* $APP.AppDir/usr/bin/
 
 cd $APP.AppDir/
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # Remove trials (assuming upstream doesn't want to have them
 # distributed)
@@ -42,10 +44,7 @@ cp ./usr/bin/scripts/qcad_icon.svg .
 wget -q "http://www.qcad.org/bugtracker/index.php?getfile=420" -O qcad.desktop
 
 # Add desktop integration
-XAPP=qcad
-wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-chmod a+x ./usr/bin/$XAPP.wrapper
-sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
+get_desktopintegration $XAPP
 
 # Go out of AppImage
 cd ..
@@ -54,8 +53,4 @@ cd ..
 VERSION=$(ls qcad-*-*.tar.gz | cut -d "-" -f 2)
 echo $VERSION
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage

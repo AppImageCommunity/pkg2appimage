@@ -8,6 +8,10 @@ set +e
 
 mkdir -p chromium/chromium.AppDir
 cd chromium/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 wget -c --trust-server-names "https://download-chromium.appspot.com/dl/Linux_x64?type=snapshots"
 # wget -c --trust-server-names "https://download-chromium.appspot.com/dl/Linux_x64?type=continuous"
 wget -c --trust-server-names http://mirrors.kernel.org/ubuntu/pool/main/u/udev/libudev0_151-12.3_amd64.deb
@@ -54,10 +58,4 @@ wget -c --trust-server-names https://github.com/hughsie/fedora-appstream/raw/mas
 
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # 64-bit
-chmod a+x ./AppImageAssistant
-
-mkdir -p ./out/
-rm -f ../out/Chromium-$VERSION.AppImage || true
-
-./AppImageAssistant ./chromium.AppDir/ ../out/Chromium-$VERSION-x86_64.AppImage
+generate_appimage

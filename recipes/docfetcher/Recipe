@@ -10,6 +10,9 @@ APP=DocFetcher
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 # Get Java
 wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
 
@@ -39,8 +42,7 @@ Icon=docfetcher
 Comment=DocFetcher is an Open Source desktop search application: It allows you to search the contents of files on your computer. Can read the following archive formats: zip, 7z, rar, tar.*. Can read Outlook PST files.
 EOF
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppRun" # (64-bit)
-chmod a+x ./AppRun
+get_apprun
 
 # Add desktop integration
 XAPP=DocFetcher.sh
@@ -60,8 +62,4 @@ cp usr/bin/img/docfetcher128.png docfetcher.png
 # Go out of AppImage
 cd ..
 
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-mkdir -p ../out
-rm ../out/$APP"-"$VERSION"-x86_64.AppImage" || true
-./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-x86_64.AppImage"
+generate_appimage
