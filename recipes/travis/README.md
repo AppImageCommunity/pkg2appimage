@@ -4,4 +4,4 @@ See these [real-world examples](https://github.com/search?l=yaml&q=%22appimage.s
 
 One way to do it is to write/adopt an `appimage.sh` script, which you run in the `script:` or `after_success:` section of your `.travis.yml`.
 
-TODO: Write a generic `appiamge.sh` that would make it trivially easy for any project to integrate.
+TODO: Write a generic `appiamge.sh` that would make it trivially easy for any project to integrate. In the meantime, use one from the link above that matches your situation best.
