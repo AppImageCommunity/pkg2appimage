@@ -109,7 +109,7 @@ generate_appimage()
   #
   # Detect the architecture of what we are packaging.
   # The main binary could be a script, so let's use a .so library
-  BIN=$(find . -name *.so* -type f -executable | head -n 1)
+  BIN=$(find . -name *.so* -type f | head -n 1)
   INFO=$(file "$BIN")
   if [ -z $ARCH ] ; then
     if [[ $INFO == *"x86-64"* ]] ; then
