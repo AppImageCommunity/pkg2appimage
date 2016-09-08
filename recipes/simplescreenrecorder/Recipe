@@ -1,4 +1,5 @@
 # Using bintries from trusty here
+# To be rewritten so that nothing gets installed into the system and no copy_debs is needed as a result
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh

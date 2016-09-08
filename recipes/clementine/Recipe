@@ -12,10 +12,6 @@ cd ./$APP/
 # but not using the host system's information about what is
 # installed on the system but our own assumptions instead
 
-mkdir -p ./tmp/archives/
-mkdir -p ./tmp/lists/partial
-touch tmp/pkgcache.bin tmp/srcpkgcache.bin
-
 cat > status <<EOF
 
 Package: libtasn1-6
@@ -188,21 +184,6 @@ EOF
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 deb http://ppa.launchpad.net/me-davidsansome/clementine-dev/ubuntu trusty main
 " > sources.list
-
-OPTIONS="-o Debug::NoLocking=1
--o APT::Cache-Limit=125829120
--o Dir::Etc::sourcelist=./sources.list
--o Dir::State=./tmp
--o Dir::Cache=./tmp
--o Dir::State::status=./status
--o Dir::Etc::sourceparts=-
--o APT::Get::List-Cleanup=0
--o APT::Get::AllowUnauthenticated=1
--o Debug::pkgProblemResolver=true
--o Debug::pkgDepCache::AutoInstall=true
--o APT::Install-Recommends=0
--o APT::Install-Suggests=0
-"
 
 apt-get $OPTIONS update
 
