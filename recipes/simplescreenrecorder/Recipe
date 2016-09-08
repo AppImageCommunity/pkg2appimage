@@ -1,24 +1,34 @@
-# Using bintries from trusty here
-# To be rewritten so that nothing gets installed into the system and no copy_debs is needed as a result
+# In this example, we use a trusty PPA - keep providing these!
+
+APP=SimpleScreenRecorder
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-APP=SimpleScreenRecorder
-LOWERAPP=${APP,,} 
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
 
-sudo add-apt-repository -y ppa:maarten-baert/simplescreenrecorder
-sudo add-apt-repository -y universe
-sudo apt-get clean
-sudo apt-get update
-sudo apt-get -y install simplescreenrecorder
+generate_status
 
-sudo apt-get -y install $LOWERAPP
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/maarten-baert/simplescreenrecorder/ubuntu trusty main
+" > sources.list
 
-mkdir -p $APP/$APP.AppDir
-cd $APP/$APP.AppDir
-find /var/cache/apt/archives/*$LOWERAPP* -exec dpkg -x {} . \; || true
-find /var/cache/apt/archives/*-data* -exec dpkg -x {} . \; || true
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
 rm -rf ./usr/share/icons/48x48/apps || true
@@ -27,18 +37,16 @@ find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
 
 get_apprun
 
-# Copy in the indirect dependencies
-copy_deps
-
-move_lib
+mv ./usr/lib/pulseaudio/*.so usr/lib/ || true
 
 delete_blacklisted
+rm -rf ./etc/ ./home/ ./lib/ || true
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 GLIBC_NEEDED=$(glibc_needed)
 VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
