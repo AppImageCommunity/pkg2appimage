@@ -16,6 +16,7 @@ cd ./$APP.AppDir/
 find ../*.deb -exec dpkg -x {} . \; || true
 
 cp ./usr/share/applications/$LOWERAPP.desktop .
+sed -i -e 's|^Exec=.*|Exec=slack|g' $LOWERAPP.desktop
 cp ./usr/share/pixmaps/slack.png .
 
 get_apprun
