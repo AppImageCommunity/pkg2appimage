@@ -220,7 +220,7 @@ echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 " > sources.list
 
 apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP make | cut -d "'" -f 2 | grep -e "^http")
+URLS=$(apt-get $OPTIONS -y install --print-uris g++ make | cut -d "'" -f 2 | grep -e "^http")
 wget -c $URLS
 
 find ./*.deb -exec dpkg -x {} . \; || true
