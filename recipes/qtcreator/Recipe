@@ -248,6 +248,8 @@ exit 0
 # but there is not only g++ but also libc-dev, libc6-dev, libstdc++-5-dev
 # which all seem to be tightly coupled and I am not sure whether it is really
 # a good idea to bundle all of them.
+# I gave up when I got 
+# :-1: error: /usr/lib/x86_64-linux-gnu/crti.o: unrecognized relocation (0x2a) in section `.init'
 # Pull requests welcome!
 #################################################################################
 
