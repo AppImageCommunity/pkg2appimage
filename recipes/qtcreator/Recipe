@@ -237,8 +237,7 @@ cp -Rfv usr/include/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
 # g++ -print-search-dirs suggests that this is clever enough to use relative paths which really is tremendous
 AD=$(find .. -name *.AppDir)
 mkdir -p $AD/usr/bin/
-cp usr/bin/make $AD/usr/bin/
-cp -Rfv usr/bin/x86_64-linux-gnu-g++ $AD/usr/bin/
+cp -Rfv usr/bin/* $AD/usr/bin/
 mkdir -p $AD/usr/lib/gcc/
 cp -Rfv usr/lib/gcc/x86_64-linux-gnu $AD/usr/lib/gcc/
 
