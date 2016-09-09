@@ -214,6 +214,11 @@ Package: libc6-dev
 Status: install ok installed
 Architecture: all
 Version: 2.19-0ubuntu6
+
+Package: libc6
+Status: install ok installed
+Architecture: all
+Version: 2.19-0ubuntu6
 EOF
 
 echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
