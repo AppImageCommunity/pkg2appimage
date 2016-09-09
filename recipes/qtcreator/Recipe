@@ -232,8 +232,8 @@ wget -c $URLS
 find ./*.deb -exec dpkg -x {} . \; || true
 
 # To bundle gcc:
--Rfv usr/include/x86_64-linux-gnu/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
--Rfv usr/include/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
+cp -Rfv usr/include/x86_64-linux-gnu/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
+cp -Rfv usr/include/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
 # g++ -print-search-dirs suggests that this is clever enough to use relative paths which really is tremendous
 AD=$(find .. -name *.AppDir)
 mkdir -p $AD/usr/bin/
