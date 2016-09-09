@@ -9,7 +9,7 @@
 APP=GoogleEarth
 LOWERAPP=${APP,,}
 
-set +e
+set -e
 
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 
