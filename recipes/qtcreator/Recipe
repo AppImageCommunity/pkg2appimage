@@ -108,48 +108,6 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 
 ls -lh "$TARGETDIR/"
 
-# The Qt Creator installer does not install a compiler
-# so we do in order to have a fully working out-of-the-box experience
-
-generate_status
-cat > status<<\EOF
-Package: apt-transport-https
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: debconf
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: dictionaries-common
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: dpkg
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-
-Package: libc6
-Status: install ok installed
-Architecture: all
-Version: 2.13-38+deb7u10
-
-Package: libstdc++6
-Status: install ok installed
-Architecture: all
-Version: 9:9999.9999.9999
-EOF
-echo "deb http://ftp.de.debian.org/debian/ wheezy main
-deb http://ftp.debian.org/debian wheezy-backports main
-" > sources.list
-apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris g++ libgl1-mesa-dev | cut -d "'" -f 2 | grep -e "^http")
-# wget -c $URLS
-
 cd ./$APP.AppDir/
 
 # find ../*.deb -exec dpkg -x {} . \; || true
@@ -196,8 +154,9 @@ export PATH=$LINK/5.7/gcc_64/plugins/usr/bin/:$LINK/bin/:$PATH
 # from the Run button in the IDE
 export QT_PLUGIN_PATH=$LINK/5.7/gcc_64/plugins:$QT_PLUGIN_PATH
 
-# Make sure Qt Creator can find its executables
-export PATH=$LINK/5.7/gcc_64/bin:$PATH
+# Make sure Qt Creator can find its executables, and, as fallbacks, the bundled compiler, and make
+# Notice that we DO NOT set a LD_LIBRARY_PATH here
+export PATH=$LINK/5.7/gcc_64/bin:$PATH:$LINK/usr/bin/x86_64-linux-gnu-g++:$LINK/usr/bin
 export QTWEBENGINEPROCESS_PATH=$LINK/5.7/gcc_64/libexec/QtWebEngineProcess
 
 if [ -L "$LINK" ] ; then
@@ -236,7 +195,47 @@ find . -name  *Qt3D* -exec rm -r {} \; || true
 find . -name  *Qt53D* -exec rm -r {} \; || true
 echo "Qt3D been deleted to shrink the AppImage size; edit the recipe to change this." > MISSING_Qt3D.txt
 
-# Go out of AppImage
+# Go out of the AppDir
 cd ..
+
+# The Qt Creator installer does not install a compiler nor make
+# so we do in order to have a fully working out-of-the-box experience
+
+# Get a compiler from a trusty PPA - keep providing these!
+
+mkdir -p ./g++
+cd ./g++
+
+generate_status
+
+echo >> status <<\EOF
+Package: libc6-dev
+Status: install ok installed
+Architecture: all
+Version: 2.19-0ubuntu6
+
+EOF
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+" > sources.list
+
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP make | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
+
+find ./*.deb -exec dpkg -x {} . \; || true
+
+# To bundle gcc:
+mv usr/include/x86_64-linux-gnu/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
+mv usr/include/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
+# g++ -print-search-dirs suggests that this is clever enough to use relative paths which really is tremendous
+AD=$(find .. -name *.AppDir)
+mkdir -p $AD/usr/bin/
+cp usr/bin/make $AD/usr/bin/
+cp -r usr/bin/x86_64-linux-gnu-g++ $AD/usr/bin/
+mdkir -p $AD/usr/lib/gcc/
+cp -r usr/lib/gcc/x86_64-linux-gnu $AD/usr/lib/gcc/
+
+cd .. # go out of g++/
 
 generate_appimage
