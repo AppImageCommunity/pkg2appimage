@@ -207,6 +207,7 @@ mkdir -p ./g++
 cd ./g++
 
 generate_status
+sed -i -e 's|Package: libc6|Package: xxx|g' status # It requires the specific version below
 
 echo >> status <<\EOF
 
