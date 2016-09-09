@@ -239,7 +239,7 @@ AD=$(find .. -name *.AppDir)
 mkdir -p $AD/usr/bin/
 cp usr/bin/make $AD/usr/bin/
 cp -Rfv usr/bin/x86_64-linux-gnu-g++ $AD/usr/bin/
-mdkir -p $AD/usr/lib/gcc/
+mkdir -p $AD/usr/lib/gcc/
 cp -Rfv usr/lib/gcc/x86_64-linux-gnu $AD/usr/lib/gcc/
 
 cd .. # go out of g++/
