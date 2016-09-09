@@ -38,12 +38,6 @@ find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
 
 get_apprun
 
-# Copy in the indirect dependencies
-# copy_deps # not needed here due to the way we use apt to download everything
-
-move_lib
-mv ./usr/lib/x86_64-linux-gnu/* ./usr/lib/ # AppRun sets Qt env here
-
 mv ./usr/lib/pulseaudio/*.so usr/lib/
 
 delete_blacklisted
