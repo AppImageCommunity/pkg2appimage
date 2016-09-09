@@ -242,10 +242,12 @@ cp -Rfv usr/include/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
 AD=$(find .. -name *.AppDir)
 mkdir -p $AD/usr/bin/
 cp -Rfv usr/bin/* $AD/usr/bin/
-mkdir -p $AD/usr/lib/gcc/
-cp -Rfv usr/lib/gcc/x86_64-linux-gnu $AD/usr/lib/gcc/
+mkdir -p $AD/usr/lib/gcc/x86_64-linux-gnu
+cp -Rfv usr/lib/gcc/x86_64-linux-gnu/* $AD/usr/lib/gcc/x86_64-linux-gnu
 cp -Rfv usr/lib/*-2.24-system.so $AD/usr/lib/
 find $AD/usr/bin/* -type f -executable -exec patchelf --set-rpath \$ORIGIN/../lib {} \;
+cp usr/lib/x86_64-linux-gnu/libcloog-isl.so.4 usr/lib/x86_64-linux-gnu/libisl.so.10 $AD/usr/lib
+find $AD/usr/lib/gcc/x86_64-linux-gnu/* -type f -executable -exec patchelf --set-rpath \$ORIGIN/../../.. {} \;
 cd .. # go out of g++/
 
 generate_appimage
