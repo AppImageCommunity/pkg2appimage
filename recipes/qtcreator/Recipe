@@ -198,10 +198,11 @@ echo "Qt3D been deleted to shrink the AppImage size; edit the recipe to change t
 # Go out of the AppDir
 cd ..
 
+#################################################################################
+# Compiler installation is currently disabled, see the bottom of this script
 # The Qt Creator installer does not install a compiler nor make
-# so we do in order to have a fully working out-of-the-box experience
-
-# Get a compiler from a trusty PPA - keep providing these!
+# so we could do so in order to have a fully working out-of-the-box experience
+#################################################################################
 
 mkdir -p ./g++
 cd ./g++
@@ -230,10 +231,25 @@ echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 " > sources.list
 
 apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris g++ make | cut -d "'" -f 2 | grep -e "^http")
+# URLS=$(apt-get $OPTIONS -y install --print-uris g++ make | cut -d "'" -f 2 | grep -e "^http")
+URLS=$(apt-get $OPTIONS -y install --print-uris make | cut -d "'" -f 2 | grep -e "^http") # no g++ for now, see below
 wget -c $URLS
 
 find ./*.deb -exec dpkg -x {} . \; || true
+mkdir -p $AD/usr/bin/
+cp -Rfv usr/bin/make $AD/usr/bin/
+
+cd .. # go out of g++/
+generate_appimage
+exit 0
+
+#################################################################################
+# Perhaps one day I will get the remainder to work
+# but there is not only g++ but also libc-dev, libc6-dev, libstdc++-5-dev
+# which all seem to be tightly coupled and I am not sure whether it is really
+# a good idea to bundle all of them.
+# Pull requests welcome!
+#################################################################################
 
 # To bundle gcc:
 cp -Rfv usr/include/x86_64-linux-gnu/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
