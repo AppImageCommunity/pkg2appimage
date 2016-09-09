@@ -236,6 +236,7 @@ URLS=$(apt-get $OPTIONS -y install --print-uris make | cut -d "'" -f 2 | grep -e
 wget -c $URLS
 
 find ./*.deb -exec dpkg -x {} . \; || true
+AD=$(find .. -name *.AppDir)
 mkdir -p $AD/usr/bin/
 cp -Rfv usr/bin/make $AD/usr/bin/
 
