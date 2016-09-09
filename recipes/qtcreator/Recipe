@@ -206,6 +206,10 @@ cd ..
 mkdir -p ./g++
 cd ./g++
 
+wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
+tar xf patchelf-0.9.tar.bz2
+( cd patchelf-0.9/ && ./configure  && make && sudo make install )
+
 generate_status
 sed -i -e 's|Package: libc6|Package: xxx|g' status # It requires the specific version below
 
@@ -240,7 +244,8 @@ mkdir -p $AD/usr/bin/
 cp -Rfv usr/bin/* $AD/usr/bin/
 mkdir -p $AD/usr/lib/gcc/
 cp -Rfv usr/lib/gcc/x86_64-linux-gnu $AD/usr/lib/gcc/
-
+cp -Rfv usr/lib/*-2.24-system.so $AD/usr/lib/
+find $AD/usr/bin/* -type f -executable -exec patchelf --set-rpath \$ORIGIN/../lib {} \;
 cd .. # go out of g++/
 
 generate_appimage
