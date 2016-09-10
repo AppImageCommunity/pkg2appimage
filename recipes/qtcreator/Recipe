@@ -106,6 +106,12 @@ mkdir -p "$TARGETDIR"
 # Qt Installer should really provide a sane CLI.
 rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,MaintenanceTool.ini}
 
+# Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
+# and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB uncompressed
+wget http://freedup.org/freedup-1.6-3-src.tar.bz2
+tar xf freedup-1.6-3-src.tar.bz2
+./freedup-1.6-3/freedup -w -s -f -v $TARGETDIR
+
 ls -lh "$TARGETDIR/"
 
 cd ./$APP.AppDir/
@@ -181,12 +187,6 @@ ln -s  "$APPDIR" "$LINK"
 exit $?
 EOF
 chmod a+x AppRun
-
-# Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
-# and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB uncompressed
-wget http://freedup.org/freedup-1.6-3-src.tar.bz2
-tar xf freedup-1.6-3-src.tar.bz2
-./freedup-1.6-3/freedup -w -s -f -v .
 
 # It is still too large for Bintray...
 # mv ./*/gcc_64/translations/qtwebengine_locales/en-US.pak ./*/gcc_64/translations/
