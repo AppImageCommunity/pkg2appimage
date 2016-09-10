@@ -285,6 +285,10 @@ cp -Rfv usr/bin/make $AD/usr/bin/
 
 cd .. # go out of g++/
 generate_appimage
+
+# As long as bintray.sh has issues with this, use transfer.sh
+transfer ../out/*.AppImage
+
 exit 0
 
 #################################################################################
@@ -313,6 +317,3 @@ find $AD/usr/lib/gcc/x86_64-linux-gnu/* -type f -executable -exec patchelf --set
 cd .. # go out of g++/
 
 generate_appimage
-
-# As long as bintray.sh has issues with this, use transfer.sh
-transfer ../out/*.AppImage
