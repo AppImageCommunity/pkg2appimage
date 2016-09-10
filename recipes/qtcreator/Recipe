@@ -110,10 +110,7 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 # and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB uncompressed
 wget http://freedup.org/freedup-1.6-3-src.tar.bz2
 tar xf freedup-1.6-3-src.tar.bz2
-
-# Run like this so that no absolute symlinks get in
-# ( cd $TARGETDIR ; ../freedup-1.6-3/freedup -w -s -v . ; cd - )
-# Try hardlinks
+# Use hardlinks since with symlinks from freedup xorriso produces defective ISOs
 ( cd $TARGETDIR ; ../freedup-1.6-3/freedup -v . ; cd - )
 
 # Workaround for:
