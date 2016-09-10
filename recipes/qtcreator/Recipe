@@ -112,7 +112,9 @@ wget http://freedup.org/freedup-1.6-3-src.tar.bz2
 tar xf freedup-1.6-3-src.tar.bz2
 
 # Run like this so that no absolute symlinks get in
-( cd $TARGETDIR ; ../freedup-1.6-3/freedup -w -s -f -v . ; cd - )
+# ( cd $TARGETDIR ; ../freedup-1.6-3/freedup -w -s -v . ; cd - )
+# Try hardlinks
+( cd $TARGETDIR ; ../freedup-1.6-3/freedup -v . ; cd - )
 
 # Workaround for:
 # Installed Qt WebEngine locales directory not found
