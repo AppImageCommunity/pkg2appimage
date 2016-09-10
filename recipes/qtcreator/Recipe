@@ -183,9 +183,10 @@ EOF
 chmod a+x AppRun
 
 # Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
-# and AppImage size grows over 250 MB. So we deduplicate them
-( cd Tools/QtCreator/ ; mv lib/ libold/ ; ln -s ../../*/gcc_64/lib . ; cp -Rv libold/* lib/ ; rm -rf libold/ )
-( cd Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
+# and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB
+wget http://freedup.org/freedup-1.6-3-src.tar.bz2
+tar xf freedup-1.6-3-src.tar.bz2
+./freedup-1.6-3/freedup -w -s -f -v .
 
 # It is still too large for Bintray...
 # mv ./*/gcc_64/translations/qtwebengine_locales/en-US.pak ./*/gcc_64/translations/
