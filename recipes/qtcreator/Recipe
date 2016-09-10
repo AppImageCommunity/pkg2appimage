@@ -236,7 +236,7 @@ cat > usr/share/metainfo/qtcreator.appdata.xml <<\EOF
  <url type="homepage">https://wiki.qt.io/Category:Tools::QtCreator</url>
  <project_group>Qt</project_group>
 </component>
-EOF 
+EOF
 
 # Go out of the AppDir
 cd ..
