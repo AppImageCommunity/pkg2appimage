@@ -115,7 +115,7 @@ tar xf freedup-1.6-3-src.tar.bz2
 ( cd $TARGETDIR ; ../freedup-1.6-3/freedup -w -s -f -v . ; cd - )
 
 # Remove stuff the installer has put there
-find $HOME/.local/share/icons -name *QtProject-qtcreator.png* -exec rm {} \;
+rm $HOME/.local/share/icons/hicolor/48x48/apps/QtProject-qtcreator.png
 
 ls -lh "$TARGETDIR/"
 
