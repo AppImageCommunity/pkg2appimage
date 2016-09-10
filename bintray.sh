@@ -63,6 +63,8 @@ fi
 
 CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Accept:application/json -w \n"
 
+set -x # Be verbose from here on
+
 IS_AN_APPIMAGE=$(file -kib "$FILE" | grep -q "application/x-executable" && file -kib "$FILE" | grep -q "application/x-iso9660-image" && echo 1 || true);
 if [ "$IS_AN_APPIMAGE" ] ; then
   # Get metadata from the desktop file inside the AppImage
@@ -122,6 +124,8 @@ if [ "$IS_AN_APPIMAGE" ] ; then
     echo "DESCRIPTION missing and no Comment= in ${DESKTOP}"
   fi
 fi
+
+set +x # Do not be verbose from here on
 
 if [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
   # [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
