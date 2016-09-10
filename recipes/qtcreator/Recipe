@@ -127,10 +127,11 @@ mkdir -p usr/lib
 ( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 . )
 ( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa-egl/libEGL.so.1 . )
 
-cp $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
-cp $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
+cp -L $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
+cp -L $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
 sed -i -e 's|^Exec=.*|Exec=qtcreator|g' $LOWERAPP.desktop
 sed -i -e 's|^Name=.*|Name=QtCreator|g' $LOWERAPP.desktop
+cat $LOWERAPP.desktop
 
 get_desktopintegration $LOWERAPP
 
