@@ -116,7 +116,7 @@ tar xf freedup-1.6-3-src.tar.bz2
 
 # Workaround for:
 # Installed Qt WebEngine locales directory not found
-( cd Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
+( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
 
 # Remove stuff the installer has put there
 rm $HOME/.local/share/icons/hicolor/48x48/apps/QtProject-qtcreator.png
