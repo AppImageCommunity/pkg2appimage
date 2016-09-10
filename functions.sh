@@ -124,7 +124,7 @@ generate_appimage()
      exit 1
     fi
   fi
-  wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
+  wget -c "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" -O  AppImageAssistant # (64-bit)
   chmod a+x ./AppImageAssistant
   mkdir -p ../out
   rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
