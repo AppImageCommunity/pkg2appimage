@@ -119,6 +119,8 @@ tar xf freedup-1.6-3-src.tar.bz2
 ( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
 # Qt WebEngine ICU data not found
 ( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/resources . )
+# Qt WebEngine ICU data not found (QtWebEngineProcess lives there)
+( cd $TARGETDIR/5.7/gcc_64/libexec ; ln -s ../gcc_64/resources/icudtl.dat . )
 
 # Remove stuff the installer has put there
 rm $HOME/.local/share/icons/hicolor/48x48/apps/QtProject-qtcreator.png
