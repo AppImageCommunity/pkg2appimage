@@ -183,7 +183,7 @@ EOF
 chmod a+x AppRun
 
 # Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
-# and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB
+# and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB uncompressed
 wget http://freedup.org/freedup-1.6-3-src.tar.bz2
 tar xf freedup-1.6-3-src.tar.bz2
 ./freedup-1.6-3/freedup -w -s -f -v .
