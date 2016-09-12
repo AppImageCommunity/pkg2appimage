@@ -9,11 +9,12 @@ LOWERAPP=${APP,,}
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
+# If you don't trust this, then you can mirror it in your own project, but then you need to keep it updated :)
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 # Pick best mirror (Travis CI can then download this in 9 seconds)
-URL=$(wget -q "http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run.mirrorlist" -O - | grep "run<" | head -n 2 | tail -n 1 | cut -d '"' -f 2)
+URL=$(wget -q "https://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run.mirrorlist" -O - | grep "run<" | head -n 2 | tail -n 1 | cut -d '"' -f 2)
 wget -c "$URL"
 
 cat > extract-qt-installer <<\EOoF
@@ -108,7 +109,14 @@ rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,Maintenance
 
 # Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
 # and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB uncompressed
-wget http://freedup.org/freedup-1.6-3-src.tar.bz2
+wget http://freedup.org/freedup-1.6-3-src.tar.bz2 # 7d7ca6599c72f2d7ef88057588e3e354
+
+checksum=$(md5sum freedup-1.6-3-src.tar.bz2 | md5sum | cut -d ' ' -f 1)
+if [ "$checksum" != "7d7ca6599c72f2d7ef88057588e3e354" ]; then
+  echo "Warning : freedup checksum has been changed"
+  exit 1
+fi
+
 tar xf freedup-1.6-3-src.tar.bz2
 # Use hardlinks since with symlinks from freedup xorriso produces defective ISOs
 ( cd $TARGETDIR ; ../freedup-1.6-3/freedup -v . ; cd - )
