@@ -101,7 +101,7 @@ mv usr/local/share/man usr/share/
 
 delete_blacklisted
 rm -rf ./etc/ ./home/ || true
-rm -r opt/ usr/lib/x86_64-linux-gnu/ usr/lib64 usr/share/
+rm -r opt/ usr/local
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps
