@@ -1,0 +1,93 @@
+# In this example, we use trusty binaries - keep providing these!
+# TODO: icu is pulled in from the system because the bundled one is not found
+# FIXME: Not working yet
+
+exit 1
+
+##############################################################
+
+APP=Swift
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+# clang libicu-dev are needed according to https://swift.org/download/#using-downloads
+generate_status
+sed -i -e 's|Package: libc6|Package: libcxxxxxx|g' status
+cat > status <<\EOF
+
+Package: libc6
+Status: install ok installed
+Architecture: all
+Version: 2.19-0ubuntu6
+EOF
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+" > sources.list
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris clang libicu-dev | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
+
+DLD=$(wget -q "https://swift.org/download/#releases" -O - | grep "ubuntu14.04.tar.gz" | head -n 1 | cut -d '"' -f 2)
+URL=https://swift.org$DLD
+echo "$URL"
+VERSION=$(basename $DLD | sed -e 's|swift-||g' | sed -e 's|-ubuntu14.04.tar.gz||g')
+echo $VERSION
+wget -c "$URL"
+tar xf swift-*.tar.gz
+
+# Compile patchelf
+if [ ! -f ./patchelf-0.9/src/patchelf ] ; then
+  wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
+  tar xf patchelf-0.9.tar.bz2
+  ( cd patchelf-0.9/ && ./configure  && make )
+fi
+
+cd ./$APP.AppDir/
+
+mv ../swift-*/usr .
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cat > swift.desktop <<\EOF
+[Desktop Entry]
+Type=Application
+Name=Swift
+Comment=Programming Language
+Icon=swift
+Exec=swift
+Terminal=true
+Categories=Development;
+EOF
+
+# Where is the official one?
+wget -c "http://siliconangle.com/files/2014/06/apple-swift-logo.png" -o swift.png
+
+ln -sf usr/bin/swift AppRun
+
+mv ./usr/lib/pulseaudio/*.so usr/lib || true
+
+delete_blacklisted
+rm -rf ./etc/ ./home/ || true
+
+find usr/bin -type f -executable -exec ../patchelf-0.9/src/patchelf --set-rpath \$ORIGIN/../lib:\$ORIGIN/../lib/swift/linux/:\$ORIGIN/../lib/x86_64-linux-gnu/ {} \;
+find . -type f -name *\.so* -exec ../patchelf-0.9/src/patchelf --set-rpath \$ORIGIN:\$ORIGIN/../../x86_64-linux-gnu {} \;
+
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
+
+VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+generate_appimage
