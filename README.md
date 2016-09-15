@@ -1,4 +1,4 @@
-# AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+# AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
 | Application |  |
 |--:|---|
@@ -185,6 +185,20 @@ export BINTRAY_API_KEY=<Your Bintray API Key>
 ```
 
 If you use Travis for CI, you can define these variables in the Travis control panel, specially the `BINTRAY_API_KEY`, in order to keep it secure.
+
+## Contributing
+
+You are invited to contribute to the AppImage format, the AppImageKit tools, and the example AppImages provided by us).
+
+The preferred channel of communication for general questions and remarks is our forum and mailing list at http://discourse.appimage.org/.
+
+For technical contibutions, https://github.com/probonopd/AppImageKit - please file [Issues](https://github.com/probonopd/AppImageKit/issues) (also for wishlist items or discussion topics) or submit [Pull requests](https://github.com/probonopd/AppImageKit/pulls).
+
+There is also the #AppImage IRC channel on irc.freenode.net and we use [Gitter](https://gitter.im/probonopd/AppImageKit) which has the advantage that one does not have to be online all the time and one can communicate despite not being in the same timezone.
+
+## Donations
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
 ## Acknowledgments
 
