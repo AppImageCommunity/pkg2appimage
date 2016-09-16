@@ -38,7 +38,7 @@ find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
 
 get_apprun
 
-mv ./usr/lib/pulseaudio/*.so usr/lib/
+mv ./usr/lib/x86_64-linux-gnu/pulseaudio/*.so usr/lib/x86_64-linux-gnu/
 
 delete_blacklisted
 rm -rf ./etc/ ./home/ || true
