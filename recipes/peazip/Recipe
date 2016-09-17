@@ -1,0 +1,41 @@
+APP=PeaZip
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+URL=$(wget -q "http://www.peazip.org/peazip-linux-64.html" -O - | grep portable | grep "LINUX.x86_64.GTK2.tar.gz" | head -n 1 | cut -d '"' -f 2)
+wget -c "$URL"
+tar xf ./*.tar.gz
+
+cd ./$APP.AppDir/
+
+mv ../peazip_portable*/* .
+
+mkdir -p usr/bin
+mv peazip usr/bin/
+mv res/ usr/bin/
+
+ln -sf usr/bin/peazip AppRun
+
+copy_deps
+delete_blacklisted
+rm -rf ./etc/ ./home/ || true
+
+cp FreeDesktop_integration/peazip.* .
+
+VER1=$( ls ../*.tar.gz | cut -d  - -f 2 | sed -e 's|.LINUX.x86_64.GTK2.tar.gz||g' )
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+generate_appimage
