@@ -12,6 +12,9 @@ mkdir -p $APP/$APP.AppDir
 
 cd $APP
 
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
 if [[ "$ARCH" = "x86_64" ]] ; then
   wget -c "https://www.torproject.org/dist/torbrowser/${VERSION}/tor-browser-linux64-${VERSION}_en-US.tar.xz"
 fi
@@ -53,15 +56,6 @@ sed -i -e "s|TorBrowser/Data/Browser/profile.default|\$HOME/.torbrowser|g" usr/b
 # seems NOT sufficient
 #############################################################################
 
-if [[ "$ARCH" = "x86_64" ]] ; then
-	APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
-fi
-if [[ "$ARCH" = "i686" ]] ; then
-	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
-fi
+cd ..
 
-mkdir -p ../out/
-./AppImageAssistant ./$APP.AppDir ../out/$APPIMAGE
-
-# Test what we have produced and watch its verbose output
-../out/$APPIMAGE -vv --version
+generate_appimage
