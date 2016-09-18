@@ -44,4 +44,4 @@ get_desktopintegration $LOWERAPP
 # Go out of AppImage
 cd ..
 
-generate_appimage
+generate_type2_appimage
