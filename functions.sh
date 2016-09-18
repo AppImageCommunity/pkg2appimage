@@ -141,7 +141,7 @@ generate_type2_appimage()
   ID=$(wget -q https://api.travis-ci.org/repos/probonopd/appimagetool/builds -O - | head -n 1 | sed -e 's|}|\n|g' | grep '"result":0' | head -n 1 | sed -e 's|,|\n|g' | grep '"id"' | cut -d ":" -f 2)
   # Get the transfer.sh URL from the logfile of the last successful build on Travis CI
   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+1))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
-  wget "$URL" -o appimagetool
+  wget "$URL" -O appimagetool
   chmod a+x ./appimagetool
   ./appimagetool ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
 }
