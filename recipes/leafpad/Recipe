@@ -1,58 +1,47 @@
-#!/bin/bash
+# In this example, we use a trusty deb
 
-# A "hello world" recipe
-# This is just a proof-of-concept, in reality you should use a proper "recipe" script 
-# to create proper AppDirs in order to ensure binary compatibility of your AppImages. 
-# See the documentation and the other recipes for details and for examples on how to 
-# bundle real-world software such as LibreOffice, Google Chrome, and others as AppImages.
+APP=Leafpad
+LOWERAPP=${APP,,}
 
-export APP=leafpad
+mkdir -p ./$APP/$APP.AppDir/usr/lib
 
-mkdir -p $APP/$APP.AppDir
-cd $APP
+cd ./$APP/
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-# Note we are using a really old binary so that it runs hopefully everywhere
-# ALso note this is a very simplistic example as we assume this package has no dependencies
-# that are not part of the base system - unlike most other packages
-URL=http://ftp.rz.tu-bs.de/pub/mirror/ubuntu-packages/pool/universe/l/leafpad/leafpad_0.8.17-2_amd64.deb
-wget -c "${URL}"
+generate_status
 
-cd $APP.AppDir
-dpkg -x ../$APP_*.deb .
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+" > sources.list
+apt-get $OPTIONS update
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+wget -c $URLS
 
-# Copy icon and desktop file in place
-cp ./usr/share/icons/hicolor/scalable/apps/$APP.svg .
-cp ./usr/share/applications/$APP.desktop .
+cd ./$APP.AppDir/
 
-get_desktopintegration name $APP.desktop
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cp ./usr/share/applications/$LOWERAPP.desktop .
+rm -rf ./usr/share/icons/48x48/apps || true
+find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
+find ./usr/share/pixmaps/$LOWERAPP.png -exec cp {} . \; || true
 
 get_apprun
 
-###############################################################
-# Experimental autorun support
-###############################################################
-cat > autorun.inf <<EOF
-[AutoRun]
-label=$APP
-icon=.DirIcon
-[Content] 
-MusicFiles=false 
-PictureFiles=false 
-VideoFiles=false
-EOF
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+# find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-cat > autorun.sh <<\EOF
-HERE="$(dirname "$(readlink -f "${0}")")"
-exec "${HERE}/AppRun" "$@"
-EOF
-chmod a+x autorun.sh
-###############################################################
+VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
 
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
 cd ..
-
-VERSION=$(echo $URL | cut -d "_" -f 2 | cut -d "-" -f 1 | head -n 1 | xargs)
 
 generate_appimage
