@@ -14,7 +14,7 @@ env:
   - RECIPE=leafpad
 
 script:
-- bash travis.sh $RECIPE
+- bash -e travis.sh $RECIPE
 - find out/ -name "*.AppImage" -exec bash -e bintray.sh {} \; 
 
 notifications:
