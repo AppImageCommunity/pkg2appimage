@@ -99,6 +99,43 @@ if [ "$IS_AN_APPIMAGE" ] ; then
   fi
 fi
 
+IS_TYPE2_APPIMAGE=$(dd if=XChat_IRC-x86_64.AppImage bs=1 skip=8 count=3 | xxd -u -ps | grep -q 414902 && echo 1 || true)
+if [ "$IS_TYPE2_APPIMAGE" ] ; then
+  ./"$FILE" --appimage-mount &
+  AIPID=$?
+  echo Mounted with PID $AIPID
+  AIMOUNTPOINT=$(mount | grep $(realpath $FILE) | cut -d " " -f 3)
+  echo $AIMOUNTPOINT
+
+  # Get metadata from the desktop file inside the AppImage
+  DESKTOP=$(find $AIMOUNTPOINT -name *.desktop | head -n 1)
+  # Extract the description from the desktop file
+  echo "* DESKTOP $DESKTOP"
+  
+  PCK_NAME=$(cat "${DESKTOP}" | grep -e "^Name=" | head -n 1 | sed s/Name=//g | cut -d " " -f 1 | xargs)
+  if [ "$PCK_NAME" == "" ] ; then
+    echo "PCK_NAME missing in ${DESKTOP}"
+  fi
+  echo "* PCK_NAME PCK_NAME"
+  
+  DESCRIPTION=$(cat "${DESKTOP}" | grep -e "^Comment=" | sed s/Comment=//g)
+  echo "* DESCRIPTION $DESCRIPTION"
+  
+  # Check if there is appstream data and use it
+  APPDATA=$(echo ${DESKTOP} | sed 's/.desktop/.appdata.xml/g' | sed 's|./||')
+  if [ ! -e "$APPDATA" ] ; then
+    echo "* APPDATA missing"
+  else
+    echo "* APPDATA found"
+    DESCRIPTION=$(cat $APPDATA | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g')
+    WEBSITE_URL=$(cat $APPDATA | grep "homepage" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
+  fi
+  
+  if [ "$DESCRIPTION" == "" ] ; then
+    echo "No AppStream data and no Comment= in ${DESKTOP}"
+  fi
+fi
+
 set +x # Do not be verbose from here on
 
 if [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
