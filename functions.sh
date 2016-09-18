@@ -132,6 +132,7 @@ generate_appimage()
 }
 
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
+# TODO: Remove the need for the ENVs
 generate_type2_appimage()
 {
   mkdir -p ../out
@@ -144,7 +145,6 @@ generate_type2_appimage()
   chmod a+x ./appimagetool
   ./appimagetool ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
 }
-
 
 # Generate status file for use by apt-get; assuming that the recipe uses no newer
 # ingredients than what would require more recent dependencies than what we assume 
