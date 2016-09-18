@@ -221,7 +221,12 @@ fi
 
 echo ""
 echo "Uploading and publishing ${FILE}..."
-${CURL} -H Content-Type:application/x-iso9660-appimage -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
+if [ -z IS_TYPE2_APPIMAGE ] ; then
+  ${CURL} -H Content-Type:application/x-iso9660-appimage -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
+else
+  ${CURL} -H Content-Type:application/octet-stream -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
+fi
+
 
 if [ $(env | grep TRAVIS_JOB_ID ) ] ; then
 echo ""
