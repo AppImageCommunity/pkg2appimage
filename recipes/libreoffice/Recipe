@@ -3,10 +3,10 @@
 set +e
 
 APP=LibreOffice
-# VERSION=$(wget "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
-# OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
-VERSION="5.2.0.3"
-OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/testing/5.2.0/deb/x86_64/LibreOffice_5.2.0.3_Linux_x86-64_deb.tar.gz"
+VERSION=$(wget -q "http://www.libreoffice.org/download/libreoffice-fresh/" -O - | grep -o -e "/dl/src/.*/all/" | cut -d "/" -f 4 | head -n 1)
+OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VERSION"/deb/x86_64/LibreOffice_"$VERSION"_Linux_x86-64_deb.tar.gz"
+# VERSION="5.2.0.3"
+# OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/testing/5.2.0/deb/x86_64/LibreOffice_5.2.0.3_Linux_x86-64_deb.tar.gz"
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
@@ -16,7 +16,6 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 wget -c "$OOODOWNLOADLINK"
 
 tar xfvz *.tar.gz
-# rm *.tar.gz
 
 cd $APP.AppDir/
 
@@ -24,11 +23,15 @@ find ../ -name *.deb -exec dpkg -x \{\} . \;
 
 find . -name startcenter.desktop -exec cp \{\} . \;
 
+# No, dear LibreOffice developers, "Name=LibreOffice 5.2"
+# is not a good .desktop file entry. There should be a SoftwareVersion=
+# entry in the Desktop Entry Specification, but there isn't
+sed -i -e 's|Name=.*|Name=LibreOffice|g' startcenter.desktop
+
 find -name *startcenter.png -path *hicolor*48x48* -exec cp \{\} . \;
 
 BINARY=$(cat *.desktop | grep "Exec=" | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
 
-# sed -i -e 's|/opt|../opt|g' ./usr/bin/$BINARY
 mkdir -p usr/bin/
 cd usr/bin/
 rm ./$BINARY
@@ -48,4 +51,4 @@ find . -name _hashlib.cpython* -exec rm {} \; || true
 
 cd ..
 
-generate_appimage
+generate_type2_appimage
