@@ -81,32 +81,6 @@ if [ "$IS_AN_APPIMAGE" ] ; then
   
   DESCRIPTION=$(bsdtar -f "$FILE" -O -x ./"${DESKTOP}" | grep -e "^Comment=" | sed s/Comment=//g)
   
-  ICONNAME=$(bsdtar -f "$FILE" -O -x "${DESKTOP}" | grep -e "^Icon=" | sed s/Icon=//g)
-  
-  # Look for .DirIcon first
-  ICONFILE=$(bsdtar -tf "$FILE" | grep /.DirIcon$ | head -n 1 )
-  
-  # Look for svg next
-  if [ "$ICONFILE" == "" ] ; then
-   ICONFILE=$(bsdtar -tf "$FILE" | grep ${ICONNAME}.svg$ | head -n 1 )
-  fi
-  
-  # If there is no svg, then look for pngs in usr/share/icons and pick the largest
-  if [ "$ICONFILE" == "" ] ; then
-    ICONFILE=$(bsdtar -tf "$FILE" | grep usr/share/icons.*${ICONNAME}.png$ | sort -V | tail -n 1 )
-  fi
-  
-  # If there is still no icon, then take any png
-  if [ "$ICONFILE" == "" ] ; then
-    ICONFILE=$(bsdtar -tf "$FILE" | grep ${ICONNAME}.png$ | head -n 1 )
-  fi
-  
-  if [ ! "$ICONFILE" == "" ] ; then
-    echo "* ICONFILE $ICONFILE"
-    bsdtar -f "$FILE" -O -x "${ICONFILE}" > /tmp/_tmp_icon
-    echo "xdg-open /tmp/_tmp_icon"
-  fi
-  
   # Check if there is appstream data and use it
   APPDATANAME=$(echo ${DESKTOP} | sed 's/.desktop/.appdata.xml/g' | sed 's|./||'  )
   APPDATAFILE=$(bsdtar -tf "$FILE" | grep ${APPDATANAME}$ | head -n 1 || true)
