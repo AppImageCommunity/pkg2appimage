@@ -99,7 +99,7 @@ if [ "$IS_AN_APPIMAGE" ] ; then
   fi
 fi
 
-IS_TYPE2_APPIMAGE=$(dd if=XChat_IRC-x86_64.AppImage bs=1 skip=8 count=3 | xxd -u -ps | grep -q 414902 && echo 1 || true)
+IS_TYPE2_APPIMAGE=$(dd if="$FILE" bs=1 skip=8 count=3 | xxd -u -ps | grep -q 414902 && echo 1 || true)
 if [ "$IS_TYPE2_APPIMAGE" ] ; then
   ./"$FILE" --appimage-mount &
   AIPID=$?
@@ -210,8 +210,24 @@ if [ "$IS_AN_APPIMAGE" ] ; then
     echo "$LINE" | dd of="$FILE" bs=1 seek=33651 count=512 conv=notrunc
     echo ""
     echo "Uploading and publishing zsync file for ${FILE}..."
-    # Workaround for:
-    # https://github.com/probonopd/zsync-curl/issues/1
+    zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
+    ${CURL} -H Content-Type:application/octet-stream -T "${FILE}.zsync" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE").zsync?publish=1&override=1"
+  else
+    echo "zsyncmake not found, skipping zsync file generation and upload"
+  fi
+fi
+
+if [ "$IS_TYPE2_APPIMAGE" ] ; then
+  if which zsyncmake > /dev/null 2>&1; then
+    echo ""
+    echo "Embedding update information into ${FILE}..."
+    # TODO: Determine location of the .note.upd-info ELF section and write updateinformation there
+    NAMELATESTVERSION="$(echo $(basename "$FILE") | sed -e "s|${VERSION}|_latestVersion|g")"
+    # Example for next line: bintray-zsync|probono|AppImages|Subsurface|Subsurface-_latestVersion-x86_64.AppImage.zsync
+    LINE="bintray-zsync|${BINTRAY_REPO_OWNER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
+    # echo "$LINE" | dd of="$FILE" bs=1 seek=33651 count=512 conv=notrunc
+    echo ""
+    echo "Uploading and publishing zsync file for ${FILE}..."
     zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
     ${CURL} -H Content-Type:application/octet-stream -T "${FILE}.zsync" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE").zsync?publish=1&override=1"
   else
