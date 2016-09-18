@@ -131,19 +131,18 @@ generate_appimage()
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
 }
 
-# Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
-# TODO: Remove the need for the ENVs
+# Generate AppImage type 2
 generate_type2_appimage()
 {
-  mkdir -p ../out
-  rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
   # Get the ID of the last successful build on Travis CI
   ID=$(wget -q https://api.travis-ci.org/repos/probonopd/appimagetool/builds -O - | head -n 1 | sed -e 's|}|\n|g' | grep '"result":0' | head -n 1 | sed -e 's|,|\n|g' | grep '"id"' | cut -d ":" -f 2)
   # Get the transfer.sh URL from the logfile of the last successful build on Travis CI
   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+1))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
-  wget "$URL" -O appimagetool
+  wget -c "$URL" -O appimagetool
   chmod a+x ./appimagetool
-  ./appimagetool ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
+  ./appimagetool ./$APP.AppDir/
+  mkdir -p ../out/
+  mv *.AppImage ../out/
 }
 
 # Generate status file for use by apt-get; assuming that the recipe uses no newer
