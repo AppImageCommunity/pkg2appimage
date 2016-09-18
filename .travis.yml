@@ -6,6 +6,7 @@ addons:
     - bsdtar
     - curl
     - zsync
+    - squashfs-tools
 services:
 - docker
 
