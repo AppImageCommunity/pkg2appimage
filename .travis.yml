@@ -15,7 +15,8 @@ env:
 
 script:
 - bash -e travis.sh $RECIPE
-- find out/ -name "*.AppImage" -exec bash -e bintray.sh {} \; 
+- FILES=$(find out/ -name "*.AppImage")
+- bash -e bintray.sh $FILES 
 
 notifications:
   webhooks:
