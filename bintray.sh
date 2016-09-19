@@ -104,7 +104,7 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
   ./"$FILE" --appimage-mount &
   AIPID=$?
   echo Mounted with PID $AIPID
-  AIMOUNTPOINT=$(mount | grep $(realpath $FILE) | cut -d " " -f 3)
+  AIMOUNTPOINT=$(mount | grep $(readlink -f $FILE) | cut -d " " -f 3)
   echo $AIMOUNTPOINT
 
   # Get metadata from the desktop file inside the AppImage
