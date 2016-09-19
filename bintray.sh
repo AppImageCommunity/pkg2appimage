@@ -219,12 +219,11 @@ fi
 if [ "$IS_TYPE2_APPIMAGE" ] ; then
   if which zsyncmake > /dev/null 2>&1; then
     echo ""
-    echo "Embedding update information into ${FILE}..."
-    # TODO: Determine location of the .note.upd-info ELF section and write updateinformation there
-    NAMELATESTVERSION="$(echo $(basename "$FILE") | sed -e "s|${VERSION}|_latestVersion|g")"
-    # Example for next line: bintray-zsync|probono|AppImages|Subsurface|Subsurface-_latestVersion-x86_64.AppImage.zsync
-    LINE="bintray-zsync|${BINTRAY_REPO_OWNER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
-    # echo "$LINE" | dd of="$FILE" bs=1 seek=33651 count=512 conv=notrunc
+    echo "Sanity checking update information of ${FILE}..."
+    HEXOFFSET=$(objdump -h ${FILE} | grep .note.upd-info | awk '{print $6}')
+    # The number that has to be added to HEXOFFSET might change due to ELF alinging (FIXME)
+    dd bs=1 if=${FILE} skip=$(($(echo 0x$HEXOFFSET)+24)) count=7 | grep "bintray" || exit 1
+    dd bs=1 if=${FILE} skip=$(($(echo 0x$HEXOFFSET)+24+1023)) count=1 | grep "<" || exit 1
     echo ""
     echo "Uploading and publishing zsync file for ${FILE}..."
     zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
