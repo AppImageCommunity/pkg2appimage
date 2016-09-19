@@ -27,6 +27,8 @@ notifications:
     on_start: always     # options: [always|never|change] default: always
     template:
       - "%{repository} build %{build_number}: %{result} %{build_url}"
+    use_notice: true
+    skip_join: true
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/4bf20518805a55998cc2
