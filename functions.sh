@@ -140,9 +140,9 @@ generate_type2_appimage()
   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+1))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
   wget -c "$URL" -O appimagetool
   chmod a+x ./appimagetool
-  VERSION=$VERSION ./appimagetool ./$APP.AppDir/
+  VERSION=$VERSION ./appimagetool --bintray-user probono --bintray-repo AppImages -v ./$APP.AppDir/
   mkdir -p ../out/
-  mv *.AppImage ../out/
+  mv *.AppImage* ../out/
 }
 
 # Generate status file for use by apt-get; assuming that the recipe uses no newer
