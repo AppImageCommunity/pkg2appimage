@@ -136,8 +136,6 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
   fi
 fi
 
-set +x # Do not be verbose from here on
-
 if [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
   # [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
   [ "$PCK_NAME" == "" ] && PCK_NAME=$(basename "$FILE" | cut -d "-" -f -2)
@@ -176,7 +174,7 @@ else
   echo "* DESCRIPTION $DESCRIPTION"
 fi
 
-# exit 0
+set +x # Do not be verbose from here on
 ##########
 
 echo ""
