@@ -137,10 +137,14 @@ generate_type2_appimage()
   # Get the ID of the last successful build on Travis CI
   ID=$(wget -q https://api.travis-ci.org/repos/probonopd/appimagetool/builds -O - | head -n 1 | sed -e 's|}|\n|g' | grep '"result":0' | head -n 1 | sed -e 's|,|\n|g' | grep '"id"' | cut -d ":" -f 2)
   # Get the transfer.sh URL from the logfile of the last successful build on Travis CI
+  # Only Travis knows why build ID and job ID don't match and why the above doesn't give both...
   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+1))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
+  if [ -z "$URL" ] ; then
+    URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+2))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
+  fi
   wget -c "$URL" -O appimagetool
   chmod a+x ./appimagetool
-  VERSION=$VERSION ./appimagetool --bintray-user probono --bintray-repo AppImages -v ./$APP.AppDir/
+  VERSION=$VERSION ./appimagetool --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   mkdir -p ../out/
   mv *.AppImage* ../out/
 }
