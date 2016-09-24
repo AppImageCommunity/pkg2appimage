@@ -3,7 +3,7 @@
 # hence we create our own local repository as part of
 # the AppImage creation process in order to "install"
 # the package using apt-get as normal
-# using debian oldstable (wheezy)
+# using Ubuntu trusty
 
 APP=Aseprite
 LOWERAPP=${APP,,}
