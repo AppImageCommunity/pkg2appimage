@@ -174,6 +174,8 @@ get_desktop()
 get_icon()
 {
   find ./usr/share/pixmaps/$LOWERAPP.png -exec cp {} . \; || true
+  find ./usr/share/icons -path *64* -name $LOWERAPP.png -exec cp {} . \; || true
+  find ./usr/share/icons -path *128* -name $LOWERAPP.png -exec cp {} . \; || true
   find ./usr/share/icons -path *512* -name $LOWERAPP.png -exec cp {} . \; || true
   find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
 }
