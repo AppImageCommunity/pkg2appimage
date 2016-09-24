@@ -220,10 +220,8 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
   if which zsyncmake > /dev/null 2>&1; then
     echo ""
     echo "Sanity checking update information of ${FILE}..."
-    HEXOFFSET=$(objdump -h ${FILE} | grep .note.upd-info | awk '{print $6}')
-    # The number that has to be added to HEXOFFSET might change due to ELF alinging (FIXME)
-    dd bs=1 if=${FILE} skip=$(($(echo 0x$HEXOFFSET)+24)) count=7 | grep "bintray" || exit 1
-    dd bs=1 if=${FILE} skip=$(($(echo 0x$HEXOFFSET)+24+1023)) count=1 | grep "<" || exit 1
+    HEXOFFSET=$(objdump -h ${FILE} | grep .upd_info | awk '{print $6}')
+    dd bs=1 if=${FILE} skip=$(($(echo 0x$HEXOFFSET)+0)) count=7 | grep "bintray" || exit 1
     echo ""
     echo "Uploading and publishing zsync file for ${FILE}..."
     zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
