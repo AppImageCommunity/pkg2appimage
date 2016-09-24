@@ -1,162 +1,53 @@
-#!/bin/bash
+APP=Inkscape
+LOWERAPP=${APP,,}
 
-# This is intended to run on Ubuntu.
-# It uses binaries from the Inkscape trunk ppa and bundles EVERY library, down to glibc.
-# The advantage of this approach is that it is really easy to do 
-# and it allows the AppImage to run on older target systems, too.
+mkdir -p ./$APP/$APP.AppDir/usr/lib
 
-# Install Inkscape from PPA
-sudo add-apt-repository -y ppa:inkscape.dev/trunk
-sudo apt-get update
-sudo apt-get -y install inkscape-trunk cde
+cd ./$APP/
 
-# Run Inkscape through CDE
-export DISPLAY=:99.0
-sh -e /etc/init.d/xvfb start
-sleep 3 # give xvfb some time to start
-cde inkscape &
-sleep 20
-killall inkscape
-sh -e /etc/init.d/xvfb stop
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
 
-cd cde-package/cde-root/
+generate_status
 
-# Finalize the AppDir by extracting everything that belongs to Inkscape into it,
-# not just what CDE captured above
-dpkg -x /var/cache/apt/archives/inkscape-trunk_*.deb .
-dpkg -x /var/cache/apt/archives/inkscape-trunk-data_*.deb .
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/inkscape.dev/trunk/ubuntu trusty main
+" > sources.list
 
-cat > AppRun <<\EOF
-#!/bin/sh
+apt-get $OPTIONS update
 
-APPDIR="$(dirname "$(readlink -f "${0}")")"
-INSTALL_PREFIX=/usr
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
 
-# Base environment variables
-export LD_LIBRARY_PATH=${APPDIR}${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
-export PATH=${APPDIR}${INSTALL_PREFIX}/bin:${PATH}
-export XDG_DATA_DIRS=${APPDIR}${INSTALL_PREFIX}/share:${XDG_DATA_DIRS}
+wget -c $URLS
 
-# D-Bus, silence fatal warnings, libdbus is in the mix but we don't need a D-Bus environment
-export DBUS_FATAL_WARNINGS=0
+cd ./$APP.AppDir/
 
-# Pango environment variables
-# export PANGO_RC_FILE=${APPDIR}/pangorc
+find ../*.deb -exec dpkg -x {} . \; || true
 
-# GTK+/GIO/GdkPixbuf environment variables
-# http://askubuntu.com/questions/251712/how-can-i-install-a-gsettings-schema-without-root-privileges
-export GSETTINGS_SCHEMA_DIR=${APPDIR}${INSTALL_PREFIX}/share/glib-2.0/schemas/:${GSETTINGS_SCHEMA_DIR}
-export GDK_PIXBUF_MODULE_FILE=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
-export GTK_IM_MODULE_FILE=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gtk-2.0/2.10.0
-export GTK_PATH=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gtk-2.0/immodules.cache
-export GTK_DATA_PREFIX=${APPDIR}${INSTALL_PREFIX}
-export GTK_THEME=Adwaita
+get_desktop
+get_icon
+get_apprun
 
-export GCONV_PATH=${APPDIR}${INSTALL_PREFIX}/lib/x86_64-linux-gnu/gconv/
+delete_blacklisted
+rm -rf ./etc/ ./home/ || true
 
-unset GTK_MODULES # Otherwise crashes on later Ubuntu because it tries to load unity-gtk-module
-# from the host system, which requires a newer glibc (FIXME)
+# Workaround for:
+# inkscape.desktop": Failed to validate the created desktop file
+# error: file contains group "Drawing Shortcut Group", but groups extending the format should start with "X-"
+sed -i -e 's|Drawing Shortcut Group|X-Drawing Shortcut Group|g' $LOWERAPP.desktop
 
-# Currently we change into the APPDIR directory, this only because of gdk-pixbuf
-# and pango cache files which need to specify relative paths.
-cd ${APPDIR}/${INSTALL_PREFIX}
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-'../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu ./bin/inkscape "$@"
-EOF
-chmod a+x AppRun
+VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
 
-# This belongs to glibc and needs to be bundled if we bundle glibc; GCONV_PATH needs to be set there
-mkdir -p usr/lib/x86_64-linux-gnu/gconv/
-cp /usr/lib/x86_64-linux-gnu/gconv/* usr/lib/x86_64-linux-gnu/gconv/
+get_desktopintegration $LOWERAPP
 
-cp ./usr/share/applications/inkscape.desktop .
-cp ./usr/share/icons/hicolor/256x256/apps/inkscape.png .
-rm -rf ./usr/share/icons/hicolor/48x48 # So that this is not picked up by AppImageAssistant
-rm -rf etc/ home/ run/ var/ usr/share/fonts media/
+# Go out of AppImage
+cd ..
 
-######################
-# Are these not copied in automatically but required?
-
-# /usr/lib/x86_64-linux-gnu/charset.alias
-### cp /usr/lib/x86_64-linux-gnu/charset.alias ./usr/lib/x86_64-linux-gnu/
-
-# /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so
-# /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so
-mkdir -p ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/
-cp /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/ || true
-cp /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/ || true
-
-# /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache
-# /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so
-mkdir -p ./usr/lib/x86_64-linux-gnu/gio/modules/
-cp /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so ./usr/lib/x86_64-linux-gnu/gio/modules/ || true
-
-# /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so
-mkdir -p ./usr/lib/x86_64-linux-gnu/gtk-2.0/modules/
-cp /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so ./usr/lib/x86_64-linux-gnu/gtk-2.0/modules/ || true
-
-# /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/gvfs/tls/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/gvfs/tls/x86_64/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/gvfs/x86_64/libgvfscommon.so
-mkdir -p ./usr/lib/x86_64-linux-gnu/gvfs/
-cp /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so ./usr/lib/x86_64-linux-gnu/gvfs/ || true
-
-######################
-
-# Copy in the indirect dependencies - is this needed?
-FILES=$(find ./usr -type f -executable)
-for FILE in $FILES ; do
-    ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib/x86_64-linux-gnu/ || true
-done
-
-# Path absolute to relative paths
-find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
-
-# Bundle additional libraries (these seem to be needed at runtime but are not bundled for whatever reason)
-cp  /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.so ./usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/
-
-# Nothing should point to /usr or /lib and the likes anymore
-cd usr/
-'../lib64/ld-linux-x86-64.so.2' --library-path  ./lib:../lib/x86_64-linux-gnu/:./lib/x86_64-linux-gnu --list ./bin/inkscape
-
-# Go out of the AppImage
-cd ../..
-
-wget -c "https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant" # (64-bit)
-chmod a+x ./AppImageAssistant
-./AppImageAssistant cde-root/ Inkscape-trunk-standalone_x86_64.AppImage
-
-sudo mkdir -p ../out
-sudo mv Inkscape-trunk-standalone_x86_64.AppImage ../out
-
-# Strangely, the resulting AppImage still tries to access some 
-# libraries outside the AppImage(FIXME)
-# /usr/lib/x86_64/liblzma.so.2
-# /usr/lib/x86_64-linux-gnu/charset.alias
-# /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so
-# /usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so
-# /usr/lib/x86_64-linux-gnu/gio/modules/giomodule.cache
-# /usr/lib/x86_64-linux-gnu/gio/modules/libgvfsdbus.so
-# /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/libcanberra-gtk-module.so
-# /usr/lib/x86_64-linux-gnu/gvfs/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/gvfs/tls/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/gvfs/tls/x86_64/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/gvfs/x86_64/libgvfscommon.so
-# /usr/lib/x86_64-linux-gnu/libcanberra-gtk.so.0
-# /usr/lib/x86_64-linux-gnu/libcanberra.so.0
-# /usr/lib/x86_64-linux-gnu/libcap-ng.so.0
-# /usr/lib/x86_64-linux-gnu/liblzma.so.2
-# /usr/lib/x86_64-linux-gnu/libogg.so.0
-# /usr/lib/x86_64-linux-gnu/libtdb.so.1
-# /usr/lib/x86_64-linux-gnu/libvorbisfile.so.3
-# /usr/lib/x86_64-linux-gnu/libvorbis.so.0
-# /usr/lib/x86_64-linux-gnu/libX11.so.6
-# /usr/lib/x86_64-linux-gnu/libXau.so.6
-# /usr/lib/x86_64-linux-gnu/libxcb.so.1
-# /usr/lib/x86_64-linux-gnu/libXdmcp.so.6
-# /usr/lib/x86_64-linux-gnu/pango/1.8.0/module-files.d
-# /usr/lib/x86_64-linux-gnu/pango/1.8.0/modules.cache
-# /usr/lib/x86_64-linux-gnu/tls/liblzma.so.2
-# /usr/lib/x86_64-linux-gnu/tls/x86_64/liblzma.so.2
-# /usr/lib/x86_64-linux-gnu/x86_64/liblzma.so.2
+generate_type2_appimage
