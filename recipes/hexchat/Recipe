@@ -1,229 +1,43 @@
-APP=$1 # hexchat
+APP=HexChat
+LOWERAPP=${APP,,}
 
-if [ "$APP" == "" ] ; then
-  echo "Environment variable \$APP is missing"
-  exit 1
-fi
+mkdir -p ./$APP/$APP.AppDir/usr/lib
 
-# Determine which architecture should be built
-if [[ "$(arch)" = "i686" || "$(arch)" = "x86_64" ]] ; then
-  ARCH=$(arch)
-else
-  echo "Architecture could not be determined"
-  exit 1
-fi
+cd ./$APP/
 
-# Install EPEL and RPM Fusion repositories for software that is newer than CentOS 6 (this is why I use CentOS for this)
-ls epel-testing.repo ||  yum -y install epel-release
-ls /etc/yum.repos.d/rpmfusion-nonfree-updates.repo || yum -y localinstall --nogpgcheck http://download1.rpmfusion.org/free/el/updates/6/i386/rpmfusion-free-release-6-1.noarch.rpm http://download1.rpmfusion.org/nonfree/el/updates/6/i386/rpmfusion-nonfree-release-6-1.noarch.rpm
+ls ./functions.sh || wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
 
-# Install bleeding-edge AppData from Fedora Rawhide which we can use as a fallback if there is none in the package
-if [ ! -e /usr/share/app-info/xmls/fedora.xml.gz ] ; then
-  BUILD_ID=$( wget "https://apps.fedoraproject.org/packages/fcomm_connector/koji/query/query_builds/%7B%22filters%22:%7B%22package%22:%22appstream-data%22,%22state%22:%22%22%7D,%22rows_per_page%22:10,%22start_row%22:0%7D" -O - | grep -Poe '"build_id":.*?,' | head -n 1 | cut -d : -f 2 | cut -d , -f 1)
-  RPM=$(wget "http://koji.fedoraproject.org/koji/buildinfo?buildID=$BUILD_ID" -O - | grep -Poe "http.*?noarch.rpm")
-  rpm -ivh "$RPM"
-  yum -y install xmlstarlet
-fi
+generate_status
 
-ls AppRun || wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppRun # 64-bit
-chmod a+x AppRun
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+" > sources.list
 
-yum -y install $APP
-rm -rf /app /out || true # Clean up from previous runs
-mkdir -p /app/usr/bin /app/usr/lib /out
+apt-get $OPTIONS update
 
-APPDIR=/app/
-cd $APPDIR
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
 
-# CentOS 6 places stuff in lib64 where AppRun doesn't find it
-ln -s ./lib ./usr/lib64
-ln -s ./lib ./usr/lib32
+wget -c $URLS
 
-FILES=$(rpm -qla $APP)
-for FILE in $FILES ; do
-  if [ -f $FILE ] ; then
-    echo $FILE
-    cp --parents -rfL $FILE ./
-  fi
-done
+cd ./$APP.AppDir/
 
-# Copy in the indirect dependencies
-FILES=$(find . -type f -executable)
-DEPS=""
-for FILE in $FILES ; do
-  ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' > DEPSFILE
-done
-DEPS=$(cat DEPSFILE  |sort | uniq)
-for FILE in $DEPS ; do
-  if [ -f $FILE ] ; then
-    echo $FILE
-    cp --parents -rfL $FILE ./
-  fi
-done
-rm -f DEPSFILE
+find ../*.deb -exec dpkg -x {} . \; || true
 
-# We want everything in usr/ inside the AppDir
-mv lib*/* usr/lib/ || true
-rm -rf ./lib* || true
+get_desktop
+get_icon
+get_apprun
 
-# Copy desktop file in place
-DESKTOP=$(find . -name "*$APP.desktop" | head -n 1)
-cp $DESKTOP .
+delete_blacklisted
 
-VERSION=$(rpm -qa | grep ^$APP- | cut -d - -f 2)
-echo $VERSION
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-if [ "$VERSION" == "" ] ; then
-  echo "Cannot determine version from rpm"
-  exit 1
-fi
+get_version
 
-APPNAME=$(grep -r "^Name=" ./*.desktop | head -n 1 | cut -d "=" -f 2 | sed -e 's/ /_/g')
+get_desktopintegration $LOWERAPP
 
-EXEC=$(grep -r "^Exec=" ./*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
-if [ ! -x usr/bin/$EXEC ] ; then
-  echo "Desktop file specifies Exec=$EXEC but usr/bin/$EXEC is not there, hence patching in $APP"
-  echo "Probably AppRun could be modified to allow more fancy Exec= lines but for now this is safer"
-  sed -i -e  "s/^Exec=.*$/Exec=$APP/g" ./*.desktop
-fi
+# Go out of AppDir
+cd ..
 
-# If there is no AppData, we use AppData from Fedora Rawhide
-APPDATAFILE=usr/share/metainfo/$APP.appdata.xml
-if [ ! -f $APPDATAFILE ] ; then
-  mkdir -p usr/share/metainfo/
-  zcat /usr/share/app-info/xmls/fedora.xml.gz | head -n 2 > $APPDATAFILE
-  zcat /usr/share/app-info/xmls/fedora.xml.gz | xmlstarlet sel -t -c "//id[text()='$APP.desktop']/.." >> $APPDATAFILE
-  zcat /usr/share/app-info/xmls/fedora.xml.gz | tail -n 1 >> $APPDATAFILE
-  [ $(cat usr/share/metainfo/$APP.appdata.xml | wc -l) -lt 7 ] && rm usr/share/metainfo/$APP.appdata.xml
-fi
-
-# If we have AppData, then we should use the name from there
-# since in .desktop files, "names" can be things like "XChat IRC" rather than "XChat"
-if [ -f $APPDATAFILE ] ; then
-  APPNAME=$(xmlstarlet sel -t -c "//name[not(@*)]/text()" $APPDATAFILE)
-fi
-
-echo $APPNAME
-
-if [ "$APPNAME" == "" ] ; then
-  echo "Cannot determine APPNAME from desktop file or AppData"
-  exit 1
-fi
-
-# Patch usr
-find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
-
-# Patch etc
-# find usr/ -type f -executable -exec sed -i -e "s|/etc|./et|g" {} \;
-# cd usr/ ; ln -s ../etc ./et ; cd -
-
-# TODO: Maintain a global list of files that should NOT go into the AppImages
-# along with a reason
-
-# To make the AppImage smaller
-rm usr/lib/libfreetype* || true
-
-# Workaround for:
-# GTK theme is broken
-rm usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
-
-# Workaround for:
-#  Pango-CRITICAL **: pango_layout_get_line_count: assertion 'layout != NULL' failed
-# Floating point exception
-# TO BE WRITTEN
-
-# Workaround for:
-# On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
-rm usr/lib/libgio* || true
-
-# Workaround for:
-# "Connection failed (unable to get local issuer certificate.? (20))" on Ubuntu
-if [ -e usr/lib/libcrypto.so.10 ] ; then
-  echo "Copying in cert.pem"
-  sed -i -e 's|/etc/pki/tls/cert.pem|./et/pki/tls/cert.pem|g' usr/lib/libcrypto.so.10
-  mkdir -p usr/et/pki/tls/
-  cp /etc/pki/tls/cert.pem usr/et/pki/tls/
-fi
-
-# Unsure about these
-rm usr/lib/libgmodule* usr/lib/libatk* usr/lib/libcairo* usr/lib/libpixman* || true
-
-# Workaround for:
-# ./lib/libc.so.6: version `GLIBC_2.14' not found (required by /usr/lib64/libogg.so.0)
-rm usr/lib/libc.so.6 || true
-
-# Workaround for:
-# relocation error: ./lib/libpthread.so.0: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-rm usr/lib/libpthread.so.0 || true
-# Workaround for:
-# relocation error: ./lib/librt.so.1: symbol __vdso_clock_gettime, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-rm usr/lib/librt.so.1 || true
-
-# Workaround for:
-# Segmentation fault (core dumped)
-# Delete potentially dangerous libraries
-rm -f usr/lib/libstdc* usr/lib/libgobject* usr/lib/libc.so.* || true
-rm -f usr/lib/libglib-* usr/lib/libgthread-* usr/lib/libuuid.so.1 usr/lib/libdl.so.2 || true
-# Do NOT delete libX* because otherwise on Ubuntu 11.04:
-# loaded library "Xcursor"
-
-# The following are assumed to be part of the base system
-rm -f usr/lib/libcom_err.so.2 || true
-rm -f usr/lib/libcrypt.so.1 || true
-rm -f usr/lib/libdl.so.2 || true
-rm -f usr/lib/libexpat.so.1 || true
-rm -f usr/lib/libfontconfig.so.1 || true
-rm -f usr/lib/libgcc_s.so.1 || true
-rm -f usr/lib/libglib-2.0.so.0 || true
-rm -f usr/lib/libgpg-error.so.0 || true
-rm -f usr/lib/libgssapi_krb5.so.2 || true
-rm -f usr/lib/libgssapi.so.3 || true
-rm -f usr/lib/libhcrypto.so.4 || true
-rm -f usr/lib/libheimbase.so.1 || true
-rm -f usr/lib/libheimntlm.so.0 || true
-rm -f usr/lib/libhx509.so.5 || true
-rm -f usr/lib/libICE.so.6 || true
-rm -f usr/lib/libidn.so.11 || true
-rm -f usr/lib/libk5crypto.so.3 || true
-rm -f usr/lib/libkeyutils.so.1 || true
-rm -f usr/lib/libkrb5.so.26 || true
-rm -f usr/lib/libkrb5.so.3 || true
-rm -f usr/lib/libkrb5support.so.0 || true
-# rm -f usr/lib/liblber-2.4.so.2 || true # needed for debian wheezy
-# rm -f usr/lib/libldap_r-2.4.so.2 || true # needed for debian wheezy
-rm -f usr/lib/libm.so.6 || true
-rm -f usr/lib/libp11-kit.so.0 || true
-rm -f usr/lib/libpcre.so.3 || true
-rm -f usr/lib/libpthread.so.0 || true
-rm -f usr/lib/libresolv.so.2 || true
-rm -f usr/lib/libroken.so.18 || true
-rm -f usr/lib/librt.so.1 || true
-rm -f usr/lib/libsasl2.so.2 || true
-rm -f usr/lib/libSM.so.6 || true
-rm -f usr/lib/libusb-1.0.so.0 || true
-rm -f usr/lib/libuuid.so.1 || true
-rm -f usr/lib/libwind.so.0 || true
-rm -f usr/lib/libz.so.1 || true
-
-cp ../AppRun .
-
-cd $APPDIR/../
-
-if [ -z "$NO_DOWNLOAD" ] ; then
-ls AppImageAssistant || wget -c https://github.com/probonopd/AppImageKit/releases/download/5/AppImageAssistant # 64-bit
-chmod a+x AppImageAssistant
-fi # if [ -z "$NO_DOWNLOAD" ] ; then
-
-if [[ "$ARCH" = "x86_64" ]] ; then
-  AI=$APPNAME"-"$VERSION"-x86_64.AppImage"
-fi
-if [[ "$ARCH" = "i686" ]] ; then
-  AI=$APPNAME"-"$VERSION"-i386.AppImage"
-fi
-
-echo $AI
-
-rm -f out/$AI || true
-mkdir -p out/ || true
-
-./AppImageAssistant $APPDIR out/$AI
+generate_type2_appimage
