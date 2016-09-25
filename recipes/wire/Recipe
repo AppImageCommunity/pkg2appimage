@@ -40,7 +40,7 @@ EOF
 
 ( cd usr/bin ; ln -s Wire wire )
 
-get_desktopintegration $LOWERAPP
+# get_desktopintegration $LOWERAPP
 
 VERSION=$(strings ./usr/bin/resources/app.asar  | grep "Electron wrapper for Wire" -C 2 | grep version | cut -d '"' -f 4)
 echo $VERSION
