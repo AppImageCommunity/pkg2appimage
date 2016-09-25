@@ -1,25 +1,45 @@
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
-. ./functions.sh
+# FIXME: Currently broken
+# xrc directory not found, hugin needs to be properly installed
+# Tried Path:/usr/share/hugin/xrc/
+# How does Hugin find the xrc directory on macOS?
+# Dear upstream developers, please make apps relocateable
+# using relative paths and never take absolute paths like /usr/share
+# for granted like in
+# hugin_config.h
+# #define INSTALL_XRC_DIR "/usr/local/share/hugin/xrc/"
+
+# exit 1
 
 APP=Hugin
-LOWERAPP=hugin
+LOWERAPP=${APP,,}
 
-sudo add-apt-repository -y ppa:hugin/hugin-builds
-sudo add-apt-repository -y ppa:hugin/nightly
-sudo apt-get update
-sudo apt-get -y install -t trusty $LOWERAPP
+mkdir -p ./$APP/$APP.AppDir/usr/lib
 
-mkdir -p $APP/$APP.AppDir
-cd $APP/$APP.AppDir
-find /var/cache/apt/archives/$LOWERAPP* -exec dpkg -x {} . \;
+cd ./$APP/
 
-cp ./usr/share/applications/$LOWERAPP.desktop .
-rm -rf ./usr/share/icons/48x48/apps
+ls ./functions.sh || wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
 
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/hugin/hugin-builds/ubuntu trusty main
+deb http://ppa.launchpad.net/hugin/nightly/ubuntu trusty main
+" > sources.list
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+get_desktop
+get_icon
 get_apprun
-
-# Copy in the indirect dependencies
-copy_deps ; copy_deps ; copy_deps # Three runs to ensure we catch indirect ones
 
 delete_blacklisted
 
@@ -27,14 +47,11 @@ delete_blacklisted
 # Patching only the executable files seems not to be enough for some apps
 find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-VER1=$(find /var/cache/apt/archives/ -name hugin_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
-echo $VERSION
+get_version
 
 get_desktopintegration $LOWERAPP
 
 # Go out of AppImage
 cd ..
 
-generate_appimage
+generate_type2_appimage
