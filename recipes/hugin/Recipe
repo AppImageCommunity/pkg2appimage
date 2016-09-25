@@ -8,7 +8,7 @@
 # hugin_config.h
 # #define INSTALL_XRC_DIR "/usr/local/share/hugin/xrc/"
 
-# exit 1
+exit 1
 
 APP=Hugin
 LOWERAPP=${APP,,}
