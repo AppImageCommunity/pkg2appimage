@@ -19,7 +19,7 @@ npm install
 npm install grunt
 ./node_modules/.bin/grunt linux
 
-cd ./$APP.AppDir/
+cd ../$APP.AppDir/
 
 mkdir -p usr/bin
 
