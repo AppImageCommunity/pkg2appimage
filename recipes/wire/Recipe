@@ -1,0 +1,48 @@
+APP=Wire
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs icnsutils graphicsmagick
+
+git clone https://github.com/wireapp/wire-desktop.git
+cd wire-desktop
+npm install
+
+# Build for Linux)
+npm install grunt
+./node_modules/.bin/grunt linux
+
+cd ./$APP.AppDir/
+
+mkdir -p usr/bin
+
+cp -r ../wire-desktop/wrap/build/Wire-linux-x64/* usr/bin/
+
+get_apprun
+cp ./usr/bin/electron/img/wire.256.png $LOWERAPP.png
+
+cat > $LOWERAPP.desktop <<\EOF
+[Desktop Entry]
+Name=Wire
+Exec=wire
+Icon=wire
+Type=Application
+Comment=Modern communication. Full privacy.
+Categories=Internet;
+EOF
+
+( cd usr/bin ; ln -s Wire wire )
+
+VERSION=$(strings ./usr/bin/resources/app.asar  | grep "Electron wrapper for Wire" -C 2 | grep version | cut -d '"' -f 4)
+echo $VERSION
+
+cd ..
+
+generate_type2_appimage
