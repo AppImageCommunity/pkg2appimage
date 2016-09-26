@@ -1,0 +1,9 @@
+app: Leafpad
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+
+# Menu font not showing up? Unlike earlier AppImage?
+# Has a change in the blacklists caused this?
