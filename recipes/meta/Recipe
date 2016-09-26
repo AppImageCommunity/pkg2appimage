@@ -80,6 +80,11 @@ if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   rm -r ./usr/lib/x86_64-linux-gnu/gstreamer-1.0
 fi
 
+if [ -d "./usr/lib/x86_64-linux-gnu/pulseaudio/" ] ; then
+  mv ./usr/lib/x86_64-linux-gnu/pulseaudio/* ./usr/lib/x86_64-linux-gnu/
+  rm -r ./usr/lib/x86_64-linux-gnu/pulseaudio
+fi
+
 # Execute extra steps defined in recipe
 for COMMAND in "${_script[@]}" ; do
   echo $COMMAND | bash
