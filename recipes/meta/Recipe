@@ -25,8 +25,8 @@ parse_yaml() {
 }
 
 # Read yaml file
-parse_yaml recipe.yml "_"
-eval $(parse_yaml recipe.yml "_")
+parse_yaml $1 "_"
+eval $(parse_yaml $1 "_")
 
 APP=$_app
 LOWERAPP=${APP,,}
