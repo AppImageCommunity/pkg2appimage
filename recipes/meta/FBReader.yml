@@ -1,0 +1,18 @@
+app: FBReader
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  debs: 
+    - https://fbreader.org/files/desktop/fbreader_0.99.4-1_amd64.deb
+    - https://fbreader.org/files/desktop/libunibreak1_1.0-1_amd64.deb
+
+script:
+  - cp ./usr/share/applications/FBReader.desktop fbreader.desktop
+  - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+  - sed -i -e 's|Exec=FBReader|Exec=fbreader|g' fbreader.desktop
+  - sed -i -e 's|Name=.*|Name=FBReader|g' fbreader.desktop
+  - sed -i -e 's|Icon=.*|Icon=fbreader|g' fbreader.desktop
+  - mv usr/bin/FBReader usr/bin/fbreader
+  - cp usr/share/pixmaps/FBReader.png fbreader.png
