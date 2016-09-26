@@ -44,7 +44,7 @@ libgl1-mesa
 libgl1-mesa-glx
 libglib2.0-0
 libglu1-mesa
-libgstreamer1.0-0
+___libgstreamer1.0-0
 libgtk2.0-0
 libgtk-3-0
 libnss3
