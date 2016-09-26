@@ -51,6 +51,21 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   for PPA in "${_ingredients_ppas[@]}" ; do
     echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
   done
+
+  # Some projects provide raw .deb files without a repository
+  # hence we create our own local repository as part of
+  # the AppImage creation process in order to "install"
+  # the package using apt-get as normal
+  if [ ! -z "${_ingredients_debs[@]}" ] ; then
+    for DEB in "${_ingredients_debs[@]}" ; do
+      if [ ! -f $(basename "$DEB") ] ; then
+        wget -c $DEB
+      fi
+    done
+    dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+    echo "deb file:$(readlink -e $PWD) ./" >> sources.list
+  fi
+
   apt-get $OPTIONS update
   URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
   for URL in $URLS ; do
