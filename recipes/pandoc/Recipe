@@ -1,0 +1,78 @@
+# In this example, we use non-repo .deb
+# Some projects provide raw .deb files without a repository
+# hence we create our own local repository as part of
+# the AppImage creation process in order to "install"
+# the package using apt-get as normal
+# using Ubuntu trusty
+
+APP=Pandoc
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+# We get this app and almost all its dependencies via apt-get
+# but not using the host system's information about what is
+# installed on the system but our own assumptions instead
+
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+" > sources.list
+
+DEB="https://github.com/jgm/pandoc/releases/download/1.17.2/pandoc-1.17.2-1-amd64.deb"
+wget -c "$DEB"
+
+# Add local repository so that we can install deb files
+# that were downloaded outside of a repository
+dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+echo "deb file:$(readlink -e $PWD) ./" >> sources.list
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+# get_desktop
+
+cat > $LOWERAPP.desktop <<\EOF
+[Desktop Entry]
+Type=Application
+Name=Pandoc
+Exec=pandoc
+Icon=pandoc
+Terminal=true
+Categories=Office;
+Comment=Universal markup converter
+EOF
+
+# get_icon
+
+touch $LOWERAPP.png
+
+get_apprun
+
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+# find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
+
+VER1=$(ls ../pandoc-1.17.2-1-amd64.deb | head -n 1 | cut -d "-" -f 2)
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1.glibc$GLIBC_NEEDED
+echo $VERSION
+
+# get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+generate_type2_appimage
