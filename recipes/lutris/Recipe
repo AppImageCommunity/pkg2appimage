@@ -61,7 +61,7 @@ mv ./usr/lib/x86_64-linux-gnu/pulseaudio/* ./usr/lib/x86_64-linux-gnu/ || true
 # undefined symbol: drmGetNodeTypeFromFd (fatal)
 # libGL error: unable to load driver: swrast_dri.so
 # libGL error: failed to load driver: swrast
-rm -rf ./usr/lib/x86_64-linux-gnu/libdrm.*
+rm -rf ./usr/lib/x86_64-linux-gnu/libdrm.* || true
 
 # Without this it segfaults (TODO: to be investigated)
 # Most likely we are deleting too much here
