@@ -1,0 +1,15 @@
+app: Sayonara
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+  ppas: 
+    - lucioc/sayonara
+
+script:
+  - ls
+  - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+
+# App fails playing with
+# Error: Engine: src creation failed
