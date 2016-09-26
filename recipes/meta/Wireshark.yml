@@ -8,4 +8,5 @@ ingredients:
     - wireshark-dev/stable
 
 script:
+  - sudo apt-get install imagemagick
   - convert usr/share/icons/hicolor/scalable/apps/wireshark.svg wireshark.png
