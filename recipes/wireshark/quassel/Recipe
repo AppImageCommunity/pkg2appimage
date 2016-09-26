@@ -1,0 +1,42 @@
+# In this example, we use a trusty PPA - keep providing these!
+
+APP=Quassel
+LOWERAPP=${APP,,}
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+generate_status
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+deb http://ppa.launchpad.net/mamarley/quassel-git/ubuntu trusty main
+" > sources.list
+
+apt-get $OPTIONS update
+
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+
+wget -c $URLS
+
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+cp ./usr/share/applications/kde4/quassel.desktop .
+get_icon
+get_apprun
+
+mv ./usr/lib/x86_64-linux-gnu/pulseaudio/*.so usr/lib/x86_64-linux-gnu/
+
+delete_blacklisted
+
+get_version
+get_desktopintegration $LOWERAPP
+
+cd .. # Go out of AppDir
+
+generate_type2_appimage
