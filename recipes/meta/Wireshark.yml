@@ -1,0 +1,11 @@
+app: Wireshark
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas: 
+    - wireshark-dev/stable
+
+script:
+  - convert usr/share/icons/hicolor/scalable/apps/wireshark.svg wireshark.png
