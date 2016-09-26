@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+# Function to parse yaml
+# https://gist.github.com/epiloque/8cf512c6d64641bde388
+# based on https://gist.github.com/pkuczynski/8665367
+parse_yaml() {
+    local prefix=$2
+    local s
+    local w
+    local fs
+    s='[[:space:]]*'
+    w='[a-zA-Z0-9_]*'
+    fs="$(echo @|tr @ '\034')"
+    sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s[:-]$s\(.*\)$s\$|\1$fs\2$fs\3|p" "$1" |
+    awk -F"$fs" '{
+    indent = length($1)/2;
+    vname[indent] = $2;
+    for (i in vname) {if (i > indent) {delete vname[i]}}
+        if (length($3) > 0) {
+            vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+            printf("%s%s%s=(\"%s\")\n", "'"$prefix"'",vn, $2, $3);
+        }
+    }' | sed 's/_=/+=/g'
+}
+
+# Read yaml file
+parse_yaml recipe.yml "_"
+eval $(parse_yaml recipe.yml "_")
+
+APP=$_app
+LOWERAPP=${APP,,}
+if [ ! -z $_lowerapp ] ; then
+  LOWERAPP=$_lowerapp
+fi
+
+mkdir -p ./$APP/$APP.AppDir/usr/lib
+cd ./$APP/
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+if [ ! -z "${_ingredients_dist}" ] ; then
+  generate_status
+  if [ -e sources.list ] ; then
+    rm sources.list
+  fi
+  for SOURCE in "${_ingredients_sources[@]}" ; do
+  echo "${SOURCE}" >> sources.list
+  done
+  for PPA in "${_ingredients_ppas[@]}" ; do
+    echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
+  done
+  apt-get $OPTIONS update
+  URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
+  for URL in $URLS ; do
+    if [ ! -f $(basename "$URL") ] ; then
+      wget -c $URL
+    fi
+  done
+
+fi
+
+if [ -d "./$APP.AppDir/" ] ; then
+  rm -rf ./$APP.AppDir/
+fi 
+
+mkdir -p ./$APP.AppDir/
+cd ./$APP.AppDir/
+
+find ../*.deb -exec dpkg -x {} . \; || true
+
+get_desktop
+get_icon
+get_apprun
+get_version
+
+if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
+  mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
+  rm -r ./usr/lib/x86_64-linux-gnu/gstreamer-1.0
+fi
+
+# Execute extra steps defined in recipe
+for COMMAND in "${_script[@]}" ; do
+  echo $COMMAND | bash
+done
+
+# patch_usr
+# Patching only the executable files seems not to be enough for some apps
+# find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+
+delete_blacklisted
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+generate_type2_appimage
+ls -lh ../out/*.AppImage
