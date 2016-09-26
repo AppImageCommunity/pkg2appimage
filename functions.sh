@@ -160,7 +160,7 @@ generate_status()
   wget -q -c "https://github.com/probonopd/AppImages/raw/master/excludedeblist"
   rm status 2>/dev/null || true
   for PACKAGE in $(cat excludedeblist | cut -d "#" -f 1) ; do
-    printf "Package: $PACKAGE\nStatus: install ok installed\nArchitecture: all\nVersion: 9:9999.9999.9999\n\n" >> status
+    printf "Package: $PACKAGE\nStatus: install ok installed\nArchitecture: all\nVersion: 9:999.999.999\n\n" >> status
   done
 }
 
