@@ -1,7 +1,7 @@
 app: Typora
 
 ingredients:
-  dist: trusty
+  dist: oldstable
   sources:
     - deb http://ftp.de.debian.org/debian/ oldstable main
     - deb https://typora.io linux/
