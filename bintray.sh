@@ -109,7 +109,7 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
   echo $AIMOUNTPOINT
 
   # Get metadata from the desktop file inside the AppImage
-  DESKTOP=$(find $AIMOUNTPOINT -name *.desktop | head -n 1)
+  DESKTOP=$(find $AIMOUNTPOINT -name *.desktop -maxdepth 1 | head -n 1)
   # Extract the description from the desktop file
   echo "* DESKTOP $DESKTOP"
   
