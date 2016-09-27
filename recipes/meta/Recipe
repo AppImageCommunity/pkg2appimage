@@ -39,7 +39,7 @@ shell_execute() {
   if [ -f /tmp/recipe_script ] ; then
     rm /tmp/recipe_script
   fi
-  parse_yaml $1 "_" | grep "^$2+=" > /tmp/recipe_script
+  parse_yaml $YAMLFILE "_" | grep "^$2+=" > /tmp/recipe_script
   sed -i -e 's|^'$2'+=("||g' /tmp/recipe_script
   sed -i -e 's|")$||g' /tmp/recipe_script
   bash -ex /tmp/recipe_script
