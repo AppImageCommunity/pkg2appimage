@@ -115,7 +115,11 @@ find ../*.deb -exec dpkg -x {} . \; || true
 
 get_icon
 get_apprun
-get_version || true
+if [ -f ../VERSION ] ; then
+  VERSION=$(cat ../VERSION)
+else
+  get_version || true
+fi
 get_desktop || true
 
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
