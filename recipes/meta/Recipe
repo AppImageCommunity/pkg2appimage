@@ -27,7 +27,7 @@ parse_yaml() {
     }' | sed 's/_=/+=/g'
 }
 
-YAMLFILE=$(realpath $1)
+YAMLFILE=$(readlink -f $1)
 
 # Read yaml file
 parse_yaml $YAMLFILE "_"
@@ -79,7 +79,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # hence we create our own local repository as part of
   # the AppImage creation process in order to "install"
   # the package using apt-get as normal
-  DEBS=$(ls *.deb 2>/dev/null)
+  DEBS=$(ls *.deb 2>/dev/null || true)
   if [ ! -z "$DEBS" ] ; then
     for DEB in "${_ingredients_debs[@]}" ; do
       if [ ! -f $(basename "$DEB") ] ; then
