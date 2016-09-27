@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Halt on errors
+set -e
+
 # Function to parse yaml
 # https://gist.github.com/epiloque/8cf512c6d64641bde388
 # based on https://gist.github.com/pkuczynski/8665367
@@ -24,9 +27,24 @@ parse_yaml() {
     }' | sed 's/_=/+=/g'
 }
 
+YAMLFILE=$(realpath $1)
+
 # Read yaml file
-parse_yaml $1 "_"
-eval $(parse_yaml $1 "_")
+parse_yaml $YAMLFILE "_"
+eval $(parse_yaml $YAMLFILE "_")
+
+# Execute multiple script lines together as one
+# shell_execute filename key_of_group_of_commands
+shell_execute() {
+  if [ -f /tmp/recipe_script ] ; then
+    rm /tmp/recipe_script
+  fi
+  parse_yaml $1 "_" | grep "^$2+=" > /tmp/recipe_script
+  sed -i -e 's|^'$2'+=("||g' /tmp/recipe_script
+  sed -i -e 's|")$||g' /tmp/recipe_script
+  bash -ex /tmp/recipe_script
+  rm /tmp/recipe_script
+}
 
 APP=$_app
 LOWERAPP=${APP,,}
@@ -39,6 +57,11 @@ cd ./$APP/
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
+
+if [ ! -z "${_ingredients_script[0]}" ] ; then
+  # Execute extra steps defined in recipe
+  shell_execute $YAMLFILE _ingredients_script
+fi
 
 if [ ! -z "${_ingredients_dist}" ] ; then
   generate_status
@@ -56,7 +79,8 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # hence we create our own local repository as part of
   # the AppImage creation process in order to "install"
   # the package using apt-get as normal
-  if [ ! -z "${_ingredients_debs[@]}" ] ; then
+  DEBS=$(ls *.deb 2>/dev/null)
+  if [ ! -z "$DEBS" ] ; then
     for DEB in "${_ingredients_debs[@]}" ; do
       if [ ! -f $(basename "$DEB") ] ; then
         wget -c $DEB
@@ -83,12 +107,13 @@ fi
 mkdir -p ./$APP.AppDir/
 cd ./$APP.AppDir/
 
+mkdir -p usr/bin usr/lib
 find ../*.deb -exec dpkg -x {} . \; || true
 
-get_desktop
 get_icon
 get_apprun
-get_version
+get_version || true
+get_desktop || true
 
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
@@ -101,9 +126,7 @@ if [ -d "./usr/lib/x86_64-linux-gnu/pulseaudio/" ] ; then
 fi
 
 # Execute extra steps defined in recipe
-for COMMAND in "${_script[@]}" ; do
-  echo $COMMAND | bash
-done
+shell_execute $YAMLFILE _script
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps
