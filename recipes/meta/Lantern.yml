@@ -1,0 +1,8 @@
+app: Lantern
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  debs:
+    - https://s3.amazonaws.com/lantern/lantern-installer-beta-64-bit.deb
