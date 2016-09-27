@@ -8,7 +8,7 @@ ingredients:
 
 script:
   - wget -q https://github.com/michaellass/AUR/raw/master/jabref/jabref.desktop -O jabref.desktop
-  - echo "Comment=Graphical Java application for managing bibtex (.bib) databases" >> jabref.desktop
+  - echo "Comment=Graphical Java application for managing bibtex databases" >> jabref.desktop
   - wget -q https://github.com/michaellass/AUR/raw/master/jabref/jabref.sh -O usr/bin/jabref
   - chmod a+x usr/bin/jabref
   - sed -i -e 's|/usr|././|g' usr/bin/jabref
