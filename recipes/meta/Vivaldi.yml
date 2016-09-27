@@ -8,7 +8,6 @@ ingredients:
   script:
     - DEB=$(wget -q "https://vivaldi.com/download/" -O - | grep amd64.deb | cut -d '"' -f 4)
     - wget -c "$DEB"
-    - VER1=$(echo $DEB | cut -d _ -f 2)
 
 script:
   - sed -i -e 's|/usr/bin||g' vivaldi-stable.desktop
