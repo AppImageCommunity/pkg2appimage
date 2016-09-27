@@ -5,3 +5,6 @@ ingredients:
   sources:
     - deb http://ftp.de.debian.org/debian/ oldstable main
     - deb https://typora.io linux/
+  script:
+    - DEB=$(wget -q https://github.com/jgm/pandoc/releases/ -O - | grep '.deb' | head -n 1 | cut -d '"' -f 2)
+    - wget -c https://github.com/$DEB
