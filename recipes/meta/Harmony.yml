@@ -1,0 +1,17 @@
+app: Harmony
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DEB=$(wget -q https://github.com/vincelwt/harmony/releases/ -O - | grep deb | grep href |  head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DEB"
+    - VER1=$(ls harmony-*.deb | cut -d '-' -f 2 | sed -e 's|.deb||g')
+    - mv "harmony-${VER1}.deb" "harmony_${VER1}_amd64.deb"
+
+script:
+  - cp ./usr/share/applications/Harmony.desktop harmony.desktop
+  - sed -i -e 's|^Exec=.*|Exec=harmony|g' harmony.desktop
+  - mv opt/Harmony/* usr/bin/ ; rm -r opt/
+  - ( cd usr/bin ; ln -s Harmony harmony )
