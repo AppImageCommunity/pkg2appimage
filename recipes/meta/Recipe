@@ -52,8 +52,16 @@ if [ ! -z $_lowerapp ] ; then
   LOWERAPP=$_lowerapp
 fi
 
+if [ ! -z "${_ingredients_package}" ] ; then
+  LOWERAPP="${_ingredients_package}"
+fi
+
 mkdir -p ./$APP/$APP.AppDir/usr/lib
 cd ./$APP/
+
+if [ -d "./$APP.AppDir/" ] ; then
+  rm -rf ./$APP.AppDir/
+fi 
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
@@ -79,16 +87,15 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # hence we create our own local repository as part of
   # the AppImage creation process in order to "install"
   # the package using apt-get as normal
-  DEBS=$(ls *.deb 2>/dev/null || true)
-  if [ ! -z "$DEBS" ] ; then
+  if [ ! -z "${_ingredients_debs[0]}" ] ; then
     for DEB in "${_ingredients_debs[@]}" ; do
       if [ ! -f $(basename "$DEB") ] ; then
         wget -c $DEB
       fi
     done
-    dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
-    echo "deb file:$(readlink -e $PWD) ./" >> sources.list
   fi
+  dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+  echo "deb file:$(readlink -e $PWD) ./" >> sources.list
 
   apt-get $OPTIONS update
   URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP | cut -d "'" -f 2 | grep -e "^http")
@@ -99,10 +106,6 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   done
 
 fi
-
-if [ -d "./$APP.AppDir/" ] ; then
-  rm -rf ./$APP.AppDir/
-fi 
 
 mkdir -p ./$APP.AppDir/
 cd ./$APP.AppDir/
