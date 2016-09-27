@@ -5,6 +5,3 @@ ingredients:
   sources:
     - deb http://ftp.de.debian.org/debian/ oldstable main
     - deb https://typora.io linux/
-
-script:
-  - ls
