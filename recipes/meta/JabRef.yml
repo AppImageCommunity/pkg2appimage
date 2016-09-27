@@ -1,0 +1,18 @@
+app: JabRef
+
+ingredients:
+  script:
+    - URL=$(wget -q https://www.fosshub.com/JabRef.html -O - | grep jar | cut -d '"' -f 10)
+    - wget -c "$URL"
+    - wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
+
+script:
+  - wget -q https://github.com/michaellass/AUR/raw/master/jabref/jabref.desktop -O jabref.desktop
+  - wget -q https://github.com/michaellass/AUR/raw/master/jabref/jabref.sh -O usr/bin/jabref
+  - chmod a+x usr/bin/jabref
+  - sed -i -e 's|/usr|././|g' usr/bin/jabref
+  - sed -i -e 's|JVM_PATH/jre|JVM_PATH|g' usr/bin/jabref
+  - mkdir -p usr/lib/jvm/
+  - tar xf ../jre* -C usr/lib/jvm/
+  - mkdir -p usr/share/java/jabref/
+  - cp ../JabRef_*jar usr/share/java/jabref/JabRef-VERSION.jar
