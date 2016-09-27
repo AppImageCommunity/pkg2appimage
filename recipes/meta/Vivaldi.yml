@@ -1,0 +1,17 @@
+app: Vivaldi
+
+ingredients:
+  package: vivaldi-stable
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DEB=$(wget -q "https://vivaldi.com/download/" -O - | grep amd64.deb | cut -d '"' -f 4)
+    - wget -c "$DEB"
+    - VER1=$(echo $DEB | cut -d _ -f 2)
+
+script:
+  - sed -i -e 's|/usr/bin||g' vivaldi-stable.desktop
+  - ( cd usr/bin ; rm vivaldi-stable ; ln -s vivaldi vivaldi-stable )
+  - mv -f opt/vivaldi/* usr/bin/ && rm -r opt/
+  - cp usr/bin/resources/vivaldi/resources/icon_128.png vivaldi.png
