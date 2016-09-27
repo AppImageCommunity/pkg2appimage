@@ -3,7 +3,7 @@ app: Typora
 ingredients:
   dist: trusty
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://ftp.de.debian.org/debian/ oldstable main
     - deb https://typora.io linux/
 
 script:
