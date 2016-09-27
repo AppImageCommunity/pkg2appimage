@@ -129,7 +129,9 @@ if [ -d "./usr/lib/x86_64-linux-gnu/pulseaudio/" ] ; then
 fi
 
 # Execute extra steps defined in recipe
-shell_execute $YAMLFILE _script
+if [ ! -z "${_script}" ] ; then
+  shell_execute $YAMLFILE _script
+fi
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps
