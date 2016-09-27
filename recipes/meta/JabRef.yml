@@ -17,4 +17,4 @@ script:
   - tar xf ../jre* -C usr/lib/jvm/
   - mkdir -p usr/share/java/jabref/
   - cp ../JabRef_*jar usr/share/java/jabref/JabRef-VERSION.jar
-  - wget -c "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/JabRef_Icon.svg/240px-JabRef_Icon.svg.png" -o jabref.png
+  - wget -c "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/JabRef_Icon.svg/240px-JabRef_Icon.svg.png" -O jabref.png
