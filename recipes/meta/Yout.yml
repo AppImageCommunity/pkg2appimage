@@ -1,0 +1,23 @@
+app: Yout
+
+ingredients:
+  script:
+    - HTML=$(wget -q "https://youtplayer.github.io/" -O - | grep linux-x64.tar.gz | head -n 1 | cut -d '"' -f 2)
+    - URL=$(wget -q $HTML -O - | grep -o "http.*.tar.gz" | tail -n 1)
+    - wget -c "$URL"
+    - ls Yout-*-en-linux-x64.tar.gz | cut -d "-" -f 2 > VERSION
+
+script:
+  - tar xf ../*linux-x64.tar.gz
+  - mv Yout-*-en-linux-x64/* usr/bin/ && rm -r Yout-*-en-linux-x64/
+  - cat > yout.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Yout
+  - Exec=yout
+  - Icon=yout
+  - Categories=AudioVideo;
+  - Comment=YouTube player
+  - EOF
+  - ( cd usr/bin/ ; ln -s Yout yout )
+  - cp ./usr/bin/resources/app/app/assets/ico/icon.png yout.png
