@@ -1,0 +1,16 @@
+app: Natron
+
+ingredients:
+  script:
+    - URL=https://transfer.sh/10ukEx/natron-2.1.4-linux-x86-64bit-portable.tar.xz # Original hides behind login wall
+    - wget -c "$URL"
+    - ls *.tar.xz | cut -d "-" -f 2 > VERSION
+
+script:
+  - tar xf ../natron*.tar.xz
+  - rm -r usr/* ; mv Natron-*/* usr/ ; rm -r Natron-*
+  - wget -c "https://raw.githubusercontent.com/MrKepzie/Natron/master/Gui/Resources/Applications/Natron.desktop" -O natron.desktop
+  - sed -i -e 's|Exec=Natron %U|Exec=natron %U|g' natron.desktop
+  - sed -i -e 's|^Icon=.*|Icon=natron|g' natron.desktop
+  - cp usr/Resources/pixmaps/natronIcon256_linux.png natron.png
+  - ( cd usr/bin ; ln -s Natron natron )
