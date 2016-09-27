@@ -1,0 +1,10 @@
+app: Typora
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb https://typora.io linux/
+
+script:
+  - ls
