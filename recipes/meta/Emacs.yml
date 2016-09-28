@@ -1,0 +1,29 @@
+# Not working properly yet!
+
+app: Emacs
+
+ingredients:
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
+
+script:
+    - cp ./usr/share/applications/emacs23.desktop emacs.desktop
+    - sed -i -e 's|/usr|././|g' usr/bin/emacs23-x
+    - sed -i -e 's|/usr|././|g' usr/bin/emacs23
+    - mkdir -p usr/local
+    - cd usr/local/
+    - ln -s ../share/ .
+    - cd -
+    - mkdir -p ./usr/share/emacs/23.4/lib-src/
+    - mv etc/ e
+    - sed -i -e 's|/etc|../e|g' usr/bin/emacs23-x
+    - sed -i -e 's|/etc|../e|g' usr/bin/emacs23
+    - sed -i -e 's|/etc|../e|g'  ./usr/share/emacs/site-lisp/debian-startup.el
+    - sed -i -e 's|/usr|././|g'  ./usr/share/emacs/site-lisp/debian-startup.el
+
+# Run with
+# export EMACSDATA=/home/me/Desktop/Emacs/Emacs.AppDir/usr/share/emacs/23.4/etc/
+
+# Still doesn't find emacsbug.elc which is in ./usr/share/emacs/23.4/lisp/mail/
+# cannot open load file: easymenu
