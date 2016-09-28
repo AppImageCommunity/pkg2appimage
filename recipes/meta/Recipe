@@ -69,7 +69,9 @@ if [ -d "./$APP.AppDir/" ] ; then
   rm -rf ./$APP.AppDir/
 fi 
 
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+if [ ! -e functions.sh ] ; then
+  wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+fi
 . ./functions.sh
 
 if [ ! -z "${_ingredients_script[0]}" ] ; then
@@ -77,13 +79,33 @@ if [ ! -z "${_ingredients_script[0]}" ] ; then
   shell_execute $YAMLFILE _ingredients_script
 fi
 
+if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
+  for GHREPO in "${_ingredients_ghreleases[@]}" ; do
+    wget -q "https://github.com/${GHREPO}/releases/" -O /tmp/gh-release.html
+    DEB=$(cat /tmp/gh-release.html | grep ".deb" | grep x86_64 | head -n 1 | cut -d '"' -f 2)
+    if [ -z "$DEB" ] ; then
+      DEB=$(cat /tmp/gh-release.html | grep ".deb" | grep amd64 | head -n 1 | cut -d '"' -f 2)
+    fi
+    if [ -z "$DEB" ] ; then
+      DEB=$(cat /tmp/gh-release.html | grep ".deb" | grep x64 | head -n 1 | cut -d '"' -f 2)
+    fi
+    if [ -z "$DEB" ] ; then
+      DEB=$(cat /tmp/gh-release.html | grep ".deb" | grep linux64 | head -n 1 | cut -d '"' -f 2)
+    fi
+    rm /tmp/gh-release.html
+    wget -c "https://github.com/${DEB}"
+  done
+fi
+
+exit 0
+
 if [ ! -z "${_ingredients_dist}" ] ; then
   generate_status
   if [ -e sources.list ] ; then
     rm sources.list
   fi
   for SOURCE in "${_ingredients_sources[@]}" ; do
-  echo "${SOURCE}" >> sources.list
+    echo "${SOURCE}" >> sources.list
   done
   for PPA in "${_ingredients_ppas[@]}" ; do
     echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
