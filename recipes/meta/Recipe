@@ -3,6 +3,12 @@
 # Halt on errors
 set -e
 
+# Check dependencies
+which wget >/dev/null 2>&1 || ( echo wget missing && exit 1 )
+which grep >/dev/null 2>&1 || ( echo grep missing && exit 1 )
+which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
+which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
+
 # Function to parse yaml
 # https://gist.github.com/epiloque/8cf512c6d64641bde388
 # based on https://gist.github.com/pkuczynski/8665367
@@ -88,6 +94,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # the AppImage creation process in order to "install"
   # the package using apt-get as normal
   if [ ! -z "${_ingredients_debs[0]}" ] ; then
+  which dpkg-scanpackages >/dev/null 2>&1 || ( echo dpkg-scanpackages missing && exit 1 )
     for DEB in "${_ingredients_debs[@]}" ; do
       if [ ! -f $(basename "$DEB") ] ; then
         wget -c $DEB
