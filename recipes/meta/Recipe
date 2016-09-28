@@ -97,8 +97,6 @@ if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
   done
 fi
 
-exit 0
-
 if [ ! -z "${_ingredients_dist}" ] ; then
   generate_status
   if [ -e sources.list ] ; then
