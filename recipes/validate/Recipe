@@ -1,0 +1,85 @@
+#!/bin/bash
+
+trap atexit EXIT
+
+atexit()
+{
+  # Unmount the AppImage
+  fusermount -u mnt2 2>/dev/null
+  fusermount -u mnt1 2>/dev/null
+}
+
+sudo apt-get -y install appstream-util xmlstarlet httpfs2 fuseiso
+
+# The URL for which we need to find out the final redirect
+# APPIMAGEURL="https://dl.bintray.com/probono/AppImages/Leafpad-0.8.17-x86_64.AppImage"
+# APPIMAGEURL="http://ftp5.gwdg.de/pub/linux/kde/extrafiles/krita/3/linux/devbuilds/krita-3.0-7dc551d-x86_64.appimage"
+# TODO: httpfs2 should be able to find the final redirect on its own
+# so that we could do without the following workarounds
+if [[ "${APPIMAGEURL}" == *"dl.bintray.com"* ]] ; then
+  APPIMAGEURL=$(curl --silent "${APPIMAGEURL}" -w '%{redirect_url}')
+fi
+if [[ "${APPIMAGEURL}" == "https://github.com/"* ]] ; then
+  APPIMAGEURL=$(curl --silent "${APPIMAGEURL}" -w '%{redirect_url}' | cut -d '"' -f 2 )
+  # Still does not seem to be mountable with httpfs2 
+fi
+
+echo ""
+echo $APPIMAGEURL
+echo ""
+
+# Install prerequisites
+
+ls appdir-lint.sh >/dev/null || wget -c https://github.com/probonopd/AppImages/raw/master/appdir-lint.sh
+ls excludelist >/dev/null || wget -c https://github.com/probonopd/AppImages/raw/master/excludelist
+
+# Make sure we always use http because httpfs2 doesn't like https
+APPIMAGEURL=$(echo "${APPIMAGEURL}" | sed -e 's|https://|http://|g')
+
+# Mount the AppImage over http, this way we don't have to download it entirely
+mkdir -p mnt1 mnt2
+httpfs2 "${APPIMAGEURL}" mnt1 2>/dev/null
+APPIMAGE=$(find mnt1 -type f)
+if [ -z "${APPIMAGE}" ] ; then
+  echo "Could not mount AppImage, exiting"
+  echo "Possibly this is caused by http redirects that need to be worked around"
+  exit 1
+fi
+fuseiso "${APPIMAGE}" mnt2
+AR=$(ls mnt2/AppRun)
+if [ -z "${AR}" ] ; then
+  echo "AppRun file not found in AppImage, exiting"
+  exit 1
+fi
+
+# Check for erros is the AppImage
+bash appdir-lint.sh mnt2
+
+# TODO: Get Update Information embedded in the AppImage,
+# we want to use this for the AppStream <bundle> tag
+# https://github.com/AppImage/AppImageSpec/blob/master/draft.md#updateinformation
+
+# If there is no Update Information embedded in the AppImage, then we use the 
+# download URL for the AppStream <bundle> tag
+# (this will NOT allow for binary delta updates but at least we can download)
+if [ -z "${UPDATE_INFORMATION}" ] ; then
+  TRANSPORT=$(echo "$1" | cut -d ":" -f 1)
+  UPDATE_INFORMATION="${TRANSPORT}|$1"
+fi
+
+# Find the relevant appdata.xml file;
+# according to ximion, usr/share/appdata is a legacy path replaced by usr/share/metainfo
+APPDATA=$(ls mnt2/usr/share/metainfo/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
+if [ -z "$APPDATA" ] ; then
+  APPDATA=$(ls mnt2/usr/share/appdata/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
+fi
+
+echo "${APPDATA}"
+
+if [ -z "${APPDATA}" ] ; then
+    exit 1
+fi
+
+# Validate
+appstreamcli validate "${APPDATA}"
+# appstream-util validate-relax "${APPDATA}" # Hangs on Krita's xml
