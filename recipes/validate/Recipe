@@ -9,7 +9,7 @@ atexit()
   fusermount -u mnt1 2>/dev/null
 }
 
-sudo apt-get -y install appstream-util xmlstarlet httpfs2 fuseiso
+sudo apt-get -y install xmlstarlet httpfs2 fuseiso
 
 # The URL for which we need to find out the final redirect
 # APPIMAGEURL="https://dl.bintray.com/probono/AppImages/Leafpad-0.8.17-x86_64.AppImage"
