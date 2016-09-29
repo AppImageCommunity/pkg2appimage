@@ -13,7 +13,7 @@ sudo apt-get -y install xmlstarlet httpfs2 fuseiso
 
 # The URL for which we need to find out the final redirect
 # APPIMAGEURL="https://dl.bintray.com/probono/AppImages/Leafpad-0.8.17-x86_64.AppImage"
-# APPIMAGEURL="http://ftp5.gwdg.de/pub/linux/kde/extrafiles/krita/3/linux/devbuilds/krita-3.0-7dc551d-x86_64.appimage"
+APPIMAGEURL="http://ftp5.gwdg.de/pub/linux/kde/extrafiles/krita/3/linux/devbuilds/krita-3.0-7dc551d-x86_64.appimage"
 # TODO: httpfs2 should be able to find the final redirect on its own
 # so that we could do without the following workarounds
 if [[ "${APPIMAGEURL}" == *"dl.bintray.com"* ]] ; then
