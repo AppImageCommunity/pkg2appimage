@@ -9,6 +9,7 @@ ingredients:
 
 script:
   - sed -i -e 's|/usr/bin/||g' vivaldi-snapshot.desktop
+  - sed -i -e 's|^Name=.*|Name=Vivaldi|g' vivaldi-snapshot.desktop
   - ( cd usr/bin ; rm vivaldi-snapshot ; ln -s vivaldi vivaldi-snapshot )
   - mv -f opt/vivaldi*/* usr/bin/ && rm -r opt/
   - cp usr/bin/resources/vivaldi/resources/icon_128.png vivaldi-snapshot.png
