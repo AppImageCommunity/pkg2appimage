@@ -1,0 +1,14 @@
+app: Vivaldi
+
+ingredients:
+  package: vivaldi-snapshot
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://repo.vivaldi.com/snapshot/deb stable main
+
+script:
+  - sed -i -e 's|/usr/bin/||g' vivaldi-snapshot.desktop
+  - ( cd usr/bin ; rm vivaldi-snapshot ; ln -s vivaldi vivaldi-snapshot )
+  - mv -f opt/vivaldi*/* usr/bin/ && rm -r opt/
+  - cp usr/bin/resources/vivaldi/resources/icon_128.png vivaldi-snapshot.png
