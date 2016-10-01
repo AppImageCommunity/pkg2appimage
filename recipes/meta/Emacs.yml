@@ -10,8 +10,9 @@ script:
   - wget -c "https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/meta/Emacs.AppRun" -O AppRun
   - chmod a+x AppRun
   - cp ./usr/share/applications/emacs23.desktop .
-  - sed -i -e 's|/usr/bin/||g' emacs23.desktop
-  - sed -i -e 's|^Icon=.*|Icon=emacs23|g' emacs23.desktop
+  - sed -i -e 's|/usr/bin/||g' emacs*.desktop
+  - sed -i -e 's|^Name=.*|Name=Emacs|g' emacs*.desktop
+  - sed -i -e 's|^Icon=.*|Icon=emacs23|g' emacs*.desktop
   - cp ./usr/share/icons/hicolor/128x128/apps/emacs23.png .
   - sed -i -e 's|/usr|././|g' usr/bin/emacs23-x
   - sed -i -e 's|/usr|././|g' usr/bin/emacs23
