@@ -24,9 +24,22 @@ script:
   - sed -i -e 's|/etc|../e|g' usr/bin/emacs23
   - sed -i -e 's|/etc|../e|g'  ./usr/share/emacs/site-lisp/debian-startup.el
   - sed -i -e 's|/usr|././|g'  ./usr/share/emacs/site-lisp/debian-startup.el
-
+  - cat > AppRun <<\EOF
+  - #!/bin/bash
+  - export LD_LIBRARY_PATH=$HERE/usr/lib/*/:$HERE/lib/*/:$LD_LIBRARY_PATH
+  - export PATH=$HERE/usr/sbin:$HERE/usr/bin:$PATH
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - VER=$(ls usr/lib/emacs)
+  - export EMACSPATH=$HERE/usr/share/emacs/$VER/
+  - export EMACSDATA=$EMACSPATH/etc
+  - export EMACSDOC=$EMACSPATH/etc/DOC-$VER
+  - export EMACSLOADPATH=$EMACSPATH/site-lisp:$EMACSPATH/lisp:$EMACSPATH/lisp/emacs-lisp
+  - export INFOPATH=./local/share/info
+  - emacs "$@"
+  - EOF
+  - chmod a+x AppRun
 # Run with
-# export EMACSDATA=/home/me/Desktop/Emacs/Emacs.AppDir/usr/share/emacs/23.4/etc/
+# export EMACSDATA=/home/me/Emacs/Emacs.AppDir/usr/share/emacs/23.4/etc/
 
 # Still doesn't find emacsbug.elc which is in ./usr/share/emacs/23.4/lisp/mail/
 # cannot open load file: easymenu
