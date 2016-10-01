@@ -6,5 +6,6 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 
 script:
+  - sudo apt-get -y install imagemagick
   - find usr/ -type f -exec sed -i -e "s@/usr@././@g" {} \;
   - convert ./usr/share/hydrogen/data/img/gray/h2-icon.svg -resize 256 h2-icon.png
