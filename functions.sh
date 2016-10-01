@@ -55,7 +55,7 @@ copy_deps()
   DEPS=$(cat DEPSFILE | sort | uniq)
   for FILE in $DEPS ; do
     if [ -e $FILE ] ; then
-      cp -v --parents -rfL $FILE ./
+      cp -v --parents -rfL $FILE ./ || true
     fi
   done
   rm -f DEPSFILE
