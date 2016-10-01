@@ -14,8 +14,7 @@ script:
   - sed -i -e 's|^Name=.*|Name=Emacs|g' emacs*.desktop
   - sed -i -e 's|^Icon=.*|Icon=emacs23|g' emacs*.desktop
   - cp ./usr/share/icons/hicolor/128x128/apps/emacs23.png .
-  - sed -i -e 's|/usr|././|g' usr/bin/emacs23-x
-  - sed -i -e 's|/usr|././|g' usr/bin/emacs23
+  - sed -i -e 's|/usr|././|g' usr/bin/emacs*-x
   - mkdir -p usr/local
   - ( cd usr/local/ ; ln -s ../share/ . )
   - mkdir -p ./usr/share/emacs/23.4/lib-src/
