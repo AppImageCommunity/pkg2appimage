@@ -20,7 +20,6 @@ script:
   - ( cd usr/local/ ; ln -s ../share/ . )
   - mkdir -p ./usr/share/emacs/23.4/lib-src/
   - mv etc/ e
-  - sed -i -e 's|/etc|../e|g' usr/bin/emacs23-x
-  - sed -i -e 's|/etc|../e|g' usr/bin/emacs23
+  - sed -i -e 's|/etc|../e|g' usr/bin/emacs*-x
   - sed -i -e 's|/etc|../e|g'  ./usr/share/emacs/site-lisp/debian-startup.el
   - sed -i -e 's|/usr|././|g'  ./usr/share/emacs/site-lisp/debian-startup.el
