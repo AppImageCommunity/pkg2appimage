@@ -1,0 +1,13 @@
+app: OwnCloud
+
+ingredients:
+  package: owncloud-client
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
+    - deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_7.0/ /
+
+script:
+  - cp ./usr/share/applications/owncloud.desktop owncloud-client.desktop
+  - mv ./usr/lib/x86_64-linux-gnu/owncloud/*.so* ./usr/lib/x86_64-linux-gnu/
+  - cp ./usr/share/icons/hicolor/512x512/apps/owncloud.png .
