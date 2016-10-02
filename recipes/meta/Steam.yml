@@ -1,0 +1,11 @@
+# This is not working yet due to multiarch. Any help is appreciated.
+# How do I give apt-get a custom file instead of /var/lib/dpkg/arch?
+
+app: Steam
+verbose: true
+
+ingredients:
+  package: steam:i386
+  dist: jessie
+  sources:
+    - deb [arch=amd64,i386] http://ftp.de.debian.org/debian/ jessie main non-free
