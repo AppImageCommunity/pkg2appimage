@@ -61,7 +61,7 @@ echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe multiverse
 deb http://ppa.launchpad.net/libretro/testing/ubuntu trusty main
 " > sources.list
 apt-get $OPTIONS update
-URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP libretro-* | cut -d "'" -f 2 | grep -e "^http")
+URLS=$(apt-get $OPTIONS -y install --print-uris $LOWERAPP dinothawr libretro-* | cut -d "'" -f 2 | grep -e "^http")
 wget -c $URLS
 
 cd ./$APP.AppDir/
