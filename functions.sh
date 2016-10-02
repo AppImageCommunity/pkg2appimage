@@ -80,6 +80,12 @@ delete_blacklisted()
       rm -f "${FOUND}"
     fi
   done
+  
+  # Do not bundle developer stuff
+  rm -rf usr/include || true
+  rm -rf usr/lib/cmake || true
+  rm -rf usr/lib/pkgconfig || true
+  find . -name '*.la' | xargs -i rm {}
 }
 
 # Echo highest glibc version needed by the executable files in the current directory
