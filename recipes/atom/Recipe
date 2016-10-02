@@ -53,4 +53,4 @@ echo $VERSION
 # Go out of AppImage
 cd ..
 
-generate_appimage
+generate_type2_appimage
