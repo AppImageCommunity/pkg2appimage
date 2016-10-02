@@ -170,6 +170,11 @@ fi
 delete_blacklisted
 get_desktopintegration $LOWERAPP
 
+# Execute extra steps defined in recipe
+if [ ! -z "${_post}" ] ; then
+  shell_execute $YAMLFILE _post
+fi
+
 # Go out of AppImage
 cd ..
 
