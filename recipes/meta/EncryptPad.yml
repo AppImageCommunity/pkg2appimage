@@ -1,0 +1,12 @@
+app: EncryptPad
+
+ingredients:
+  also: encryptpad-cli
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - nilarimogard/webupd8
+
+script:
+  - find usr/ -type f -exec sed -i -e "s@/usr@././@g" {} \; # Needed for some Qt plugin
