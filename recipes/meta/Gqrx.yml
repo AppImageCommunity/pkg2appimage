@@ -1,0 +1,20 @@
+app: Gqrx
+
+ingredients:
+  package: gqrx-sdr
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - bladerf/bladerf
+    - ettusresearch/uhd
+    - myriadrf/drivers
+    - myriadrf/gnuradio
+    - gqrx/gqrx-sdr
+
+script:
+  - cp ./usr/share/applications/gqrx.desktop gqrx-sdr.desktop
+  - sed -i -e 's|^Exec=.*|Exec=gqrx-sdr|g' gqrx-sdr.desktop
+  - ( cd usr/bin/ ; ln -s gqrx gqrx-sdr )
+  - which convert 2>&1 || sudo apt-get -y install imagemagick
+  - convert ./usr/share/icons/hicolor/scalable/apps/gqrx.svg -resize 256 gqrx.png
