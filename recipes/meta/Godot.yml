@@ -4,7 +4,7 @@ ingredients:
   script:
     - URL=$(wget -q "https://godotengine.org/download" -O - | grep "Linux 64-bit" | head -n 1 | cut -d '"' -f 6)
     - wget -c "$URL"
-    - ls Godot_*.zip | cut -d _ -f 2 > VERSION
+    - ls Godot_*.zip | cut -d _ -f 2 | cut -d "-" -f 1 | sed -e 's@v@@g' > VERSION
     - unzip *.zip
 
 script:
