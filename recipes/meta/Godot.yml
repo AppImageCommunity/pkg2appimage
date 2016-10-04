@@ -11,4 +11,4 @@ script:
   - find .. -name Godot* -type f -executable -exec mv {} usr/bin/godot \;
   - wget -c "https://github.com/djrm/godot/raw/appimage_structure/tools/Godot.AppDir/godot.desktop"
   - wget -c "https://github.com/djrm/godot/raw/appimage_structure/tools/Godot.AppDir/godot.png"
-  - ldd usr/bin/godot | grep "=>" | cut -d " " -f 3 | sort | uniq | xargs -i cp {} usr/lib/
+  - ldd usr/bin/godot | grep "=" | cut -d " " -f 3 | sort | uniq | xargs -i cp {} usr/lib/
