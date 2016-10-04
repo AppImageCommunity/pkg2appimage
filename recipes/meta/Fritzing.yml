@@ -10,8 +10,11 @@ ingredients:
 script:
   - tar xf ../fritzing* -C usr/bin/ --strip 1
   - mv usr/bin/fritzing.desktop .
+  - sed -i -e 's@^Version=.*@Version=1.0@g' fritzing.desktop # Fix bug in the desktop file
+  - sed -i -e 's@EDA;*@@g' fritzing.desktop # Fix bug in the desktop file
   - sed -i -e 's@^Exec=.*@Exec=fritzing@g' fritzing.desktop
   - sed -i -e 's@icons/@@g' fritzing.desktop
+  - sed -i -e 's@Categories=PCB;@@g' fritzing.desktop
   - sed -i -e 's@.png@@g' fritzing.desktop
   - ( cd usr/bin ; ln -s Fritzing fritzing )
   - cp usr/bin/icons/fritzing_icon.png .
