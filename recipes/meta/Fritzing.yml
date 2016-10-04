@@ -33,7 +33,7 @@ script:
   - mv usr/share/icons/hicolor/256x256/mimetypes/fzb_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzb.png
   - mv usr/share/icons/hicolor/256x256/mimetypes/fzbz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzbz.png
   - mv usr/share/icons/hicolor/256x256/mimetypes/fz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fz.png
-  - mv usr/share/icons/hicolor/256x256/mimetypes/fzmz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzm.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzm_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzm.png
   - mv usr/share/icons/hicolor/256x256/mimetypes/fzp_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzp.png
   - mv usr/share/icons/hicolor/256x256/mimetypes/fzpz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzpz.png
   - mv usr/share/icons/hicolor/256x256/mimetypes/fzz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzz.png
