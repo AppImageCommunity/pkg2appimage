@@ -21,7 +21,7 @@ script:
   - mkdir -p usr/share/mime/
   - mv usr/bin/icons/*.xml usr/share/mime/
   - mkdir -p usr/share/icons/hicolor/{256x256,128x128}/mimetypes
-  - find usr/bin/icons/ -name *128* -exec mv {} usr/share/icons/hicolor/128x128/ \;
-  - find usr/bin/icons/ -name *256* -exec mv {} usr/share/icons/hicolor/256x256/ \;
+  - find usr/bin/icons/ -name *128* -exec mv {} usr/share/icons/hicolor/128x128/mimetypes/ \;
+  - find usr/bin/icons/ -name *256* -exec mv {} usr/share/icons/hicolor/256x256/mimetypes/ \;
   - mkdir -p usr/share/appdata/
   - mv usr/bin/fritzing.appdata.xml usr/share/appdata/
