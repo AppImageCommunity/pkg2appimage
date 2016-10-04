@@ -23,5 +23,19 @@ script:
   - mkdir -p usr/share/icons/hicolor/{256x256,128x128}/mimetypes
   - find usr/bin/icons/ -name *128* -exec mv {} usr/share/icons/hicolor/128x128/mimetypes/ \;
   - find usr/bin/icons/ -name *256* -exec mv {} usr/share/icons/hicolor/256x256/mimetypes/ \;
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fzb_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fzb.png
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fzbz_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fzbz.png
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fz_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fz.png
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fzm_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fzm.png
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fzp_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fzp.png
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fzpz_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fzpz.png
+  - mv usr/share/icons/hicolor/128x128/mimetypes/fzz_icon128.png usr/share/icons/hicolor/128x128/mimetypes/application-x-fritzing-fzz.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzb_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzb.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzbz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzbz.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fz.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzmz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzm.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzp_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzp.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzpz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzpz.png
+  - mv usr/share/icons/hicolor/256x256/mimetypes/fzz_icon256.png usr/share/icons/hicolor/256x256/mimetypes/application-x-fritzing-fzz.png
   - mkdir -p usr/share/appdata/
   - mv usr/bin/fritzing.appdata.xml usr/share/appdata/
