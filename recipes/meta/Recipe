@@ -147,11 +147,6 @@ find ../*.deb -exec dpkg -x {} . \; || true
 
 get_icon
 get_apprun
-if [ -f ../VERSION ] ; then
-  VERSION=$(cat ../VERSION)
-else
-  get_version || true
-fi
 get_desktop || true
 
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
@@ -167,6 +162,12 @@ fi
 # Execute extra steps defined in recipe
 if [ ! -z "${_script}" ] ; then
   shell_execute $YAMLFILE _script
+fi
+
+if [ -f ../VERSION ] ; then
+  VERSION=$(cat ../VERSION).glibc$(glibc_needed)
+else
+  get_version || true
 fi
 
 # patch_usr
