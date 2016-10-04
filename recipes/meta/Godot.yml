@@ -13,3 +13,5 @@ script:
   - sed -i -e 's@Godot Engine@Godot@g' godot.desktop # Workaround for Bintray upload script that gets confused with spaces
   - wget -c "https://github.com/djrm/godot/raw/appimage_structure/tools/Godot.AppDir/godot.png"
   - ldd usr/bin/godot | grep "=" | cut -d " " -f 3 | sort | uniq | xargs -i cp {} usr/lib/
+  - # NOTE: The proper way to do this would be to use debian packages rather than blindly ldd'ing on the build machine
+  - # Someone should find out the debian package names of the libraries needed
