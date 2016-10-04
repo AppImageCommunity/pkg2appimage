@@ -11,5 +11,5 @@ ingredients:
 script:
   - cp ./usr/share/applications/otter-browser.desktop otter.desktop
   - sed -i -e 's@^Exec=.*@Exec=otter@g' otter.desktop # FIXME, desktopintegration otherwise gets confused
-  - ( cd usr/bin/ ; rm otter ; ln -s otter-browser otter )
+  - ( cd usr/bin/ ; ln -s otter-browser otter )
   - cp ./usr/share/icons/hicolor/256x256/apps/otter-browser.png .
