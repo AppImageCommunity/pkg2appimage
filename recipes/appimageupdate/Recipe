@@ -22,7 +22,7 @@ wget -c https://github.com/probonopd/zsync-curl/releases/download/_binaries/zsyn
 chmod a+x AppImageUpdate.AppDir/usr/bin/zsync_curl
 wget -c https://github.com/probonopd/zsync-curl/releases/download/_binaries/appimageupdategui -O AppImageUpdate.AppDir/usr/bin/appimageupdategui
 chmod a+x AppImageUpdate.AppDir/usr/bin/appimageupdategui
-cp -r appimageupdategui/ui AppImageUpdate.AppDir/usr/
+cp -r appimageupdategui/ui AppImageUpdate.AppDir/usr/bin/
 cd ..
 
 if [ -z "$NO_DOWNLOAD" ] ; then
