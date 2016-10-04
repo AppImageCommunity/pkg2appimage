@@ -1,0 +1,22 @@
+# The project provides binaries built with Ubuntu 12.04, which is great
+
+app: Fritzing
+
+ingredients:
+  script:
+    - DLD=$(wget -q "http://fritzing.org/download/?donation=0" -O - | grep AMD | head -n 1 | cut -d '"' -f 2)
+    - wget -c "http://fritzing.org/$DLD"
+    - ls fritzing-*.linux.AMD64.tar.bz2 | cut -d "-" -f 2 | sed -e 's@.linux.AMD64.tar.bz2@@g' > VERSION
+script:
+  - tar xf ../fritzing* -C usr/bin/ --strip 1
+  - mv usr/bin/fritzing.desktop .
+  - sed -i -e 's@^Exec=.*@Exec=fritzing@g' fritzing.desktop
+  - sed -i -e 's@icons/@@g' fritzing.desktop
+  - sed -i -e 's@.png@@g' fritzing.desktop
+  - ( cd usr/bin ; ln -s Fritzing fritzing )
+  - cp usr/bin/icons/fritzing_icon.png .
+  - mkdir -p usr/share/mime/
+  - mv usr/bin/icons/*.xml usr/share/mime/
+  - mkdir -p usr/share/icons/hicolor/{256x256,128x128}/mimetypes
+  - find usr/bin/icons/ -name *128* -exec mv {} usr/share/icons/hicolor/128x128/ \;
+  - find usr/bin/icons/ -name *256* -exec mv {} usr/share/icons/hicolor/256x256/ \;
