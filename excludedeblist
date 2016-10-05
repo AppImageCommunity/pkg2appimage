@@ -28,6 +28,7 @@ kde-runtime
 libasound2
 libatk1.0-0
 libc6
+libc6-dev
 libcairo2
 libcups2
 libcurl3-gnutls
