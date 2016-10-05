@@ -1,10 +1,9 @@
-app: Mendeley
+app: Mendeleydesktop
 
-ingredients:s
+ingredients:
   dist: squeeze
   sources: 
     - deb http://archive.debian.org/debian squeeze main
-  package: mendeleydesktop
   script:
     - wget -c https://www.mendeley.com/repositories/ubuntu/stable/amd64/mendeleydesktop-latest --trust-server-names
     - wget -c http://archive.debian.org/debian/pool/main/q/qt4-x11/libqt4-xmlpatterns_4.6.3-4+squeeze1_amd64.deb
