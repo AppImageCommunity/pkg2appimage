@@ -1,0 +1,13 @@
+app: Geany
+
+ingredients:
+  package: geany-*
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - geany-dev/ppa
+
+script:
+  - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+  - cp ./usr/share/icons/hicolor/48x48/apps/geany.png .
