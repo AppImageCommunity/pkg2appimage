@@ -137,23 +137,8 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
   fi
 fi
 
-if [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
-  # [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
-  [ "$PCK_NAME" == "" ] && PCK_NAME=$(basename "$FILE" | cut -d "-" -f -1)
-  [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[-3]}"
-  # ARCH="${BASH_REMATCH[3]}"
-elif [[ "$(basename "$FILE")" =~ ([^- ]*)-([^- ]*)-([^- ]*).(AppImage|run) ]] ; then # AppImages
-  # [ "$PCK_NAME" == "" ] && PCK_NAME="${BASH_REMATCH[1]}"
-  [ "$PCK_NAME" == "" ] && PCK_NAME=$(basename "$FILE" | cut -d "-" -f -1)
-  [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[-3]}"
-  # ARCH="${BASH_REMATCH[3]}"
-elif [[ "$(basename "$FILE")" =~ (.*)[\ _](.*)-([^- ]*) ]] ; then # Other binaries
-  PCK_NAME="${BASH_REMATCH[1]}"
-  [ "$VERSION" == "" ] && VERSION="${BASH_REMATCH[-3]}"
-  # ARCH="${BASH_REMATCH[3]}"
-else
-  echo "Could not parse filename $FILE"
-fi
+[ "$PCK_NAME" == "" ] && PCK_NAME=$(basename "$FILE" | cut -d "-" -f 1)
+[ "$VERSION" == "" ] && VERSION=$(basename "$FILE" | cut -d "-" -f 2)
 
 if [ "$PCK_NAME" == "" ] ; then
   echo "* PCK_NAME missing, exiting"
