@@ -131,7 +131,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   fi
 
   apt-get $OPTIONS update || true
-  URLS=$(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
+  URLS=$(apt-get $OPTIONS -y install --print-uris "$INSTALL" | cut -d "'" -f 2 | grep -e "^http")
   for URL in $URLS ; do
     if [ ! -f $(basename "$URL") ] ; then
       wget -c $URL
