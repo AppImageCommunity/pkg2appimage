@@ -10,6 +10,6 @@ ingredients:s
     - wget -c http://archive.debian.org/debian/pool/main/q/qt4-x11/libqt4-xmlpatterns_4.6.3-4+squeeze1_amd64.deb
 
 script:
-  - rm -rf usr ; mv opt/mendeleydesktop/* usr/
+  - rm -rf usr/* ; mv opt/mendeleydesktop/* usr/
   - cp ./usr/share/applications/mendeleydesktop.desktop .
   - find . -name *.so* -exec mv {} usr/lib/ 2>/dev/null \; || true
