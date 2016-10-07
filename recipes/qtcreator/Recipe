@@ -152,6 +152,7 @@ cp -L $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
 cp -L $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
 sed -i -e 's|^Exec=.*|Exec=qtcreator|g' $LOWERAPP.desktop
 sed -i -e 's|^Name=.*|Name=QtCreator|g' $LOWERAPP.desktop
+echo "Comment=Cross-platform IDE" >> $LOWERAPP.desktop
 cat $LOWERAPP.desktop
 
 get_desktopintegration $LOWERAPP
