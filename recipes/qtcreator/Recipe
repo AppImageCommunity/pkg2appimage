@@ -305,10 +305,10 @@ mkdir -p $AD/usr/bin/
 cp -Rfv usr/bin/make $AD/usr/bin/
 
 cd .. # go out of g++/
-generate_appimage
+generate_type2_appimage
 
 # As long as bintray.sh has issues with this, use transfer.sh
-transfer ../out/*.AppImage
+# transfer ../out/*.AppImage
 
 exit 0
 
