@@ -337,4 +337,4 @@ cp usr/lib/x86_64-linux-gnu/libcloog-isl.so.4 usr/lib/x86_64-linux-gnu/libisl.so
 find $AD/usr/lib/gcc/x86_64-linux-gnu/* -type f -executable -exec patchelf --set-rpath \$ORIGIN/../../.. {} \;
 cd .. # go out of g++/
 
-generate_appimage
+generate_type2_appimage
