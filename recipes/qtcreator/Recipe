@@ -162,6 +162,11 @@ VERSION=$(ls ../*.run | cut -d "-" -f 5 | sed -e 's|.run||g')
 # which we need to patch away
 find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
 
+# Patch qt_prfxpath in libQt5Core to hardcoded AppImage mountpoint
+ORIG=$(strings ./*/gcc_64/lib/libQt5Core.so.5 | grep "qt_prfxpath=")
+REPL="qt_prfxpath=/tmp/.mount_QtCreator-5.7.0-x86_64/5.7/gcc_64"
+patch_strings_in_file ./*/gcc_64/lib/libQt5Core.so.5 "$ORIG" "$REPL"
+
 # Since the AppImage mountpoint changes on each execution, we use a workaround
 
 cat > AppRun <<\EOF
