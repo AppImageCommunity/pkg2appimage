@@ -7,3 +7,6 @@ ingredients:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - webupd8team/unstable
+
+script:
+  - cp usr/share/applications/audacious-qt.desktop .
