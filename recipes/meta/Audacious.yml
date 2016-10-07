@@ -1,0 +1,9 @@
+app: Audacious
+
+ingredients:
+  package: geany-*
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - webupd8team/unstable
