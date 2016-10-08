@@ -1,0 +1,22 @@
+app: Ramme
+
+ingredients:
+  script:
+    - ZIP=$(wget -q https://github.com/terkelg/ramme/releases/ -O - | grep -e '-linux-' | head -n 1 | cut -d '"' -f 2)
+    - wget -c https://github.com/$ZIP
+    - ls Ramme-linux-*.zip | cut -d "-" -f 3 | sed -e 's@.zip@@g' > VERSION
+
+script:
+  - ( cd usr/bin ; unzip ../../../*.zip )
+  - ( cd usr/bin ; ln -s Ramme ramme )
+  - cp ./usr/bin/resources/app/static/icon.png ramme.png
+  - # Dear upstream developers, where is the ramme.desktop file?
+  - cat > ramme.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Ramme
+  - Icon=ramme
+  - Exec=ramme
+  - Comment=Instagram client
+  - Categories=Network;
+  - EOF
