@@ -1,0 +1,25 @@
+app: MediathekView
+
+ingredients:
+  script:
+    - URL=https://sourceforge.net/projects/zdfmediathk/files/latest/download
+    - wget -c "$URL" --trust-server-names
+    - wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
+    - ls MediathekView*zip | cut -d "." -f 1 | cut -d "_" -f 2 > VERSION
+
+script:
+  - mkdir -p usr/lib/jvm/
+  - tar xf ../jre* -C usr/lib/jvm/
+  - ( cd usr/bin ; ln -s ../lib/jvm/jre*/bin/java . )
+  - unzip ../MediathekView*zip -d usr/bin/
+  - find . -name *.exe -exec rm {} \;
+  - ( cd usr/bin ; ln -s MediathekView__Linux.sh mediathekview )
+  - cat > mediathekview.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=MediathekView
+  - Exec=mediathekview
+  - Icon=mediathekview
+  - Type=Applicaion 
+  - Categories=AudioVideo;
+  - Comment=Mediatheken
+  - EOF
