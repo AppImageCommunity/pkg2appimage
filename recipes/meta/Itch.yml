@@ -1,0 +1,10 @@
+app: Itch
+
+ingredients:
+  dist: wheezy
+  sources:
+    - deb http://ftp.de.debian.org/debian/ wheezy main
+    - deb https://dl.bintray.com/itchio/deb wheezy main
+
+script:
+  - rm usr/share/metainfo/itch.appdata.xml # https://github.com/itchio/itch/issues/937
