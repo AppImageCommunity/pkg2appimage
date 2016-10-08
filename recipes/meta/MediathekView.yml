@@ -23,3 +23,4 @@ script:
   - Categories=AudioVideo;
   - Comment=Mediatheken
   - EOF
+  - cp ./usr/bin/Info/MediathekView.png mediathekview.png
