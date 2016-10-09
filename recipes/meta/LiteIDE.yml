@@ -1,0 +1,13 @@
+app: LiteIDE
+
+ingredients:
+  script:
+    - wget -q https://sourceforge.net/projects/liteide/files/ -O - | grep "stats/timeline" | head -n 1 | cut -d "/" -f 5 > VERSION
+    - VERSION=$(cat VERSION)
+    - VERSION_NO_X=$(cat VERSION | sed -e 's|X||g')
+    - wget -c "https://sourceforge.net/projects/liteide/files/${VERSION}/liteidex${VERSION_NO_X}.linux64-qt4.tar.bz2/download" --trust-server-names
+
+script:
+  - wget -c https://github.com/visualfc/liteide/raw/master/liteidex/liteide.desktop
+  - wget -c https://github.com/visualfc/liteide/raw/master/liteidex/liteide.png
+  - tar xf ../liteide*.tar.bz2 -C usr/ --strip 1
