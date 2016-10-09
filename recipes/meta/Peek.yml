@@ -1,0 +1,14 @@
+app: Peek
+
+ingredients:
+  dist: mx15
+  sources:
+    - deb http://ftp.us.debian.org/debian/ jessie main contrib non-free
+    - deb http://main.mepis-deb.org/mx/repo/ mx15 main
+    - deb http://main.mepis-deb.org/mx/testrepo/ mx15 test
+  script:
+    - echo gsettings-backend >> excludedeblist
+
+script:
+  - cp ./usr/share/applications/com.uploadedlobster.peek.desktop peek.desktop
+  - ( cd usr/share/glib-2.0/schemas/ ; glib-compile-schemas . )
