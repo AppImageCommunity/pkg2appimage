@@ -173,7 +173,7 @@ generate_status()
 # Find the desktop file and copy it to the AppDir
 get_desktop()
 {
-  cp ./usr/share/applications/$LOWERAPP.desktop . || true
+  find usr/share/applications -iname $LOWERAPP.desktop -exec cp {} . \; || true
 }
 
 # Find the icon file and copy it to the AppDir
