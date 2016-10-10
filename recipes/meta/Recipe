@@ -147,7 +147,7 @@ find ../*.deb -exec dpkg -x {} . \; || true
 
 get_icon
 get_apprun
-get_desktop || true
+get_desktop
 
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
