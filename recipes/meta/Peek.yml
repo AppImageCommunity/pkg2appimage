@@ -11,4 +11,3 @@ ingredients:
 
 script:
   - cp ./usr/share/applications/com.uploadedlobster.peek.desktop peek.desktop
-  - ( cd usr/share/glib-2.0/schemas/ ; glib-compile-schemas . )
