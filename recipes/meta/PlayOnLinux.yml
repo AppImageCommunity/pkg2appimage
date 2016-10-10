@@ -1,3 +1,6 @@
+# Supposedly can run Word, Excel, and PowerPoint
+# https://www.youtube.com/watch?v=GVl9BuC6lHA
+#
 # Not working yet
 # Looking for python2... 2.7.11+ - Traceback (most recent call last):
 #  File "/home/me/PlayOnLinux/PlayOnLinux.AppDir/usr/share/playonlinux/python/check_python.py", line 1, in <module>
