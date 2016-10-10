@@ -1,0 +1,15 @@
+# Not working yet
+# Looking for python2... 2.7.11+ - Traceback (most recent call last):
+#  File "/home/me/PlayOnLinux/PlayOnLinux.AppDir/usr/share/playonlinux/python/check_python.py", line 1, in <module>
+#     import os, wxversion
+# ImportError: No module named wxversion
+
+app: PlayOnLinux
+
+ingredients:
+  dist: wheezy
+  sources:
+    - deb http://ftp.us.debian.org/debian/ wheezy main contrib non-free
+    - deb http://deb.playonlinux.com/ wheezy main
+    - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+    - find usr/ -type f -exec sed -i -e 's@././/bin/env@/usr/bin/env@g' {} \;
