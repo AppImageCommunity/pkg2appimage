@@ -1,0 +1,13 @@
+app: Linphone
+
+ingredients:
+  dist: precise
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://packages.medibuntu.org/ precise free non-free
+  ppas:
+    - linphone/release
+
+script:
+  - find usr/ -type f -exec sed -i -e "s@/usr@././@g" {} \;
+  - cp usr/share/icons/hicolor/48x48/apps/linphone.png .
