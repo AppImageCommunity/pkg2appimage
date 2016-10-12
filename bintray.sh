@@ -50,14 +50,14 @@ which grep >/dev/null || exit 1
 which zsyncmake >/dev/null || exit 1
 
 # Do not upload artefacts generated as part of a pull request
-if [ "$TRAVIS_PULL_REQUEST" ] ; then
+if [ ! -z "$TRAVIS_PULL_REQUEST" ] ; then
   if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
     echo "Not uploading since this is a pull request"
     exit 0
   fi
 fi
 
-if [ ! "$BINTRAY_API_KEY" ] ; then
+if [ -z "$BINTRAY_API_KEY" ] ; then
   echo "Environment variable \$BINTRAY_API_KEY missing"
   exit 1
 fi
