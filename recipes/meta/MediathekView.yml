@@ -19,7 +19,7 @@ script:
   - Name=MediathekView
   - Exec=mediathekview
   - Icon=mediathekview
-  - Type=Applicaion 
+  - Type=Application 
   - Categories=AudioVideo;
   - Comment=Mediatheken
   - EOF
