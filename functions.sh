@@ -192,7 +192,7 @@ get_version()
 {
   THEDEB=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1)
   if [ -z "$THEDEB" ] ; then
-    "Version could not be determined from the .deb; you need to determine it manually"
+    echo "Version could not be determined from the .deb; you need to determine it manually"
   fi
   VER1=$(echo $THEDEB | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' | sed -e 's|+dfsg||g' )
   GLIBC_NEEDED=$(glibc_needed)
