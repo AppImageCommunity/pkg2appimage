@@ -119,3 +119,10 @@ libdrm.so.2
 
 # Potentially dangerous libraries
 libgobject-2.0.so.0
+
+# Workaround for:
+# e.g., Spotify
+# relocation error: /lib/x86_64-linux-gnu/libgcrypt.so.20: 
+# symbol gpgrt_lock_lock, version GPG_ERROR_1.0 not defined
+# in file libgpg-error.so.0 with link time reference
+libgpg-error.so.0
