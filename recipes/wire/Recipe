@@ -42,7 +42,7 @@ EOF
 
 # get_desktopintegration $LOWERAPP
 
-VERSION=$(ls ../electron-v1.4.3-linux-*.zip | head -n 1 | cut -d "-" -f 2 | sed -e 's|v||g' )
+VERSION=$(ls ../electron-*-*.zip | head -n 1 | cut -d "-" -f 2 | sed -e 's|v||g' )
 echo $VERSION
 
 cd ..
