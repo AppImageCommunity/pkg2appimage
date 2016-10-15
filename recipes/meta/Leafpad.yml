@@ -5,5 +5,7 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 
+script:
+    - echo "Comment=Edit texts" >> leafpad.desktop # Otherwise not showing up in Ubuntu menu?! (tbc)
 # Menu font not showing up? Unlike earlier AppImage?
 # Has a change in the blacklists caused this?
