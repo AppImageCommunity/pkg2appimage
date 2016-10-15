@@ -42,7 +42,7 @@ EOF
 
 # get_desktopintegration $LOWERAPP
 
-VERSION=$(strings ./usr/bin/resources/app.asar  | grep "Electron wrapper for Wire" -C 2 | grep version | cut -d '"' -f 4)
+VERSION=$(ls ../electron-v1.4.3-linux-*.zip | head -n 1 | cut -d "-" -f 2 | sed -e 's|v||g' )
 echo $VERSION
 
 cd ..
