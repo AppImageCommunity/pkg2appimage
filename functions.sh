@@ -97,9 +97,11 @@ glibc_needed()
 # Usage: get_desktopintegration name_of_desktop_file_and_exectuable
 get_desktopintegration()
 {
-  wget -O ./usr/bin/$1.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
-  chmod a+x ./usr/bin/$1.wrapper
-  sed -i -e "s|Exec=$1|Exec=$1.wrapper|g" $1.desktop
+  REALBIN=$(grep -o "^Exec=.*" spotify.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1)
+  wget -O ./usr/bin/$REALBIN.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+  chmod a+x ./usr/bin/$REALBIN.wrapper
+
+  sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
 }
 
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
