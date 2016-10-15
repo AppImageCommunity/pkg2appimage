@@ -34,7 +34,3 @@ script:
   - ( cd usr/share/icons/hicolor/24x24/apps/; mv spotify-linux-*.png spotify-linux.png )
   - ( cd usr/share/icons/hicolor/22x22/apps/; mv spotify-linux-*.png spotify-linux.png )
   - cp ./usr/share/spotify/icons/spotify-linux-256.png spotify-linux.png
-    
-post:
-  - ( cd usr/bin/ ; ln -s spotify.wrapper spotify.wrapper-client )
-  
