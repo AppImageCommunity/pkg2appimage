@@ -45,6 +45,8 @@ libgl1-mesa
 libgl1-mesa-glx
 libglib2.0-0
 libglu1-mesa
+# libgnutls26 in order not to draw in libgpg-error; not sure whether we can expect libgnutls26 eveywhere
+libgnutls26
 ___libgstreamer1.0-0
 libgtk2.0-0
 libgtk-3-0
