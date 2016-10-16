@@ -1,0 +1,17 @@
+app: Telegram
+binpatch: true
+
+ingredients:
+  script:
+    - wget -c "https://telegram.org/dl/desktop/linux" --trust-server-names
+    - tar xf tsetup.*.tar.xz
+    - ls tsetup.*.tar.xz | sed -e 's|tsetup.||g' | sed -e 's|.tar.xz||g' > VERSION
+
+script:
+  - cp ../Telegram/Telegram ./usr/bin/telegram-desktop
+  - wget -c https://github.com/balbeko/telegram-desktop-bin-aur/raw/master/telegram-desktop-bin.desktop -O telegram.desktop
+  - wget -c https://github.com/balbeko/telegram-desktop-bin-aur/raw/master/telegram-desktop-bin.png -O telegram.png
+  - sed -i -e 's|Name=Telegram Desktop|Name=Telegram|g' telegram.desktop
+
+# FIXME: Where do we have to put
+# https://github.com/balbeko/telegram-desktop-bin-aur/raw/master/tg.protocol
