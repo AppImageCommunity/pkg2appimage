@@ -97,7 +97,7 @@ glibc_needed()
 # Usage: get_desktopintegration name_of_desktop_file_and_exectuable
 get_desktopintegration()
 {
-  REALBIN=$(grep -o "^Exec=.*" spotify.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1)
+  REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1)
   wget -O ./usr/bin/$REALBIN.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
   chmod a+x ./usr/bin/$REALBIN.wrapper
 
