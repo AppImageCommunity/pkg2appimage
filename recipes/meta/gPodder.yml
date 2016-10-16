@@ -1,0 +1,12 @@
+app: gPodder
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - thp/gpodder
+
+script:
+  - sed -i -e 's|/usr/bin/||g' gpodder.desktop
