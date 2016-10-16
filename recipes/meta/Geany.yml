@@ -8,3 +8,6 @@ ingredients:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - geany-dev/ppa
+
+script:
+  - cp ./usr/share/icons/hicolor/scalable/apps/geany.svg .
