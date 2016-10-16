@@ -7,7 +7,7 @@ ingredients:
     - deb http://main.mepis-deb.org/mx/repo/ mx15 main
     - deb http://main.mepis-deb.org/mx/testrepo/ mx15 test
   script:
-    - echo gsettings-backend >> excludedeblist
+    - echo gsettings-backend >> excludedeblist # elementary OS may actually not have this; tbd
 
 script:
   - cp ./usr/share/applications/com.uploadedlobster.peek.desktop peek.desktop
