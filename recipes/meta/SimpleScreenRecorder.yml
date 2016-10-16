@@ -1,0 +1,8 @@
+app: SimpleScreenRecorder
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - maarten-baert/simplescreenrecorder/
