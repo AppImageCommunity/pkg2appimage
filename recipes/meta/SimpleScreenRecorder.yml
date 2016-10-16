@@ -1,3 +1,5 @@
+# FIXME: For some strage unknown reason, the profiles are not found 
+
 app: SimpleScreenRecorder
 binpatch: true
 
