@@ -10,6 +10,14 @@ which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
 which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
 which dpkg-scanpackages  >/dev/null 2>&1 || ( echo dpkg-scanpackages missing && exit 1 )
 
+# If the yaml file doesn't exist locally, get it from GitHub
+if [ ! -f "$1" ] ; then
+  YAMLFILE=/tmp/_recipe.yml
+  wget -q "https://github.com/probonopd/AppImages/raw/master/recipes/meta/$1.yml" -O "$YAMLFILE"
+else
+  YAMLFILE=$(readlink -f $1)
+fi
+
 # Function to parse yaml
 # https://gist.github.com/epiloque/8cf512c6d64641bde388
 # based on https://gist.github.com/pkuczynski/8665367
@@ -34,11 +42,10 @@ parse_yaml() {
     }' | sed 's/_=/+=/g'
 }
 
-YAMLFILE=$(readlink -f $1)
-
 # Read yaml file
 parse_yaml $YAMLFILE "_"
 eval $(parse_yaml $YAMLFILE "_")
+
 
 if [ ! -z "${_verbose}" ] ; then
   set -x
@@ -170,6 +177,7 @@ Prefix = $QTPATH
 EOF
 fi
 
+
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
   rm -r ./usr/lib/x86_64-linux-gnu/gstreamer-1.0
@@ -199,7 +207,10 @@ fi
 
 # patch_usr
 # Patching only the executable files seems not to be enough for some apps
-# find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+if [ ! -z "${_binpatch}" ] ; then
+  find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
+  find usr/ -type f -exec sed -i -e 's@././/bin/env@/usr/bin/env@g' {} \;
+fi
 
 delete_blacklisted
 get_desktopintegration $LOWERAPP
