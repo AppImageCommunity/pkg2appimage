@@ -10,3 +10,11 @@ ingredients:
 
 script:
   - sed -i -e 's|/usr/bin/||g' gpodder.desktop
+
+# Known to run on
+# - Fedora-Live-Workstation-x86_64-23-10.iso
+# - ubuntu-16.04-desktop-amd64.iso
+#
+# Know NOT to run on
+# - CentOS-7-x86_64-LiveGNOME-1511.iso (would need ppa for older version)
+# - openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20160921-Media.iso (draw.py", line 300, in cairo_surface_to_pixbuf, pbl.close(), GError: Unrecognized image file format)
