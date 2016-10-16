@@ -82,11 +82,6 @@ if [ ! -e functions.sh ] ; then
 fi
 . ./functions.sh
 
-if [ ! -z "${_ingredients_script[0]}" ] ; then
-  # Execute extra steps defined in recipe
-  shell_execute $YAMLFILE _ingredients_script
-fi
-
 if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
   for GHREPO in "${_ingredients_ghreleases[@]}" ; do
     wget -q "https://github.com/${GHREPO}/releases/" -O /tmp/gh-release.html
@@ -116,7 +111,14 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   for PPA in "${_ingredients_ppas[@]}" ; do
     echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
   done
+fi
 
+if [ ! -z "${_ingredients_script[0]}" ] ; then
+  # Execute extra steps defined in recipe
+  shell_execute $YAMLFILE _ingredients_script
+fi
+
+if [ ! -z "${_ingredients_dist}" ] ; then
   # Some projects provide raw .deb files without a repository
   # hence we create our own local repository as part of
   # the AppImage creation process in order to "install"
