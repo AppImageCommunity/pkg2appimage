@@ -8,6 +8,7 @@ which wget >/dev/null 2>&1 || ( echo wget missing && exit 1 )
 which grep >/dev/null 2>&1 || ( echo grep missing && exit 1 )
 which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
 which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
+which dpkg-scanpackages  >/dev/null 2>&1 || ( echo dpkg-scanpackages missing && exit 1 )
 
 # Function to parse yaml
 # https://gist.github.com/epiloque/8cf512c6d64641bde388
@@ -38,7 +39,6 @@ YAMLFILE=$(readlink -f $1)
 # Read yaml file
 parse_yaml $YAMLFILE "_"
 eval $(parse_yaml $YAMLFILE "_")
-
 
 if [ ! -z "${_verbose}" ] ; then
   set -x
@@ -145,9 +145,30 @@ cd ./$APP.AppDir/
 mkdir -p usr/bin usr/lib
 find ../*.deb -exec dpkg -x {} . \; || true
 
+# Try to copy icons to standard locations where appimaged can pick them up
+mkdir -p usr/share/icons/hicolor/{22x22,24x24,32x32,48x48,64x64,128x128,256x256,512x512}/apps/
+find . -path *icons* -path *22* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/22x22/apps/ \; || true
+find . -path *icons* -path *24* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/24x24/apps/ \; || true
+find . -path *icons* -path *32* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/32x32/apps/ \; || true
+find . -path *icons* -path *48* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/48x48/apps/ \; || true
+find . -path *icons* -path *64* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/64x64/apps/ \; || true
+find . -path *icons* -path *128* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/128x128/apps/ \; || true
+find . -path *icons* -path *256* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/256x256/apps/ \; || true
+find . -path *icons* -path *512* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/512x512/apps/ \; || true
+
 get_icon
 get_apprun
 get_desktop
+
+# Prevent Qt from loading plugins from the system
+unset QTPATH
+QTPATH=$(find usr/lib -type d -name qt4 -or -name qt5 | sed -e 's|usr/|../|g')
+if [ ! -z $QTPATH ] ; then
+cat > usr/bin/qt.conf <<EOF
+[Paths]
+Prefix = $QTPATH
+EOF
+fi
 
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
