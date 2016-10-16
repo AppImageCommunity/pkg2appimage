@@ -1,0 +1,24 @@
+# elementary OS freya is based on trusty
+# But unfortunately this is broken; getting many _LOG_LEVEL_FATAL when running
+# Please send a pull request if you can fix it
+
+app: Vocal
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - elementary-os/stable
+    - elementary-os/os-patches
+    - nathandyer/vocal-stable
+  script:
+    - sed -i -e 's|libegl1-mesa|xxxlibegl1-mesa|g' status
+    - cat >> status <<\EOF
+    - 
+    - Package: libegl1-mesa
+    - Status: install ok installed
+    - Architecture: all
+    - Version: 10.1.0-4ubuntu5
+    - EOF
