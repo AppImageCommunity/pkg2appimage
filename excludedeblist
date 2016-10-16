@@ -14,9 +14,9 @@ dictionaries-common
 dpkg
 fontconfig
 fontconfig-config
-gconf2
-gconf2-common
-gconf-service
+# gconf2 # elementary OS 0.4 Loki does NOT have libgconf-2-4
+# gconf2-common # elementary OS 0.4 Loki does NOT have libgconf-2-4
+# gconf-service # elementary OS 0.4 Loki does NOT have libgconf-2-4
 gksu
 glib-networking
 gstreamer1.0-plugins-base
