@@ -1,4 +1,5 @@
 app: SimpleScreenRecorder
+binpatch: true
 
 ingredients:
   dist: trusty
