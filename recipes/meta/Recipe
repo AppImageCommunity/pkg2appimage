@@ -46,7 +46,6 @@ parse_yaml() {
 parse_yaml $YAMLFILE "_"
 eval $(parse_yaml $YAMLFILE "_")
 
-
 if [ ! -z "${_verbose}" ] ; then
   set -x
 fi
@@ -179,7 +178,6 @@ Prefix = $QTPATH
 EOF
 fi
 
-
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
   rm -r ./usr/lib/x86_64-linux-gnu/gstreamer-1.0
@@ -216,6 +214,12 @@ fi
 
 delete_blacklisted
 get_desktopintegration $LOWERAPP
+
+# Fix desktop files that have file endings for icons
+sed -i -e 's|\.png||g' *.desktop || true
+sed -i -e 's|\.svg||g' *.desktop || true
+sed -i -e 's|\.svgz||g' *.desktop || true
+sed -i -e 's|\.xpm||g' *.desktop || true
 
 # Execute extra steps defined in recipe
 if [ ! -z "${_post}" ] ; then
