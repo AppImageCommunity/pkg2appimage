@@ -1,4 +1,5 @@
 app: Dia
+binpatch: true
 
 ingredients:
   dist: trusty
@@ -9,4 +10,3 @@ script:
   - cp ./usr/share/icons/hicolor/48x48/apps/dia.png .
   - ( cd usr/bin ; ln -s dia-normal dia )
   - mv ./usr/lib/x86_64-linux-gnu/dia/libdia.so ./usr/lib/x86_64-linux-gnu
-  - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;

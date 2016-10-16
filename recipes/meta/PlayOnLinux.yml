@@ -8,11 +8,10 @@
 # ImportError: No module named wxversion
 
 app: PlayOnLinux
+binpatch: true
 
 ingredients:
   dist: wheezy
   sources:
     - deb http://ftp.us.debian.org/debian/ wheezy main contrib non-free
     - deb http://deb.playonlinux.com/ wheezy main
-    - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
-    - find usr/ -type f -exec sed -i -e 's@././/bin/env@/usr/bin/env@g' {} \;

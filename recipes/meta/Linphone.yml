@@ -1,4 +1,5 @@
 app: Linphone
+binpatch: true
 
 ingredients:
   dist: wheezy
@@ -9,5 +10,4 @@ ingredients:
     - linphone/release
 
 script:
-  - find usr/ -type f -exec sed -i -e "s@/usr@././@g" {} \;
   - cp usr/share/pixmaps/linphone/linphone.png .

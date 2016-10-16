@@ -1,4 +1,5 @@
 app: Corebird
+binpatch: true
 
 ingredients:
   dist: trusty
@@ -12,4 +13,3 @@ ingredients:
 script:
   - cp ./usr/share/applications/org.baedert.corebird.desktop $LOWERAPP.desktop
   - sed -i -e 's|^Exec=.*|Exec=corebird|g' $LOWERAPP.desktop
-  - find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;

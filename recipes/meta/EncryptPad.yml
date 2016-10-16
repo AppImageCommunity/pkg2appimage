@@ -1,4 +1,5 @@
 app: EncryptPad
+binpatch: true
 
 ingredients:
   also: encryptpad-cli
@@ -8,5 +9,3 @@ ingredients:
   ppas:
     - nilarimogard/webupd8
 
-script:
-  - find usr/ -type f -exec sed -i -e "s@/usr@././@g" {} \; # Needed for some Qt plugin
