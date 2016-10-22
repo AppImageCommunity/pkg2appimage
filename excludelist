@@ -126,3 +126,10 @@ libgobject-2.0.so.0
 # symbol gpgrt_lock_lock, version GPG_ERROR_1.0 not defined
 # in file libgpg-error.so.0 with link time reference
 libgpg-error.so.0
+
+# Workaround for:
+# https://github.com/probonopd/linuxdeployqt/issues/35
+# Error initializing NSS with a persistent database (sql:/home/me/.pki/nssdb): libsoftokn3.so: cannot open shared object file: No such file or directory
+# Error initializing NSS without a persistent database: NSS error code: -5925
+# nss_error=-5925, os_error=0
+libnss3.so
