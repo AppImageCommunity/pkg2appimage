@@ -1,19 +1,15 @@
-# FIXME:
-# Content files fail to be found and/or downloaded
-# Pull requests welcome!
-
 app: OpenRA
 binpatch: true
 
 ingredients:
-  dist: trusty
+  dist: jessie
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://ftp.us.debian.org/debian/ jessie main
+    - deb http://download.mono-project.com/repo/debian jessie main
   script:
     - URL=$(wget -q "http://www.openra.net/download/" -O - | grep "_all.deb" | cut -d '"' -f 2)
     - echo $URL | cut -d "." -f 3 | cut -d "_" -f 1 > VERSION
     - wget -c "$URL"
-    - echo "libwayland-egl1-mesa" >> ./excludedeblist # FIXME: Do without this
 
 script:
   - mv ./usr/games/* usr/bin/
@@ -26,3 +22,6 @@ script:
   - chmod a+x usr/bin/openra
   - ( cd usr ; ln -s /lib/x86_64-linux-gnu/libc.so.6 libc.so ) # Why is this needed?
   - rm -rf OpenRA/OpenRA.AppDir/usr/lib/x86_64-linux-gnu/libdrm_*
+
+# Content files fail to be found and/or downloaded
+# FIXME
