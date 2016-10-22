@@ -42,6 +42,7 @@ libgcc1
 # libgconf-2-4 # elementary OS 0.4 Loki does NOT have it
 libgdk-pixbuf2.0-0
 libgl1-mesa
+libgl1-mesa-dri
 libgl1-mesa-glx
 libglib2.0-0
 libglu1-mesa
