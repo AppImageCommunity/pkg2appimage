@@ -59,6 +59,7 @@ libpangocairo-1.0-0
 libpangoft2-1.0-0
 libstdc++6
 libtasn1-6
+libwayland-egl1-mesa # e.g., OpenRA
 lsb-base
 mime-support
 passwd
