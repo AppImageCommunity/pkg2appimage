@@ -100,6 +100,7 @@ if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
 fi
 
 if [ ! -z "${_ingredients_dist}" ] ; then
+  rm status 2>/dev/null || true
   generate_status
   if [ -e sources.list ] ; then
     rm sources.list
@@ -139,7 +140,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   fi
 
   apt-get $OPTIONS update || true
-  URLS=$(apt-get $OPTIONS -y install --print-uris "$INSTALL" | cut -d "'" -f 2 | grep -e "^http")
+  URLS=$(apt-get $OPTIONS -y install --print-uris "$INSTALL" ${_ingredients_packages[@]} | cut -d "'" -f 2 | grep -e "^http")
   for URL in $URLS ; do
     if [ ! -f $(basename "$URL") ] ; then
       wget -c $URL
