@@ -1,0 +1,13 @@
+app: qBittorrent
+
+ingredients:
+  package: qbittorrent
+  dist:    trusty
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - qbittorrent-team/qbittorrent-stable
+
+script:
+  - mv ./usr/share/applications/qBittorrent.desktop qbittorrent.desktop
+  - rm qBittorrent.desktop
