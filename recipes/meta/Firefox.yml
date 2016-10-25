@@ -1,0 +1,28 @@
+app: Firefox
+
+ingredients:
+  script:
+    - DLD=$(wget -q "https://www.mozilla.org/en-US/firefox/all/" -O - | grep -E "os=linux64&amp;lang=en-US" | cut -d'"' -f2)
+    - wget -c $DLD --trust-server-names
+    - echo $DLD | cut -d- -f2 > VERSION
+    - tar xf firefox*.tar.bz2
+
+
+script:
+  - cp -r ../firefox/* usr/bin/
+  - find . -name mozicon128.png -exec cp {} firefox.png \;
+  - # Workaround for:
+  - # https://bugzilla.mozilla.org/show_bug.cgi?id=296568
+  - cat > firefox.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Firefox
+  - Icon=firefox
+  - Exec=firefox %u
+  - Categories=GNOME;GTK;Network;WebBrowser;
+  - MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+  - StartupNotify=true
+  - EOF
+
+post:
+  - cp ../firefox/libnss3.so usr/bin # Override excludelist
