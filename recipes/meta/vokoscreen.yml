@@ -1,0 +1,14 @@
+app: vokoscreen
+
+ingredients:
+  script:
+    - FILE=$(wget -q "http://linuxecke.volkoh.de/vokoscreen/vokoscreen-beta.html" -O - | grep .tar.gz | head -n 1 | cut -d '"' -f 2)
+    - echo $FILE | cut -d "-" -f 2 > VERSION
+    - wget -c "http://linuxecke.volkoh.de/vokoscreen/$FILE"
+    - tar xf vokoscreen-*.tar.gz
+
+script:
+  - ../vokoscreen.run --tar xf
+  - mv vokoscreen.sh AppRun
+  - wget -c "https://github.com/vkohaupt/vokoscreen/raw/master/applications/vokoscreen.png"
+  - wget -c "https://github.com/vkohaupt/vokoscreen/raw/master/applications/vokoscreen.desktop"
