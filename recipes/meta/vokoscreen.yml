@@ -9,6 +9,8 @@ ingredients:
 
 script:
   - ../vokoscreen.run --tar xf
+  - # https://github.com/vkohaupt/vokoscreen/issues/152#issuecomment-256132748
+  - sed -i -e 's|exec ./vokoscreen|exec ${MYDIR}/vokoscreen|g' vokoscreen.sh
   - mv vokoscreen.sh AppRun
   - wget -c "https://github.com/vkohaupt/vokoscreen/raw/master/applications/vokoscreen.png"
   - wget -c "https://github.com/vkohaupt/vokoscreen/raw/master/applications/vokoscreen.desktop"
