@@ -127,9 +127,12 @@ libgobject-2.0.so.0
 # in file libgpg-error.so.0 with link time reference
 libgpg-error.so.0
 
-# Workaround for:
+# Unsolved issue:
 # https://github.com/probonopd/linuxdeployqt/issues/35
 # Error initializing NSS with a persistent database (sql:/home/me/.pki/nssdb): libsoftokn3.so: cannot open shared object file: No such file or directory
 # Error initializing NSS without a persistent database: NSS error code: -5925
 # nss_error=-5925, os_error=0
-libnss3.so
+# libnss3.so should not be removed from the bundles, as this causes other issues, e.g.,
+# https://github.com/probonopd/linuxdeployqt/issues/35#issuecomment-256213517
+# and https://github.com/probonopd/AppImages/pull/114
+# libnss3.so
