@@ -1,0 +1,15 @@
+app: SolveSpace
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - alex-p/solvespace-trusty2
+  script:
+    - echo "libgl1" >> excludedeblist # Assume it to be part of the base system
+
+script:
+  - cp ./usr/share/icons/hicolor/48x48/apps/solvespace.png .
+  - # Upstream should provide a 256x256 one at least
