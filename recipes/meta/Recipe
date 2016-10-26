@@ -194,6 +194,18 @@ if [ ! -z "${_script}" ] ; then
   shell_execute $YAMLFILE _script
 fi
 
+# Some non-distribution provided applications have an absolute
+# path in the Exec= line which we remove for relocateability
+DESKTOP=$(find . -name *.desktop | head -n 1)
+if [ -z "$DESKTOP" ] ; then
+  echo "desktop file not found, aborting"
+  exit 1
+else
+  ORIG=$(grep -o "^Exec=.*$" "${DESKTOP}" | cut -d " " -f 1)
+  REPL=$(basename $(grep -o "^Exec=.*$" "${DESKTOP}" | cut -d " " -f 1 | sed -e 's|Exec=||g'))
+  sed -i -e 's|'"${ORIG}"'|Exec='"${REPL}"'|g' "${DESKTOP}"
+fi
+
 # Compile GLib schemas if the subdirectory is present in the AppImage
 # AppRun has to export GSETTINGS_SCHEMA_DIR for this to work
 if [ -d usr/share/glib-2.0/schemas/ ] ; then
