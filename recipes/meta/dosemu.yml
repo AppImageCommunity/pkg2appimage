@@ -6,3 +6,7 @@ ingredients:
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+
+script:
+  - cp usr/share/pixmaps/dosemu.xpm .
+  - # Dear upstream develops, please provide something modern like a 256x256 png
