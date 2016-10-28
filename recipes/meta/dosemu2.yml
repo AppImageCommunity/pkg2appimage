@@ -2,6 +2,9 @@ app: dosemu2
 binpatch: true
 
 ingredients:
+  packages:
+    - dosemu2
+    - freedos
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
