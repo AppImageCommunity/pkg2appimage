@@ -1,0 +1,8 @@
+app: dosemu
+binpatch: true
+
+ingredients:
+  packages: dosemu
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
