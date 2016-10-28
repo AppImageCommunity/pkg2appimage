@@ -6,6 +6,8 @@ ingredients:
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+  ppas:
+    - dosemu2/ppa
 
 script:
   - cp usr/share/pixmaps/dosemu.xpm .
