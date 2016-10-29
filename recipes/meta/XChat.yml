@@ -1,4 +1,4 @@
-app: Xchat
+app: XChat
 
 ingredients:
   dist: oldstable
