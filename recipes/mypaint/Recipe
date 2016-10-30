@@ -1,6 +1,11 @@
-# Not working on non-Ubuntu systems smoothly yet (crashing due to missing icons and/or libs)
-# TO BE WORKED ON
+# [This pull request](https://github.com/mypaint/mypaint/pull/740), 
+# when merged, will generate and upload an [AppImage](http://appimage.org/)
+# of each commit. It does so by bundling MyPaint, Python, and the required Python modules inside the AppImage.
+# Hence this recipe is no longer needed and will be removed soon.
+
 ##################################################################################################
+
+exit 1
 
 # In this example, we use a trusty PPA - keep providing these!
 # Based on the Wireshark recipe
