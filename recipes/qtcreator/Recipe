@@ -159,7 +159,7 @@ get_desktopintegration $LOWERAPP
 
 VERSION=$(ls ../*.run | cut -d "-" -f 5 | sed -e 's|.run||g')
 
-# Qt Creator installer has placed hardcoded absolute paths to the installation location into the AppImgae
+# Qt Creator installer has placed hardcoded absolute paths to the installation location into the AppImage
 # which we need to patch away
 find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.7.0|/tmp/.mount_QtCreator-5.7.0-x86_64|g' {} \;
 
