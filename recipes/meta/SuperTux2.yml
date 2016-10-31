@@ -5,7 +5,7 @@ ingredients:
   package: supertux2
   dist:    trusty
   sources:
-    - deb http://download.opensuse.org/repositories/home:/fusion809:/branches:/home:/maths22:/SuperTux/xUbuntu_14.04/ /
+    - deb http://download.opensuse.org/repositories/home:/maths22:/SuperTux/xUbuntu_14.04/ /
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
 
 script:
