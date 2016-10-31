@@ -1,0 +1,18 @@
+app: WMail
+
+ingredients:
+  package: wmail-desktop
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main 
+  ghreleases:
+    - Thomas101/wmail
+
+script:
+  - mv ./opt/wmail-desktop/* usr/bin/
+  - sed -i -e 's|/opt/wmail-desktop/||g' wmail.desktop
+  - sed -i -e 's|icon.png|wmail|g' wmail.desktop
+  - cp usr/bin/icon.png wmail.png
+  - rm -rf ./opt
+  - chmod a+x usr/bin/WMail
+  - strings ./usr/bin/resources/app.asar | grep '"version": "' -C 2 | grep '"wmail"' -C 2 | grep version | head -n 1 | cut -d '"' -f 4 > ../VERSION
