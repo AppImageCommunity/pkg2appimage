@@ -1,5 +1,4 @@
 app: SuperTux2
-binpatch: true
 
 ingredients:
   package: supertux2
