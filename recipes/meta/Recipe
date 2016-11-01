@@ -166,7 +166,24 @@ find . -path *icons* -path *256* -name "*$LOWERAPP*" -exec cp {} usr/share/icons
 find . -path *icons* -path *512* -name "*$LOWERAPP*" -exec cp {} usr/share/icons/hicolor/512x512/apps/ \; || true
 
 get_icon
-get_apprun
+
+if [ -z "${_union}" ] ; then
+  get_apprun
+else
+cat > AppRun <<\EOF
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+export PATH="${HERE}/usr/bin":$PATH
+export UNION_PRELOAD="${HERE}"
+export LD_PRELOAD="${HERE}/libunionpreload.so"
+export GSETTINGS_SCHEMA_DIR="${HERE}/usr/share/glib-2.0/schemas/"
+export LD_LIBRARY_PATH="${HERE}/usr/lib/x86_64-linux-gnu/":$LD_PRELOAD
+EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | cut -d "=" -f 2 | cut -d " " -f 1)
+exec "${EXEC}" $@
+EOF
+chmod a+x AppRun
+fi
+
 get_desktop
 
 # Prevent Qt from loading plugins from the system
@@ -196,7 +213,7 @@ fi
 
 # Some non-distribution provided applications have an absolute
 # path in the Exec= line which we remove for relocateability
-DESKTOP=$(find . -name *.desktop | head -n 1)
+DESKTOP=$(find . -name '*.desktop' | head -n 1)
 if [ -z "$DESKTOP" ] ; then
   echo "desktop file not found, aborting"
   exit 1
@@ -223,6 +240,16 @@ fi
 if [ ! -z "${_binpatch}" ] ; then
   find usr/ -type f -exec sed -i -e 's|/usr|././|g' {} \;
   find usr/ -type f -exec sed -i -e 's@././/bin/env@/usr/bin/env@g' {} \;
+fi
+
+# Don't suffer from NIH; use LD_PRELOAD to override calls to /usr paths
+if [ ! -z "${_union}" ] ; then
+  mkdir -p usr/src/
+  wget -q "https://raw.githubusercontent.com/mikix/deb2snap/master/src/preload.c" -O - | \
+  sed -e 's|SNAPPY|UNION|g' | sed -e 's|SNAPP|UNION|g' | sed  -e 's|SNAP|UNION|g' | \
+  sed -e 's|snappy|union|g' > usr/src/libunionpreload.c
+  gcc -shared -fPIC usr/src/libunionpreload.c -o libunionpreload.so -ldl -DUNION_LIBNAME=\"libunionpreload.so\"
+  strip libunionpreload.so
 fi
 
 delete_blacklisted
