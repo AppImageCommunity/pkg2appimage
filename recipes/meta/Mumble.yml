@@ -1,0 +1,12 @@
+app: Mumble
+overlay: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - mumble/release
+
+script:
+  - cp usr/share/icons/hicolor/scalable/apps/mumble.svg .
