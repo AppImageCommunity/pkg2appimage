@@ -1,0 +1,20 @@
+app: GitKraken
+
+ingredients:
+  script:
+    - wget -c https://release.gitkraken.com/linux/gitkraken-amd64.tar.gz
+    - tar zxvf gitkraken-amd64.tar.gz
+    - cat gitkraken/version | sed 's/v//g' > VERSION
+
+script:
+  - cp -r ../gitkraken/* usr/bin/
+  - wget -c https://www.gitkraken.com/android-chrome-192x192.png -O gitkraken.png
+  - cat > gitkraken.desktop << EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=GitKraken
+  - Icon=gitkraken
+  - Exec=gitkraken %u
+  - Categories=Development;IDE;
+  - Comment=The downright luxurious Git client
+  - EOF
