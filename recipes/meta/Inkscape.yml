@@ -1,0 +1,13 @@
+app: Inkscape
+union: true
+
+ingredients:
+  package: inkscape-trunk
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - inkscape.dev/trunk
+
+script:
+  - sed -i -e 's|Drawing Shortcut Group|X-Drawing Shortcut Group|g' inkscape.desktop
