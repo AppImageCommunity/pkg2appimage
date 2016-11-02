@@ -51,7 +51,7 @@ libglu1-mesa
 # libgnutls26 cannot be expected to be eveywhere, e.g., KDE neon
 # libgpg-error0 gives non-fatal errors on many systems and is low-level, can it be expected to be everywhere?
 libgpg-error0
-___libgstreamer1.0-0
+# libgstreamer1.0-0
 libgtk2.0-0
 libgtk-3-0
 libnss3
