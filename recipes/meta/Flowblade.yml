@@ -1,0 +1,20 @@
+app: Flowblade
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - URL=$(wget -q "https://github.com/jliljebl/flowblade/raw/master/flowblade-trunk/docs/INSTALLING.md" -O - | grep -o -e "htt.*_all.deb")
+    - echo "$URL" | cut -d "-" -f 2 > VERSION
+    - wget -c "$URL"
+
+script:
+  - ls
+  - unset GTK_MODULES
+  - sed -i -e 's|if launch_dir == "/usr/bin":|if True:|g' usr/bin/flowblade
+  - awk 'NR==2{print "unset GTK_MODULES"}7' AppRun
+  - mv usr/lib/lapack/* usr/lib/x86_64-linux-gnu/
+  - mv ./usr/lib/libblas/* usr/lib/x86_64-linux-gnu/
+  - rm -rf cd usr/share/glib-2.0/schemas/
