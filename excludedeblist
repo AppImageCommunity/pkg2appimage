@@ -7,6 +7,7 @@
 # of these packages than what can safely be assumed to be part
 # of the base system. This is why we recommend oldstable
 # ingredients for AppImages
+apt
 apt-transport-https
 dbus
 debconf
