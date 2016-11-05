@@ -1,0 +1,25 @@
+app: Inkscape
+union: true
+
+ingredients:
+  packages:
+    - inkscape
+    - python-lxml
+    - python-usb
+    - libusb-1.0-0
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://download.opensuse.org/repositories/home:/jnweiger:/fablab/xUbuntu_14.04/ /
+  ppas:
+    - inkscape.dev/stable
+  script:
+    - wget -c https://github.com/fablabnbg/inkscape-silhouette/archive/master.zip
+    - unzip -f master.zip
+
+script:
+  - sed -i -e 's|Drawing Shortcut Group|X-Drawing Shortcut Group|g' inkscape.desktop
+  - cp -Rfv ../inkscape-silhouette-master/* usr/share/inkscape/extensions/
+  - ISVERSION=$(ls ../inkscape_*.deb | cut -d "_" -f 2 | cut -d "~" -f 1)
+  - SILVERSION=$(cat ../inkscape-silhouette-master/sendto_silhouette.inx | grep about_version | cut -d ">" -f 2 | cut -d "<" -f 1 | cut -d " " -f 2)
+  - echo $ISVERSION.silhouette$SILVERSION > ../VERSION
