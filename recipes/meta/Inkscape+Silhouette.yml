@@ -15,7 +15,7 @@ ingredients:
     - inkscape.dev/stable
   script:
     - wget -c https://github.com/fablabnbg/inkscape-silhouette/archive/master.zip
-    - unzip -f master.zip
+    - unzip -o master.zip
 
 script:
   - sed -i -e 's|Drawing Shortcut Group|X-Drawing Shortcut Group|g' inkscape.desktop
