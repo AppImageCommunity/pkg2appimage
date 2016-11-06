@@ -1,5 +1,5 @@
 # Working in principle, but I can't get Haskell Platform activated as
-# non-root (HELPME)
+# non-root (HELPME), also see https://github.com/haskell/haskell-platform/issues/259#issuecomment-258693796
 
 app: Haskell
 union: true # Because of hardcoded /usr/local/haskell/ghc-8.0.1-x86_64 prefix
