@@ -1,0 +1,20 @@
+app: travis
+
+script:
+  - gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+  - curl -sSL https://get.rvm.io | bash -s stable --ruby
+  - source .rvm/scripts/rvm
+  - gem install travis --no-rdoc --no-ri
+  - rm -rf usr/*;  mv .rvm/* usr/
+  - (cd usr/bin ; ln -s ../gems/ruby-2.3.0/gems/travis-1.8.2/bin/travis)
+  - wget -c "https://cdn.travis-ci.com/images/logos/TravisCI-Mascot-2-d5b35f3b8638f0bffe878b49df530136.png" -O travis.png
+  - mogrify -resize 256x256 travis.png
+  - cat > travis.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=true
+  - Name=travis
+  - Exec=travis
+  - Categories=Development;
+  - Icon=travis
+  - EOF
