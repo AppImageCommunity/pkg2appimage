@@ -1,0 +1,22 @@
+app: Haskell
+
+ingredients:
+  script:
+    - DLD=$(wget -q "https://www.haskell.org/platform/#linux-generic" -O - | grep "minimal-x86_64.tar.gz" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "http:$DLD"
+    - tar xf haskell-platform-*.tar.gz
+    - ls haskell-platform-*.tar.gz | head -n 1 | cut -d "-" -f 3 > VERSION
+
+script:
+  - tar xf ../hp-usr-local.tar.gz --strip 4 -C usr/
+  - cat > haskell.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Haskell Platform
+  - Exec=bash
+  - Comment=Haskell with batteries included
+  - Icon=haskell
+  - Terminal=true
+  - Categories=Development
+  - EOF
+  - wget "https://www.haskell.org/platform/img/logo.png" -O haskell.png
