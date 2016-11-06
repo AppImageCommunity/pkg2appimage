@@ -64,6 +64,7 @@ libstdc++6
 libtasn1-6
 libwayland-egl1-mesa # e.g., OpenRA
 lsb-base
+libxcb1 # Workaround for: Fedora 25: undefined symbol: xcb_send_request_with_fds, https://github.com/probonopd/AppImages/issues/128 
 mime-support
 passwd
 udev
