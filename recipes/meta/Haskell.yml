@@ -1,4 +1,8 @@
+# Working in principle, but I can't get Haskell Platform activated as
+# non-root (HELPME)
+
 app: Haskell
+union: true # Because of hardcoded /usr/local/haskell/ghc-8.0.1-x86_64 prefix
 
 ingredients:
   script:
@@ -8,7 +12,8 @@ ingredients:
     - ls haskell-platform-*.tar.gz | head -n 1 | cut -d "-" -f 3 > VERSION
 
 script:
-  - tar xf ../hp-usr-local.tar.gz --strip 4 -C usr/
+  - ( cd usr/bin/ ; ln -s /bin/bash . )
+  - tar xf ../hp-usr-local.tar.gz
   - cat > haskell.desktop <<\EOF
   - [Desktop Entry]
   - Type=Application
@@ -20,3 +25,11 @@ script:
   - Categories=Development
   - EOF
   - wget "https://www.haskell.org/platform/img/logo.png" -O haskell.png
+  - # bash -x ./usr/local/haskell/ghc-*/bin/activate-hs -n 2>&1 | grep "^+ run" | sed -e 's|^+ run ||g' > ../activate.sh
+  
+post:
+  - # HERE="$(pwd)"
+  - # export UNION_PRELOAD="${HERE}"
+  - # export LD_PRELOAD="${HERE}/libunionpreload.so"
+  - # sudo bash -x ../activate.sh
+  - # bash -c /usr/local/haskell/ghc-8.0.1-x86_64/bin/activate-hs
