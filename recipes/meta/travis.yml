@@ -1,20 +1,17 @@
 app: travis
 
+ingredients:
+  script:
+    - wget -c https://rvm_io.global.ssl.fastly.net/binaries/ubuntu/14.04/x86_64/ruby-2.2.1.tar.bz2
+
 script:
-  - gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-  - curl -sSL https://get.rvm.io | bash -s stable --ruby
-  - source .rvm/scripts/rvm
-  - gem install travis --no-rdoc --no-ri
-  - mv .rvm/ rvm/
-  - mkdir -p usr/bin
-  - cat > usr/bin/travis <<\EOF
-  - #!/bin/bash
-  - HERE=$(dirname $(readlink -f "${0}"))
-  - export PATH="${HERE}/../../rvm/rubies/ruby-2.3.0/bin:$PATH"
-  - export GEM_HOME="${HERE}/../../rvm/gems/ruby-2.3.0"
-  - exec travis "$@"
-  - EOF
-  - chmod a+x usr/bin/travis
+  - tar xf ../ruby-*.tar.bz2 --strip-components=1 -C usr/
+  - rm usr/lib/ruby/gems/*/cache
+  - PATH=usr/bin/:$PATH ./usr/bin/gem install travis
+  - PATH=usr/bin/:$PATH ./usr/bin/gem pristine executable-hooks
+  - DEPS=$(ldd ./usr/lib/ruby/*/x86_64-linux/*.so | grep "=> /" | cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq)
+  - mkdir -p usr/lib/x86_64-linux-gnu/
+  - cp $DEPS usr/lib/x86_64-linux-gnu/
   - wget -c "https://cdn.travis-ci.com/images/logos/TravisCI-Mascot-2-d5b35f3b8638f0bffe878b49df530136.png" -O travis.png
   - mogrify -resize 256x256 travis.png
   - cat > travis.desktop <<\EOF
@@ -26,3 +23,4 @@ script:
   - Categories=Development;
   - Icon=travis
   - EOF
+  - rm -rf usr/lib/ruby/gems/*/cache
