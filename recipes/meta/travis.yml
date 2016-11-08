@@ -5,8 +5,16 @@ script:
   - curl -sSL https://get.rvm.io | bash -s stable --ruby
   - source .rvm/scripts/rvm
   - gem install travis --no-rdoc --no-ri
-  - rm -rf usr/*;  mv .rvm/* usr/
-  - (cd usr/bin ; ln -s ../gems/ruby-2.3.0/gems/travis-1.8.2/bin/travis)
+  - mv .rvm/ rvm/
+  - mkdir -p usr/bin
+  - cat > usr/bin/travis <<\EOF
+  - #!/bin/bash
+  - HERE=$(dirname $(readlink -f "${0}"))
+  - export PATH="${HERE}/../../rvm/rubies/ruby-2.3.0/bin:$PATH"
+  - export GEM_HOME="${HERE}/../../rvm/gems/ruby-2.3.0"
+  - exec travis "$@"
+  - EOF
+  - chmod a+x usr/bin/travis
   - wget -c "https://cdn.travis-ci.com/images/logos/TravisCI-Mascot-2-d5b35f3b8638f0bffe878b49df530136.png" -O travis.png
   - mogrify -resize 256x256 travis.png
   - cat > travis.desktop <<\EOF
