@@ -9,4 +9,6 @@ ingredients:
     - nuttyartist/notes
 
 script:
-  - mv Notes.desktop notes.desktop
+  - mv Notes.desktop notes.desktop # Follow debian conventions
+  - cp usr/share/pixmaps/notes_icon.png notes.png # Follow debian conventions
+  - sed -i -e 's|^Icon=.*|Icon=notes|g' notes.desktop
