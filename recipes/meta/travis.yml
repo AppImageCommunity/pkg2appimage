@@ -7,8 +7,9 @@ ingredients:
 script:
   - tar xf ../ruby-*.tar.bz2 --strip-components=1 -C usr/
   - rm usr/lib/ruby/gems/*/cache
-  - PATH=usr/bin/:$PATH ./usr/bin/gem install travis
-  - PATH=usr/bin/:$PATH ./usr/bin/gem pristine executable-hooks
+  - export PATH=usr/bin/:$PATH 
+  - ./usr/bin/gem install travis
+  - ./usr/bin/gem pristine executable-hooks
   - DEPS=$(ldd ./usr/lib/ruby/*/x86_64-linux/*.so | grep "=> /" | cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq)
   - mkdir -p usr/lib/x86_64-linux-gnu/
   - cp $DEPS usr/lib/x86_64-linux-gnu/
