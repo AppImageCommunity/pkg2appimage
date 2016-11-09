@@ -1,0 +1,12 @@
+app: LMMS
+binpatch: true # FIXME: union: true seems not to work here
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - skypce/lmms-daily
+
+script:
+  - sed -i -e 's|^Exec=.*|Exec=lmms %f|g' lmms.desktop
