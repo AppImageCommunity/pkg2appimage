@@ -1,0 +1,13 @@
+app: Puddletag
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DLD=$(wget -q "https://github.com/keithgg/puddletag/releases/" -O - | grep "download/.*all.deb" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+
+script:
+  - ls
