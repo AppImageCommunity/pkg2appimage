@@ -1,0 +1,34 @@
+app: jekyll
+
+ingredients:
+  script:
+    - wget -c https://rvm_io.global.ssl.fastly.net/binaries/ubuntu/14.04/x86_64/ruby-2.2.1.tar.bz2
+
+script:
+  - unset GEM_HOME
+  - unset MY_RUBY_HOME
+  - unset GEM_HOME
+  - unset GEM_PATH
+  - unset RUBY_VERSION
+  - unset IRBRC
+  - tar xf ../ruby-*.tar.bz2 --strip-components=1 -C usr/
+  - rm usr/lib/ruby/gems/*/cache
+  - export PATH=usr/bin/:$PATH 
+  - ./usr/bin/gem install jekyll bundler
+  - ./usr/bin/gem pristine executable-hooks
+  - DEPS=$(ldd ./usr/lib/ruby/*/x86_64-linux/*.so | grep "=> /" | cut -d ">" -f 2 | cut -d " " -f 2 | sort | uniq)
+  - mkdir -p usr/lib/x86_64-linux-gnu/
+  - cp $DEPS usr/lib/x86_64-linux-gnu/
+  - wget -c "https://pbs.twimg.com/profile_images/378800000722495387/ad968c1615d956e800fa36494314f48c.jpeg" -O jekyll.png
+  - mogrify -resize 256x256 jekyll.png
+  - cat > jekyll.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=true
+  - Name=jekyll
+  - Exec=jekyll
+  - Categories=Network;
+  - Icon=jekyll
+  - EOF
+  - rm -rf usr/lib/ruby/gems/*/cache
+  - ls usr/lib/ruby/gems/*/gems/ | grep "jekyll-" | head -n 1 | cut -d "-" -f 2 > ../VERSION
