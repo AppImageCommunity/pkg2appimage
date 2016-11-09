@@ -5,7 +5,12 @@ ingredients:
     - wget -c https://rvm_io.global.ssl.fastly.net/binaries/ubuntu/14.04/x86_64/ruby-2.2.1.tar.bz2
 
 script:
-  - env | grep ruby
+  - unset GEM_HOME
+  - unset MY_RUBY_HOME
+  - unset GEM_HOME
+  - unset GEM_PATH
+  - unset RUBY_VERSION
+  - unset IRBRC
   - tar xf ../ruby-*.tar.bz2 --strip-components=1 -C usr/
   - rm usr/lib/ruby/gems/*/cache
   - export PATH=usr/bin/:$PATH 
