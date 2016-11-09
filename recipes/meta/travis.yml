@@ -24,5 +24,6 @@ script:
   - Icon=travis
   - EOF
   - rm -rf usr/lib/ruby/gems/*/cache
+  - find . -name travis-*
   - VERSION=$(find . -name travis-* -path *doc* | cut -d "-" -f 2)
   - echo $VERSION
