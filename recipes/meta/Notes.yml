@@ -7,3 +7,6 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ghreleases:
     - nuttyartist/notes
+
+script:
+  - mv Notes.desktop notes.desktop
