@@ -1,0 +1,8 @@
+app: Nightingale
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - djcj/nightingale
