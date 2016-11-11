@@ -1,0 +1,13 @@
+app: ocenaudio
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c "http://www.ocenaudio.com/downloads/ocenaudio_mint64.deb"
+
+script:
+  - cp -Rf opt/ocenaudio/* usr/
+  - rm -rf opt/
