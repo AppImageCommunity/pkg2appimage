@@ -158,7 +158,7 @@ generate_type2_appimage()
     ( set +x ; echo $KEY | gpg2 --batch --passphrase-fd 0 --no-tty --skip-verify --output data.tar.gz --decrypt data.tar.gz.gpg )
     tar xf data.tar.gz
     sudo chown -R $USER .gnu*
-    mv $HOME/.gnu* ; mv $HOME/.gnu_old ; mv .gnu* $HOME/
+    mv $HOME/.gnu* $HOME/.gnu_old ; mv .gnu* $HOME/
     VERSION=$VERSION ./appimagetool -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   else
     VERSION=$VERSION ./appimagetool --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
