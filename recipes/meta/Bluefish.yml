@@ -1,0 +1,9 @@
+app: Bluefish
+union: true
+
+ingredients:
+  dist: precise
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+  ppas:
+    - klaus-vormweg/bluefish-gtk2
