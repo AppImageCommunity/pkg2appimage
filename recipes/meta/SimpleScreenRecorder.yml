@@ -1,7 +1,7 @@
 # FIXME: For some strage unknown reason, the profiles are not found 
 
 app: SimpleScreenRecorder
-binpatch: true
+union: true
 
 ingredients:
   dist: trusty
