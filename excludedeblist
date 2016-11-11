@@ -18,6 +18,7 @@ fontconfig-config
 # gconf2 # elementary OS 0.4 Loki does NOT have libgconf-2-4
 # gconf2-common # elementary OS 0.4 Loki does NOT have libgconf-2-4
 # gconf-service # elementary OS 0.4 Loki does NOT have libgconf-2-4
+gvfs-backends # e.g., for Bluefish
 gksu
 glib-networking
 gstreamer1.0-plugins-base
