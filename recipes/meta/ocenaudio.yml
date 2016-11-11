@@ -6,6 +6,7 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   script:
+    - wget -q 'https://www.ocenaudio.com/download' -O - | grep Mint -C 2 | grep '<p>Vers' | head -n 1 | cut -d ' ' -f 2 | cut -d '<' -f 1 > VERSION
     - wget -c "http://www.ocenaudio.com/downloads/ocenaudio_mint64.deb"
 
 script:
