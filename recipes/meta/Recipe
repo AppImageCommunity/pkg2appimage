@@ -103,6 +103,21 @@ fi
 if [ ! -z "${_ingredients_dist}" ] ; then
   rm status 2>/dev/null || true
   generate_status
+
+  // Some packages depend on an exact version of a dependency to be installed.
+  // Use
+  // ingredients:
+  //   pretend:
+  //     - packagename version_to_be_pretended
+  if [ ! -z "${_ingredients_pretend[0]}" ] ; then
+    for PRETEND in "${_ingredients_pretend[@]}" ; do
+      P_PKG=$(echo "$PRETEND" | cut -d " " -f 1)
+      P_VER=$(echo "$PRETEND" | cut -d " " -f 2)
+      cat status | tr '\n' '@' | sed -e 's|@@|\n\n|g' | sed -e 's|Package: '"$P_PKG"'@Status: install ok installed@Architecture: all@Version: 9:999.999.999|Package: '"$P_PKG"'@Status: install ok installed@Architecture: all@Version: '"$P_VER"'|g' | sed -e 's|@|\n|g' > status.temp
+      mv status.temp status
+    done
+  fi
+
   if [ -e sources.list ] ; then
     rm sources.list
   fi
@@ -276,11 +291,9 @@ if [ ! -z "${_post}" ] ; then
   shell_execute $YAMLFILE _post
 fi
 
-# Shrink size
-rm -rf usr/bin/java/lib/missioncontrol/
-
 # Go out of AppImage
 cd ..
 
 generate_type2_appimage
 ls -lh ../out/*.AppImage
+
