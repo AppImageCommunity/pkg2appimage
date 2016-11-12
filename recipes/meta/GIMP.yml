@@ -1,0 +1,18 @@
+app: GIMP
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - otto-kesselgulasch/gimp-edge
+  pretend:
+    - libcups2 1.7.2-0ubuntu1
+
+script:
+  - mv ./usr/lib/libblas/* usr/lib/x86_64-linux-gnu/
+  - mv ./usr/lib/lapack/* ./usr/lib/x86_64-linux-gnu/
+  - sed -i -e 's|Packaged by Otto Meier|       AppImage       |g' ./usr/bin/gimp-*
+  - sed -i -e 's|././/||g' usr/lib/gimp/2.0/interpreters/pygimp.interp
+  - sed -i -e 's|^Name=.*|Name=GIMP|g' gimp.desktop
