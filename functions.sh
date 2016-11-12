@@ -153,6 +153,7 @@ generate_type2_appimage()
   URL="https://github.com/probonopd/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
   wget -c "$URL" -O appimagetool
   chmod a+x ./appimagetool
+  set +x
   if ( [ ! -z "$KEY" ] ) && ( ! -z "$TRAVIS" ) ; then
     wget https://github.com/probonopd/AppImageKit/files/584665/data.zip -O data.tar.gz.gpg
     ( set +x ; echo $KEY | gpg2 --batch --passphrase-fd 0 --no-tty --skip-verify --output data.tar.gz --decrypt data.tar.gz.gpg )
@@ -163,6 +164,7 @@ generate_type2_appimage()
   else
     VERSION=$VERSION ./appimagetool --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
+  set -x
   mkdir -p ../out/
   mv *.AppImage* ../out/
 }
