@@ -69,4 +69,4 @@ HOUR=$(cat $APP.AppDir/usr/bin/lib/hourlyBuild.txt | sed -e 's|/||g' | sed -e 's
 VERSION=$VER".hourly"$HOUR".esp"$ESPVER
 echo $VERSION
 
-generate_appimage
+generate_type2_appimage
