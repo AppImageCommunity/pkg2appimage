@@ -1,0 +1,12 @@
+app: PSPP
+union: true
+
+ingredients:
+  dist: precise
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ precise main universe
+  ppas:
+    - adamzammit/pspp
+
+script:
+  - mv usr/lib/x86_64-linux-gnu/pspp/* usr/lib/x86_64-linux-gnu/
