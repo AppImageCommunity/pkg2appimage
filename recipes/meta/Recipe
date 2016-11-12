@@ -104,11 +104,11 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   rm status 2>/dev/null || true
   generate_status
 
-  // Some packages depend on an exact version of a dependency to be installed.
-  // Use
-  // ingredients:
-  //   pretend:
-  //     - packagename version_to_be_pretended
+  # Some packages depend on an exact version of a dependency to be installed.
+  # Use
+  # ingredients:
+  #   pretend:
+  #     - packagename version_to_be_pretended
   if [ ! -z "${_ingredients_pretend[0]}" ] ; then
     for PRETEND in "${_ingredients_pretend[@]}" ; do
       P_PKG=$(echo "$PRETEND" | cut -d " " -f 1)
