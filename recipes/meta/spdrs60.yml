@@ -1,0 +1,12 @@
+app: spdrs60
+union: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget "http://downloads.sourceforge.net/project/spdrs60/spdrs60/0.6.3/spdrs60_0.6.3-1trusty1_amd64.deb"
+
+script:
+  - cp ./usr/share/pixmaps/spdrs60_32.xpm .
