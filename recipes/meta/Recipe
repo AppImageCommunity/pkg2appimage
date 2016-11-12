@@ -276,6 +276,9 @@ if [ ! -z "${_post}" ] ; then
   shell_execute $YAMLFILE _post
 fi
 
+# Shrink size
+rm -rf usr/bin/java/lib/missioncontrol/
+
 # Go out of AppImage
 cd ..
 
