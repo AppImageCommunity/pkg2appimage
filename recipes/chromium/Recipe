@@ -58,4 +58,4 @@ wget -c --trust-server-names https://github.com/hughsie/fedora-appstream/raw/mas
 
 cd ..
 
-generate_appimage
+generate_type2_appimage
