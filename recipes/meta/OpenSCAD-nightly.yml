@@ -1,0 +1,10 @@
+app: OpenSCAD
+binpatch: true
+
+ingredients:
+  packages:
+    - openscad-nightly
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main
+    - deb http://download.opensuse.org/repositories/home:/t-paul/xUbuntu_14.04/ ./
