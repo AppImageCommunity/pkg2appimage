@@ -8,4 +8,6 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main
     - deb http://download.opensuse.org/repositories/home:/t-paul/xUbuntu_14.04/ ./
-    - cp ./usr/share/applications/openscad-nightly.desktop .
+    
+script:
+  - cp ./usr/share/applications/openscad-nightly.desktop .
