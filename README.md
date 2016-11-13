@@ -29,6 +29,18 @@ __Recipes__ are the scripts used to create the AppImages, and __Dockerfiles__ ar
 
 This repository is intended to showcase the [AppImage](http://appimage.org) format and [AppImageKit](https://github.com/probonopd/AppImageKit) software used to create AppImages. Upstream projects are encouraged to use this showcase to produce their own __upstream packaging__ AppImages, as some projects (like [Subsurface](https://subsurface-divelog.org) already do).
 
+## Usage
+
+There are [multiple ways](https://github.com/probonopd/AppImageKit/wiki/Creating-AppImages) to generate AppImages. If you already have existing binaries (either in archive or `.deb` format or a ppa) then the recommended way to convert these to an AppImage is to write a [.yml description file](https://github.com/probonopd/AppImages/tree/master/recipes/meta) and run it with the [meta recipe bash script](https://github.com/probonopd/AppImages/tree/master/recipes/meta/Recipe):
+
+To build an AppImage from a `.yml` description file:
+
+```
+cd recipes/meta/ && bash -ex ./Recipe XXX.yml
+```
+
+`.yml` description files tell the recipe where to get the ingredients from, and how to convert them to an AppImage (besides the general steps already included in the meta recipe). Study some [examples](https://github.com/probonopd/AppImages/tree/master/recipes/meta) to see how it works.
+
 ## Motivation
 
 Linus addresses some core issues of Linux on the desktop in his [DebConf 14_ QA with Linus Torvalds talk](https://www.youtube.com/watch?v=5PmHRSeA2c8). At 05:40 Linus highlights application packaging: 
