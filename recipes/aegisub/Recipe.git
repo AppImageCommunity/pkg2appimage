@@ -1,0 +1,157 @@
+#!/bin/bash
+
+set -e
+
+sudo apt-get -y install git wget fuse build-essential \
+autoconf automake libtool gettext intltool yasm ragel \
+myspell-en-us myspell-en-gb \
+libasound2-dev libboost-all-dev libfftw3-dev libfontconfig1-dev libfreetype6-dev libgl1-mesa-dev libhunspell-dev \
+libicu-dev libopenal-dev libpulse-dev libva-dev libvdpau-dev libwxgtk3.0-dev libx11-dev
+
+APP=Aegisub
+LOWERAPP=${APP,,}
+MULTIARCH=x86_64-linux-gnu
+ARCH=x86_64
+
+mkdir -p ./$APP/$APP.AppDir
+
+cd ./$APP
+
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+# need full checkout to get the right revision number (will be displayed in the program)
+git clone https://github.com/Aegisub/Aegisub ${APP}-git
+
+cd ${APP}-git
+BUILDROOT="`pwd`"
+JOBS=$(test `nproc` -ge 2 && nproc || echo 2)
+
+# build libass from source, so it's newer
+cp /usr/share/libtool/config/ltmain.sh .
+mkdir libass
+cd libass
+git clone --depth 1 https://github.com/behdad/harfbuzz.git
+cd harfbuzz
+echo "EXTRA_DIST = " > gtk-doc.make
+cp /usr/share/libtool/config/ltmain.sh .
+autoreconf -if && ./configure --prefix="$BUILDROOT/libs" --enable-static --disable-shared
+make -j4 && make install
+cd ..
+git clone --depth 1 https://github.com/behdad/fribidi.git
+cd fribidi
+cp /usr/share/libtool/config/ltmain.sh .
+autoreconf -if && ./configure --prefix="$BUILDROOT/libs" --enable-static --disable-shared
+make -j1 && make install
+cd ..
+git clone --depth 1 https://github.com/libass/libass.git
+cd libass
+cp /usr/share/libtool/config/ltmain.sh .
+autoreconf -if && PKG_CONFIG_PATH="$BUILDROOT/libs/lib/pkgconfig" ./configure --prefix="$BUILDROOT/libs" --enable-static --disable-shared
+make -j4 && make install
+
+cd "$BUILDROOT"
+
+# build our own ffms2 library
+# first of all that means we can potentially decode more media types and
+# the system's libav or ffmpeg libs have way too much dependencies that
+# we don't need, since Aegisub uses it only for decoding
+mkdir -p ffmpeg
+git clone --depth 1 https://github.com/FFmpeg/FFmpeg ffmpeg/FFmpeg
+git clone --depth 1 https://github.com/FFMS/ffms2 ffmpeg/ffms2
+
+# build ffmpeg
+cd ffmpeg/FFmpeg
+./configure --prefix="$BUILDROOT/libs" --disable-debug --disable-encoders --disable-muxers --disable-programs --disable-doc --enable-gpl --enable-version3
+make -j$JOBS
+make install
+
+# fix pkg-config files
+for f in "$BUILDROOT"/libs/lib/pkgconfig/*; do
+  sed -i -e 's|-lavutil |-lavutil -lvdpau -lva -lva-drm -lva-x11 -lX11 |g' $f
+done
+
+# build ffms2
+cd ../ffms2
+PKG_CONFIG_LIBDIR="$BUILDROOT/libs/lib/pkgconfig" ./configure --prefix="$BUILDROOT/libs" --enable-static --disable-shared
+make -j$JOBS
+make install
+
+cd "$BUILDROOT"
+
+export PKG_CONFIG_PATH="$BUILDROOT/libs/lib/pkgconfig"
+export FFMS2_LIBS="$(pkg-config --static --libs ffms2)"
+
+# build LuaJIT first, or else the build will fail
+make -C vendor/luajit/src -j$JOBS amalg
+
+# https://github.com/Aegisub/Aegisub/pull/38
+export LUA="$BUILDROOT/vendor/luajit/src/host/minilua"
+
+# missing macros on Ubuntu 14.04 (https://github.com/Aegisub/Aegisub/pull/33)
+cat <<EOF> src/boost_macro_fix.hpp
+#ifndef BOOST_MACRO_FIX_HPP
+#define BOOST_MACRO_FIX_HPP
+#include <boost/config/suffix.hpp>
+#ifndef BOOST_NOINLINE
+#define BOOST_NOINLINE __attribute__ ((noinline))
+#endif
+#ifndef BOOST_UNLIKELY
+#define BOOST_UNLIKELY(x) x
+#endif
+#endif /* BOOST_MACRO_FIX_HPP */
+EOF
+sed -i -e 's|#include <utility>|#include <utility>\n#include "boost_macro_fix.hpp"\n|' src/video_out_gl.cpp
+
+# prepare language selection for patch_usr
+sed -i -e "s|\?data/locale/|/usr/share/locale/|g" src/aegisublocale.cpp
+
+# -O2 is enough
+sed -i 's|-O3|-O2|g' configure.ac
+./autogen.sh
+./configure --prefix=/usr --disable-debug --disable-rpath --disable-update-checker --with-x --with-gl=yes
+
+# link boost libs statically
+sed -i '/^LIBS_BOOST/d' Makefile.inc
+printf '\nLIBS_BOOST = -Wl,-Bstatic -lboost_filesystem -lboost_locale -lboost_regex -lboost_system -lboost_thread -lboost_chrono -Wl,-Bdynamic\n' >> Makefile.inc
+
+# build Aegisub
+make -j$JOBS LIBS_PTHREAD="-lpthread" PTHREAD_LIBS="-lpthread"  # pthread detection may not work correctly (https://github.com/Aegisub/Aegisub/pull/34)
+make install DESTDIR="$BUILDROOT/../$APP.AppDir"
+
+cd ../$APP.AppDir/
+
+# copy English dictionaries
+mkdir -p ./usr/share/hunspell
+cp /usr/share/hunspell/en_*.* ./usr/share/hunspell
+
+strip ./usr/bin/aegisub
+
+patch_usr
+
+copy_deps
+move_lib
+
+mv ./usr/lib/$MULTIARCH/*.so* ./usr/lib/$MULTIARCH/pulseaudio/*.so ./usr/lib/
+rm -rf ./usr/lib/$MULTIARCH/
+
+delete_blacklisted
+
+get_desktop
+get_icon
+get_apprun
+
+VER1=3git
+VER2=$(grep 'BUILD_GIT_VERSION_NUMBER' "$BUILDROOT/build/git_version.h" | awk '{print $3}')
+
+GLIBC_NEEDED=$(glibc_needed)
+VERSION=$VER1$VER2.glibc$GLIBC_NEEDED
+echo $VERSION
+
+get_desktopintegration $LOWERAPP
+
+# Go out of AppImage
+cd ..
+
+generate_appimage
+
