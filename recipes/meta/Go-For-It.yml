@@ -9,4 +9,4 @@ ingredients:
     - mank319/go-for-it
 
 script:
-  - cp ./usr/share/icons/hicolor/128x128/apps/go-for-it.svg ../out/Go_F
+  - cp ./usr/share/icons/hicolor/128x128/apps/go-for-it.svg .
