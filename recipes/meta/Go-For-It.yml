@@ -10,3 +10,4 @@ ingredients:
 
 script:
   - cp ./usr/share/icons/hicolor/128x128/apps/go-for-it.svg .
+  - sed -i -e 's|!||g' *.desktop # Bintray does not like "!" in filenames
