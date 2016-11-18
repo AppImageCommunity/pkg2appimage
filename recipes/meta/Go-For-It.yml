@@ -1,0 +1,12 @@
+app: Go-For-It
+union: true
+
+ingredients:
+  dist: precise
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+  ppas:
+    - mank319/go-for-it
+
+script:
+  - cp ./usr/share/icons/hicolor/128x128/apps/go-for-it.svg ../out/Go_F
