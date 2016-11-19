@@ -16,5 +16,6 @@ script:
   - ( cd ./usr/lib/x86_64-linux-gnu/octave/*/ ; ln -s ../../exec/ . )
   - mv ./usr/lib/lapack/*.so* ./usr/lib/ # Why don't they put it there?
   - mv ./usr/lib/libblas/*.so* ./usr/lib/ # Why don't they put it there?
+  - ( cd ./usr/lib/x86_64-linux-gnu/octave/*/ ; ln -s ../../exec/ . ) # WTF?!
   - ( cd usr/lib/ ; ln -s libblas.so.3 libblas.so.3gf ) # What stupidity is this?
   - ( cd usr/lib/ ; ln -s liblapack.so.3 liblapack.so.3gf ) # What stupidity is this?
