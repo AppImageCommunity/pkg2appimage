@@ -34,7 +34,7 @@ libc6-dev
 libcairo2
 libcups2
 libcurl3 # Would draw in a lot of libs including security relevant ones; e.g., in supertux2
-libcurl3-gnutls
+# libcurl3-gnutls # https://github.com/probonopd/AppImages/issues/120#issuecomment-261749714
 libdbm2
 libdbus-1-3
 libdrm2
