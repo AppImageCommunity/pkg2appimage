@@ -1,8 +1,25 @@
 app: Nightingale
 
 ingredients:
+  packages:
+    - nightingale
+    - libcurl3-gnutls
+    - libhogweed2
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - djcj/nightingale
+
+script:
+  - sudo apt-get install -y libglib2.0-bin
+  - rm -rf usr/lib/x86_64-linux-gnu/x264-10bit/ usr/bin/nightingale
+  - cat <<\EOF> usr/bin/nightingale
+  - #!/bin/sh
+  - usr="$(pwd)"
+  - export LD_LIBRARY_PATH="$usr/lib/nightingale/xulrunner:$LD_LIBRARY_PATH"
+  - export GST_PLUGIN_PATH="$usr/lib/x86_64-linux-gnu/gstreamer-0.10:$usr/lib/nightingale/gst-plugins"
+  - export GST_PLUGIN_SCANNER="$usr/lib/x86_64-linux-gnu/gstreamer0.10/gstreamer-0.10/gst-plugin-scanner"
+  - "$usr/lib/nightingale/nightingale-bin" $*
+  - EOF
+  - chmod a+x usr/bin/nightingale
