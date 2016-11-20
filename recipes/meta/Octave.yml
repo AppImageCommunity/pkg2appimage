@@ -13,7 +13,6 @@ script:
   - sed -i -e 's|/usr/bin/||g' www.octave.org-octave.desktop
   - mv www.octave.org-octave.desktop octave.desktop
   - mv ./usr/lib/x86_64-linux-gnu/octave/*/*.so* ./usr/lib/x86_64-linux-gnu/
-  - ( cd ./usr/lib/x86_64-linux-gnu/octave/*/ ; ln -s ../../exec/ . )
   - mv ./usr/lib/lapack/*.so* ./usr/lib/ # Why don't they put it there?
   - mv ./usr/lib/libblas/*.so* ./usr/lib/ # Why don't they put it there?
   - ( cd ./usr/lib/x86_64-linux-gnu/octave/*/ ; ln -s ../../exec/ . ) # WTF?!
