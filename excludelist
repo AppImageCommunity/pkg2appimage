@@ -56,7 +56,6 @@ libgio-2.0.so.0
 # Workaround for:
 # On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
 
-libgdk-x11-2.0.so.0
 libgtk-x11-2.0.so.0
 # Simply to reduce size - not known to cause issues
 
