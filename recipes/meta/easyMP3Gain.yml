@@ -1,4 +1,5 @@
 app: easyMP3Gain
+union: true
 
 ingredients:
   packages:
