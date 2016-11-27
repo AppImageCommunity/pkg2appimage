@@ -6,3 +6,6 @@ ingredients:
   dist: oldstable
   sources:
     - deb http://ftp.de.debian.org/debian/ oldstable main
+
+script:
+  - cp ./usr/share/applications/easymp3gain-gnome.desktop .
