@@ -1,0 +1,8 @@
+app: easyMP3Gain
+
+ingredients:
+  packages:
+    - easymp3gain-gtk
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
