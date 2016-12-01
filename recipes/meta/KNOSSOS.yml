@@ -1,0 +1,10 @@
+app: KNOSSOS
+
+ingredients:
+  script:
+    - DLD=$(wget -q "https://github.com/knossos-project/knossos/releases" -O - | grep knossos.deb | head -n 1  | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+    - echo $DLD | cut -d '/' -f 6 | sed -e 's|v||g' > VERSION
+
+script:
+  - mv opt/knossos/* usr/bin/
