@@ -1,0 +1,32 @@
+app: MediaInfo
+
+ingredients:
+  packages:
+    - libwxgtk2.8-0
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
+  script:
+    - DIST=Debian_6.0
+    - VERSION=$(wget -q -O - https://mediaarea.net/en/MediaInfo/Download/Debian | grep "mediainfo-gui.*_amd64.$DIST.deb" | cut -d '>' -f3 | tr -d -c [0-9.])
+    - ZENVERSION=$(wget -q -O - https://mediaarea.net/en/MediaInfo/Download/Debian | grep "libzen0_.*_amd64.$DIST.deb" | cut -d '>' -f3 | tr -d -c [0-9.])
+    - echo $VERSION > VERSION
+    - wget -c https://mediaarea.net/download/binary/mediainfo-gui/$VERSION/mediainfo-gui_${VERSION}-1_amd64.$DIST.deb
+    - wget -c https://mediaarea.net/download/binary/libmediainfo0/$VERSION/libmediainfo0_${VERSION}-1_amd64.$DIST.deb
+    - wget -c https://mediaarea.net/download/binary/libzen0/$ZENVERSION/libzen0_${ZENVERSION}-1_amd64.$DIST.deb
+
+script:
+  - cp ./usr/share/applications/mediainfo-gui.desktop mediainfo.desktop
+  - sed -i -e 's|^Exec=.*|Exec=mediainfo|g' mediainfo.desktop
+  - sed -i -e 's|^Icon=.*|Icon=mediainfo|g' mediainfo.desktop
+  - ( cd usr/bin && ln -s mediainfo-gui mediainfo )
+  - # appdata file is not present in Debian 6.0 package
+  - DIST=Debian_7.0
+  - VERSION=$(wget -q -O - https://mediaarea.net/en/MediaInfo/Download/Debian | grep "mediainfo-gui.*_amd64.$DIST.deb" | cut -d '>' -f3 | tr -d -c [0-9.])
+  - wget -c https://mediaarea.net/download/binary/mediainfo-gui/$VERSION/mediainfo-gui_${VERSION}-1_amd64.$DIST.deb
+  - dpkg -x mediainfo-gui_${VERSION}-1_amd64.$DIST.deb tmp
+  - mkdir -p ./usr/share/appdata
+  - mv ./tmp/usr/share/appdata/mediainfo-gui.appdata.xml ./usr/share/appdata
+  - ( cd usr/share/appdata && ln -s mediainfo-gui.appdata.xml mediainfo.appdata.xml )
+  - rm -rf *.deb tmp
+
