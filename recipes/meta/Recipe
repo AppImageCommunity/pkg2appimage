@@ -1,5 +1,27 @@
 #!/usr/bin/env bash
 
+usage() {
+  echo "usage:"
+  echo "  $0 [--no-di] META-NAME|YAMLFILE"
+  echo ""
+  echo "options:"
+  echo "  --no-di    disable desktop integration"
+  exit 1
+}
+
+if [ $# -eq 0 ] || [ "x${!#}" = "x--no-di" ] ; then
+  usage
+fi
+if [ $# -eq 2 ] && [ "x$1" != "x--no-di" ] ; then
+  usage
+fi
+
+if [ "x$1" = "x--no-di" ] ; then
+  ENABLE_DI="no"
+else
+  ENABLE_DI="yes"
+fi
+
 # Halt on errors
 set -e
 set -x
@@ -12,11 +34,12 @@ which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
 which dpkg-scanpackages  >/dev/null 2>&1 || ( echo dpkg-scanpackages missing && exit 1 )
 
 # If the yaml file doesn't exist locally, get it from GitHub
-if [ ! -f "$1" ] ; then
+if [ ! -f "${!#}" ] ; then
   YAMLFILE=/tmp/_recipe.yml
-  wget -q "https://github.com/probonopd/AppImages/raw/master/recipes/meta/$1.yml" -O "$YAMLFILE"
+  rm -f "$YAMLFILE"
+  wget -q "https://github.com/probonopd/AppImages/raw/master/recipes/meta/${!#}.yml" -O "$YAMLFILE"
 else
-  YAMLFILE=$(readlink -f $1)
+  YAMLFILE="$(readlink -f "${!#}")"
 fi
 
 # Function to parse yaml
@@ -46,10 +69,6 @@ parse_yaml() {
 # Read yaml file
 parse_yaml $YAMLFILE "_"
 eval $(parse_yaml $YAMLFILE "_")
-
-if [ ! -z "${_verbose}" ] ; then
-  set -x
-fi
 
 # Execute multiple script lines together as one
 # shell_execute filename key_of_group_of_commands
@@ -278,7 +297,10 @@ if [ ! -z "${_union}" ] ; then
 fi
 
 delete_blacklisted
-get_desktopintegration $LOWERAPP
+
+if [ "$ENABLE_DI" = "yes" ] ; then
+  get_desktopintegration $LOWERAPP
+fi
 
 # Fix desktop files that have file endings for icons
 sed -i -e 's|\.png||g' *.desktop || true
