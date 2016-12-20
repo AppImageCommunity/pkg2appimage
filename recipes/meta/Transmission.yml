@@ -1,6 +1,7 @@
 app: Transmission
 
 ingredients:
+  package: transmision-gtk
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
