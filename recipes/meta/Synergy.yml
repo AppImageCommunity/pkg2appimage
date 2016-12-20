@@ -1,5 +1,5 @@
 app: Synergy
-union: true
+binpatch: true
 
 ingredients:
   dist: precise
