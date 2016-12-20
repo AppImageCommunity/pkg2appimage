@@ -11,6 +11,6 @@ ingredients:
     - ls *-Linux-x86_64.deb | cut -d "-" -f 2-4 | sed -e 's|-|.|g' | sed -e 's|v||g' > VERSION
 
 script:
-  - sed -i -e 's|Icon=.*|synergy|g' synergy.desktop
+  - sed -i -e 's|Icon=.*|Icon=synergy|g' synergy.desktop
   - wget -c "http://freesmug.wdfiles.com/local--files/img:appicon/ic_synergy.png" -O synergy.png # Package has a .ico?!?
   - cp  synergy.png usr/share/icons/hicolor/256x256/apps/
