@@ -8,4 +8,6 @@ ingredients:
     - transmissionbt/ppa
 
 script:
-  - find . | grep transmission
+  - ( cd ./usr/bin/ ; ln -s transmission-gtk transmission )
+  - mv transmission-gtk.desktop transmission.desktop
+  - sed -i -e 's|transmission-gtk|transmission|g' transmission.desktop
