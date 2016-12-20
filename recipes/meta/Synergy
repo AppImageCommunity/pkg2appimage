@@ -1,0 +1,11 @@
+app: Synergy
+union: true
+
+ingredients:
+  dist: precise
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+  script:
+    - DLD=$(wget -q "https://symless.com/nightly" -O - | grep "Linux-x86_64.deb" | grep v1 | head -n 1 | cut -d '"' -f 4)
+    - wget -c "https://symless.com/$DLD"
+    - ls *-Linux-x86_64.deb | cut -d "-" -f 2-4 | sed -e 's|-|.|g' | sed -e 's|v||g' > VERSION
