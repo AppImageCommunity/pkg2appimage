@@ -1,4 +1,5 @@
 app: Transmission
+union: true
 
 ingredients:
   dist: trusty
