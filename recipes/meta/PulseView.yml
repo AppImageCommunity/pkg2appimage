@@ -1,0 +1,9 @@
+app: PulseView
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - jorik-kippendief/sigrok
