@@ -12,7 +12,5 @@ ingredients:
 
 script:
   - sed -i -e 's|Icon=.*|synergy|g' synergy.desktop
-  - sudo apt-get install imagemagick
-  - convert usr/share/icons/synergy.ico synergy.png # .ico is not allowed in Linux
-  - file synergy.png
+  - wget -c "http://freesmug.wdfiles.com/local--files/img:appicon/ic_synergy.png" -O synergy.png # Package has a .ico?!?
   - cp  synergy.png usr/share/icons/hicolor/256x256/apps/
