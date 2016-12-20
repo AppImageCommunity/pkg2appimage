@@ -11,3 +11,4 @@ ingredients:
 script:
   - wget -c "https://github.com/EliasOenal/pulseview/raw/726ea66712afefafd96b4f08667fa97ab741c343/contrib/pulseview.desktop"
   - # Dear jorik-kippendief, thanks for your PPA, but please provide a desktop file and an icon in the package
+  - find . | grep icons
