@@ -7,3 +7,6 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - jorik-kippendief/sigrok
+
+script:
+  - find . | grep "desktop"
