@@ -8,4 +8,4 @@ ingredients:
     - transmissionbt/ppa
 
 script:
-  find .
+  - find . | grep transmission
