@@ -12,5 +12,7 @@ ingredients:
 
 script:
   - sed -i -e 's|Icon=.*|synergy|g' synergy.desktop
+  - sudo apt-get install imagemagick
   - convert usr/share/icons/synergy.ico synergy.png # .ico is not allowed in Linux
+  - file synergy.png
   - cp  synergy.png usr/share/icons/hicolor/256x256/apps/
