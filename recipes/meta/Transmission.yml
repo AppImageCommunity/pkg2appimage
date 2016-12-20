@@ -9,5 +9,5 @@ ingredients:
 
 script:
   - ( cd ./usr/bin/ ; ln -s transmission-gtk transmission )
-  - cp usr/share/transmission-gtk.desktop transmission.desktop
-  - sed -i -e 's|transmission-gtk|transmission|g' transmission.desktop
+  - sed -i -e 's|transmission-gtk|transmission|g' usr/share/applications/transmission-gtk.desktop
+  - cp usr/share/applications/transmission-gtk.desktop transmission.desktop
