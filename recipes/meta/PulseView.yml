@@ -2,6 +2,9 @@ app: PulseView
 union: true
 
 ingredients:
+  packages:
+    - pulseview
+    - sigrok-firmware-fx2lafw
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
