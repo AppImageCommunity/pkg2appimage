@@ -9,9 +9,10 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
-    - jorik-kippendief/sigrok
+    - daniel-elstner/sigrok
 
 script:
-  - wget -c "https://github.com/EliasOenal/pulseview/raw/master/contrib/pulseview.desktop"
-  - wget -c "https://github.com/EliasOenal/pulseview/raw/master/icons/sigrok-logo-notext.png"
+  - # for jorik-kippendief/sigrok ppa
+  - # wget -c "https://github.com/EliasOenal/pulseview/raw/master/contrib/pulseview.desktop"
+  - # wget -c "https://github.com/EliasOenal/pulseview/raw/master/icons/sigrok-logo-notext.png"
   - # Dear jorik-kippendief, thanks for your PPA, but please provide a desktop file and an icon in the package
