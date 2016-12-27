@@ -11,3 +11,6 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
   ppas:
     - pmjdebruijn/darktable-release
+
+script:
+  - sed -i -e 's|/usr/bin||g' darktable.desktop
