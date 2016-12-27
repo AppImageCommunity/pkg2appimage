@@ -1,0 +1,15 @@
+app: XaraLX
+union: true
+
+ingredients:
+  packages:
+    - xaralx
+    - xaralx-examples
+    - xaralx-svg 
+  dist: precise
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe multiverse
+
+script:
+  - mkdir -p ./usr/share/icons/hicolor/48x48/apps
+  - cp usr/share/pixmaps/xaralx.png ./usr/share/icons/hicolor/48x48/apps
