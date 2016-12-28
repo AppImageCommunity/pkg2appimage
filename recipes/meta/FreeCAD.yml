@@ -14,6 +14,7 @@ ingredients:
 
 script:
   - cp ./usr/share/applications/freecad-daily.desktop .
+  - ln -s freecad-daily.desktop freecad.desktop
   - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
   - sed -i -e 's@/usr/bin/@@g' freecad-daily.desktop
   - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
