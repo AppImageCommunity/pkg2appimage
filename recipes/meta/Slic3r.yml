@@ -1,0 +1,18 @@
+app: Slic3r
+verbose: true
+
+ingredients:
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
+  packages: freeglut3
+  script:
+    - DLD=$(wget -q "https://github.com/prusa3d/Slic3r/releases" -O - | grep prusa3d-linux64-full | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+    - echo "multiarch-support" >> excludedeblist
+
+script:
+  - tar xf ../Slic3r-*.tar.bz2 -C usr/bin --strip 1
+  - cp ./usr/bin/bin/var/Slic3r.png slic3r.png
+  - wget "https://raw.githubusercontent.com/pld-linux/slic3r/master/slic3r.desktop"
+  - sed -i -e 's|^Exec=.*|Exec=slic3r --gui|g' slic3r.desktop
