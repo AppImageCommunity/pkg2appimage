@@ -1,4 +1,5 @@
 app: FreeCAD
+union: true
 
 ingredients:
   dist: trusty
