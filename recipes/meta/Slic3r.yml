@@ -1,5 +1,5 @@
 app: Slic3r
-verbose: true
+union: true
 
 ingredients:
   dist: oldstable
