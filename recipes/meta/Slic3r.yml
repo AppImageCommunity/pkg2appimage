@@ -17,4 +17,4 @@ script:
   - cp ./usr/bin/bin/var/Slic3r.png slic3r.png
   - wget "https://raw.githubusercontent.com/pld-linux/slic3r/master/slic3r.desktop"
   - sed -i -e 's|^Exec=.*|Exec=slic3r --gui|g' slic3r.desktop
-  - mv squashfs-root/usr/lib/x86_64-linux-gnu/* usr/bin/bin # Their wrapper loads libraries only from there
+  - mv ./usr/lib/x86_64-linux-gnu/lib* ./usr/bin/bin/ # Their wrapper loads libraries only from there
