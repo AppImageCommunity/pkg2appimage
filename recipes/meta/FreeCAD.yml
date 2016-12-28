@@ -13,6 +13,7 @@ ingredients:
     - ls freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > VERSION
 
 script:
+  - cp ./usr/share/applications/freecad-daily.desktop .
   - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
   - sed -i -e 's@/usr/bin/@@g' freecad-daily.desktop
   - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
