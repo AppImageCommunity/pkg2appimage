@@ -9,10 +9,9 @@ ingredients:
   packages:
     - freecad-daily
     - python-numpy
-  script:
-    - ls freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > VERSION
 
 script:
+  - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
   - cp ./usr/share/applications/freecad-daily.desktop .
   - ln -s freecad-daily.desktop freecad.desktop
   - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
