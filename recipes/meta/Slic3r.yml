@@ -9,6 +9,7 @@ ingredients:
   script:
     - DLD=$(wget -q "https://github.com/prusa3d/Slic3r/releases" -O - | grep prusa3d-linux64-full | head -n 1 | cut -d '"' -f 2)
     - wget -c "https://github.com/$DLD"
+    - ls Slic3r-*.tar.bz2 | cut -d '-' -f 2-3 | sed -e 's|-|.|g' > VERSION
     - echo "multiarch-support" >> excludedeblist
 
 script:
