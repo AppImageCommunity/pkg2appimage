@@ -1,5 +1,4 @@
 app: FreeCAD
-union: true
 
 ingredients:
   dist: trusty
@@ -22,6 +21,6 @@ script:
   - cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
   - # Dear upstream developers, please use relative rather than absolute paths
   - # then binary patching like this will become unneccessary
-  - # find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad-daily@././/lib/freecad-daily@g" {} \;
-  - # find usr/ -type f -exec sed -i -e "s@/usr/share/freecad-daily@././/share/freecad-daily@g" {} \;
-  - # ( cd ./usr/lib/freecad-daily/ ; ln -s ../../share/ . ) # Why?
+  - find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad-daily@././/lib/freecad-daily@g" {} \;
+  - find usr/ -type f -exec sed -i -e "s@/usr/share/freecad-daily@././/share/freecad-daily@g" {} \;
+  - ( cd ./usr/lib/freecad-daily/ ; ln -s ../../share/ . ) # Why?
