@@ -1,4 +1,5 @@
 app: FreeCAD
+binpatch: true
 
 ingredients:
   dist: trusty
