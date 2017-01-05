@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-HERE="$(dirname "$(readlink -f "${0}")")"
-
 usage() {
   echo "usage:"
   echo "  $0 [--no-di] META-NAME|YAMLFILE"
@@ -102,26 +100,6 @@ if [ ! -e functions.sh ] ; then
   wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 fi
 . ./functions.sh
-
-
-# Options for apt-get to use local files rather than the system ones
-# Workaround for:
-# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=816537
-# E: Internal Error, Pathname to install is not absolute
-OPTIONS="-o Debug::NoLocking=1
--o APT::Cache-Limit=125829120
--o Dir::Etc::sourcelist=${HERE}/${APP}/sources.list
--o Dir::State=${HERE}/${APP}/tmp
--o Dir::Cache=${HERE}/${APP}/tmp
--o Dir::State::status=${HERE}/${APP}/status
--o Dir::Etc::sourceparts=-
--o APT::Get::List-Cleanup=0
--o APT::Get::AllowUnauthenticated=1
--o Debug::pkgProblemResolver=true
--o Debug::pkgDepCache::AutoInstall=true
--o APT::Install-Recommends=0
--o APT::Install-Suggests=0
-"
 
 if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
   for GHREPO in "${_ingredients_ghreleases[@]}" ; do
