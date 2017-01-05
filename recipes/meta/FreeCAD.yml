@@ -1,0 +1,31 @@
+app: FreeCAD
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - freecad-maintainers/freecad-stable
+  packages:
+    - freecad
+    - python-numpy
+    - python2.7-minimal
+    - calculix-ccx
+    - netgen
+  pretend:
+    - libxcb1 1.10-2ubuntu1
+    - libfontconfig1 2.11.0-0ubuntu4
+
+script:
+  - ls ../freecad*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | cut -d "-" -f 1 > ../VERSION
+  - cp ./usr/share/applications/freecad.desktop .
+  - sed -i -e 's@FreeCAD Stable@FreeCAD@g' freecad.desktop
+  - sed -i -e 's@/usr/bin/@@g' freecad.desktop
+  - sed -i -e 's@Path=@# Path=@g' freecad.desktop
+  - cp ./usr/share/icons/hicolor/64x64/apps/freecad.png .
+  - # Dear upstream developers, please use relative rather than absolute paths
+  - # then binary patching like this will become unneccessary
+  - find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad@././/lib/freecad@g" {} \;
+  - find usr/ -type f -exec sed -i -e "s@/usr/share/freecad@././/share/freecad@g" {} \;
+  - ( cd ./usr/lib/freecad/ ; ln -s ../../share/ . ) # Why?
