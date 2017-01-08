@@ -26,3 +26,4 @@ script:
   - mv ./usr/lib/libblas/*.so* ./usr/lib/
   - ( cd usr/lib/ ; ln -s libblas.so.3 libblas.so.3gf )
   - ( cd usr/lib/ ; ln -s liblapack.so.3 liblapack.so.3gf )
+  - sed -i -e 's|^Version=.*|Version=1.1|g' meshmixer.desktop # Dear upstream developers, see https://github.com/probonopd/AppImages/issues/166
