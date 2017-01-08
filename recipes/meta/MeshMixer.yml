@@ -2,9 +2,11 @@
 # Autodesk MeshMixer is available officially for Ubuntu only.
 # Probably Fedora, CentOS, OpenSUSE,... users would like to see an AppImage
 # and with this file you can produce one yourself until 
-# Autodesk provides an official one for download. Just download Recipe and this file,
-# then run, on an Ubuntu machine, bash ./Recipe ./MeshMixer.yml.
+# Autodesk provides an official one for download. Just download 
+# https://github.com/probonopd/AppImages/raw/master/recipes/meta/Recipe 
+# and this file, then run, on an Ubuntu machine, bash ./Recipe ./MeshMixer.yml.
 # The resulting AppImage should run on most distributions from 2014 and later.
+# Please open an issue if you experience any issues.
 
 app: MeshMixer
 binpatch: true
@@ -20,3 +22,7 @@ ingredients:
 
 script:
   - ls
+  - mv ./usr/lib/lapack/*.so* ./usr/lib/
+  - mv ./usr/lib/libblas/*.so* ./usr/lib/
+  - ( cd usr/lib/ ; ln -s libblas.so.3 libblas.so.3gf )
+  - ( cd usr/lib/ ; ln -s liblapack.so.3 liblapack.so.3gf )
