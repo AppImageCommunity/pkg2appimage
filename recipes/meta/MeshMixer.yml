@@ -12,7 +12,7 @@ binpatch: true
 ingredients:
   dist: trusty
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   script:
     - URL=$(wget -q "http://meshmixer.com/linux.html" -O - | grep "_amd64.deb" | head -n 1 | cut -d '"' -f 2)
     - wget -c "$URL"
