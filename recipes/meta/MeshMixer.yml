@@ -1,0 +1,22 @@
+# http://meshmixer.com/linux.html and https://twitter.com/meshmixer
+# Autodesk MeshMixer is available officially for Ubuntu only.
+# Probably Fedora, CentOS, OpenSUSE,... users would like to see an AppImage
+# and with this file you can produce one yourself until 
+# Autodesk provides an official one for download. Just download Recipe and this file,
+# then run, on an Ubuntu machine, bash ./Recipe ./MeshMixer.yml.
+# The resulting AppImage should run on most distributions from 2014 and later.
+
+app: MeshMixer
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main
+  script:
+    - URL=$(wget -q "http://meshmixer.com/linux.html" -O - | grep "_amd64.deb" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "$URL"
+    - echo "$URL" | cut -d "_" -f 2 > VERSION
+
+script:
+  - ls
