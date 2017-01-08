@@ -1,0 +1,22 @@
+app: WebTorrent
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DLD=$(wget -q "https://github.com/feross/webtorrent-desktop/releases/" -O - | grep _amd64.deb | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+    - ls webtorrent-desktop_*.deb | head -n 1 | cut -d "_" -f 2 | cut -d "-" -f 1 > VERSION
+  packages:
+    - webtorrent-desktop
+
+script:
+  - cp ./usr/share/applications/webtorrent-desktop.desktop .
+  - ln -s webtorrent-desktop.desktop webtorrent.desktop # For meta recipe, FIXME
+  - mv opt/webtorrent-desktop/* usr/bin/
+  - sed -i -e 's|/opt/webtorrent-desktop/||g' webtorrent-desktop.desktop
+  - sed -i -e 's|Path=|# Path=|g' webtorrent-desktop.desktop
+  - chmod a+x usr/bin/WebTorrent
+  - cp ./usr/share/icons/hicolor/256x256/apps/webtorrent-desktop.png .
