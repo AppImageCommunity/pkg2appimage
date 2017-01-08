@@ -1,3 +1,6 @@
+# NOTE: This example is provided here for historical reasons only.
+# Ultimaker provides official AppImage downloads now.
+#
 # This is an example on how to bundle a complex Python application as an AppImage
 # using virtualenv and AppImageKit using Ubuntu
 # NOTE: Please test the resulting AppImage on your target systems and copy in any additional
