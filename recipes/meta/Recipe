@@ -265,6 +265,7 @@ if [ -z "$DESKTOP" ] ; then
   echo "desktop file not found, aborting"
   exit 1
 else
+  desktop-file-validate "$DESKTOP" || exit 1
   ORIG=$(grep -o "^Exec=.*$" "${DESKTOP}" | head -n 1| cut -d " " -f 1)
   REPL=$(basename $(grep -o "^Exec=.*$" "${DESKTOP}" | head -n 1 | cut -d " " -f 1 | sed -e 's|Exec=||g'))
   sed -i -e 's|'"${ORIG}"'|Exec='"${REPL}"'|g' "${DESKTOP}"
