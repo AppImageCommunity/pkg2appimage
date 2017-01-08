@@ -260,7 +260,7 @@ fi
 
 # Some non-distribution provided applications have an absolute
 # path in the Exec= line which we remove for relocateability
-DESKTOP=$(find . -name '*.desktop' | head -n 1)
+DESKTOP=$(find . -name '*.desktop' | sort | head -n 1)
 if [ -z "$DESKTOP" ] ; then
   echo "desktop file not found, aborting"
   exit 1
