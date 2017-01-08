@@ -27,3 +27,4 @@ script:
   - ( cd usr/lib/ ; ln -s libblas.so.3 libblas.so.3gf )
   - ( cd usr/lib/ ; ln -s liblapack.so.3 liblapack.so.3gf )
   - sed -i -e 's|^Version=.*|Version=1.1|g' meshmixer.desktop # Dear upstream developers, see https://github.com/probonopd/AppImages/issues/166
+  - cp usr/share/pixmaps/meshmixer.png usr/share/icons/hicolor/128x128/apps # So that desktopintegration has something to work with
