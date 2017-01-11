@@ -11,6 +11,8 @@ ingredients:
     - freecad-daily
     - calculix-ccx
     - netgen
+  pretend:
+    - tix-dev 9.999
 
 script:
   - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
