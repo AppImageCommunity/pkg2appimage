@@ -1,0 +1,11 @@
+app: GammaRay
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://download.opensuse.org/repositories/isv:/KDAB/xUbuntu_14.04/ /
+
+script:
+  - mv GammaRay.desktop gammaray.desktop
+  - cp usr/share/icons/hicolor/256x256/apps/GammaRay.png .
