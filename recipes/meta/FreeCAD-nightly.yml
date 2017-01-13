@@ -10,6 +10,7 @@ ingredients:
   packages:
     - freecad-daily
     - calculix-ccx
+    - appmenu-qt
 
 script:
   - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
