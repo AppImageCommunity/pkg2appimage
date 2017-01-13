@@ -12,7 +12,7 @@ ingredients:
     - python-numpy
     - python2.7-minimal
     - calculix-ccx
-    - netgen
+    - appmenu-qt
   pretend:
     - libxcb1 1.10-2ubuntu1
     - libfontconfig1 2.11.0-0ubuntu4
