@@ -1,0 +1,33 @@
+# Known to launch on
+# CentOS-7.0-1406-x86_64-GnomeLive.iso
+# CentOS-7-x86_64-LiveGNOME-1511.iso
+# debian-live-8.0.0-amd64-xfce-desktop+nonfree.iso
+# debian-live-8.4.0-amd64-gnome-desktop.iso
+# elementaryos-0.4-stable-amd64.20160921.iso
+# Fedora-Live-Workstation-x86_64-22-3.iso
+# Fedora-Workstation-Live-x86_64-24-1.2.iso
+# Fedora-Workstation-Live-x86_64-25-20161105.n.0.iso
+# openSUSE-Tumbleweed-GNOME-Live-x86_64-Snapshot20160921-Media.iso
+# ubuntu-14.04.1-desktop-amd64.iso
+# ubuntu-16.04-desktop-amd64.iso
+
+# Dear upstream developers, the libbsd0 dependency seems to be missing in your deb
+
+app: Bitwig-Studio
+
+ingredients:
+  packages:
+    - bitwig-studio
+    - libbsd0
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - URL=$( wget -q "https://www.bitwig.com/en/download.html" -O - | grep deb | head -n 1 | cut -d '"' -f 12)
+    - wget -c "$URL"
+    - echo "$URL" | cut -d "/" -f 5 > VERSION
+
+script:
+  - rm -rf usr/bin/bitwig-studio ; mv opt/bitwig-studio/* usr/bin/ ; rm -r opt/
+  - cp ./usr/share/icons/hicolor/48x48/apps/bitwig-studio.png .
+  - sed -i -e 's|^Exec=.*|Exec=bitwig-studio|g' bitwig-studio.desktop
