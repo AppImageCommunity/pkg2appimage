@@ -1,4 +1,4 @@
-app: OpenSCAD
+app: OpenSCAD-nightly
 binpatch: true
 
 ingredients:
