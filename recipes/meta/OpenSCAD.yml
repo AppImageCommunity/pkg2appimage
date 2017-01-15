@@ -7,3 +7,6 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - openscad/releases
+
+script:
+  - ( cd usr/bin/ ; ln -s ../share/openscad/* . ) # OpenSCAD does chdir(); don't ask me why it is searching there...
