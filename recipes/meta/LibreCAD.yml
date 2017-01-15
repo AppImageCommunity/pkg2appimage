@@ -13,4 +13,4 @@ ingredients:
 
 script:
   - cp usr/share/icons/hicolor/scalable/apps/librecad.svg .
-  - sed -i -e 's|MimeType=image/vnd.dxf|MimeType=image/vnd.dxf;|g'
+  - sed -i -e 's|MimeType=image/vnd.dxf|MimeType=image/vnd.dxf;|g' librecad.desktop
