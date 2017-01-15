@@ -11,3 +11,4 @@ ingredients:
     
 script:
   - cp ./usr/share/applications/openscad-nightly.desktop .
+  - ( cd usr/bin/ ; ln -s ../share/openscad/* . ) # OpenSCAD does chdir(); don't ask me why it is searching there...
