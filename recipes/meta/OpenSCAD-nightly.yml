@@ -4,10 +4,11 @@ binpatch: true
 ingredients:
   packages:
     - openscad-nightly
-  dist: utopic
+    - appmenu-qt5
+  dist: trusty
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ utopic main universe
-    - deb http://download.opensuse.org/repositories/home:/t-paul/xUbuntu_14.10/ ./
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://download.opensuse.org/repositories/home:/t-paul/xUbuntu_14.04/ ./
     
 script:
   - cp ./usr/share/applications/openscad-nightly.desktop .
