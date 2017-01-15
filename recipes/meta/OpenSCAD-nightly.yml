@@ -7,7 +7,7 @@ ingredients:
     - appmenu-qt5
   dist: utopic
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ utopic main
+    - deb http://archive.ubuntu.com/ubuntu/ utopic main universe
     - deb http://download.opensuse.org/repositories/home:/t-paul/xUbuntu_14.10/ ./
     
 script:
