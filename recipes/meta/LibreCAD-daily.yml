@@ -1,0 +1,15 @@
+app: LibreCAD
+union: true
+
+ingredients:
+  dist: trusty
+  packages:
+    - librecad
+    - appmenu-qt5
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - librecad-dev/librecad-daily
+
+script:
+  - cp usr/share/icons/hicolor/scalable/apps/librecad.svg .
