@@ -2,6 +2,9 @@ app: OpenSCAD
 binpatch: true
 
 ingredients:
+  packages:
+    - openscad
+    - appmenu-qt5
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
