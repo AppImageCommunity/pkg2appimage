@@ -4,7 +4,6 @@ binpatch: true
 ingredients:
   packages:
     - openscad-nightly
-    - appmenu-qt5
   dist: utopic
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ utopic main universe
