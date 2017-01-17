@@ -1,0 +1,11 @@
+app: LeoCAD
+union: true
+
+ingredients:
+  dist: wheezy
+  sources:
+    - deb http://ftp.de.debian.org/debian/ wheezy main
+    - deb http://download.opensuse.org/repositories/home:/pbartfai/Debian_7.0/ /
+
+script:
+  - cp usr/share/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg leocad.svg
