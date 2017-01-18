@@ -1,0 +1,31 @@
+app: PlanetMule
+
+ingredients:
+  script:
+    - URL=http://mule-downloads.s3.amazonaws.com/mule_linux_1.3.6.tar.gz
+    - wget -c "$URL" --trust-server-names
+    - wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jre-6u45-linux-x64.bin
+    - chmod a+x jre-*.bin ; ./jre-*.bin
+    - ls mule_linux_*.tar.gz  | cut -d "_" -f 3 | sed -e 's|.tar.gz||g' > VERSION
+
+script:
+  - mkdir -p usr/lib/jvm/
+  - cp -r ../jre1* usr/lib/jvm/
+  - ( cd usr/bin ; ln -s ../lib/jvm/jre*/bin/java . )
+  - tar xf ../mule_*
+  - mv mule/data/lib*so mule/data/lib/lib* usr/lib/
+  - mkdir -p usr/share/planetmule
+  - mv mule/data/*jar usr/share/planetmule
+  - cat > planetmule.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Planet MULE
+  - Exec=planetmule
+  - Icon=planetmule
+  - Categories=Games;
+  - EOF
+  - convert mule/data/icon.gif planetmule.png
+  - cat > usr/bin/planetmule <<\EOF
+  - java -Xms64m -Xmx256m -jar ./share/planetmule/data.jar
+  - EOF
+  - chmod a+x usr/bin/planetmule
