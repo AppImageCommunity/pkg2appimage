@@ -22,7 +22,7 @@ script:
   - Name=Planet MULE
   - Exec=planetmule
   - Icon=planetmule
-  - Categories=Games;
+  - Categories=Game;
   - EOF
   - convert mule/data/icon.gif planetmule.png
   - cat > usr/bin/planetmule <<\EOF
