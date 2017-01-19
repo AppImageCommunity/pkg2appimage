@@ -4,13 +4,11 @@ ingredients:
   script:
     - URL=http://mule-downloads.s3.amazonaws.com/mule_linux_1.3.6.tar.gz
     - wget -c "$URL" --trust-server-names
-    - wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/6u45-b06/jre-6u45-linux-x64.bin
-    - chmod a+x jre-*.bin ; ./jre-*.bin
+    - wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jre-7u80-linux-x64.tar.gz
     - ls mule_linux_*.tar.gz  | cut -d "_" -f 3 | sed -e 's|.tar.gz||g' > VERSION
 
 script:
-  - mkdir -p usr/lib/jvm/
-  - cp -r ../jre1* usr/lib/jvm/
+  - tar xf ../jre* -C usr/lib/jvm/
   - ( cd usr/bin ; ln -s ../lib/jvm/jre*/bin/java . )
   - tar xf ../mule_*
   - mv mule/data/lib*so mule/data/lib/lib* usr/lib/
