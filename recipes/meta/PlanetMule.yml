@@ -8,7 +8,7 @@ ingredients:
     - ls mule_linux_*.tar.gz  | cut -d "_" -f 3 | sed -e 's|.tar.gz||g' > VERSION
 
 script:
-  - tar xf ../jre* -C usr/lib/jvm/
+  - mkdir -p usr/lib/jvm/ ; tar xf ../jre* -C usr/lib/jvm/
   - ( cd usr/bin ; ln -s ../lib/jvm/jre*/bin/java . )
   - tar xf ../mule_*
   - mv mule/data/lib*so mule/data/lib/lib* usr/lib/
