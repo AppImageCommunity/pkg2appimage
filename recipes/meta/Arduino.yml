@@ -1,0 +1,18 @@
+app: Arduino
+
+ingredients:
+  script:
+    - DLD=$(wget -q "https://www.arduino.cc/en/Main/Software" -O - | grep linux64.tar.xz | head -n 1 | grep -Poe "arduino-.*xz")
+    - wget -c "https://downloads.arduino.cc/$DLD"
+    - echo $DLD | cut -d "-" -f 2 > VERSION
+
+script:
+  - tar xf ../arduino-*.tar.xz --strip-components=1 -C usr/bin/
+  - cp -Rf usr/bin/lib/icons/* usr/share/icons/hicolor ; rm -r usr/bin/lib/icons/
+  - find . -name desktop.template -exec cp {} arduino.desktop \;
+  - sed -i -e 's|<.*>$|arduino|g' arduino.desktop
+  - cp usr/share/icons/hicolor/256x256/apps/arduino.png .
+  - mkdir -p usr/share/metainfo/
+  - rm usr/share/metainfo/arduino.appdata.xml || true
+  - # https://github.com/arduino/Arduino/issues/5890
+  - # wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/metainfo/arduino.appdata.xml
