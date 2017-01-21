@@ -7,7 +7,7 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
-    - js-reynaud/ppa-kicad
+    - js-reynaud/kicad-4
 
 script:
   - # Workaround until 
