@@ -11,7 +11,7 @@ ingredients:
     - freecad
     - python-numpy
     - python2.7-minimal
-    - calculix-ccx
+    # - calculix-ccx
     - appmenu-qt
   pretend:
     - libxcb1 1.10-2ubuntu1
