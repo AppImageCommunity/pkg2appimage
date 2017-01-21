@@ -20,3 +20,5 @@ script:
   - exec "./bin/kicad" "$@"
   - EOF
   - chmod a+x ./AppRun
+  - rm lib/x86_64-linux-gnu/libssl*
+  - rm lib/x86_64-linux-gnu/libcrypto*
