@@ -9,7 +9,7 @@ ingredients:
     - freecad-maintainers/freecad-daily
   packages:
     - freecad-daily
-    - calculix-ccx
+    # - calculix-ccx
     - appmenu-qt
 
 script:
