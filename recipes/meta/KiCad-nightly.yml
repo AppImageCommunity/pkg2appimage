@@ -3,6 +3,9 @@
 app: KiCad
 
 ingredients:
+  packages:
+    - kicad
+    - kicad-library
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
