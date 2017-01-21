@@ -1,0 +1,24 @@
+# Might be necessary to bundle Python - to be investigated
+
+app: KiCad
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - js-reynaud/ppa-kicad
+
+script:
+  - # Workaround until 
+  - # AppRun.c exports rather than just sets environment variables
+  - cat > ./AppRun <<\EOF
+  - #!/bin/sh
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:$LD_LIBRARY_PATH
+  - cd "${HERE}/usr"
+  - exec "./bin/kicad" "$@"
+  - EOF
+  - chmod a+x ./AppRun
+  - rm lib/x86_64-linux-gnu/libssl*
+  - rm lib/x86_64-linux-gnu/libcrypto*
