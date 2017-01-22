@@ -9,6 +9,7 @@ ingredients:
     - mc3man/mpv-tests
 
 script:
+  - cat mpv.desktop
   - wget "https://yt-dl.org/downloads/latest/youtube-dl" -O usr/bin/youtube-dl
   - chmod 0755 usr/bin/youtube-dl
   - sed -i -e 's|Help;Bindings;Scripts;About;Notes|Help;Bindings;Scripts;About;Notes;|g' mpv.desktop
