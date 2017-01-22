@@ -1,5 +1,5 @@
 app: OBS-Studio
-union: true
+binpatch: true
 
 ingredients:
   dist: trusty
