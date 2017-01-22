@@ -4,6 +4,7 @@ union: true
 ingredients:
   dist: trusty
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse
+    - deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse
   ppas:
     - apoleon/ppa-freeorion
