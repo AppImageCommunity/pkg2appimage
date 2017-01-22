@@ -1,0 +1,12 @@
+app: Mpv
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse
+  ppas:
+    - mc3man/mpv-tests
+
+script:
+  - ls
