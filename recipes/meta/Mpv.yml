@@ -15,3 +15,4 @@ script:
   - sed -i -e 's|Help;Bindings;Scripts;About;Notes|Help;Bindings;Scripts;About;Notes;|g' mpv.desktop
   - sed -i -e 's|TargetEnvironment|X-TargetEnvironment|g' mpv.desktop
   - sed -i -e 's|Desktop Action|X-Disabled Desktop Action|g' mpv.desktop
+  - sed -i -e 's|^Actions=|X-Disabled-Actions=|g' mpv.desktop
