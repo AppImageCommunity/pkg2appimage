@@ -142,3 +142,9 @@ libgpg-error.so.0
 # undefined symbol: xcb_send_request_with_fds
 # https://github.com/probonopd/AppImages/issues/128
 libxcb.so.1
+
+# The following need to be observed whether they can really be left in this list (added to the list in January 2017)
+libssl.so.1
+libssl.so.1.0.0
+libcrypto.so.1
+libcrypto.so.1.0.0
