@@ -5,7 +5,7 @@
 
 set -e
 
-HERE=$(dirname $(readlink -f "${0}"))
+HERE="$(dirname "$(readlink -f "${0}")")"
 APPDIR="${1}"
 
 fatal () {
