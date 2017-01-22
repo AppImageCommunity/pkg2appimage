@@ -10,3 +10,7 @@ ingredients:
     - apoleon/ppa-freeorion
   script:
     - wget -c "http://mirrors.kernel.org/ubuntu/pool/universe/f/fonts-roboto/fonts-roboto-unhinted_0~20160106-2_all.deb"
+
+script:
+  - mv usr/games/freeorion usr/bin/ # FIXME properly
+  - mv ./usr/lib/x86_64-linux-gnu/freeorion/*so ./usr/lib/x86_64-linux-gnu/
