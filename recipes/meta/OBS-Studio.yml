@@ -10,5 +10,5 @@ ingredients:
     - obsproject/obs-studio
 
 script:
-  - find usr/share/applications -iname '*.desktop'
   - dpkg -c ../obs-studio-*.deb | grep desktop | head -n 1
+  - cp ./usr/share/applications/obs.desktop obs-studio.desktop # FIXME: Needed for Recipe
