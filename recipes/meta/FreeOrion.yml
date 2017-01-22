@@ -8,3 +8,5 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse
   ppas:
     - apoleon/ppa-freeorion
+  script:
+    - wget -c "http://mirrors.kernel.org/ubuntu/pool/universe/f/fonts-roboto/fonts-roboto-unhinted_0~20160106-2_all.deb"
