@@ -10,4 +10,4 @@ ingredients:
     - obsproject/obs-studio
 
 script:
-  - ls
+  - find usr/share/applications -iname '*.desktop'
