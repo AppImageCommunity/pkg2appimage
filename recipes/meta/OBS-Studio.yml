@@ -12,3 +12,4 @@ ingredients:
 script:
   - dpkg -c ../obs-studio-*.deb | grep desktop | head -n 1
   - cp ./usr/share/applications/obs.desktop obs-studio.desktop # FIXME: Needed for Recipe
+  - cp usr/share/icons/hicolor/256x256/apps/obs.png .
