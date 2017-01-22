@@ -1,0 +1,13 @@
+app: OBS-Studio
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse
+  ppas:
+    - kirillshkrogalev/ffmpeg-next
+    - obsproject/obs-studio
+
+script:
+  - ls
