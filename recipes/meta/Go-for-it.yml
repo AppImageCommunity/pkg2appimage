@@ -1,0 +1,12 @@
+app: Go-for-it
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - go-for-it-team/go-for-it-daily
+
+script:
+  - ls
