@@ -1,0 +1,17 @@
+app: Syncthing-GTK
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - nilarimogard/webupd8
+  script:
+    - DLD=$(wget -q "https://github.com/syncthing/syncthing/releases" -O - | grep -e "syncthing-linux-amd64" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+    - tar xf syncthing-linux-amd64-*.tar.gz
+
+script:
+  - cp -r ../syncthing-linux-*/* usr/bin/
+  - rm -rf ./usr/share/glib-2.0/schemas
