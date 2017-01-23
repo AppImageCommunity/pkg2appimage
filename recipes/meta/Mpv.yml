@@ -1,3 +1,5 @@
+# NOTE: Currently broken because it needs the --player-operation-mode=pseudo-gui parameter to run
+
 app: Mpv
 union: true
 
