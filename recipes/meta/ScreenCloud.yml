@@ -8,4 +8,4 @@ ingredients:
     - deb http://download.opensuse.org/repositories/home:/olav-st/xUbuntu_14.04/ /
 
 script:
-    - ( cd ./usr/lib/x86_64-linux-gnu/ ; ln -s libquazip.so.0 libquazip.so.1 )
+  - ( cd ./usr/lib/x86_64-linux-gnu/ ; ln -s libquazip.so.0 libquazip.so.1 )
