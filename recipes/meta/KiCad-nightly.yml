@@ -1,6 +1,7 @@
 # Might be necessary to bundle Python - to be investigated
 
 app: KiCad
+union: true
 
 ingredients:
   packages:
