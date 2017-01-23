@@ -1,0 +1,95 @@
+## Note: XnView MP is proprietary software ##
+
+### Run this script inside XnViewMP's directory to figure out the dependencies:
+## echo "wait a few seconds..."
+## alldeps="$( (find ./* -type f -exec readelf -d '{}' 2>/dev/null \;) | grep 'NEEDED' | cut -d '[' -f2 | tr -d ']' | sort | uniq )"
+## for f in $alldeps; do
+##   if [ "x$(find ./* -name $f)" = "x" ]; then
+##     deps="$deps $f"
+##   fi
+## done
+## for f in $deps; do
+##   if [ "$f" = "libGL.so.1" ]; then
+##     pkgs="$pkgs libgl1-mesa-glx"
+##   else
+##     pkgs="$pkgs $(dpkg -S $f | grep "amd64" | grep "\/$f\$" | head -n1 | cut -d: -f1)"
+##   fi
+## done
+## echo ""
+## echo "dependencies are:"
+## echo "$pkgs" | tr ' ' '\n' | sort | uniq
+
+
+app: XnViewMP
+
+ingredients:
+  dist: precise
+  packages:
+    - libasound2
+    - libatk1.0-0
+    - libcairo2
+    - libcups2
+    - libdbus-1-3
+    - libegl1-mesa
+    - libfontconfig1
+    - libfreetype6
+    - libgdk-pixbuf2.0-0
+    - libgl1-mesa-glx
+    - libglib2.0-0
+    - libgtk2.0-0
+    - libice6
+    - libjasper1
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libpulse0
+    - libsm6
+    - libsqlite3-0
+    - libx11-6
+    - libx11-xcb1
+    - libxcb1
+    - libxext6
+    - libxi6
+    - libxrender1
+    - zlib1g
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ precise main restricted universe
+    - deb http://archive.ubuntu.com/ubuntu/ precise-updates main restricted universe
+    - deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe
+  script:
+    - VERSION=$(wget -q -O- http://www.xnview.com/xnviewmp_update.txt | sed -n -e 's/^version=//p' | sed -e 's/\r//g')
+    - wget -c http://download.xnview.com/old_versions/XnViewMP-$(echo $VERSION | tr -d '.')-linux-x64.tgz
+    - wget -c http://archive.ubuntu.com/ubuntu/pool/main/c/chrpath/chrpath_0.13-2build2_amd64.deb -O chrpath.deb
+    - echo $VERSION > VERSION
+    - tar xf XnViewMP-*-linux-x64.tgz
+    - rm -f XnView/XnView.desktop XnView/XnView.desktop~
+    - dpkg -x chrpath.deb chrpath && rm chrpath.deb
+
+script:
+  - mv ../XnView/ usr/
+  - ../chrpath/usr/bin/chrpath -d usr/XnView/XnView
+  - find usr/XnView/* -type f -name *.so* -exec ../chrpath/usr/bin/chrpath -d '{}' \;
+  - mkdir -p usr/bin usr/share/icons/hicolor/64x64/apps
+  - cat > usr/bin/xnviewmp <<\EOF
+  - #!/bin/sh
+  - usr="$(pwd)"
+  - export LD_LIBRARY_PATH="$usr/XnView/lib:$usr/XnView/Plugins:$LD_LIBRARY_PATH"
+  - export QT_PLUGIN_PATH="$usr/XnView/lib:$QT_PLUGIN_PATH"
+  - "$usr/XnView/XnView" "$@"
+  - EOF
+  - chmod a+x usr/bin/xnviewmp
+  - cat > xnviewmp.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=XnView MP
+  - Comment=Graphic viewer, browser, converter
+  - Exec=xnviewmp
+  - Terminal=false
+  - Icon=xnviewmp
+  - Categories=Graphics;
+  - StartupNotify=true
+  - MimeType=image/bmp;image/gif;image/jpeg;image/png;image/tiff;image/x-tga;image/x-pcx;image/jp2;
+  - EOF
+  - cp ./usr/XnView/xnview.png xnviewmp.png
+  - cp xnviewmp.png ./usr/share/icons/hicolor/64x64/apps/
+
