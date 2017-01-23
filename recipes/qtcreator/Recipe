@@ -1,0 +1,343 @@
+# This recipe bundles the Qt Creator IDE and Qt libraries that can be used for compiling
+# It does currently not contain a compiler; although this might be changed in the future
+
+# To get the payload files out of the Qt installer is somewhat tricky but doable as can be seen below
+
+APP=QtCreator
+LOWERAPP=${APP,,} 
+
+mkdir -p ./$APP/$APP.AppDir/usr/bin
+cd ./$APP
+
+# If you don't trust this, then you can mirror it in your own project, but then you need to keep it updated :)
+wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+. ./functions.sh
+
+# Pick best mirror (Travis CI can then download this in 9 seconds)
+URL=$(wget -q "https://download.qt.io/official_releases/qt/5.8/5.8.0/qt-opensource-linux-x64-5.8.0.run.mirrorlist" -O - | grep "run<" | head -n 2 | tail -n 1 | cut -d '"' -f 2)
+wget -c "$URL"
+
+cat > extract-qt-installer <<\EOoF
+#!/bin/bash
+
+if [ $# -lt 2 ];
+then
+    echo extract-qt-installer qt-installer output_path
+    exit -1
+fi
+
+export PATH=$PATH:$PWD
+export WORKDIR=$PWD
+INSTALLER=$1
+OUTPUT=$2
+SCRIPT="$(mktemp)"
+
+cat <<EOF > $SCRIPT
+// Unattentended install script for Qt
+// Based on http://stackoverflow.com/questions/25105269/silent-install-qt-run-installer-on-ubuntu-server
+
+function Controller() {
+    installer.autoRejectMessageBoxes();
+    installer.installationFinished.connect(function() {
+        gui.clickButton(buttons.NextButton);
+    })
+}
+
+Controller.prototype.WelcomePageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.CredentialsPageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.IntroductionPageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.TargetDirectoryPageCallback = function()
+{
+    gui.currentPageWidget().TargetDirectoryLineEdit.setText("$OUTPUT");
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.ComponentSelectionPageCallback = function() {
+    var widget = gui.currentPageWidget();
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.LicenseAgreementPageCallback = function() {
+    gui.currentPageWidget().AcceptLicenseRadioButton.setChecked(true);
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.StartMenuDirectoryPageCallback = function() {
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.ReadyForInstallationPageCallback = function()
+{
+    gui.clickButton(buttons.NextButton);
+}
+
+Controller.prototype.FinishedPageCallback = function() {
+var checkBoxForm = gui.currentPageWidget().LaunchQtCreatorCheckBoxForm
+if (checkBoxForm && checkBoxForm.launchQtCreatorCheckBox) {
+    checkBoxForm.launchQtCreatorCheckBox.checked = false;
+}
+    gui.clickButton(buttons.FinishButton);
+}
+EOF
+
+chmod u+x $1
+$1 --script $SCRIPT -platform minimal
+# Qt bug? Says "Unknown option: p, l, a, t, f, o, r, m" but it actually works; does not need an X server this way
+EOoF
+
+chmod a+x *
+
+TARGETDIR=$(readlink -e ./*.run | sed -e 's|.run||g')
+mkdir -p "$TARGETDIR"
+
+./extract-qt-installer ./*.run "$TARGETDIR/"
+
+# Since unchecking options in the installer might break in newer Qt versions
+# due to changing component names, we simply install the default set and now
+# delete what we don't want. Not elegant but more robust.
+# Qt Installer should really provide a sane CLI.
+rm -rf $TARGETDIR/{Docs,Examples,MaintenanceTool,MaintenanceTool.dat,MaintenanceTool.ini}
+
+# Actually the Qt installer ships 2 different sets of Qt libraries which is quite a waste
+# and AppImage size grows over 250 MB. So we deduplicate them to save 85 MB uncompressed
+wget http://freedup.org/freedup-1.6-3-src.tar.bz2 # 7d7ca6599c72f2d7ef88057588e3e354
+
+checksum=$(md5sum freedup-1.6-3-src.tar.bz2 | md5sum | cut -d ' ' -f 1)
+if [ "$checksum" != "7d7ca6599c72f2d7ef88057588e3e354" ]; then
+  echo "Warning : freedup checksum has been changed"
+  exit 1
+fi
+
+tar xf freedup-1.6-3-src.tar.bz2
+# Use hardlinks since with symlinks from freedup xorriso produces defective ISOs
+( cd $TARGETDIR ; ../freedup-1.6-3/freedup -v . ; cd - )
+
+# Workaround for:
+# Installed Qt WebEngine locales directory not found
+( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
+# Qt WebEngine ICU data not found
+( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/resources . )
+# Qt WebEngine ICU data not found (QtWebEngineProcess lives there)
+( cd $TARGETDIR/5.8/gcc_64/libexec ; ln -s ../../gcc_64/resources/* . )
+( cd $TARGETDIR/5.8/gcc_64/libexec ; ln -s ../translations/qtwebengine_locales . )
+
+# Remove stuff the installer has put there
+rm $HOME/.local/share/icons/hicolor/48x48/apps/QtProject-qtcreator.png
+
+ls -lh "$TARGETDIR/"
+
+cd ./$APP.AppDir/
+
+# find ../*.deb -exec dpkg -x {} . \; || true
+
+mv $TARGETDIR/* .
+
+( cd usr/bin ; ln -s ../../Tools/QtCreator/bin/qtcreator.sh qtcreator )
+
+# Ubuntu puts this in another location than where QtCreator expects it
+mkdir -p usr/lib
+( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa/libGL.so.1 . )
+( cd usr/lib ; ln -s /usr/lib/x86_64-linux-gnu/mesa-egl/libEGL.so.1 . )
+
+cp -L $HOME/.local/share/icons/hicolor/512x512/apps/QtProject-qtcreator.png .
+cp -L $HOME/.local/share/applications/*-community.desktop $LOWERAPP.desktop
+sed -i -e 's|^Exec=.*|Exec=qtcreator|g' $LOWERAPP.desktop
+sed -i -e 's|^Name=.*|Name=QtCreator|g' $LOWERAPP.desktop
+echo "Comment=Cross-platform IDE" >> $LOWERAPP.desktop
+cat $LOWERAPP.desktop
+
+get_desktopintegration $LOWERAPP
+
+VERSION=$(ls ../*.run | cut -d "-" -f 5 | sed -e 's|.run||g')
+
+# Qt Creator installer has placed hardcoded absolute paths to the installation location into the AppImage
+# which we need to patch away
+find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.8.0|/tmp/.mount_QtCreator-5.8.0-x86_64|g' {} \;
+
+# Patch qt_prfxpath in libQt5Core to hardcoded AppImage mountpoint
+# Without doing this correctly, it is impossible to build and run the Qml example project
+# from the Qt Creator AppImage
+ORIG=$(strings ./*/gcc_64/lib/libQt5Core.so.5 | grep "qt_prfxpath=")
+REPL="qt_prfxpath=/tmp/.mount_QtCreator-5.8.0-x86_64/5.8/gcc_64"
+patch_strings_in_file ./*/gcc_64/lib/libQt5Core.so.5 "$ORIG" "$REPL"
+
+# Since the AppImage mountpoint changes on each execution, we use a workaround
+
+cat > AppRun <<\EOF
+#!/bin/bash
+
+LINK="/tmp/.mount_QtCreator-5.8.0-x86_64"
+
+# QtCreator uses hardcoded paths. Hence we are using this workaround. At AppImage creation time, did:
+# find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.8.0|/tmp/.mount_QtCreator-5.8.0-x86_64|g' {} \;
+
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+export PATH=$LINK/5.8/gcc_64/plugins/usr/bin/:$LINK/bin/:$PATH
+# Do not export LD_LIBRARY_PATH as the libraries pulled in by wheezy g++ lead to segfaults of Qt Creator
+# TODO: Try using rpath or another compiler, e.g., from CentOS 6 devtoolset
+
+# The following is not needed to run Qt Creator, but it allows binaries compiled by it to run
+# from the Run button in the IDE
+export QT_PLUGIN_PATH=$LINK/5.8/gcc_64/plugins:$QT_PLUGIN_PATH
+
+# Make sure Qt Creator can find its executables, and, as fallbacks, the bundled compiler, and make
+# Notice that we DO NOT set a LD_LIBRARY_PATH here
+export PATH=$LINK/5.8/gcc_64/bin:$PATH:$LINK/usr/bin/x86_64-linux-gnu-g++:$LINK/usr/bin
+export QTWEBENGINEPROCESS_PATH=$LINK/5.8/gcc_64/libexec/QtWebEngineProcess
+
+if [ -L "$LINK" ] ; then
+  echo "QtCreator seems to be already running or there is a leftover $LINK file; delete it and try again"
+  exit 1
+fi
+
+trap atexit EXIT
+atexit()
+{
+  rm "$LINK"
+}
+
+if [ "" == "$APPDIR" ] ; then
+  ln -s  "$HERE" "$LINK"
+  "$LINK"/usr/bin/qtcreator.wrapper "$@"
+  exit $?
+fi
+
+ln -s  "$APPDIR" "$LINK"
+"$LINK"/usr/bin/qtcreator.wrapper "$@"
+exit $?
+EOF
+chmod a+x AppRun
+
+# It is still too large for Bintray...
+# mv ./*/gcc_64/translations/qtwebengine_locales/en-US.pak ./*/gcc_64/translations/
+# rm ./*/gcc_64/translations/qtwebengine_locales/*
+# mv  ./*/gcc_64/translations/en-US.pak ./*/gcc_64/translations/qtwebengine_locales/
+# echo "The rest of the gcc_64/translations/qtwebengine_locales have been deleted to shrink the AppImage size; edit the recipe to change this." > MISSING_TRANSLATIONS.txt
+# find . -name  *Qt3D* -exec rm -r {} \; || true
+# find . -name  *Qt53D* -exec rm -r {} \; || true
+# echo "Qt3D been deleted to shrink the AppImage size; edit the recipe to change this." > MISSING_Qt3D.txt
+
+mkdir -p usr/share/metainfo/
+
+# The .run installer doesn't come with appdata and the one in the upstream
+# project is not yet spec conformat, so we need to generate it
+cat > usr/share/metainfo/qtcreator.appdata.xml <<\EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2016 The Qt Company Ltd. Contact: https://www.qt.io/licensing/ -->
+<component>
+ <id type="desktop">qtcreator.desktop</id>
+ <licence>CC-BY-SA</licence>
+ <description>
+  <p>
+   Qt Creator provides a cross-platform, complete integrated development
+   environment (IDE) for application developers to create applications for
+   multiple desktop and mobile device platforms, such as Android and iOS.
+  </p>
+  <p>
+   Qt Creator enables a team of developers to share a project across different
+   development platforms with a common tool for development and debugging.
+  </p>
+  <p>
+   The main goal for Qt Creator is meeting the development needs of Qt
+   developers who are looking for simplicity, usability, productivity,
+   extendibility and openness, while aiming to lower the barrier of entry for
+   newcomers to Qt.
+  </p>
+ </description>
+ <screenshots>
+  <screenshot type="default" width="800" height="600">http://qt-project.org/uploads/image_upload/qtcreator-edit-mode.png</screenshot>
+ </screenshots>
+ <url type="homepage">https://wiki.qt.io/Category:Tools::QtCreator</url>
+ <project_group>Qt</project_group>
+</component>
+EOF
+
+# Go out of the AppDir
+cd ..
+
+#################################################################################
+# Compiler installation is currently disabled, see the bottom of this script
+# The Qt Creator installer does not install a compiler nor make
+# so we could do so in order to have a fully working out-of-the-box experience
+#################################################################################
+
+mkdir -p ./g++
+cd ./g++
+
+wget https://nixos.org/releases/patchelf/patchelf-0.9/patchelf-0.9.tar.bz2
+tar xf patchelf-0.9.tar.bz2
+( cd patchelf-0.9/ && ./configure  && make && sudo make install )
+
+generate_status
+sed -i -e 's|Package: libc6|Package: xxx|g' status # It requires the specific version below
+
+echo >> status <<\EOF
+
+Package: libc6-dev
+Status: install ok installed
+Architecture: all
+Version: 2.19-0ubuntu6
+
+Package: libc6
+Status: install ok installed
+Architecture: all
+Version: 2.19-0ubuntu6
+EOF
+
+echo "deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+" > sources.list
+
+apt-get $OPTIONS update
+# URLS=$(apt-get $OPTIONS -y install --print-uris g++ make | cut -d "'" -f 2 | grep -e "^http")
+URLS=$(apt-get $OPTIONS -y install --print-uris make | cut -d "'" -f 2 | grep -e "^http") # no g++ for now, see below
+wget -c $URLS
+
+find ./*.deb -exec dpkg -x {} . \; || true
+AD=$(find .. -name *.AppDir)
+mkdir -p $AD/usr/bin/
+cp -Rfv usr/bin/make $AD/usr/bin/
+
+cd .. # go out of g++/
+generate_type2_appimage
+
+# As long as bintray.sh has issues with this, use transfer.sh
+# transfer ../out/*.AppImage
+
+exit 0
+
+#################################################################################
+# Perhaps one day I will get the remainder to work
+# but there is not only g++ but also libc-dev, libc6-dev, libstdc++-5-dev
+# which all seem to be tightly coupled and I am not sure whether it is really
+# a good idea to bundle all of them.
+# I gave up when I got 
+# :-1: error: /usr/lib/x86_64-linux-gnu/crti.o: unrecognized relocation (0x2a) in section `.init'
+# Pull requests welcome!
+#################################################################################
+
+# To bundle gcc:
+cp -Rfv usr/include/x86_64-linux-gnu/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
+cp -Rfv usr/include/c++/4.8/* usr/lib/gcc/x86_64-linux-gnu/4.8/include/
+# g++ -print-search-dirs suggests that this is clever enough to use relative paths which really is tremendous
+AD=$(find .. -name *.AppDir)
+mkdir -p $AD/usr/bin/
+cp -Rfv usr/bin/* $AD/usr/bin/
+mkdir -p $AD/usr/lib/gcc/x86_64-linux-gnu
+cp -Rfv usr/lib/gcc/x86_64-linux-gnu/* $AD/usr/lib/gcc/x86_64-linux-gnu
+cp -Rfv usr/lib/*-2.24-system.so $AD/usr/lib/
+find $AD/usr/bin/* -type f -executable -exec patchelf --set-rpath \$ORIGIN/../lib {} \;
+cp usr/lib/x86_64-linux-gnu/libcloog-isl.so.4 usr/lib/x86_64-linux-gnu/libisl.so.10 $AD/usr/lib
+find $AD/usr/lib/gcc/x86_64-linux-gnu/* -type f -executable -exec patchelf --set-rpath \$ORIGIN/../../.. {} \;
+cd .. # go out of g++/
+
+generate_type2_appimage
