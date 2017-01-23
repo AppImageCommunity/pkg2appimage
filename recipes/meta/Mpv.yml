@@ -1,7 +1,8 @@
 # NOTE: Currently broken because it needs the --player-operation-mode=pseudo-gui parameter to run
+# NOTE: More testing is needed since this bundles Samba wich is tricky, since Samba puts so files in unusual locations
 
 app: Mpv
-union: true
+binpatch: true
 
 ingredients:
   dist: trusty
