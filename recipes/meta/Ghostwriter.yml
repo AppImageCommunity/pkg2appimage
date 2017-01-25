@@ -1,0 +1,9 @@
+app: Ghostwriter
+union: true
+
+ingredients:
+  dist: precise
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+  ppas:
+    - wereturtle/ppa
