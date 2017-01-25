@@ -1,0 +1,20 @@
+# Unclear whether the AppImage is redistributable, https://github.com/CoatiSoftware/CoatiBugTracker/issues/279
+
+app: Coati
+ingredients:
+  script:
+    - wget -c "http://www.coati.io/downloads/latest/linux/64bit" --trust-server-names
+
+script:
+  - tar xf ../*bit
+  - mv Coati/* usr/bin/ ; rm -r Coati/
+  - cp ./usr/bin/setup/coati.desktop .
+  - sed -i -e 's|^Exec=.*|Exec=coati|g' coati.desktop
+  - mv ./usr/bin/Coati.sh ./usr/bin/coati
+  - convert ./usr/bin/data/gui/icon/logo_1024_1024.png -resize 512x512 ./usr/share/icons/hicolor/512x512/apps/coati.png
+  - convert ./usr/bin/data/gui/icon/logo_1024_1024.png -resize 256x256 ./usr/share/icons/hicolor/256x256/apps/coati.png
+  - convert ./usr/bin/data/gui/icon/logo_1024_1024.png -resize 128x128 ./usr/share/icons/hicolor/128x128/apps/coati.png
+  - convert ./usr/bin/data/gui/icon/logo_1024_1024.png -resize 64x64 ./usr/share/icons/hicolor/64x64/apps/coati.png
+  - convert ./usr/bin/data/gui/icon/logo_1024_1024.png -resize 48x48 ./usr/share/icons/hicolor/48x48/apps/coati.png
+  - strings usr/bin/Coati | grep "Starting Coati" -C 1 | head -n 1 > ../VERSION
+  - cp ./usr/share/icons/hicolor/256x256/apps/coati.png .
