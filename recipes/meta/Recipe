@@ -312,7 +312,8 @@ sed -i -e 's|\.svg||g' *.desktop || true
 sed -i -e 's|\.svgz||g' *.desktop || true
 sed -i -e 's|\.xpm||g' *.desktop || true
 
-# Fix Python imports
+# Fix Python imports,
+# https://github.com/probonopd/AppImages/issues/172
 SITECUSTOMIZEFILES=$(find . -type f -name "sitecustomize.py")
 for SITECUSTOMIZEFILE in $SITECUSTOMIZEFILES ; do
 cat > $SITECUSTOMIZEFILE <<\EOF
