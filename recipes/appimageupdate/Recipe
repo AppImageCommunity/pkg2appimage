@@ -13,7 +13,7 @@ git_pull_rebase_helper()
 }
 
 if [ ! -d ssr ] ; then
-  git clone https://github.com/probonopd/AppImageKit.git
+  git clone -b master https://github.com/probonopd/AppImageKit.git
 fi
 cd AppImageKit/
 git_pull_rebase_helper
