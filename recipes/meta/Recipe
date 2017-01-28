@@ -312,6 +312,16 @@ sed -i -e 's|\.svg||g' *.desktop || true
 sed -i -e 's|\.svgz||g' *.desktop || true
 sed -i -e 's|\.xpm||g' *.desktop || true
 
+# Fix Python imports
+SITECUSTOMIZEFILES = $(find . -type f -name "sitecustomize.py")
+for SITECUSTOMIZEFILE in $SITECUSTOMIZEFILES ; do
+cat > $SITECUSTOMIZEFILE <<\EOF
+import sys,os
+prefix = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.path[0]))))
+sys.path = [ prefix+s for s in sys.path if not s.startswith(prefix) ]
+EOF
+done
+
 # Execute extra steps defined in recipe
 if [ ! -z "${_post}" ] ; then
   shell_execute $YAMLFILE _post
