@@ -10,3 +10,6 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - lazka/dumpingplace
+
+script:
+  - rm -rf usr/share/glib-2.0/schemas
