@@ -1,3 +1,6 @@
+# To be investigated, seems to run as long as it is run from the AppDir
+# but not from the AppImage - related to what the recipe does in sitecustomize.py?
+
 app: Quodlibet
 binpatch: true
 
