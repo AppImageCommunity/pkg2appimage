@@ -1,5 +1,5 @@
 app: Quodlibet
-union: true
+binpatch: true
 
 ingredients:
   packages:
