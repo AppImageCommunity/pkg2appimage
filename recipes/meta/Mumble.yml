@@ -2,11 +2,11 @@ app: Mumble
 union: true
 
 ingredients:
-  dist: trusty
+  dist: precise
   sources: 
-    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ precise main universe
   ppas:
-    - mumble/release
+    - mumble/snapshot
 
 script:
   - cp usr/share/icons/hicolor/scalable/apps/mumble.svg .
