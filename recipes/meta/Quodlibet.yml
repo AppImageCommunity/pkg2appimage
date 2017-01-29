@@ -1,0 +1,12 @@
+app: Quodlibet
+union: true
+
+ingredients:
+  packages:
+    - quodlibet
+    - libpython2.7-dev
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - lazka/dumpingplace
