@@ -143,8 +143,10 @@ libgpg-error.so.0
 # https://github.com/probonopd/AppImages/issues/128
 libxcb.so.1
 
-# The following need to be observed whether they can really be left in this list (added to the list in January 2017)
-libssl.so.1
-libssl.so.1.0.0
-libcrypto.so.1
-libcrypto.so.1.0.0
+# The following cannot be excluded, see
+# https://github.com/probonopd/AppImages/commit/6c7473d8cdaaa2572248dcc53d7f617a577ade6b
+# http://stackoverflow.com/questions/32644157/forcing-a-binary-to-use-a-specific-newer-version-of-a-shared-library-so
+# libssl.so.1
+# libssl.so.1.0.0
+# libcrypto.so.1
+# libcrypto.so.1.0.0
