@@ -6,9 +6,9 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   script:
-    - URL=$(wget -q "https://github.com/jliljebl/flowblade/raw/master/flowblade-trunk/docs/INSTALLING.md" -O - | grep -o -e "htt.*_all.deb")
-    - echo "$URL" | cut -d "-" -f 2 > VERSION
-    - wget -c "$URL"
+    - DLD=$(wget -q "https://github.com/jliljebl/flowblade/releases" -O - | grep _all.deb | head -n 1 | cut -d '"' -f 2)
+    - echo "$DLD" | cut -d "-" -f 2 > VERSION
+    - wget -c "https://github.com/$DLD"
 
 script:
   - ls
