@@ -8,13 +8,13 @@ ingredients:
     - kicad
     - kicad-library
   dist: trusty
-  sources: 
+  sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - js-reynaud/ppa-kicad
 
 script:
-  - # Workaround until 
+  - # Workaround until
   - # AppRun.c exports rather than just sets environment variables
   - cat > ./AppRun <<\EOF
   - #!/bin/sh
@@ -24,5 +24,3 @@ script:
   - exec "./bin/kicad" "$@"
   - EOF
   - chmod a+x ./AppRun
-  - rm lib/x86_64-linux-gnu/libssl*
-  - rm lib/x86_64-linux-gnu/libcrypto*
