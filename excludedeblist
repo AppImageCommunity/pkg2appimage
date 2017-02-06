@@ -59,8 +59,8 @@ libgtk-3-0
 libnss3
 libpango1.0-0
 libpango-1.0-0
-libpangocairo-1.0-0
-libpangoft2-1.0-0
+# libpangocairo-1.0-0 # Workaround for: openSUSE: undefined symbol: hb_buffer_set_cluster_level?
+# libpangoft2-1.0-0 # Workaround for: openSUSE: undefined symbol: hb_buffer_set_cluster_level?
 libstdc++6
 libtasn1-6
 libwayland-egl1-mesa # e.g., OpenRA
