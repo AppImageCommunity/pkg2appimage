@@ -1,7 +1,15 @@
+# Attempted workaround for:
+# symbol lookup error: /lib64/libpangoft2-1.0.so.0: undefined symbol: hb_buffer_set_cluster_level
+# Add libpangocairo-1.0-0 and libpangoft2-1.0-0
+
 app: OBS-Studio
 binpatch: true
 
 ingredients:
+  packages:
+    - obs-studio
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse
