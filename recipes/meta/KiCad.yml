@@ -7,6 +7,7 @@ ingredients:
   packages:
     - kicad
     - kicad-library
+    - libcurl3
   dist: trusty
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
