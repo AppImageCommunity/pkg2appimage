@@ -21,7 +21,7 @@ wget -c "$OOODOWNLOADLINK"
 
 tar xfvz *.tar.gz
 
-rm -f *onlineupdate_*.deb *extension-mediawiki-publisher_*.deb *script-provider_*_amd64.deb || true # Need to get under 250 MB for Bintray
+rm -f *onlineupdate_*.deb *extension-mediawiki-publisher_*.deb *dict-es*.deb || true # Need to get under 250 MB for Bintray
 
 cd $APP.AppDir/
 
