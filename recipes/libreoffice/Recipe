@@ -21,7 +21,7 @@ wget -c "$OOODOWNLOADLINK"
 
 tar xfvz *.tar.gz
 
-rm -f LibreOffice_*/DEBS/*onlineupdate_*.deb LibreOffice_*/DEBS/*extension-mediawiki-publisher_*.deb LibreOffice_*/DEBS/*dict-es*.deb || true # Need to get under 250 MB for Bintray
+rm -f LibreOffice_*/DEBS/*extension-javascript-script-provider_*.deb LibreOffice_*/DEBS/*onlineupdate_*.deb LibreOffice_*/DEBS/*extension-mediawiki-publisher_*.deb LibreOffice_*/DEBS/*dict-es*.deb || true # Need to get under 250 MB for Bintray
 
 cd $APP.AppDir/
 
