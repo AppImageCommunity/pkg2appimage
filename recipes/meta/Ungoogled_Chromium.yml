@@ -1,8 +1,3 @@
-# Run on a debian or Ubuntu system like this:
-# wget "https://github.com/probonopd/AppImages/raw/master/recipes/meta/Recipe"
-# wget "https://github.com/probonopd/AppImages/raw/master/recipes/meta/Ungoogled_Chromium.yml"
-# bash -ex Recipe Ungoogled_Chromium.yml
-#
 # Dear upstream developers, please provide wheezy packages
 # that could be used as ingredients for the AppImage. This
 # would make the AppImage run on older but the most recent
