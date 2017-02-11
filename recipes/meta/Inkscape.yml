@@ -1,5 +1,5 @@
 app: Inkscape
-binpatch: true
+binpatch: true # With union: true, getting: Units file /usr/share/inkscape/ui/units.xml is missing
 
 ingredients:
   package: inkscape-trunk
