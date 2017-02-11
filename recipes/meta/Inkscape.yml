@@ -8,9 +8,6 @@ ingredients:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - inkscape.dev/trunk
-  script:
-    - PKG=$(wget -q "https://github.com/fablabnbg/inkscape-silhouette/releases" -O - | grep deb | head -n 1 | cut -d '"' -f 2)
-    - wget -c "https://github.com/$PKG"
 
 script:
   - sed -i -e 's|Drawing Shortcut Group|X-Drawing Shortcut Group|g' inkscape.desktop
