@@ -12,9 +12,9 @@ ingredients:
     - deb http://ftp.us.debian.org/debian/ stretch main contrib non-free
   script:
     - VERSION=$(wget -q https://github.com/Eloston/ungoogled-chromium/releases -O - | grep amd64.deb | head -n 1 | cut -d "/" -f 8)
-    - wget -c https://github.com/Eloston/ungoogled-chromium/releases/download/$VERSION/chromedriver_$VERSION_amd64.deb
-    - wget -c https://github.com/Eloston/ungoogled-chromium/releases/download/$VERSION/chromium_$VERSION_amd64.deb
-    - wget -c https://github.com/Eloston/ungoogled-chromium/releases/download/$VERSION/chromium-l10n_$VERSION_all.deb
+    - wget -c "https://github.com/Eloston/ungoogled-chromium/releases/download/$VERSION/chromedriver_${VERSION}_amd64.deb"
+    - wget -c "https://github.com/Eloston/ungoogled-chromium/releases/download/$VERSION/chromium_${VERSION}_amd64.deb"
+    - wget -c "https://github.com/Eloston/ungoogled-chromium/releases/download/$VERSION/chromium-l10n_${VERSION}_all.deb"
 
 script:
   - sed -i -e 's|Chromium|Ungoogled Chromium|g' chromium.desktop
