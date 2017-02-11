@@ -1,5 +1,5 @@
 app: Inkscape
-union: true
+binpatch: true
 
 ingredients:
   package: inkscape-trunk
@@ -12,3 +12,4 @@ ingredients:
 script:
   - sed -i -e 's|Drawing Shortcut Group|X-Drawing Shortcut Group|g' inkscape.desktop
   - ls ../inkscape-trunk_*.deb | cut -d "_" -f 2 | cut -d "~" -f 1 | head -n 1 > ../VERSION
+  - rm usr/lib/x86_64-linux-gnu/libharfbuzz.so.* # Workaround for Fedora 25, symbol lookup error: /lib64/libpangoft2-1.0.so.0: undefined symbol: hb_buffer_set_cluster_level
