@@ -314,8 +314,9 @@ sed -i -e 's|\.xpm||g' *.desktop || true
 
 # Fix Python imports,
 # https://github.com/probonopd/AppImages/issues/172
-SITECUSTOMIZEFILES=$(find . -type f -name "sitecustomize.py")
+SITECUSTOMIZEFILES=$(find . -name "sitecustomize.py")
 for SITECUSTOMIZEFILE in $SITECUSTOMIZEFILES ; do
+rm $SITECUSTOMIZEFILE # Remove symlinks, replace by files
 cat > $SITECUSTOMIZEFILE <<\EOF
 import sys,os
 prefix = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.path[0]))))
