@@ -91,7 +91,7 @@ delete_blacklisted()
 # Echo highest glibc version needed by the executable files in the current directory
 glibc_needed()
 {
-  find . -name *.so -or -name *.so.* -or -type f -executable  -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1
+  find . -name *.so -or -name *.so.* -or -type f -executable  -exec readelf -s '{}' 2>/dev/null \; | sed -n 's/.*@GLIBC_//p'| awk '{print $1}' | sort --version-sort | tail -n 1
 }
 # Add desktop integration
 # Usage: get_desktopintegration name_of_desktop_file_and_exectuable
