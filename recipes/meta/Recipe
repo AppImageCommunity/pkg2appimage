@@ -96,10 +96,18 @@ if [ -d "./$APP.AppDir/" ] ; then
   rm -rf ./$APP.AppDir/
 fi 
 
-if [ ! -e functions.sh ] ; then
-  wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+# Source a user-provided functions.sh if the environment
+# variable FUNCTIONS_SH was set and the file exists
+if [ -z "$FUNCTIONS_SH" ] ; then
+  if [ ! -e functions.sh ] ; then
+    wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+  fi
+  . ./functions.sh
+else
+  if [ -e "$FUNCTIONS_SH" ] ; then
+    . "$FUNCTIONS_SH"
+  fi
 fi
-. ./functions.sh
 
 if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
   for GHREPO in "${_ingredients_ghreleases[@]}" ; do
