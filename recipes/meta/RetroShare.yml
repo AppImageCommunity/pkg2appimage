@@ -11,3 +11,5 @@ ingredients:
 
 script:
   - rm -rf usr/share/glib-2.0/schemas/
+  - sed -i -e 's|/usr/share/pixmaps/||g' retroshare06.desktop
+  - sed -i -e 's|/usr/bin/||g' retroshare06.desktop
