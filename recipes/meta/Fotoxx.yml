@@ -1,0 +1,15 @@
+app: Fotoxx
+union: true
+
+ingredients:
+  packages:
+    - fotoxx
+    - libimage-exiftool-perl
+  dist: wheezy
+  sources:
+    - deb http://ftp.de.debian.org/debian/ wheezy main
+  script:
+    - wget -c "http://ftp.br.debian.org/debian/pool/main/f/fotoxx/fotoxx_11.11.1-1.1_amd64.deb"
+
+script:
+  - mv kornelix-fotoxx.desktop fotoxx.desktop
