@@ -48,13 +48,14 @@ get_apprun()
 # (it can be beneficial to run this multiple times)
 copy_deps()
 {
+  PWD=$(readlink -f .)
   FILES=$(find . -type f -executable -or -name *.so.* -or -name *.so | sort | uniq )
   for FILE in $FILES ; do
     ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' >> DEPSFILE
   done
   DEPS=$(cat DEPSFILE | sort | uniq)
   for FILE in $DEPS ; do
-    if [ -e $FILE ] ; then
+    if [ -e $FILE ] && [[ $(readlink -f $FILE)/ != $PWD/* ]] ; then
       cp -v --parents -rfL $FILE ./ || true
     fi
   done
