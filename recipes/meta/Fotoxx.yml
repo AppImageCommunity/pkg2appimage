@@ -13,3 +13,4 @@ ingredients:
 
 script:
   - mv kornelix-fotoxx.desktop fotoxx.desktop
+  - cp usr/share/fotoxx/icons/fotoxx.png .
