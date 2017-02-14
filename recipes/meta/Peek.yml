@@ -1,11 +1,15 @@
+# Asked upstream to provide trusty or precise
+# https://github.com/phw/peek/issues/15#issuecomment-279792098
+
 app: Peek
 
 ingredients:
-  dist: mx15
-  sources:
-    - deb http://ftp.us.debian.org/debian/ jessie main contrib non-free
-    - deb http://main.mepis-deb.org/mx/repo/ mx15 main
-    - deb http://main.mepis-deb.org/mx/testrepo/ mx15 test
+  dist: vivid
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ vivid main universe
+  ppas:
+    - peek-developers/daily
+
   script:
     - echo gsettings-backend >> excludedeblist # elementary OS may actually not have this; tbd
 
