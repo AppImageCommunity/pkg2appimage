@@ -1,0 +1,16 @@
+app: AzPainter
+union: true
+
+ingredients:
+  packages:
+    - azpainter
+    - libxext6
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c "http://0x0.st/42k.deb"
+
+script:
+  - cp ./usr/share/icons/hicolor/scalable/apps/azpainter.svg .
+  - strings ./usr/bin/azpainter | grep "AzPainter ver" | cut -d " " -f 3 > ../VERSION
