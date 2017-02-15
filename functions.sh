@@ -105,6 +105,23 @@ get_desktopintegration()
   sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
 }
 
+# Bundle new libstdc++ and libgcc libraries to support C++11 and C++14
+# apps on older systems. For better backwards compatibility these apps
+# should be build with newer GCC versions on older distributions.
+get_gcclibs()
+{
+  mkdir -p ./usr/lib
+  wget -O ./usr/lib/gcclibs.tar.gz https://github.com/probonopd/AppImages/files/777382/gcclibs.tar.gz
+  (cd ./usr/lib; tar xf gcclibs.tar.gz && rm gcclibs.tar.gz)
+
+  # Install a wrapper script which only adds the bundled GCC libraries to
+  # the search path if they are newer than the libraries available on the system.
+  REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
+  mv ./usr/bin/$REALBIN ./usr/bin/${REALBIN}-real
+  wget -O ./usr/bin/$REALBIN https://gist.github.com/darealshinji/0fabe0c8d471412aafaebc739f3b9d16/raw/0af5a7266c2afdc47f9b5502bbb4a1f3a50ca418/run.sh
+  chmod a+x ./usr/bin/$REALBIN
+}
+
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
 generate_appimage()
 {
