@@ -110,15 +110,15 @@ get_desktopintegration()
 # should be build with newer GCC versions on older distributions.
 get_gcclibs()
 {
-  mkdir -p ./usr/lib
-  wget -O ./usr/lib/gcclibs.tar.gz https://github.com/probonopd/AppImages/files/777382/gcclibs.tar.gz
-  (cd ./usr/lib; tar xf gcclibs.tar.gz && rm gcclibs.tar.gz)
+  mkdir -p ./usr
+  wget -O ./usr/gcc-runtime.tar.gz https://github.com/darealshinji/AppImageKit/releases/download/continuous/gcc-runtime-x86_64.tar.gz
+  (cd ./usr; tar xf gcc-runtime.tar.gz && rm gcc-runtime.tar.gz)
 
   # Install a wrapper script which only adds the bundled GCC libraries to
   # the search path if they are newer than the libraries available on the system.
   REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
   mv ./usr/bin/$REALBIN ./usr/bin/${REALBIN}-real
-  wget -O ./usr/bin/$REALBIN https://gist.github.com/darealshinji/0fabe0c8d471412aafaebc739f3b9d16/raw/0af5a7266c2afdc47f9b5502bbb4a1f3a50ca418/run.sh
+  wget -O ./usr/bin/$REALBIN https://github.com/darealshinji/AppImageKit/raw/gcc-runtime/run.sh
   chmod a+x ./usr/bin/$REALBIN
 }
 
