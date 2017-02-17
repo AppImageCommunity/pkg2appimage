@@ -9,7 +9,7 @@ ingredients:
   sources:
     - deb http://ftp.de.debian.org/debian/ wheezy main
   script:
-    - wget -c "http://ftp.br.debian.org/debian/pool/main/f/fotoxx/fotoxx_11.11.1-1.1_amd64.deb"
+    - wget -c "http://kornelix.net/downloads/packages-16.04/fotoxx-17.01.1-x86_64.deb"
 
 script:
   - mv kornelix-fotoxx.desktop fotoxx.desktop
