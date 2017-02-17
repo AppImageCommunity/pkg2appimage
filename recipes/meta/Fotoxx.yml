@@ -5,6 +5,9 @@ ingredients:
   packages:
     - fotoxx
     - libimage-exiftool-perl
+  pretend:
+    - xdg-utils 1.1.0~rc1+git20111210-6+deb7u3
+    - binutils 2.22-8+deb7u2
   dist: wheezy
   sources:
     - deb http://ftp.de.debian.org/debian/ wheezy main
