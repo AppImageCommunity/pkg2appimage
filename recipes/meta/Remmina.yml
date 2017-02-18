@@ -5,6 +5,7 @@ ingredients:
   packages:
     - remmina
     - remmina-plugin-rdp
+    - remmina-plugin-nx
     - libfreerdp-plugins-standard
   dist: trusty
   sources: 
