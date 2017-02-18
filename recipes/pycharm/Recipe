@@ -2,7 +2,7 @@
 
 # This is an example for packaging a commercial Java application as an AppImage.
 
-APP=PyCharm 
+APP=PyCharm
 mkdir -p $APP/$APP.AppDir/usr/bin
 
 cd $APP/
@@ -11,7 +11,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 . ./functions.sh
 
 # wget -c "https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz"
-wget -c "https://download.jetbrains.com/python/pycharm-community-2016.2.2.tar.gz"
+wget -c "https://download.jetbrains.com/python/pycharm-community-2016.3.2.tar.gz"
 
 # Get Java
 wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jre-8u66-linux-x64.tar.gz
@@ -49,4 +49,4 @@ echo $VERSION
 
 cd .. # Go out of AppDir
 
-generate_appimage
+generate_type2_appimage
