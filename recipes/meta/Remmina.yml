@@ -1,0 +1,13 @@
+app: Remmina
+union: true
+
+ingredients:
+  packages:
+    - remmina
+    - remmina-plugin-rdp
+    - libfreerdp-plugins-standard
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - remmina-ppa-team/remmina-next
