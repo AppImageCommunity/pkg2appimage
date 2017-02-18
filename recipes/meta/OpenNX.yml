@@ -1,0 +1,15 @@
+app: OpenNX
+
+ingredients:
+  dist: wheezy
+  sources:
+    - deb http://ftp.de.debian.org/debian/ wheezy main
+    - deb http://download.opensuse.org/repositories/home:/felfert/Debian_7.0/ /
+
+script:
+  - cp usr/share/opennx/applnk/xdg/innovidata-opennx.desktop opennx.desktop
+  - cp -Rf ./usr/lib/opennx/bin/ ./usr/
+  - cp -Rf ./usr/lib/opennx/lib/ ./usr/
+  - cp -Rf ./usr/share/opennx/* ./usr/share/
+  - rm -rf ./usr/share/opennx ./usr/lib/opennx
+  - cp ./usr/share/icons/128x128/apps/nx.png .
