@@ -1,26 +1,5 @@
 # AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/probonopd/AppImages.svg)](https://travis-ci.org/probonopd/AppImages) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
-| Application |  |
-|--:|---|
-| Atom | [![Download](https://api.bintray.com/packages/probono/AppImages/Atom/images/download.svg)](https://bintray.com/probono/AppImages/Atom/_latestVersion#files)  |
-| Arduino | [![Download](https://api.bintray.com/packages/probono/AppImages/Arduino/images/download.svg)](https://bintray.com/probono/AppImages/Arduino/_latestVersion#files)  |
-| Blender | [![Download](https://api.bintray.com/packages/probono/AppImages/Blender/images/download.svg)](https://bintray.com/probono/AppImages/Blender/_latestVersion#files)  |
-| Brackets | [![Download](https://api.bintray.com/packages/probono/AppImages/Brackets/images/download.svg)](https://bintray.com/probono/AppImages/Brackets/_latestVersion#files)  |
-| Chromium | [![Download](https://api.bintray.com/packages/probono/AppImages/Chromium/images/download.svg)](https://bintray.com/probono/AppImages/Chromium/_latestVersion#files)  |
-| Engauge | [![Download](https://api.bintray.com/packages/probono/AppImages/Engauge/images/download.svg)](https://bintray.com/probono/AppImages/Engauge/_latestVersion#files)  |
-| Firefox | [![Download](https://api.bintray.com/packages/probono/AppImages/Firefox/images/download.svg)](https://bintray.com/probono/AppImages/Firefox/_latestVersion#files)  |
-| IrScrutinizer | [![Download](https://api.bintray.com/packages/probono/AppImages/IrScrutinizer/images/download.svg)](https://bintray.com/probono/AppImages/IrScrutinizer/_latestVersion#files)  |
-| KiCad | [![Download](https://api.bintray.com/packages/probono/AppImages/KiCad/images/download.svg)](https://bintray.com/probono/AppImages/KiCad/_latestVersion#files)  |
-| LibreOffice | [![Download](https://api.bintray.com/packages/probono/AppImages/LibreOffice/images/download.svg)](https://bintray.com/probono/AppImages/LibreOffice/_latestVersion#files)  |
-| OBPM | [![Download](https://api.bintray.com/packages/probono/AppImages/OBPM/images/download.svg)](https://bintray.com/probono/AppImages/OBPM/_latestVersion#files) |
-| QCAD | [![Download](https://api.bintray.com/packages/probono/AppImages/Qcad/images/download.svg)](https://bintray.com/probono/AppImages/Qcad/_latestVersion#files) |
-| Scilab | [![Download](https://api.bintray.com/packages/probono/AppImages/Scilab/images/download.svg)](https://bintray.com/probono/AppImages/Scilab/_latestVersion#files)  |
-| Scribus | [![Download](https://api.bintray.com/packages/probono/AppImages/Scribus/images/download.svg)](https://bintray.com/probono/AppImages/Scribus/_latestVersion#files)  |
-| Sigil | [![Download](https://api.bintray.com/packages/probono/AppImages/Sigil/images/download.svg)](https://bintray.com/probono/AppImages/Sigil/_latestVersion#files)  |
-| Thunderbird | [![Download](https://api.bintray.com/packages/probono/AppImages/Thunderbird/images/download.svg)](https://bintray.com/probono/AppImages/Thunderbird/_latestVersion#files) |
-| VLC | [![Download](https://api.bintray.com/packages/probono/AppImages/VLC/images/download.svg)](https://bintray.com/probono/AppImages/VLC/_latestVersion#files) |
-| wxHexEditor | [![Download](https://api.bintray.com/packages/probono/AppImages/wxHexEditor/images/download.svg)](https://bintray.com/probono/AppImages/wxHexEditor/_latestVersion#files) |
-
 Significant upstream projects have started providing their own AppImages of releases and/or nightly/continuous builds, see this [list of upstream-provided AppImages](https://github.com/probonopd/AppImageKit/wiki/AppImages#upstream-appimages).
  
 This repository contains some recipes to generate __AppImages__ (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). See the [Bintray page](https://bintray.com/probono/AppImages) tab for downloads of the generated AppImages.
