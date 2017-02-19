@@ -16,6 +16,7 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty-updates main universe
   script:
     - wget -c "http://www.kornelix.net/downloads/fotoxx-16.07.1-x86_64.deb"
+    - ls fotoxx-*.deb | cut -d "-" -f 2 > VERSION
 
 script:
   - cp usr/share/fotoxx/icons/fotoxx.png .
