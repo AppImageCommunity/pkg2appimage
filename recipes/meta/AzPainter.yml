@@ -8,8 +8,8 @@ ingredients:
   dist: trusty
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-  script:
-    - wget -c "http://0x0.st/42k.deb"
+  ppas:
+    - alex-p/azpainter
 
 script:
   - cp ./usr/share/icons/hicolor/scalable/apps/azpainter.svg .
