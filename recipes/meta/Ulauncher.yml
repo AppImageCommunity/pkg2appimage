@@ -1,3 +1,7 @@
+# Workaround needed for:
+# ImportError: No module named locale
+# (is usr/lib/python2.7/sitecustomize.py not executed?)
+
 app: Ulauncher
 binpatch: true
 
