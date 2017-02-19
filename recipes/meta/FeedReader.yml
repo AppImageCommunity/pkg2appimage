@@ -7,3 +7,5 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - eviltwin1/feedreader-stable
+script:
+  - cp ./usr/share/icons/hicolor/128x128/apps/feedreader.svg .
