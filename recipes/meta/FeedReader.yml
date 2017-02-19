@@ -3,6 +3,7 @@
 # There is a file called
 # ./usr/share/dbus-1/services/feedreader.service
 # is there a way to launch FeedReader without launching a dbus service?
+# https://github.com/jangernert/FeedReader/issues/341#issuecomment-280935337
 
 app: FeedReader
 union: true
