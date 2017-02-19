@@ -1,5 +1,5 @@
 # Workaround needed for:
-# ** (feedreader:10094): CRITICAL **: uncaught error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.feedreader was not provided by any .service files (g-dbus-error-quark, 2)
+# GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.feedreader was not provided by any .service files (g-dbus-error-quark, 2)
 # There is a file called
 # ./usr/share/dbus-1/services/feedreader.service
 # is there a way to launch FeedReader without launching a dbus service?
