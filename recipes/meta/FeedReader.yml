@@ -1,3 +1,9 @@
+# Workaround needed for:
+# ** (feedreader:10094): CRITICAL **: file /build/feedreader-L_87kA/feedreader-1.6.2~ubuntu0.3.2.1/src/Widgets/MainWindow.vala: line 184: uncaught error: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.feedreader was not provided by any .service files (g-dbus-error-quark, 2)
+# There is a file called
+# ./usr/share/dbus-1/services/feedreader.service
+# is there a way to launch FeedReader without launching a dbus service?
+
 app: FeedReader
 union: true
 
