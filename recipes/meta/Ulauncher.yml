@@ -1,9 +1,11 @@
 app: Ulauncher
-union: true
+binpatch: true
 
 ingredients:
   dist: trusty
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-  ppas:
-    - ppa:agornostal/ulauncher
+    - deb http://ppa.launchpad.net/agornostal/ulauncher/ubuntu trusty main
+
+script:
+  - cp ./usr/share/icons/hicolor/scalable/apps/ulauncher.svg .
