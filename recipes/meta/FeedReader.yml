@@ -1,0 +1,9 @@
+app: FeedReader
+union: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - eviltwin1/feedreader-stable
