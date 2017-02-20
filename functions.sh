@@ -135,7 +135,7 @@ generate_appimage()
   fi
   wget -c "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" -O  AppImageAssistant # (64-bit)
   chmod a+x ./AppImageAssistant
-  mkdir -p ../out
+  mkdir -p ../out || true
   rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
 }
@@ -166,7 +166,7 @@ generate_type2_appimage()
     VERSION=$VERSION ./appimagetool --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
   set -x
-  mkdir -p ../out/
+  mkdir -p ../out/ || true
   mv *.AppImage* ../out/
 }
 
