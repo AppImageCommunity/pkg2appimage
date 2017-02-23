@@ -1,5 +1,6 @@
 app: PulseView
-union: true
+# "union: true" would lead to a mixup of Qt versions
+binpatch: true
 
 ingredients:
   packages:
