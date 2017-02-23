@@ -9,6 +9,7 @@ ingredients:
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty-updates main universe
   ppas:
     - daniel-elstner/sigrok
 
