@@ -14,6 +14,7 @@ ingredients:
     - daniel-elstner/sigrok
 
 script:
+  - find . | grep desktop
   - # for jorik-kippendief/sigrok ppa
   - # wget -c "https://github.com/EliasOenal/pulseview/raw/master/contrib/pulseview.desktop"
   - # wget -c "https://github.com/EliasOenal/pulseview/raw/master/icons/sigrok-logo-notext.png"
