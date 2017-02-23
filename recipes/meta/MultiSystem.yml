@@ -1,0 +1,24 @@
+app: MultiSystem
+binpatch: true
+
+ingredients:
+  dist: trusty
+  packages:
+    - multisystem
+    - gksu
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://liveusb.info/multisystem/depot all main
+  exclude:
+    - qemu
+    - qemu-kvm
+    - cryptsetup
+    - libwebkitgtk-3.0-0
+    - dmsetup
+
+script:
+  - cp ./usr/local/share/applications/multisystem-liveusb.desktop .
+  - cp -Rf ./usr/local/* ./usr/ ; rm -rf ./usr/local/
+  - find . -type f -exec sed -i -e 's|/local/|/./././|g' {} \;
+  - ( cd usr/share/multisystem/ ; ln -s ../../* . ) # Application does chdir to usr/share/multisystem
+  - sed -i -e 's|kvm|# kvm|g' ./usr/share/multisystem/dependances.txt
