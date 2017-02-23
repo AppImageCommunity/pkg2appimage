@@ -131,6 +131,18 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   rm status 2>/dev/null || true
   generate_status
 
+  # Some packages depend on packages which we do not want to bundle,
+  # in addition to the global excludes defined in excludedeblist.
+  # Use
+  # ingredients:
+  #   exclude:
+  #     - packagename
+  if [ ! -z "${_ingredients_exclude[0]}" ] ; then
+    for PACKAGE in "${_ingredients_exclude[@]}" ; do
+      printf "Package: $PACKAGE\nStatus: install ok installed\nArchitecture: all\nVersion: 9:999.999.999\n\n" >> status
+    done
+  fi
+
   # Some packages depend on an exact version of a dependency to be installed.
   # Use
   # ingredients:
@@ -342,4 +354,3 @@ cd ..
 
 generate_type2_appimage
 ls -lh ../out/*.AppImage
-
