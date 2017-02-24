@@ -162,22 +162,22 @@ fi
 
 if [ ! -z "${_ingredients_dist}" ] ; then
   # Some projects provide raw .deb files without a repository
-  # hence we inspect the deb file and add its dependencies to the list of packages that are downloaded later:
+  # hence we inspect the deb file and add its dependencies to the list of packages that are downloaded later
   if [ ! -z "${_ingredients_debs[0]}" ] ; then
     for DEB in "${_ingredients_debs[@]}" ; do
       if [ ! -f $(basename "$DEB") ] ; then
         wget -c $DEB
-        INSTALL="$(dpkg -I $DEB | grep Depends | cut -d':' -f2 | sed 's/,//g')"
       fi
+      URLS="$URLS $DEB"
+      DEB_DEPS="$(dpkg -I $(basename $DEB) | grep Depends | cut -d':' -f2 | sed 's/,//g')"
     done
   fi
 
-  INSTALL="$INSTALL $LOWERAPP"
-  if [ ! -z "${_ingredients_package}" ] ; then
-    INSTALL="${_ingredients_package}"
+  if [ ! -z "${_ingredients_package}" && -z $ ] ; then
+    INSTALL="$DEB_DEPS ${_ingredients_package}"
   fi
   if [ ! -z "${_ingredients_packages}" ] ; then
-    INSTALL=""
+    INSTALL="$DEB_DEPS"
   fi
 
   # If packages are specifically listed, only install these, not a package with the name of the app
@@ -186,7 +186,9 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   fi
 
   apt-get $OPTIONS update || true
-  URLS=$(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
+  if [ ! -z "$INSTALL" ] ; then
+    URLS="$URLS $(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d \' -f 2 | grep -e '^http')"
+  fi
   for URL in $URLS ; do
     if [ ! -f $(basename "$URL") ] ; then
       wget -c $URL
