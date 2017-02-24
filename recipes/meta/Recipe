@@ -169,10 +169,11 @@ if [ ! -z "${_ingredients_dist}" ] ; then
         wget -c $DEB
       fi
       URLS="$URLS $DEB"
-      DEB_DEPS="$(dpkg -I $(basename $DEB) | grep Depends | cut -d':' -f2 | sed 's/,//g')"
+      DEB_DEPS="$DEB_DEPS $(dpkg -I $(basename $DEB) | grep Depends | cut -d':' -f2 | sed 's/,//g')"
     done
   fi
 
+  INSTALL=$LOWERAPP
   if [ ! -z "${_ingredients_package}" && -z $ ] ; then
     INSTALL="$DEB_DEPS ${_ingredients_package}"
   fi
