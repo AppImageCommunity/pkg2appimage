@@ -31,7 +31,6 @@ which wget >/dev/null 2>&1 || ( echo wget missing && exit 1 )
 which grep >/dev/null 2>&1 || ( echo grep missing && exit 1 )
 which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
 which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
-which dpkg-scanpackages  >/dev/null 2>&1 || ( echo dpkg-scanpackages missing && exit 1 )
 
 # If the yaml file doesn't exist locally, get it from GitHub
 if [ ! -f "${!#}" ] ; then
@@ -41,6 +40,18 @@ if [ ! -f "${!#}" ] ; then
 else
   YAMLFILE="$(readlink -f "${!#}")"
 fi
+
+# Lightweight bash-only dpkg-scanpackages replacement
+scanpackages() {
+  for deb in *.deb ; do
+    dpkg -I $deb | sed 's/^ *//g' | grep -i -E '(package|version|installed-size|architecture|depends|priority):'
+    echo "Filename: $(readlink -f $deb)"
+    echo "MD5sum: $(md5sum -b $deb | cut -d' ' -f1)"
+    echo "SHA1: $(sha1sum -b $deb | cut -d' ' -f1)"
+    echo "SHA256: $(sha256sum -b $deb | cut -d' ' -f1)"
+    echo
+  done
+}
 
 # Function to parse yaml
 # https://gist.github.com/epiloque/8cf512c6d64641bde388
@@ -179,14 +190,13 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # the AppImage creation process in order to "install"
   # the package using apt-get as normal
   if [ ! -z "${_ingredients_debs[0]}" ] ; then
-  which dpkg-scanpackages >/dev/null 2>&1 || ( echo dpkg-scanpackages missing && exit 1 )
     for DEB in "${_ingredients_debs[@]}" ; do
       if [ ! -f $(basename "$DEB") ] ; then
         wget -c $DEB
       fi
     done
   fi
-  dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+  scanpackages | gzip -9c > Packages.gz
   echo "deb file:$(readlink -e $PWD) ./" >> sources.list
 
   INSTALL=$LOWERAPP
