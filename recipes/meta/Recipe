@@ -173,7 +173,6 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     done
   fi
 
-  INSTALL=$LOWERAPP
   if [ ! -z "${_ingredients_package}" && -z $ ] ; then
     INSTALL="$DEB_DEPS ${_ingredients_package}"
   fi
