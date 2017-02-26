@@ -6,6 +6,6 @@ ingredients:
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
   packages:
-    - devhel
+    - devhelp
     - libgtk2.0-doc
     - libglib2.0-doc
