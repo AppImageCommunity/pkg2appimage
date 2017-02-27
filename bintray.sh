@@ -11,7 +11,7 @@ FILE="$1"
 
 [ -f "$FILE" ] || { echo "File '$FILE' doesn't exist"; exit; }
 
-if [ -z "$BINTRAY_API_KEY" ] ; then
+if [ "${BINTRAY_API_KEY}" == "" ] ; then
   echo "BINTRAY_API_KEY is missing; assuming this is a PR, uploading to transfer.sh"
   curl --upload-file ./"$FILE" https://transfer.sh/$(basename "$FILE")
   exit 0
@@ -61,11 +61,6 @@ if [ ! -z "$TRAVIS_PULL_REQUEST" ] ; then
     echo "Not uploading since this is a pull request"
     exit 0
   fi
-fi
-
-if [ -z "$BINTRAY_API_KEY" ] ; then
-  echo "Environment variable \$BINTRAY_API_KEY missing"
-  exit 1
 fi
 
 CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Accept:application/json -w \n"
