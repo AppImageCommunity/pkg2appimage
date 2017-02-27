@@ -14,6 +14,7 @@ FILE="$1"
 if [ -z "$BINTRAY_API_KEY" ] ; then
   echo "BINTRAY_API_KEY is missing; assuming this is a PR, uploading to transfer.sh"
   curl --upload-file ./"$FILE" https://transfer.sh/$(basename "$FILE")
+  exit 0
 fi
 
 PCK_NAME="$(basename "$1")"
