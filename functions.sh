@@ -22,6 +22,15 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Suggests=0
 "
 
+# Either get the file from remote or from a static place.
+# critical for builds without network access like in Open Build Service
+cat_file_from_url()
+{
+  cat_excludelist="wget -q $1 -O -"
+  [ -e "$STATIC_FILES/${1##*/}" ] && cat_excludelist="cat $STATIC_FILES/${1##*/}"
+  $cat_excludelist
+}
+
 git_pull_rebase_helper()
 {
   git reset --hard HEAD
@@ -72,7 +81,7 @@ move_lib()
 # Delete blacklisted files
 delete_blacklisted()
 {
-  BLACKLISTED_FILES=$(wget -q https://github.com/probonopd/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+  BLACKLISTED_FILES=$( cat_file_from_url https://github.com/probonopd/AppImages/raw/master/excludelist | sed '/^\s*$/d' | sed '/^#.*$/d')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
     FOUND=$(find . -xtype f -name "${FILE}" 2>/dev/null)
@@ -99,7 +108,7 @@ glibc_needed()
 get_desktopintegration()
 {
   REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
-  wget -O ./usr/bin/$REALBIN.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
+  cat_file_from_url https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration > ./usr/bin/$REALBIN.wrapper
   chmod a+x ./usr/bin/$REALBIN.wrapper
 
   sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
