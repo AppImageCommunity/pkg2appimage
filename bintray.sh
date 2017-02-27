@@ -11,6 +11,11 @@ FILE="$1"
 
 [ -f "$FILE" ] || { echo "File '$FILE' doesn't exist"; exit; }
 
+if [ -z "$BINTRAY_API_KEY" ] ; then
+  echo "BINTRAY_API_KEY is missing; assuming this is a PR, uploading to transfer.sh"
+  curl --upload-file ./"$FILE" https://transfer.sh/$(basename "$FILE")
+fi
+
 PCK_NAME="$(basename "$1")"
 BINTRAY_USER="${BINTRAY_USER:-probono}"
 BINTRAY_API_KEY="$BINTRAY_API_KEY" # env
