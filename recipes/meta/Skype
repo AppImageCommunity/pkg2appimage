@@ -1,0 +1,13 @@
+app: Skype
+
+ingredients:
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
+  script:
+    - wget -c "https://repo.skype.com/latest/skypeforlinux-64.deb"
+    
+script:
+  - cp ./usr/share/applications/$LOWERAPP.desktop .
+  - find ./usr/share/icons -path *256* -name $LOWERAPP.png -exec cp {} . \; || true
+  - cat usr/share/skypeforlinux/version | sed -e 's|v||g' > ../VERSION
