@@ -23,7 +23,7 @@ generate_status
 echo "deb http://ftp.de.debian.org/debian/ oldstable main contrib non-free
 " > sources.list
 
-wget -c "https://go.skype.com/skypeforlinux-64-alpha.deb"
+wget -c "https://repo.skype.com/latest/skypeforlinux-64.deb"
 
 # Add local repository so that we can install deb files
 # that were downloaded outside of a repository
