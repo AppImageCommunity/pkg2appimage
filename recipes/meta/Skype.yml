@@ -10,7 +10,7 @@ ingredients:
     - wget -c "https://repo.skype.com/latest/skypeforlinux-64.deb"
     
 script:
-  - cp ./usr/share/applications/skype.desktop .
+  - cp ./usr/share/applications/skypeforlinux.desktop .
   - find ./usr/share/icons -path *256* -name skype.png -exec cp {} . \; || true
   - cat usr/share/skypeforlinux/version | sed -e 's|v||g' > ../VERSION
   - cd ( usr/bin; ln -s skypeforlinux skype )
