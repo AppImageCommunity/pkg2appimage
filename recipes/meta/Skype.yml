@@ -2,6 +2,8 @@ app: Skype
 
 ingredients:
   dist: oldstable
+  packages:
+    - skypeforlinux
   sources:
     - deb http://ftp.de.debian.org/debian/ oldstable main
   script:
