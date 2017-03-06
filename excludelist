@@ -100,7 +100,7 @@ libkrb5.so.3
 libkrb5support.so.0
 libm.so.6
 libp11-kit.so.0
-# libpcre.so.3 # Missing on Fedora 24
+# libpcre.so.3 # Missing on Fedora 24 and on SLED 12 SP1
 libpthread.so.0
 libresolv.so.2
 libroken.so.18
