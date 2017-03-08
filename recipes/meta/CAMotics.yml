@@ -1,0 +1,26 @@
+# Dear upstream developers, please provide wheezy packages
+# that could be used as ingredients for the AppImage. This
+# would make the AppImage run on older but the most recent
+# systems, too.
+# Also, as your app crashes if libv8.so is missing, you
+# should add it to your deb's Depends.
+
+app: CAMotics
+
+ingredients:
+  packages:
+    - camotics
+    - libv8-3.14.5
+  dist: jessie
+  exclude:
+    - libglu1
+  sources:
+    - deb http://ftp.fau.de/debian/ jessie main contrib non-free
+  script:
+    - URL="$(wget -q http://camotics.org/download.html -O-| grep debian-stable-64bit | grep '/release/' | grep -o 'http:\/\/.*.deb' | cut -d'"' -f1)"
+    - VERSION="$(echo $URL | grep -o '[^\/]*\.deb' | cut -d_ -f2)"
+    - wget -c $URL
+
+script:
+  - mv CAMotics.desktop camotics.desktop
+  - sed -i 's/Categories=Science/Categories=Science;/' camotics.desktop
