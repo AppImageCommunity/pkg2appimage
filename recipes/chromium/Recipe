@@ -21,7 +21,6 @@ cd chromium.AppDir/
 
 unzip ../chrome-linux.zip
 find ../ -name *.deb -exec dpkg -x \{\} . \;
-mv lib/ usr/lib
 
 find -name product_logo_48.png -exec cp \{\} chromium.png \;
 
