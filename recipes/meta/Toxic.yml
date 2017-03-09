@@ -1,0 +1,20 @@
+# Dear Tox repository maintainers, please make sure your toxic deb is in your
+# Packages files like all the libraries, so that we (and everyone else) can
+# actually use apt to install it.
+
+app: Toxic
+
+ingredients:
+  dist: jessie
+  sources:
+    - deb http://ftp.fau.de/debian/ jessie main
+    - deb https://pkg.tox.chat/debian/ stable jessie
+  debs:
+    - https://pkg.tox.chat/debian/pool/jessie/t/toxic/toxic_0.7.2-6_amd64.deb
+  packages:
+    - toxic
+
+script:
+  - ls ../toxic*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | cut -d "-" -f 1 > ../VERSION
+  - touch toxic.png  # don't have an icon
+  - sed -i 's/utilities-terminal/toxic/g' toxic.desktop
