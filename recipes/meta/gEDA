@@ -1,0 +1,15 @@
+app: gschem
+binpatch: true
+
+ingredients:
+  package: geda
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - mehanik/geda-unstable
+
+script:
+  - ls ../geda-gschem_*.deb | cut -d "_" -f 2 | cut -d "+" -f 1 > ../VERSION
+  - cp usr/share/applications/geda-gschem.desktop gschem.desktop
+  - cp ./usr/share/icons/hicolor/scalable/apps/geda-gschem.svg .
