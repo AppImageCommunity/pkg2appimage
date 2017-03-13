@@ -1,0 +1,18 @@
+# non-free
+
+app: Viber
+
+ingredients:
+  dist: jessie
+  sources:
+    - deb http://ftp.de.debian.org/debian/ jessie main
+  script:
+    - wget -c http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb
+    - dpkg-deb -e viber.deb
+    - cat DEBIAN/control | grep "^Version:" | cut -d " " -f 2 > VERSION
+
+script:
+  - mv opt/viber/* usr/bin/
+  - sed -i -e 's|/opt/viber/||g' viber.desktop
+  - sed -i -e 's|/usr/share/pixmaps/||g' viber.desktop
+  - cp usr/share/pixmaps/viber.png .
