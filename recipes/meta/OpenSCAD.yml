@@ -5,11 +5,14 @@ ingredients:
   packages:
     - openscad
     - appmenu-qt5
+    - openscad-mcad
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - openscad/releases
+  script:
+    - wget http://ftp.us.debian.org/debian/pool/main/o/openscad-mcad/openscad-mcad_2014.03-1_all.deb    
 
 script:
   - ( cd usr/bin/ ; ln -s ../share/openscad/* . ) # OpenSCAD does chdir(); don't ask me why it is searching there...
