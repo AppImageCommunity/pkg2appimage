@@ -1,8 +1,8 @@
 # About `.yml` files
 
-The `recipes/meta` directory in this repository contains `.yml` files. These are used by the `Recipe` to simplify the creation of AppImages, especially by using pre-built binaries from Debian packages, both to save time for creating and building an AppImage.
+The easiest way to build an AppImage is to write a `.yml` file. We developed a rather simple format that allows developers to write a `app.yml` file that describes how to build an AppImage for `app`, being able to reuse pre-built binaries, e.g. from Debian packages, both to save time for creating and building an AppImage.
 
-This document provides an introduction to the `.yml` files' purpose, their structure and a few examples that can be used with the existing `Recipe`.
+This document provides an introduction to the `.yml` files' purpose, their structure and a few examples describing how to use all the advanced features.
 
 
 ## Purpose of `.yml` files
@@ -11,7 +11,7 @@ This document provides an introduction to the `.yml` files' purpose, their struc
 
 YAML's approach to describing data is to combine associative lists (known as `dict`s in Python or `object literal`s in JavaScript, for example), lists (arrays) and scalar values. This results in an easy to parse and also easy to read format.
 
-The `.yml` files are used by the script called `Recipe` which is used in the _AppImages_ project, more precisely the `meta` subproject, to convert binary _ingredients_ into AppImages for demonstration purposes. Their primary objective is to make it very simple to convert pre-existing binaries into the AppImage format. If you can build your software from source, you may generate AppImages directly as part of your build workflow; in this case you may not need a `.yml` file (but a Travis CI `.travis.yml` and/or a `Makefile`, etc.).
+The `.yml` files are used by the script called `buildAppImage` which is used in the _AppImages_ project to convert binary or plain source _ingredients_ into AppImages for demonstration purposes. Their primary objective is to make it very simple to convert pre-existing binaries into the AppImage format. If you can build your software from source, you may generate AppImages directly as part of your build workflow; in this case you may not need a `.yml` file (but a Travis CI `.travis.yml` and/or a `Makefile`, etc.).
 
 The `.yml` file format is not part of the AppImage standard, which just describes the AppImage container format and is agnostic as to how the payload inside an AppImage gets generated. Neither it is part of AppImageKit, because AppImageKit is only concerned with taking a pre-existing _AppDir_ and converting that into an AppImage. Such an AppDir is created from the instructions stored in the `.yml` files, and converted to an AppImage using _AppImageKit_.
 
@@ -95,7 +95,7 @@ ingredients:
 
 The `dist` section inside the `ingredients` section defines which Debian distribution should be used as a base. The `sources` section inside the `ingredients` section describes the repositories from which the package should be pulled. The entries are in the same format as lines in a debian `sources.list` file. Note that the `http://download.opensuse.org/repositories/isv:/KDAB/xUbuntu_14.04` repository needs the `http://archive.ubuntu.com/ubuntu/` repository so that the dependencies can be resolved.
 
-__NOTE:__ In the future, other types of packages like `.rpm` could also be included in the  `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the Recipe script.
+__NOTE:__ In the future, other types of packages like `.rpm` could also be included in the  `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the `buildAppImage` script.
 
 
 #### Using ingredients from an Ubuntu PPA
@@ -113,7 +113,7 @@ ingredients:
 
 The `ppas` section inside the `ingredients` section lets you specify one or more Ubuntu PPAs. This is equivalent to, but more elegant than, adding the corresponding `sources.list` entries to the `sources` section inside the `ingredients` section.
 
-__NOTE:__ In the future, similar shortcuts for other types of personal repositories, such as projects on openSUSE build service, could also be included in the `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the `Recipe` script.
+__NOTE:__ In the future, similar shortcuts for other types of personal repositories, such as projects on openSUSE build service, could also be included in the `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the `buildAppImage` script.
 
 
 #### Excluding certain packages
@@ -169,7 +169,7 @@ ingredients:
 
 This downloads the payload application, JabRef, and the required JRE which requires to set a special cookie header.
 
-The script could also be used to fetch pre-built Debian packages from a Github release page, or to override the version of a package.
+The script could also be used to fetch pre-built Debian packages from a GitHub release page, or to override the version of a package.
 
 
 ### Script section
