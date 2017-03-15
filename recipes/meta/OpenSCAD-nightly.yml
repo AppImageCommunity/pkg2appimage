@@ -5,11 +5,14 @@ ingredients:
   packages:
     - openscad-nightly
     - appmenu-qt5
+    - openscad-mcad
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
     - deb http://download.opensuse.org/repositories/home:/t-paul/xUbuntu_14.04/ ./
-    
+  script:
+    - wget http://ftp.us.debian.org/debian/pool/main/o/openscad-mcad/openscad-mcad_2014.03-1_all.deb    
 script:
   - cp ./usr/share/applications/openscad-nightly.desktop .
   - ( cd usr/bin/ ; ln -s ../share/openscad/* . ) # OpenSCAD does chdir(); don't ask me why it is searching there...
+  - ( cd usr/share/openscad-nightly/libraries/ ; rm -r MCAD/ ; ln -s ../../openscad/libraries/MCAD . )
