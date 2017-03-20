@@ -7,5 +7,8 @@ ingredients:
 
 script:
     - echo "Comment=Edit texts" >> leafpad.desktop # Otherwise not showing up in Ubuntu menu?! (tbc)
+    - sed -i -e 's|=editor|=editor;|g' ./leafpad.desktop # Fix desktop-file-validate test
+    - sed -i -e 's|=text/plain|=text/plain;|g' ./leafpad.desktop # Fix desktop-file-validate test
+
 # Menu font not showing up? Unlike earlier AppImage?
 # Has a change in the blacklists caused this?
