@@ -1,0 +1,36 @@
+app: Pronterface
+# binpatch: true = Not needed anymore in many cases thanks to PYTHONHOME
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  packages:
+    - python-serial
+    - python-wxgtk2.8
+    - python-pyglet
+    - python-numpy
+    - python-minimal
+    - python-libxml2
+    - python-gobject
+    - python-dbus
+    - python-psutil
+    - python-cairosvg
+    - # libpython-dev
+  script:
+    - wget -c https://github.com/kliment/Printrun/archive/master.tar.gz
+    - tar xf master.tar.gz
+    - echo git.$(wget -q "https://github.com/kliment/Printrun/commits/master" -O - | grep sha | head -n 1 | cut -d '"' -f 2 | cut -d "/" -f 5 | head -c 7) > VERSION
+
+script:
+  - cp -r ../*-master/* usr/bin/
+  - cp ./usr/bin/pronterface.desktop ./usr/share/applications/
+  - cp ./usr/share/applications/pronterface.desktop .
+  - rm usr/bin/*.desktop
+  - # Work around a broken symlink
+  - mv ./usr/lib/python2.7/dist-packages/wx-2.8-gtk2-unicode/* ./usr/lib/python2.7/dist-packages/
+  - mv ./usr/lib/lapack/* usr/lib/ # Why do they put libraries in these weird locations
+  - mv ./usr/lib/libblas/* usr/lib/ # Why do they put libraries in these weird locations
+  - sed -i -e 's|/usr/share/pixmaps/||g' pronterface.desktop
+  - sed -i -e 's|Path=|#Path=|g' pronterface.desktop
+  - cp ./usr/bin/pronterface.png .
