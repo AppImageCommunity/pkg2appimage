@@ -146,7 +146,8 @@ generate_appimage()
   chmod a+x ./AppImageAssistant
   mkdir -p ../out || true
   rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
-  ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
+  ${GLIBC_NEEDED:−$(glibc_needed)}
+  ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
 }
 
 # Generate AppImage type 2
@@ -170,9 +171,10 @@ generate_type2_appimage()
     tar xf data.tar.gz
     sudo chown -R $USER .gnu*
     mv $HOME/.gnu* $HOME/.gnu_old ; mv .gnu* $HOME/
-    VERSION=$VERSION ./appimagetool -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    ${GLIBC_NEEDED:−$(glibc_needed)}
+    VERSION=$VERSION.glibc$GLIBC_NEEDED ./appimagetool -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   else
-    VERSION=$VERSION ./appimagetool -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    VERSION=$VERSION.glibc$GLIBC_NEEDED ./appimagetool -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
   set -x
   mkdir -p ../out/ || true
