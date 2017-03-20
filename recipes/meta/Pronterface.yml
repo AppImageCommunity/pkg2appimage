@@ -16,7 +16,6 @@ ingredients:
     - python-dbus
     - python-psutil
     - python-cairosvg
-    - # libpython-dev
   script:
     - wget -c https://github.com/kliment/Printrun/archive/master.tar.gz
     - tar xf master.tar.gz
