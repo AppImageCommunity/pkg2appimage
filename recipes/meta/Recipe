@@ -261,6 +261,7 @@ export LD_PRELOAD="${HERE}/libunionpreload.so"
 export PATH="${HERE}"/usr/bin/:"${HERE}"/usr/sbin/:"${HERE}"/usr/games/:"${HERE}"/bin/:"${HERE}"/sbin/:"${PATH}"
 export LD_LIBRARY_PATH="${HERE}"/usr/lib/:"${HERE}"/usr/lib/i386-linux-gnu/:"${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib32/:"${HERE}"/usr/lib64/:"${HERE}"/lib/:"${HERE}"/lib/i386-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/lib32/:"${HERE}"/lib64/:"${LD_LIBRARY_PATH}"
 export PYTHONPATH="${HERE}"/usr/share/pyshared/:"${PYTHONPATH}"
+export PYTHONHOME="${HERE}"/usr/
 export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
 export PERLLIB="${HERE}"/usr/share/perl5/:"${HERE}"/usr/lib/perl5/:"${PERLLIB}"
 export GSETTINGS_SCHEMA_DIR="${HERE}"/usr/share/glib-2.0/schemas/:"${GSETTINGS_SCHEMA_DIR}"
@@ -352,18 +353,19 @@ sed -i -e 's|\.svg||g' *.desktop || true
 sed -i -e 's|\.svgz||g' *.desktop || true
 sed -i -e 's|\.xpm||g' *.desktop || true
 
+# Setting PYTHONHOME instead
 # Fix Python imports,
 # https://github.com/probonopd/AppImages/issues/172
-SITECUSTOMIZEFILES=$(find . -name "sitecustomize.py")
-for SITECUSTOMIZEFILE in $SITECUSTOMIZEFILES ; do
-rm $SITECUSTOMIZEFILE # Remove symlinks, replace by files
-cat > $SITECUSTOMIZEFILE <<\EOF
-import sys,os
-if sys.version_info[0] < 3:
-    prefix = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.path[0]))))
-    sys.path = [ prefix+s for s in sys.path if not s.startswith(prefix) ]
-EOF
-done
+# SITECUSTOMIZEFILES=$(find . -name "sitecustomize.py")
+# for SITECUSTOMIZEFILE in $SITECUSTOMIZEFILES ; do
+# rm $SITECUSTOMIZEFILE # Remove symlinks, replace by files
+# cat > $SITECUSTOMIZEFILE <<\EOF
+# import sys,os
+# if sys.version_info[0] < 3:
+#     prefix = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(sys.path[0]))))
+#     sys.path = [ prefix+s for s in sys.path if not s.startswith(prefix) ]
+# EOF
+# done
 
 # Execute extra steps defined in recipe
 if [ ! -z "${_post}" ] ; then
