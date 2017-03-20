@@ -38,7 +38,7 @@ if [ ! -f "${!#}" ] ; then
   rm -f "$YAMLFILE"
   wget -q "https://github.com/probonopd/AppImages/raw/master/recipes/meta/${!#}.yml" -O "$YAMLFILE"
 else
-  YAMLFILE="$(readlink -f "${!#}")"
+  YAMLFILE=$(readlink -f "${!#}")
 fi
 
 # Lightweight bash-only dpkg-scanpackages replacement
