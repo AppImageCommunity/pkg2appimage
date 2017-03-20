@@ -120,6 +120,16 @@ else
   fi
 fi
 
+# If there is an ARCH environment variable, then use that
+# architecture to for apt-get. Not that for the AppImage to be
+# operable, we also need to embed a matching AppImage runtime
+# and ingredients of that architecture. Debian packages
+# should be available for most architectures, e.g., oldstable
+# has "armhf"
+if [ ! -z $ARCH] ; then
+  OPTIONS="$OPTIONS -o APT::Architecture=$ARCH"
+fi
+
 if [ ! -z "${_ingredients_ghreleases[0]}" ] ; then
   for GHREPO in "${_ingredients_ghreleases[@]}" ; do
     wget -q "https://github.com/${GHREPO}/releases/" -O /tmp/gh-release.html
