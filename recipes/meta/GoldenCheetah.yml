@@ -1,0 +1,24 @@
+app: GoldenCheetah
+
+ingredients:
+  package: goldencheetah
+  dist: precise
+  packages:
+    - libgstreamer-plugins-base0.10-0
+    - libvlc5
+    - libssl1.0.0
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DEB=$(wget -q https://api.github.com/repos/GoldenCheetah/GoldenCheetah/releases/latest -O - | grep amd64.deb | tail -1 | cut -d'"' -f4)
+    - wget -c "$DEB"
+
+script:
+  - mv GoldenCheetah.desktop goldencheetah.desktop
+  - mv -f opt/GoldenCheetah/* usr/bin/ && rm -r opt/
+  - mv usr/share/pixmaps/gc.png usr/share/icons/hicolor/256x256/apps/goldencheetah.png
+  - cp usr/share/icons/hicolor/256x256/apps/goldencheetah.png .
+  - sed -i -e 's|TryExec=/usr/bin/GoldenCheetah\n||g' goldencheetah.desktop
+  - sed -i -e 's|/usr/share/pixmaps/gc.png|goldencheetah|g' goldencheetah.desktop
+  - sed -i -e 's|Cycling;Training;Bike;Ride|Cycling;Training;Bike;Ride;|' goldencheetah.desktop
+  - echo 'Categories=Utility;Sports;DataVisualization;' >> goldencheetah.desktop 
