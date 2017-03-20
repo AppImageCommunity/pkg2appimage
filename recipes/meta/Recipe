@@ -224,11 +224,13 @@ if [ ! -z "${_ingredients_dist}" ] ; then
 
   apt-get $OPTIONS update || true
   URLS=$(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
-  for URL in $URLS ; do
-    if [ ! -f $(basename "$URL") ] ; then
-      wget -c $URL
-    fi
-  done
+  if which aria2c &>/dev/null; then
+    dltool=aria2c
+  else
+    dltool=wget
+  fi
+
+  $dltool -i- <<<"$URLS"
 fi
 
 mkdir -p ./$APP.AppDir/
