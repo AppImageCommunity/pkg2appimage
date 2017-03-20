@@ -230,7 +230,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     dltool=wget
   fi
 
-  $dltool -i- <<<"$URLS"
+  $dltool -c -i- <<<"$URLS"
 fi
 
 mkdir -p ./$APP.AppDir/
