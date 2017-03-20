@@ -1,0 +1,37 @@
+app: instantlyrics
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  packages:
+    - python-minimal
+    - python-gi
+    - python-dbus
+    - gir1.2-appindicator3-0.1
+    - python-requests
+    - python-bs4
+    - python-lxml
+  script:
+    - wget -c https://github.com/bhrigu123/Instant-Lyrics/archive/master.zip
+    - unzip master.zip
+    - echo git.$(wget -q "https://github.com/bhrigu123/Instant-Lyrics/commits/master" -O - | grep sha | head -n 1 | cut -d '"' -f 2 | cut -d "/" -f 5 | head -c 7) > VERSION
+
+script:
+  - cat > instantlyrics.desktop <<\EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=Instant Lyrics
+  - Comment=Show lyrics of songs instantly
+  - Icon=icon
+  - Exec=instantlyrics
+  - Terminal=false
+  - EOF
+  - cp ../*-master/* usr/bin/
+  - cp usr/bin/icon.svg .
+  - echo "#!/usr/bin/env python" > usr/bin/instantlyrics
+  - cat usr/bin/InstantLyrics.py >> usr/bin/instantlyrics
+  - chmod a+x usr/bin/instantlyrics
+  - rm usr/lib/python2.7/sitecustomize.py
