@@ -1,0 +1,14 @@
+# An example Mono application
+
+app: Graphmonkey
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  prevent:
+    - perl-modules
+
+script:
+  - sed -i -e 's|/usr/lib/graphmonkey/|bin/|g' usr/bin/graphmonkey
+  - mv usr/lib/graphmonkey/GraphMonkey.exe usr/bin/
