@@ -284,6 +284,35 @@ Prefix = $QTPATH
 EOF
 fi
 
+# http://www.mono-project.com/docs/advanced/assemblies-and-the-gac/
+# At runtime, Mono looks in three places for assemblies necessary
+# to run a program. It first searches the location of the executing assembly.
+# For this to work without setting $MONO_PATH, we need to move the
+# main *.exe to usr/lib/mono/exe, because we move all "assemblies" (sic)
+# there in this script
+
+if [ -e usr/lib/mono ] ; then
+  # Force all so files referenced in config files into LD_LIBRARY_PATH
+  find . -name "*.dll.config" -exec cat {} > temp \;
+  # Remove all absolute paths
+  sed -i -E 's|target=\"\/(.*\/)([a-z0-9].*?)>|target=\"\2>|g' temp
+  SONAMES=$(cat temp | cut -d '"' -f 4  | grep ".so")
+  for SONAME in $SONAMES; do
+    find . -name "$SONAME" -exec mv {} usr/lib \;
+  done
+  rm temp
+  PATH_OF_THE_EXE="usr/lib/mono/exe"
+  mkdir -p "PATH_OF_THE_EXE"
+  # Force all dll files into PATH_OF_THE_EXE (or MONO_PATH which we would have to set)
+  find . -name "*.dll" -and -not -name "mscorlib.dll" -exec mv {} "$PATH_OF_THE_EXE" \;
+  # Edit all config files in place to remove absolute paths
+  find . -name "*.dll.config" -exec sed -i -E 's|target=\"\/(.*\/)([a-z0-9].*?)>|target=\"\2>|g' {} \;
+  # Force all config files into the PATH_OF_THE_EXE (or MONO_PATH which we would have to set)
+  find . -name "*.dll.config" -exec mv {} "$PATH_OF_THE_EXE" \;
+  # Remove gac, we are not using it since it is convoluted
+  rm -rf usr/lib/mono/gac/
+fi
+
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
   rm -r ./usr/lib/x86_64-linux-gnu/gstreamer-1.0
