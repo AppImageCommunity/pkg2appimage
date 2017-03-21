@@ -11,4 +11,4 @@ ingredients:
 
 script:
   - sed -i -e 's|/usr/lib/graphmonkey/|bin/|g' usr/bin/graphmonkey
-  - mv usr/lib/graphmonkey/GraphMonkey.exe usr/bin/
+  - mv usr/lib/graphmonkey/GraphMonkey.exe usr/lib/mono/exe
