@@ -1,0 +1,31 @@
+# An example complex Mono application - not working yet
+# PRs welcome
+
+binpatch: true
+
+app: MonoDevelop
+
+ingredients:
+  dist: wheezy
+  sources:
+    - deb http://ftp.us.debian.org/debian/ wheezy main
+    - deb http://download.mono-project.com/repo/debian wheezy main
+  prevent:
+    - gconf2-common
+    - perl
+    - python2.7
+    - python-minimal
+    - perl-base
+    - perl-modules
+    - monodoc-manual
+  pretend:
+    - libgtk2.0-0 2.24.10-2
+
+script:
+  - mv ./usr/lib/monodevelop/bin/MonoDevelop.exe usr/lib/mono/exe
+
+# need to change usr/bin/monodevelop to
+# mono ./bin/MonoDevelop.exe --config ../etc/mono/config
+# yet still getting
+# System.DllNotFoundException: libc
+# despite that strace shows that /lib/x86_64-linux-gnu/libc.so.6 is opened
