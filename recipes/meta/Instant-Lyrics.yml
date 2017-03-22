@@ -30,8 +30,8 @@ script:
   - Terminal=false
   - EOF
   - cp -r ../*-master/* usr/bin/
-  - cp usr/bin/icons/instant-lyrics.svg instantlyrics.svg
   - cp usr/bin/icons/instant-lyrics-256.png usr/share/icons/hicolor/256x256/apps/instantlyrics.png
+  - cp usr/share/icons/hicolor/256x256/apps/instantlyrics.png .
   - echo "#!/usr/bin/env python" > usr/bin/instantlyrics
   - cat usr/bin/InstantLyrics.py >> usr/bin/instantlyrics
   - chmod a+x usr/bin/instantlyrics
