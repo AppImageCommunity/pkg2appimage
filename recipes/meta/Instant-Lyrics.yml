@@ -25,12 +25,13 @@ script:
   - Type=Application
   - Name=Instant Lyrics
   - Comment=Show lyrics of songs instantly
-  - Icon=icon
+  - Icon=instantlyrics
   - Exec=instantlyrics
   - Terminal=false
   - EOF
   - cp ../*-master/* usr/bin/
-  - cp usr/bin/icon.svg .
+  - cp usr/bin/icons/instant-lyrics.svg instantlyrics.svg
+  - cp usr/bin/icons/instant-lyrics-256.png usr/share/icons/hicolor/256x256/apps/instantlyrics.png
   - echo "#!/usr/bin/env python" > usr/bin/instantlyrics
   - cat usr/bin/InstantLyrics.py >> usr/bin/instantlyrics
   - chmod a+x usr/bin/instantlyrics
