@@ -1,0 +1,14 @@
+app: RedEclipse
+
+ingredients:
+  dist: jessie
+  sources:
+    - deb http://ftp.fau.de/debian/ jessie main universe
+    - deb http://download.opensuse.org/repositories/home:/TheAssassin:/RedEclipse/Debian_8.0/ /
+
+script:
+  - cp usr/share/applications/redeclipse.desktop .
+  - sed -i '/Keywords/s/$/;/' redeclipse.desktop
+  - mv usr/games/redeclipse usr/bin/
+  - sed -i '/done/a export REDECLIPSE_BRANCH=AppImage' usr/bin/redeclipse
+  - sed -i 's|/usr/|$(dirname "$0")/../|g' usr/bin/redeclipse
