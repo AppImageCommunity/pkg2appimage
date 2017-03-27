@@ -6,7 +6,7 @@ binpatch: true
 
 ingredients:
   dist: trusty
-  sources: 
+  sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe multiverse
   ppas:
     - mc3man/mpv-tests
@@ -14,7 +14,6 @@ ingredients:
 script:
   - wget "https://yt-dl.org/downloads/latest/youtube-dl" -O usr/bin/youtube-dl
   - chmod 0755 usr/bin/youtube-dl
-  - sed -i -e 's|Help;Bindings;Scripts;About;Notes|Help;Bindings;Scripts;About;Notes;|g' mpv.desktop
   - sed -i -e 's|TargetEnvironment|X-TargetEnvironment|g' mpv.desktop
   - sed -i -e 's|Desktop Action|X-Disabled Desktop Action|g' mpv.desktop
   - sed -i -e 's|^Actions=|X-Disabled-Actions=|g' mpv.desktop

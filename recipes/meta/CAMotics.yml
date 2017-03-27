@@ -23,4 +23,3 @@ ingredients:
 
 script:
   - mv CAMotics.desktop camotics.desktop
-  - sed -i 's/Categories=Science/Categories=Science;/' camotics.desktop
