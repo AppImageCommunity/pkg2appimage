@@ -200,6 +200,13 @@ get_desktop()
    find usr/share/applications -iname "*${LOWERAPP}.desktop" -exec cp {} . \; || true
 }
 
+fix_desktop() {
+    # fix trailing semicolons
+    for key in Actions Categories Implements Keywords MimeType NotShowIn OnlyShowIn; do
+      sed -i '/'"$key"'.*[^;]$/s/$/;/' $1
+    done
+}
+
 # Find the icon file and copy it to the AppDir
 get_icon()
 {
