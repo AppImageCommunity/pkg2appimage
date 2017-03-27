@@ -90,7 +90,7 @@ delete_blacklisted()
       rm -f "${FOUND}"
     fi
   done
-  
+
   # Do not bundle developer stuff
   rm -rf usr/include || true
   rm -rf usr/lib/cmake || true
@@ -180,7 +180,7 @@ generate_type2_appimage()
 }
 
 # Generate status file for use by apt-get; assuming that the recipe uses no newer
-# ingredients than what would require more recent dependencies than what we assume 
+# ingredients than what would require more recent dependencies than what we assume
 # to be part of the base system
 generate_status()
 {
@@ -198,6 +198,13 @@ generate_status()
 get_desktop()
 {
    find usr/share/applications -iname "*${LOWERAPP}.desktop" -exec cp {} . \; || true
+}
+
+fix_desktop() {
+    # fix trailing semicolons
+    for key in Actions Categories Implements Keywords MimeType NotShowIn OnlyShowIn; do
+      sed -i '/'"$key"'.*[^;]$/s/$/;/' $1
+    done
 }
 
 # Find the icon file and copy it to the AppDir
@@ -225,7 +232,7 @@ get_version()
 }
 
 # transfer.sh
-transfer() { if [ $# -eq 0 ]; then echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi 
+transfer() { if [ $# -eq 0 ]; then echo "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi
 tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; }
 
 # Patch binary files; fill with padding if replacement is shorter than original
@@ -235,7 +242,7 @@ function patch_strings_in_file() {
     local FILE="$1"
     local PATTERN="$2"
     local REPLACEMENT="$3"
-    # Find all unique strings in FILE that contain the pattern 
+    # Find all unique strings in FILE that contain the pattern
     STRINGS=$(strings ${FILE} | grep ${PATTERN} | sort -u -r)
     if [ "${STRINGS}" != "" ] ; then
         echo "File '${FILE}' contain strings with '${PATTERN}' in them:"
@@ -251,7 +258,7 @@ function patch_strings_in_file() {
                 while [ ${#NEW_STRING_HEX} -lt ${#OLD_STRING_HEX} ] ; do
                     NEW_STRING_HEX="${NEW_STRING_HEX}00"
                 done
-                # Now, replace every occurrence of OLD_STRING with NEW_STRING 
+                # Now, replace every occurrence of OLD_STRING with NEW_STRING
                 echo -n "Replacing ${OLD_STRING} with ${NEW_STRING}... "
                 hexdump -ve '1/1 "%.2X"' ${FILE} | \
                 sed "s/${OLD_STRING_HEX}/${NEW_STRING_HEX}/g" | \

@@ -105,7 +105,7 @@ cd ./$APP/
 
 if [ -d "./$APP.AppDir/" ] ; then
   rm -rf ./$APP.AppDir/
-fi 
+fi
 
 # Source a user-provided functions.sh if the environment
 # variable FUNCTIONS_SH was set and the file exists
@@ -328,9 +328,14 @@ if [ ! -z "${_script}" ] ; then
   shell_execute $YAMLFILE _script
 fi
 
+DESKTOP=$(find . -name '*.desktop' | sort | head -n 1)
+
+# desktop-file-validate complains about missing trailing semicolons for some
+# keys although the format definition says that they are optional
+fix_desktop "$DESKTOP"
+
 # Some non-distribution provided applications have an absolute
 # path in the Exec= line which we remove for relocateability
-DESKTOP=$(find . -name '*.desktop' | sort | head -n 1)
 if [ -z "$DESKTOP" ] ; then
   echo "desktop file not found, aborting"
   exit 1
