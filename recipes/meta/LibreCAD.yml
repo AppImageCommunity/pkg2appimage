@@ -6,11 +6,10 @@ ingredients:
   packages:
     - librecad
     - appmenu-qt
-  sources: 
+  sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - librecad-dev/librecad-stable
 
 script:
   - cp usr/share/icons/hicolor/scalable/apps/librecad.svg .
-  - sed -i -e 's|MimeType=image/vnd.dxf|MimeType=image/vnd.dxf;|g' librecad.desktop
