@@ -3,6 +3,9 @@ binpatch: true
 
 ingredients:
   dist: precise
+  packages:
+    - qctools
+    - libbz2-1.0
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
   script:
