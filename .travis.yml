@@ -8,6 +8,7 @@ addons:
     - curl
     - zsync
     - squashfs-tools
+    - aria2
 services:
 - docker
 
