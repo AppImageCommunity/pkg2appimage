@@ -1,4 +1,5 @@
 app: php7.1
+union: true
 
 ingredients:
   dist: precise
