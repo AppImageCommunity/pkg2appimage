@@ -51,7 +51,7 @@ script:
   - Type=Application
   - Terminal=true
   - Name=php5.6
-  - Exec=php-cgi5.6
+  - Exec=php5.6
   - Categories=Development;
   - Icon=php
   - EOF
