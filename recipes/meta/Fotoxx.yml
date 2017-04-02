@@ -16,7 +16,8 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
     - deb http://archive.ubuntu.com/ubuntu/ trusty-updates main universe
   script:
-    - wget -c "http://www.kornelix.net/downloads/fotoxx-16.07.1-x86_64.deb"
+    - DLD=$(wget -q "http://www.kornelix.net/downloads/downloads.html" -O - | grep -e "fotoxx-.*-x86_64.deb" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "http://www.kornelix.net/downloads/$DLD"
     - ls fotoxx-*.deb | cut -d "-" -f 2 > VERSION
 
 script:
