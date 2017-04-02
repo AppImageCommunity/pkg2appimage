@@ -23,7 +23,7 @@
 app: XnViewMP
 
 ingredients:
-  dist: precise
+  dist: trusty
   packages:
     - libasound2
     - libatk1.0-0
@@ -53,9 +53,9 @@ ingredients:
     - libxrender1
     - zlib1g
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ precise main restricted universe
-    - deb http://archive.ubuntu.com/ubuntu/ precise-updates main restricted universe
-    - deb http://archive.ubuntu.com/ubuntu/ precise-security main restricted universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main restricted universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty-updates main restricted universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty-security main restricted universe
   script:
     - VERSION=$(wget -q -O- http://www.xnview.com/xnviewmp_update.txt | sed -n -e 's/^version=//p' | sed -e 's/\r//g')
     - wget -c http://download.xnview.com/old_versions/XnViewMP-$(echo $VERSION | tr -d '.')-linux-x64.tgz

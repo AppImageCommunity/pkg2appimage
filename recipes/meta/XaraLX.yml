@@ -6,9 +6,9 @@ ingredients:
     - xaralx
     - xaralx-examples
     - xaralx-svg 
-  dist: precise
+  dist: trusty
   sources: 
-    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe multiverse
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
 
 script:
   - mkdir -p ./usr/share/icons/hicolor/48x48/apps

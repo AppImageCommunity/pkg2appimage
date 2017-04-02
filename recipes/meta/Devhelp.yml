@@ -2,9 +2,9 @@ app: Devhelp
 union: true
 
 ingredients:
-  dist: precise
+  dist: trusty
   sources:
-    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   packages:
     - devhelp
     - libgtk2.0-doc

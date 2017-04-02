@@ -2,8 +2,8 @@ app: Bluefish
 union: true
 
 ingredients:
-  dist: precise
+  dist: trusty
   sources:
-    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - klaus-vormweg/bluefish-gtk2

@@ -2,9 +2,9 @@ app: Mumble
 union: true
 
 ingredients:
-  dist: precise
+  dist: trusty
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - mumble/snapshot
 
