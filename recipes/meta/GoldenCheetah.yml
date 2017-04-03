@@ -21,4 +21,4 @@ script:
   - sed -i -e 's|TryExec=/usr/bin/GoldenCheetah\n||g' goldencheetah.desktop
   - sed -i -e 's|/usr/share/pixmaps/gc.png|goldencheetah|g' goldencheetah.desktop
   - sed -i -e 's|Cycling;Training;Bike;Ride|Cycling;Training;Bike;Ride;|' goldencheetah.desktop
-  - echo 'Categories=Utility;Sports;DataVisualization;' >> goldencheetah.desktop 
+  - echo 'Categories=Utility;Education;Sports;DataVisualization;' >> goldencheetah.desktop
