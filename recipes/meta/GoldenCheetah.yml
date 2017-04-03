@@ -12,6 +12,7 @@ ingredients:
   script:
     - DEB=$(wget -q https://api.github.com/repos/GoldenCheetah/GoldenCheetah/releases/latest -O - | grep amd64.deb | tail -1 | cut -d'"' -f4)
     - wget -c "$DEB"
+    - echo "$DEB" | cut -d "_" -f 2 | sed -e 's|V||g' > VERSION
 
 script:
   - mv GoldenCheetah.desktop goldencheetah.desktop
