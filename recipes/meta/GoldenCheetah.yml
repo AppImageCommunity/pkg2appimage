@@ -20,6 +20,9 @@ script:
   - mv usr/share/pixmaps/gc.png usr/share/icons/hicolor/256x256/apps/goldencheetah.png
   - cp usr/share/icons/hicolor/256x256/apps/goldencheetah.png .
   - sed -i -e 's|TryExec=/usr/bin/GoldenCheetah\n||g' goldencheetah.desktop
+  - echo -e '#!/bin/sh\nexport R_HOME=$APPIMAGE/usr/lib/R\nexec GoldenCheetah "$@"' > $APPIMAGE/usr/bin/gc_launcher
+  - chmod a+x usr/bin/gc_launcher
+  - sed -i -e 's|Exec=/usr/bin/GoldenCheetah\n|Exec=gc_launcher|g' goldencheetah.desktop
   - sed -i -e 's|/usr/share/pixmaps/gc.png|goldencheetah|g' goldencheetah.desktop
   - sed -i -e 's|Cycling;Training;Bike;Ride|Cycling;Training;Bike;Ride;|' goldencheetah.desktop
   - echo 'Categories=Utility;Education;Sports;DataVisualization;' >> goldencheetah.desktop
