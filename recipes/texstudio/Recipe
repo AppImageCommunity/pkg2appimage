@@ -1,7 +1,7 @@
 # Integrate texlive into pre-existing TeXstudio AppImage
 
 APP=TeXstudio
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr/bin ./$APP/$APP.AppDir/usr/lib
 cd ./$APP
@@ -51,8 +51,7 @@ cd ..
 
 VER1=$(ls TeXstudio*AppImage | cut -d "-" -f 2)
 VER2=$(ls | grep install-tl-2 | cut -d "-" -f 3)
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.tl$VER2.glibc$GLIBC_NEEDED
+VERSION=$VER1.tl$VER2
 echo $VERSION
 
 generate_appimage

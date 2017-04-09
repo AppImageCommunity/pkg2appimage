@@ -2,7 +2,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 . ./functions.sh
 
 APP=qTox
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 
 mkdir -p $APP/$APP.AppDir/usr/bin
 cd $APP/
@@ -18,9 +18,7 @@ wget -c "https://raw.githubusercontent.com/tux3/qTox/master/img/icons/256x256/qt
 
 get_apprun
 
-VER1=$( strings ./qTox.AppDir/usr/bin/qtox  | grep GIT_DESCRIBE -C 5 | grep ^v | head -n 1 | sed -e  's|-|.|g' | sed -e  's|v||g' )
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$( strings ./qTox.AppDir/usr/bin/qtox  | grep GIT_DESCRIBE -C 5 | grep ^v | head -n 1 | sed -e  's|-|.|g' | sed -e  's|v||g' )
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

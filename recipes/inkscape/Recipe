@@ -5,7 +5,7 @@
 # This script is supposed to run inside a CentOS 6.7 environment. On a Ubuntu host machine, I used
 # the following commands set up a CentOS 6.7 environment; you can use your own chroot method of choice instead
 # or just boot the CentOS-6.7-x86_64-LiveCD.iso in a virtual machine and run this script inside there.
-# 
+#
 # wget https://github.com/probonopd/AppImageKit/raw/master/AppImageAssistant.AppDir/testappimage
 # sudo bash testappimage CentOS-6.7-x86_64-LiveCD.iso bash
 # wget https://github.com/probonopd/AppImages/raw/master/recipes/inkscape/Recipe
@@ -84,7 +84,7 @@ cd ..
 
 # Workaround for:
 # When compiling glibmm,
-# extra_defs_gen/generate_defs_gio.cc:25:34: fatal error: 
+# extra_defs_gen/generate_defs_gio.cc:25:34: fatal error:
 # gio/gsettingsbackend.h: No such file or directory
 # Workaround for:
 # error: unpacking of archive failed: cpio: cap_set_file
@@ -108,7 +108,7 @@ cd ..
 # configure: error: *** A compiler with support for C++11 language features is required.
 wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
 yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils
-. /opt/rh/devtoolset-2/enable 
+. /opt/rh/devtoolset-2/enable
 
 # Workaround for:
 # Requested 'pangomm-1.4 >= 2.27.1'
@@ -133,7 +133,7 @@ cd ..
 # Workaround for:
 # configure: error: Package requirements (atk >= 1.12 glibmm-2.4 >= 2.24) were not met
 # when compiling atkmm
-##### Hint from the Internet: So after uninstalling glib2 2.30, I reactivated 2.28, 
+##### Hint from the Internet: So after uninstalling glib2 2.30, I reactivated 2.28,
 #installed pkgconfig and then atk built just fine - https://trac.macports.org/ticket/32203
 # We patch away -DG_DISABLE_DEPRECATED for now
 wget -c http://ftp.gnome.org/pub/GNOME/sources/atk/1.22/atk-1.22.0.tar.bz2
@@ -163,7 +163,7 @@ cd ..
 # Workaround for:
 # Can't open perl script "/usr/share/glibmm-2.4/doctool/doc-install.pl": No such file or directory
 # https://bugs.launchpad.net/ubuntu/+source/gtkmm2.4/+bug/765992
-# Use 
+# Use
 wget -c http://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.24/gtkmm-2.24.1.tar.bz2
 tar xf gtkmm-*.tar.bz2
 cd gtkmm-*
@@ -204,7 +204,7 @@ cd ..
 
 fi # if [ -z "$DO_NOT_BUILD_DEPENDENCIES" ]
 
-. /opt/rh/devtoolset-2/enable 
+. /opt/rh/devtoolset-2/enable
 
 # Get Inkscape
 
@@ -260,7 +260,7 @@ make install
 # because binreloc makes paths relative rather than absolute
 # https://github.com/datenwolf/binreloc
 
-############## Compilation and installation succeeded ############## 
+############## Compilation and installation succeeded ##############
 
 cd /AppDir/
 
@@ -287,8 +287,7 @@ chmod a+x ./AppRun
 
 VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
 VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
+VERSION=$VER1.$VER2
 echo $VERSION
 
 # Workaround for: https://launchpad.net/bugs/1545771

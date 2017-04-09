@@ -1,4 +1,4 @@
-# Upstream, please keep providing debian oldstable compatible debs, 
+# Upstream, please keep providing debian oldstable compatible debs,
 # this makes generating an AppImage that runs almost everywhere easier
 
 APP=Demonsaw
@@ -44,7 +44,7 @@ wget -c "https://www.demonsaw.com/img/logo_1024.png" -O $LOWERAPP.png
 sudo apt-get -y install imagemagick
 mogrify -resize 256x256 $LOWERAPP.png
 
-get_apprun 
+get_apprun
 
 mv opt/demonsaw usr/bin
 sed -i -e 's|/opt/demonsaw|bin/|g' usr/bin/start
@@ -63,9 +63,7 @@ rm -rf ./etc/ ./home/ || true
 # Patching only the executable files seems not to be enough for some apps
 # find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-VER1=$( find ../*.deb -name $LOWERAPP"*deb" | head -n 1 | cut -d "~" -f 1 | cut -d "-" -f 2 | cut -d "-" -f 1 ) # Dear upstream developers, this file is not named according to the debian naming scheme
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$( find ../*.deb -name $LOWERAPP"*deb" | head -n 1 | cut -d "~" -f 1 | cut -d "-" -f 2 | cut -d "-" -f 1 ) # Dear upstream developers, this file is not named according to the debian naming scheme
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

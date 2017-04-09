@@ -32,9 +32,7 @@ get_apprun
 
 get_desktopintegration $LOWERAPP
 
-VER1=$(cat meta/snap.yaml | grep version | cut -d " " -f 2)
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(cat meta/snap.yaml | grep version | cut -d " " -f 2)
 echo $VERSION
 
 # Go out of AppImage

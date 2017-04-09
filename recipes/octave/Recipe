@@ -31,7 +31,7 @@ mkdir -p /$APP/$APP.AppDir/
 cd /$APP/
 
 URL=https://ftp.gnu.org/gnu/octave/octave-4.0.3.tar.gz
-VER1=4.0.3
+VERSION=4.0.3
 
 yum -y install epel-release gcc-gfortran pcre-devel blas-devel lapack-devel readline-devel fftw-devel zlib-devel \
 gnuplot-devel qhull-devel glpk-devel curl-devel qrupdate-devel suitesparse-devel \
@@ -97,8 +97,6 @@ find . -type f -executable -exec strip {} \; || true
 # Patch absolute /usr away; make relative to usr/ inside the AppDir
 find usr/ -type f -executable -exec sed -i -e "s|/usr|././|g" {} \;
 
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
 
 get_desktopintegration octave

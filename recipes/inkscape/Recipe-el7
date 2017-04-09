@@ -5,7 +5,7 @@
 # This script is supposed to run inside a CentOS 7 environment. On a Ubuntu host machine, I used
 # the following commands set up a CentOS 7 environment; you can use your own chroot method of choice instead
 # or just boot the CentOS-7.0-1406-x86_64-GnomeLive.iso in a virtual machine and run this script inside there.
-# 
+#
 # wget https://github.com/probonopd/AppImageKit/raw/master/AppImageAssistant.AppDir/testappimage
 # sudo bash testappimage CentOS-7.0-1406-x86_64-GnomeLive.iso bash
 # wget https://github.com/probonopd/AppImages/raw/master/recipes/inkscape/Recipe
@@ -16,7 +16,7 @@
 # Help would be greatly appreciated. In the meantime, I am using CentOS 7
 # which means that the resulting AppImage will be compatible with fewer older systems
 # I compiled successfully using this Recipe on CentOS-7.0-1406-x86_64-GnomeLive.iso
-# 
+#
 # The resulting AppImage has been tested successfully on
 # CentOS-7-x86_64-LiveGNOME-1511.iso
 # debian-live-8.0.0-amd64-xfce-desktop+nonfree.iso
@@ -99,7 +99,7 @@ make install
 # because binreloc makes paths relative rather than absolute
 # https://github.com/datenwolf/binreloc
 
-############## Compilation and installation succeeded ############## 
+############## Compilation and installation succeeded ##############
 
 cd /AppDir/
 
@@ -137,8 +137,7 @@ chmod a+x ./AppRun
 
 VER1=$(./usr/bin/inkscape --version | cut -d " " -f 2)
 VER2=$(./usr/bin/inkscape --version | cut -d " " -f 3)
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=$VER1.$VER2.glibc$GLIBC_NEEDED
+VERSION=$VER1.$VER2
 echo $VERSION
 
 # Workaround for: https://launchpad.net/bugs/1545771

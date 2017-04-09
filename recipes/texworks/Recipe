@@ -48,9 +48,7 @@ chmod a+x AppRun
 
 delete_blacklisted
 
-VER1=$(ls /var/cache/apt/archives/texworks_* | cut -d "_" -f 2 | cut -d "-" -f 1 | cut -d "+" -f 1 | sed 's/~/-/g' )
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(ls /var/cache/apt/archives/texworks_* | cut -d "_" -f 2 | cut -d "-" -f 1 | cut -d "+" -f 1 | sed 's/~/-/g' )
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

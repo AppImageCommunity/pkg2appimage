@@ -2,7 +2,7 @@
 # which is great, so we don't have to compile ourselves
 
 APP=Calibre
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr
 
@@ -11,7 +11,7 @@ cd ./$APP
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
-VER1=$(wget -q http://code.calibre-ebook.com/latest -O -)
+VERSION=$(wget -q http://code.calibre-ebook.com/latest -O -)
 
 wget -c https://calibre-ebook.com/dist/linux64 --trust-server-names
 
@@ -38,10 +38,6 @@ EOF
 cp usr/resources/content-server/calibre.png .
 
 get_desktopintegration $LOWERAPP
-
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
-echo $VERSION
 
 cd ..
 
