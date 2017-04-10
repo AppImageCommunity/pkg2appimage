@@ -1,0 +1,14 @@
+app: Boostnote
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - URL=$(wget -q https://boostnote.io/ -O - | grep -e "boostnote_.*_amd64.deb" | cut -d '"' -f 2)
+    - wget -c "$URL"
+    - echo "$URL" | cut -d _ -f 2 > VERSION
+  exclude:
+    - gconf2
+    - gconf-service
+    - git

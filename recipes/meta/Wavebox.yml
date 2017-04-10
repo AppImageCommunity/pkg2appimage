@@ -1,0 +1,20 @@
+app: Wavebox
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DLD=$(wget -q "https://github.com/wavebox/waveboxapp/releases/" -O - | grep "x86_64.deb" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+    - echo "$DLD" | cut -d '/' -f 6 | sed -e 's|v||g' > VERSION
+
+script:
+  - mv opt/wavebox/* usr/bin/ ; rm -r opt/
+  - ( cd usr/bin; ln -s Wavebox wavebox )
+  - sed -i -e 's|/opt/wavebox/||g' wavebox.desktop
+  - sed -i -e 's|icon.png|wavebox|g' wavebox.desktop
+  - sed -i -e 's|Exec=W|Exec=w|g' wavebox.desktop
+  - mv ./usr/bin/icon.png wavebox.png
+  - cp wavebox.png ./usr/share/icons/hicolor/512x512/apps/
+  - chmod a+x usr/bin/wavebox

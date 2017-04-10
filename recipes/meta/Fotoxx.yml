@@ -1,3 +1,5 @@
+# Dear upstream developer, please provide a deb for Ubuntu 14.04 (trusty)
+
 app: Fotoxx
 union: true
 
@@ -11,12 +13,12 @@ ingredients:
   pretend:
     - xdg-utils 1.1.0~rc1+git20111210-6+deb7u3
     - binutils 2.22-8+deb7u2
-  dist: trusty
+  dist: xenial
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-    - deb http://archive.ubuntu.com/ubuntu/ trusty-updates main universe
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
   script:
-    - wget -c "http://www.kornelix.net/downloads/fotoxx-16.07.1-x86_64.deb"
+    - DLD=$(wget -q "http://www.kornelix.net/downloads/downloads.html" -O - | grep -e "fotoxx-.*-x86_64.deb" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "http://www.kornelix.net/downloads/$DLD"
     - ls fotoxx-*.deb | cut -d "-" -f 2 > VERSION
 
 script:
