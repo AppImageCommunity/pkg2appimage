@@ -1,0 +1,12 @@
+app: SLADE
+binpatch: true
+
+ingredients:
+  dist: precise
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://debian.drdteam.org/ stable multiverse
+
+script:
+  - mv Slade.desktop slade.desktop
+  - sed -i -e 's|Development|Development;|g' slade.desktop
