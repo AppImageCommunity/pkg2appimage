@@ -26,9 +26,7 @@ get_apprun
 
 delete_blacklisted
 
-VER1=$(ls /var/cache/apt/archives/gitg_* | cut -d "_" -f 2 | cut -d "-" -f 1 | cut -d "+" -f 1 )
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(ls /var/cache/apt/archives/gitg_* | cut -d "_" -f 2 | cut -d "-" -f 1 | cut -d "+" -f 1 )
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

@@ -2,7 +2,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 . ./functions.sh
 
 APP=FontForge
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 
 sudo add-apt-repository -y ppa:fontforge/fontforge
 sudo apt-get update
@@ -38,9 +38,7 @@ mv lib/* usr/lib/ || true
 delete_blacklisted
 
 patch_usr
-VER1=$(find /var/cache/apt/archives/ -name fontforge_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(find /var/cache/apt/archives/ -name fontforge_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

@@ -81,9 +81,7 @@ find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 mkdir -p ./usr/share/icons/hicolor/128x128/apps/
 cp ./usr/share/app-install/icons/ser-player.png ./usr/share/icons/hicolor/128x128/apps/
 
-VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

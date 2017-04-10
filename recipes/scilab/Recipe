@@ -9,7 +9,7 @@ mkdir -p $APP/$APP.AppDir/usr
 cd $APP/
 
 URL=$(wget -q "http://www.scilab.org/download/latest" -O - | grep -e  "http://www.scilab.org/download/.*linux-x86_64.tar.gz" | cut -d '"' -f 2)
-VER1=$(echo $URL | cut -d "-" -f 2 | sed -e 's|.bin.linux||g')
+VERSION=$(echo $URL | cut -d "-" -f 2 | sed -e 's|.bin.linux||g')
 
 wget -c "$URL"
 tar xf scilab-*.tar.gz
@@ -28,8 +28,6 @@ get_apprun
 
 delete_blacklisted
 
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
 echo $VERSION
 
 get_desktopintegration scilab

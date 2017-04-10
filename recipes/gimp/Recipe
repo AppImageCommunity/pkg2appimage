@@ -78,10 +78,7 @@ delete_blacklisted
 cp $(ldconfig -p | grep libgdk-x11-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
 cp $(ldconfig -p | grep libgtk-x11-2.0.so.0 | cut -d ">" -f 2 | xargs) ./usr/lib/
 
-VER1=$(find /var/cache/apt/archives/ -name gimp_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
-
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(find /var/cache/apt/archives/ -name gimp_* | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1)
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

@@ -23,7 +23,7 @@
 # Make sure to delete the cloud instance after building in order not to incur additional cost
 
 sudo apt-get update
-sudo apt-get -y install git build-essential pkg-config autoconf libxcb-shm0-dev libxcb-xv0-dev libxcb-composite0-dev libxcb-randr0-dev libqt4-dev libxcb1-dev 
+sudo apt-get -y install git build-essential pkg-config autoconf libxcb-shm0-dev libxcb-xv0-dev libxcb-composite0-dev libxcb-randr0-dev libqt4-dev libxcb1-dev
 # Don't use ubuntu libtool
 
 ########################################################################
@@ -95,8 +95,8 @@ cd ../..
 
 ########################################################################
 # The "Contrib" method.
-# If the libraries are not provided by your distribution, 
-# you may be better off linking VLC with them statically. 
+# If the libraries are not provided by your distribution,
+# you may be better off linking VLC with them statically.
 ########################################################################
 
 cd contrib
@@ -111,7 +111,7 @@ export CFLAGS=-fPIC # Does this help against "relocation R_X86_64_32S against `z
 # mkdir -p -- /vlc/contrib/x86_64-linux-gnu/share/aclocal && cd cddb && autoreconf -fiv -I/vlc/contrib/x86_64-linux-gnu/share/aclocal
 # autoreconf: Entering directory `.'
 # autoreconf: configure.ac: not using Gettext
-# autoreconf: running: aclocal -I /vlc/contrib/x86_64-linux-gnu/share/aclocal --force 
+# autoreconf: running: aclocal -I /vlc/contrib/x86_64-linux-gnu/share/aclocal --force
 # configure.ac:133: warning: macro 'AM_ICONV' not found in library
 # ...
 # autoreconf: running: /vlc/extras/tools/build/bin/autoconf --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
@@ -121,27 +121,27 @@ export CFLAGS=-fPIC # Does this help against "relocation R_X86_64_32S against `z
 # configure.ac:133: error: possibly undefined macro: AM_ICONV
 # autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
 # make: *** [.cddb] Error 1
-# 
+#
 # gettext --version
 # gettext (GNU gettext-runtime) 0.19.6
 #
 # For now, disable cddb
 
 # Disable bluray because it depends on java which is large (can enable it later again)
-sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak 
+sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak
 
 # Workaround for:
 # libtool issues
-# If the following is happening, then uninstall the system-provided libtool 
+# If the following is happening, then uninstall the system-provided libtool
 # and make sure that libtool gets built by extras/tools above and that this
 # version is used
-# autoreconf: running: /vlc/extras/tools/build/bin/autoconf 
+# autoreconf: running: /vlc/extras/tools/build/bin/autoconf
 #       --include=/vlc/contrib/x86_64-linux-gnu/share/aclocal --force
 # configure.in:74: error: possibly undefined macro: AC_DISABLE_SHARED
 #       If this token and others are legitimate, please use m4_pattern_allow.
 #       See the Autoconf documentation.
 # configure.in:75: error: possibly undefined macro: AC_LIBTOOL_WIN32_DLL
-# 
+#
 # autoreconf: /vlc/extras/tools/build/bin/autoconf failed with exit status: 1
 # make: *** [.a52] Error 1
 
@@ -149,7 +149,7 @@ sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca cddb|g' config.mak
 # Build VLC itself
 ########################################################################
 
-# According to 
+# According to
 # https://mailman.videolan.org/pipermail/vlc-devel/2016-May/107520.html
 # "XVideo is not a problem because XVideo is dead"
 # hence disabling it
@@ -169,9 +169,9 @@ make -j 16
 
 # Workaround for:
 # CCLD libvlccore.la
-# /usr/bin/ld: ../compat/.libs/libcompat.a(timespec_get.o): 
-# relocation R_X86_64_PC32 against undefined symbol 
-# `clock_gettime@@GLIBC_2.2.5' can not be used when making 
+# /usr/bin/ld: ../compat/.libs/libcompat.a(timespec_get.o):
+# relocation R_X86_64_PC32 against undefined symbol
+# `clock_gettime@@GLIBC_2.2.5' can not be used when making
 # a shared object; recompile with -fPIC
 # /usr/bin/ld: final link failed: Bad value
 # Use "CFLAGS=-fPIC ./configure" when building libz
@@ -191,7 +191,7 @@ make -j 16
 sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
 sudo apt-get update
 sudo apt-get --yes install gcc-4.9 g++-4.9
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9 
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
 
 # Workaround for:
 # checking for desktop-file-validate... desktop-file-validate
@@ -216,7 +216,7 @@ chmod a+x /usr/bin/c99-gcc
 
 # Workaround for:
 # g++: error: /usr/lib/gcc/x86_64-linux-gnu/4.6/../../../x86_64-linux-gnu/crti.o: No such file or directory
-# Do NOT do: sudo apt-get --yes remove gcc g++ gcc-4.6 c++-4.6 
+# Do NOT do: sudo apt-get --yes remove gcc g++ gcc-4.6 c++-4.6
 
 # Workaround for:
 # In file included from /usr/include/c++/4.9/atomic:38:0,
@@ -281,7 +281,7 @@ make install DESTDIR=/$APP/$APP.AppDir
 # Now creating the AppDir
 ########################################################################
 
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 cd /$APP/
 
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
@@ -317,8 +317,7 @@ strip usr/bin/* usr/lib/* usr/lib/vlc/plugins/*/* || true
 
 get_desktopintegration vlc
 
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=3.0.0.git$(cat /vlc/src/revision.txt).glibc$GLIBC_NEEDED # FIXME
+VERSION=3.0.0.git$(cat /vlc/src/revision.txt) # FIXME
 
 cd ..
 

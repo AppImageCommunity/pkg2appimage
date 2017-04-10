@@ -71,9 +71,7 @@ find usr/ -type f -exec sed -i -e "s|/usr/lib/freecad-daily|././/lib/freecad-dai
 find usr/ -type f -exec sed -i -e "s|/usr/share/freecad-daily|././/share/freecad-daily|g" {} \;
 ( cd ./usr/lib/freecad-daily/ ; ln -s ../../share/ . ) # Why?
 
-VER1=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(find ../*.deb -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

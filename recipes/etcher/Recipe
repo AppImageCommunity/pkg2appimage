@@ -15,7 +15,7 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 # Get the current version from the GitHub Releases page
 # since on http://www.etcher.io/ it is not accessible
 # (probably hidden deep inside some JavaScript?), stupid.
- 
+
 VERSION=$(wget "https://github.com/resin-io/etcher/releases" -q -O - | grep tag-name | head -n 1 | cut -d '>' -f 2 | cut -d '<' -f 1)
 VERSION=${VERSION:1} # Remove first character which is "v"
 
@@ -49,10 +49,6 @@ wget -q "https://github.com/resin-io/etcher/raw/master/assets/icon.png" -O etche
 # wget -O ./usr/bin/$XAPP.wrapper https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration
 # chmod a+x ./usr/bin/$XAPP.wrapper
 # sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
-
-# Append the required GLIBC version to the version string
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION=$VERSION-glibc$GLIBC_NEEDED
 
 cd .. # Go out of AppDir
 

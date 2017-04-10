@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-# We do not have to build this ourselves since the upstream project 
+# We do not have to build this ourselves since the upstream project
 # does a great job in providing binaries that run on a great number of systems
 # other upstream projects could learn from Mozilla - how do they do it?
 
@@ -10,13 +10,13 @@ wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./func
 . ./functions.sh
 
 APP=Thunderbird
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 
 mkdir -p ./$APP/$APP.AppDir/usr
 cd ./$APP
 
 wget -c --trust-server-names "https://download.mozilla.org/?product=thunderbird-latest&os=linux64"
-VER1=$(ls thunderbird-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
+VERSION=$(ls thunderbird-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g')
 
 cd ./$APP.AppDir
 tar xfj ../*.tar.bz2
@@ -50,10 +50,6 @@ mkdir -p usr/share/icons/hicolor/256x256/apps/
 cp usr/bin/chrome/icons/default/default256.png usr/share/icons/hicolor/256x256/apps/thunderbird.png
 mkdir -p usr/share/applications
 cp thunderbird.desktop usr/share/applications
-
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
-echo $VERSION
 
 get_desktopintegration $LOWERAPP
 

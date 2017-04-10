@@ -3,11 +3,11 @@
 sudo apt-get -y install sdl1.2
 
 APP=OpenTTD
-LOWERAPP=${APP,,} 
+LOWERAPP=${APP,,}
 
 DLD=$(wget -q "https://www.openttd.org/en/download-stable" -O - |  grep -Poe "binaries.*linux-generic-amd64.tar.gz")
 URL="https://$DLD"
-VER1=$(echo $URL | cut -d "/" -f 5)
+VERSION=$(echo $URL | cut -d "/" -f 5)
 
 mkdir -p $APP/$APP.AppDir/usr/bin/
 
@@ -29,8 +29,6 @@ cp ./usr/bin/media/openttd.256.png $LOWERAPP.png
 copy_deps ; delete_blacklisted ; move_lib ; get_apprun
 mv usr/lib/x86_64-linux-gnu/pulseaudio/* usr/lib/x86_64-linux-gnu/ && rm -r usr/lib/x86_64-linux-gnu/pulseaudio/
 get_desktopintegration $LOWERAPP
-
-VERSION=$VER1.glibc$(glibc_needed)
 
 cd ..
 

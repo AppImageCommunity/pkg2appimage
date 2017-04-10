@@ -55,9 +55,7 @@ find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 # AppRun exports usr/share/glib-2.0/schemas/ which might be hurting us here
 ( mkdir -p usr/share/glib-2.0/schemas/ ; cd usr/share/glib-2.0/schemas/ ; ln -s /usr/share/glib-2.0/schemas/gschemas.compiled . )
 
-VER1=$(find /var/cache/apt/archives/ -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(find /var/cache/apt/archives/ -name $LOWERAPP"_*" | head -n 1 | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' )
 echo $VERSION
 
 get_desktopintegration $LOWERAPP

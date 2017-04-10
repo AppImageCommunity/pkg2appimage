@@ -65,9 +65,7 @@ get_apprun
 # Patching only the executable files seems not to be enough for some apps
 # find usr/ -type f -exec sed -i -e "s|/usr|././|g" {} \;
 
-VER1=$(ls ../pandoc-1.17.2-1-amd64.deb | head -n 1 | cut -d "-" -f 2)
-GLIBC_NEEDED=$(glibc_needed)
-VERSION=$VER1.glibc$GLIBC_NEEDED
+VERSION=$(ls ../pandoc-1.17.2-1-amd64.deb | head -n 1 | cut -d "-" -f 2)
 echo $VERSION
 
 # get_desktopintegration $LOWERAPP

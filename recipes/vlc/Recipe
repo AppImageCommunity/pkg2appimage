@@ -2,7 +2,7 @@
 
 # NOTE: This script currently only runs ONCE
 # which means we cannot use it for nightly builds
-# TODO: 
+# TODO:
 # Make this run repeatedly and only compile what needs to be compiled (not everything) (FIXME)
 # PulseAudio does not work (at least on debian sid)
 # libass plugin is broken (at least on debian sid)
@@ -134,9 +134,9 @@ cd /$APP/
 # Build latest released version
 rm -rf vlc* #####
 # LATEST=$(wget -q "http://download.videolan.org/pub/videolan/vlc/last/" -O - | grep "tar.xz<" | head -n 1 | cut -d '"' -f 2)
-VER1=$(wget -q "https://www.videolan.org/vlc/#download" -O - | grep -o -E '"Linux","latestVersion":"([^"#]+)"' | cut -d'"' -f6)
-LATEST="vlc-${VER1}.tar.xz" # Because the link above is outdated (FIXME)
-wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/$VER1/$LATEST"
+VERSION=$(wget -q "https://www.videolan.org/vlc/#download" -O - | grep -o -E '"Linux","latestVersion":"([^"#]+)"' | cut -d'"' -f6)
+LATEST="vlc-${VERSION}.tar.xz" # Because the link above is outdated (FIXME)
+wget -T 10 -c "http://download.videolan.org/pub/videolan/vlc/$VERSION/$LATEST"
 tar xf vlc-*.tar.xz
 cd vlc-*/
 
@@ -166,13 +166,13 @@ if [ -z "$NO_LIBS" ] ; then
   sed -i 's/wget --passive/wget --passive --timeout=30/g' Makefile
 
   # Disable bluray because it depends on java which is large (can enable it later again)
-  sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak 
+  sed -i -e 's|PKGS_DISABLE := |PKGS_DISABLE := bluray caca|g' config.mak
   make
   cd ../../
 fi
 
 # Clean up so that the Docker image won't be so large
-# as without cleaning it has over 5 GB; 
+# as without cleaning it has over 5 GB;
 # not sure if it will work with the below deleted (to be verified)
 rm -rf /var/cache/yum || true # 75 MB
 rm -rf /usr/src || true # 337 MB
@@ -313,9 +313,6 @@ cp $(ldconfig -p | grep libtinfo.so.5 | cut -d ">" -f 2 | xargs) ./usr/lib/
 # Workaround for:
 # GTK theme is broken
 rm -rf usr/lib/libgtk* usr/lib/libgdk* usr/lib/libpango* || true
-
-GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
-VERSION="${VER1}.glibc${GLIBC_NEEDED}"
 
 cd ..
 find $APP.AppDir/
