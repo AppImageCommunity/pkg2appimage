@@ -146,7 +146,6 @@ generate_appimage()
   chmod a+x ./AppImageAssistant
   mkdir -p ../out || true
   rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
-  ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION"-"$ARCH".AppImage"
   GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
 }
@@ -175,7 +174,8 @@ generate_type2_appimage()
     GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
     VERSION=$VERSION.glibc$GLIBC_NEEDED ./appimagetool -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   else
-    VERSION=$VERSION ./appimagetool -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
+    VERSION=$VERSION.glibc$GLIBC_NEEDED ./appimagetool -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
   set -x
   mkdir -p ../out/ || true
@@ -228,9 +228,7 @@ get_version()
   if [ -z "$THEDEB" ] ; then
     echo "Version could not be determined from the .deb; you need to determine it manually"
   fi
-  VER1=$(echo $THEDEB | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' | sed -e 's|+dfsg||g' )
-  GLIBC_NEEDED=$(glibc_needed)
-  VERSION=$VER1.glibc$GLIBC_NEEDED
+  VERSION=$(echo $THEDEB | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' | sed -e 's|+dfsg||g' )
   echo $VERSION
 }
 
