@@ -1,0 +1,8 @@
+app: SMTube
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://download.opensuse.org/repositories/home:/smplayerdev/xUbuntu_14.04/ /
