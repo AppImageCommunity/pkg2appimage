@@ -28,29 +28,9 @@ libutil.so.1
 # These files are all part of the GNU C Library which should never be bundled.
 # List was generated from a fresh build of glibc 2.25.
 
-libc.so.6
-# Workaround for:
-# relocation error: usr/lib/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
-
-libdl.so.2
-# Workaround for:
-# Segmentation fault
-
 libstdc++.so.6
 # Workaround for:
 # usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.21' not found
-
-libm.so.6
-# Workaround for:
-# relocation error: usr/lib/libm.so.6: symbol __get_cpu_features, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-
-libpthread.so.0
-# Workaround for:
-# usr/bin/inkscape: relocation error: usr/lib/libpthread.so.0: symbol h_errno, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
-
-libresolv.so.2
-# Workaround for:
-# usr/lib/libresolv.so.2: symbol h_errno, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
 
 libGL.so.1
 # Part of the video driver (OpenGL); present on any regular
@@ -70,6 +50,9 @@ libxcb.so.1
 # Fedora 23
 # symbol lookup error: /lib64/libxcb-dri3.so.0: undefined symbol: xcb_send_fd
 # Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
+# Fedora 25:
+# undefined symbol: xcb_send_request_with_fds
+# https://github.com/probonopd/AppImages/issues/128
 
 libX11.so.6
 # Workaround for:
@@ -123,24 +106,15 @@ libkeyutils.so.1
 libkrb5.so.26
 libkrb5.so.3
 libkrb5support.so.0
-libm.so.6
 libp11-kit.so.0
 # libpcre.so.3 # Missing on Fedora 24 and on SLED 12 SP1
-libpthread.so.0
-libresolv.so.2
 libroken.so.18
-librt.so.1
 # libsasl2.so.2 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libSM.so.6
 libusb-1.0.so.0
 libuuid.so.1
 libwind.so.0
 libz.so.1
-
-# Remove these libraries, we need to use the system versions; 
-# this means that Ubuntu 11.04 is not supported (making 12.04 is our baseline)
-libGL.so.1
-libdrm.so.2
 
 # Potentially dangerous libraries
 libgobject-2.0.so.0
@@ -161,12 +135,6 @@ libgpg-error.so.0
 # https://github.com/probonopd/linuxdeployqt/issues/35#issuecomment-256213517
 # and https://github.com/probonopd/AppImages/pull/114
 # libnss3.so
-
-# Workaround for:
-# Fedora 25:
-# undefined symbol: xcb_send_request_with_fds
-# https://github.com/probonopd/AppImages/issues/128
-libxcb.so.1
 
 # The following cannot be excluded, see
 # https://github.com/probonopd/AppImages/commit/6c7473d8cdaaa2572248dcc53d7f617a577ade6b
