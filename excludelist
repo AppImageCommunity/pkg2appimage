@@ -2,6 +2,32 @@
 # should NOT be bundled inside AppImages. This is a working document; expect it to change
 # over time. File format: one filename per line. Each entry should have a justification comment.
 
+ld-linux.so.2
+ld-linux-x86-64.so.2
+libanl.so.1
+libBrokenLocale.so.1
+libcidn.so.1
+libcrypt.so.1
+libc.so.6
+libdl.so.2
+libm.so.6
+libmvec.so.1
+libnsl.so.1
+libnss_compat.so.2
+libnss_db.so.2
+libnss_dns.so.2
+libnss_files.so.2
+libnss_hesiod.so.2
+libnss_nisplus.so.2
+libnss_nis.so.2
+libpthread.so.0
+libresolv.so.2
+librt.so.1
+libthread_db.so.1
+libutil.so.1
+# These files are all part of the GNU C Library which should never be bundled.
+# List was generated from a fresh build of glibc 2.25.
+
 libc.so.6
 # Workaround for:
 # relocation error: usr/lib/libc.so.6: symbol _dl_starting_up, version GLIBC_PRIVATE not defined in file ld-linux-x86-64.so.2 with link time reference
