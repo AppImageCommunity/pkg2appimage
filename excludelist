@@ -53,10 +53,9 @@ libresolv.so.2
 # usr/lib/libresolv.so.2: symbol h_errno, version GLIBC_PRIVATE not defined in file libc.so.6 with link time reference
 
 libGL.so.1
-# Workaround for:
-# Different distributions put dri/ libraries in different places, which are not found if we supply a bundled libGL.so.1
-# /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so
-# /usr/lib64/dri/swrast_dri.so
+# Part of the video driver (OpenGL); present on any regular
+# desktop system, may also be provided by proprietary drivers.
+# Known to cause issues if it's bundled.
 
 libdrm.so.2
 # Workaround for:
