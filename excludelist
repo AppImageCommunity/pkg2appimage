@@ -93,7 +93,7 @@ libexpat.so.1
 libgcc_s.so.1
 libglib-2.0.so.0
 libgpg-error.so.0
-libgssapi_krb5.so.2
+libgssapi_krb5.so.2 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 # libgssapi.so.3 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libhcrypto.so.4
 # libheimbase.so.1 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
@@ -103,9 +103,9 @@ libICE.so.6
 libidn.so.11
 libk5crypto.so.3
 libkeyutils.so.1
-libkrb5.so.26
-libkrb5.so.3
-libkrb5support.so.0
+libkrb5.so.26 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
+libkrb5.so.3 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
+libkrb5support.so.0 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 libp11-kit.so.0
 # libpcre.so.3 # Missing on Fedora 24 and on SLED 12 SP1
 libroken.so.18
