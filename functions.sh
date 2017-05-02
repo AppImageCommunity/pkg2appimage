@@ -239,7 +239,7 @@ tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | s
 # Patch binary files; fill with padding if replacement is shorter than original
 # http://everydaywithlinux.blogspot.de/2012/11/patch-strings-in-binary-files-with-sed.html
 # Example: patch_strings_in_file foo "/usr/local/lib/foo" "/usr/lib/foo"
-function patch_strings_in_file() {
+patch_strings_in_file() {
     local FILE="$1"
     local PATTERN="$2"
     local REPLACEMENT="$3"
