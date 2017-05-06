@@ -9,5 +9,5 @@ ingredients:
     - echo $DLD | cut -d/ -f8 > VERSION
 
 script:
-  - cp ./usr/share/applications/Ghost.desktop .
+  - cp ./usr/share/applications/Ghost.desktop ghost.desktop
   - cp ./usr/share/pixmaps/Ghost.png .
