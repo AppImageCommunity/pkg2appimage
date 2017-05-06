@@ -1,0 +1,13 @@
+app: Ghost
+
+ingredients:
+  packages:
+    - ghost-desktop
+  script:
+    - DLD=$(wget -q "https://github.com/TryGhost/Ghost-Desktop/releases"  -O - | grep -E "https.*debian.deb" | cut -d'"' -f4)
+    - wget -c $DLD
+    - echo $DLD | cut -d/ -f8 > VERSION
+
+script:
+  - cp ./usr/share/applications/Ghost.desktop .
+  - cp ./usr/share/pixmaps/Ghost.png .
