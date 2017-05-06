@@ -4,8 +4,8 @@ ingredients:
   packages:
     - ghost-desktop
   script:
-    - DLD=$(wget -q "https://github.com/TryGhost/Ghost-Desktop/releases"  -O - | grep -E "https.*debian.deb" | cut -d'"' -f4)
-    - wget -c $DLD
+    - DLD=$(wget -q "https://github.com/TryGhost/Ghost-Desktop/releases"  -O - | grep -E "ghost.*debian.deb" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
     - echo $DLD | cut -d/ -f8 > VERSION
 
 script:
