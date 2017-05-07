@@ -40,3 +40,5 @@ script:
   - Icon=zeronet
   - Categories=Network;
   - EOF
+  - cp usr/share/applications/zeronet.desktop .
+  - wget https://raw.githubusercontent.com/probonopd/ZeroNet/patch-2/zeronet.svg
