@@ -1,0 +1,42 @@
+app: ZeroNet
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  packages:
+    - python-minimal
+    - python-gevent
+  script:
+    - wget -c https://github.com/HelloZeroNet/ZeroNet/archive/master.tar.gz
+    - tar xf master.tar.gz
+    - echo git.$(wget -q "https://github.com/HelloZeroNet/ZeroNet/commits/master" -O - | grep sha | head -n 1 | cut -d '"' -f 2 | cut -d "/" -f 5 | head -c 7) > VERSION
+    - wget -c "https://pypi.python.org/packages/21/27/8a1d82041c7a2a51fcc73675875a5f9ea06c2663e02fcfeb708be1d081a0/msgpack-python-0.4.8.tar.gz#md5=dcd854fb41ee7584ebbf35e049e6be98"
+    - tar xf msgpack-python-0.4.8.tar.gz
+
+script:
+  - mkdir -p usr/share/zeronet
+  - cp -r ../ZeroNet-master/* usr/share/zeronet/
+  - cp -r ../msgpack-python-0.4.8/msgpack usr/share/zeronet/
+  - # Workaround until https://github.com/HelloZeroNet/ZeroNet/pull/928 is merged
+  - wget -q "https://raw.githubusercontent.com/probonopd/ZeroNet/b8fb53ba2027a99285fc68015293263eb2376b29/src/Config.py" -O usr/share/zeronet/src/Config.py
+  - cat > usr/bin/zeronet <<\EOF
+  - #!/bin/bash
+  - HERE=$(dirname $(dirname $(readlink -f "$0")))
+  - mkdir -p "$HOME/ZeroNet/"
+  - cd "$HERE/share/zeronet/"
+  - "$HERE/bin/python" zeronet.py &
+  - sleep 2
+  - xdg-open http://127.0.0.1:43110/
+  - EOF
+  - chmod a+x usr/bin/zeronet
+  - mkdir -p usr/share/applications
+  - cat > usr/share/applications/zeronet.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=ZeroNet
+  - Exec=zeronet
+  - Type=Application
+  - Icon=zeronet
+  - Categories=Network;
+  - EOF
