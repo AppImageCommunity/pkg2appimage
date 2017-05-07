@@ -1,5 +1,4 @@
 app: ZeroNet
-binpatch: true
 
 ingredients:
   dist: trusty
@@ -42,3 +41,5 @@ script:
   - EOF
   - cp usr/share/applications/zeronet.desktop .
   - wget https://raw.githubusercontent.com/probonopd/ZeroNet/patch-2/zeronet.svg
+  - mkdir -p usr/share/icons/hicolor/scalable/apps/
+  - cp zeronet.svg usr/share/icons/hicolor/scalable/apps/
