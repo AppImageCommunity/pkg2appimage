@@ -12,7 +12,6 @@ ingredients:
     - djcj/nightingale
 
 script:
-  - sudo apt-get install -y libglib2.0-bin
   - rm -rf usr/lib/x86_64-linux-gnu/x264-10bit/ usr/bin/nightingale
   - cat <<\EOF> usr/bin/nightingale
   - #!/bin/sh
