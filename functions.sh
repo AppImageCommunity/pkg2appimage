@@ -103,15 +103,15 @@ glibc_needed()
 {
   find . -name *.so -or -name *.so.* -or -type f -executable  -exec readelf -s '{}' 2>/dev/null \; | sed -n 's/.*@GLIBC_//p'| awk '{print $1}' | sort --version-sort | tail -n 1
 }
+
 # Add desktop integration
-# Usage: get_desktopintegration name_of_desktop_file_and_exectuable
 get_desktopintegration()
 {
   REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
   cat_file_from_url https://raw.githubusercontent.com/probonopd/AppImageKit/master/desktopintegration > ./usr/bin/$REALBIN.wrapper
   chmod a+x ./usr/bin/$REALBIN.wrapper
 
-  sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
+  sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" ${LOWERAPP}.desktop
 }
 
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
@@ -200,7 +200,11 @@ generate_status()
 # Find the desktop file and copy it to the AppDir
 get_desktop()
 {
-   find usr/share/applications -iname "*${LOWERAPP}.desktop" -exec cp {} . \; || true
+  find usr/share/applications -iname "*${LOWERAPP}.desktop" -exec cp {} . \; || true
+  DESKTOP=$(find . -name '*.desktop' | sort | head -n 1)
+  if [ "$DESKTOP" != "${LOWERAPP}.desktop" ] ; then
+    mv $DESKTOP ${LOWERAPP}.desktop
+  fi
 }
 
 fix_desktop() {
