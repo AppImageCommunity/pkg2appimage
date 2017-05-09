@@ -81,7 +81,7 @@ move_lib()
 # Delete blacklisted files
 delete_blacklisted()
 {
-  BLACKLISTED_FILES=$( cat_file_from_url https://github.com/probonopd/AppImages/raw/master/excludelist | sed '/^\s*$/d' | sed '/^#.*$/d')
+  BLACKLISTED_FILES=$(cat_file_from_url https://github.com/probonopd/AppImages/raw/master/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
     FOUND=$(find . -xtype f -name "${FILE}" 2>/dev/null)
