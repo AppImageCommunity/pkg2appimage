@@ -84,11 +84,16 @@ delete_blacklisted()
   BLACKLISTED_FILES=$(cat_file_from_url https://github.com/probonopd/AppImages/raw/master/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
-    FOUND=$(find . -xtype f -name "${FILE}" 2>/dev/null)
-    if [ ! -z "$FOUND" ] ; then
-      echo "Deleting blacklisted ${FOUND}"
-      rm -f "${FOUND}"
-    fi
+    FILES="$(find . -name "${FILE}")"
+    for FOUND in $FILES ; do
+      if [ -L "$FOUND" ] ; then
+        echo "Deleting blacklisted $FILE"
+        rm -f "$FOUND" "$(readlink -f "$FOUND")"
+      elif [ -f "$FOUND" ] ; then
+        echo "Deleting blacklisted $FILE"
+        rm -f "$FOUND"
+      fi
+    done
   done
 
   # Do not bundle developer stuff
