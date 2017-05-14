@@ -1,12 +1,19 @@
-# WORK IN PROGRESS
+# The libkdeui5 dependency is missing in the deb package
 
 app: Simon
+binpatch: true
 
 ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  packages:
+    - simon
+    - libkdeui5
   script:
-    - FILE=$wget -c "http://www.unormal.org/bfo/?C=M;O=D" -O - | grep deb | grep simon | head -n 1 | cut -d '"' -f 8)
+    - FILE=$(wget -c 'http://www.unormal.org/bfo/?C=M;O=D' -O - | grep deb | grep simon | head -n 1 | cut -d '"' -f 8)
     - echo $FILE | cut -d "_" -f 2 | cut -d "-" -f 1 > VERSION
     - wget -c "http://www.unormal.org/bfo/$FILE" --trust-server-names
 
 script:
-  - ls
+  - cp usr/share/applications/kde4/org.kde.simon.desktop simon.desktop
