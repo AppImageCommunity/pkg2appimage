@@ -1,0 +1,12 @@
+# WORK IN PROGRESS
+
+app: Simon
+
+ingredients:
+  script:
+    - FILE=$wget -c "http://www.unormal.org/bfo/?C=M;O=D" -O - | grep deb | grep simon | head -n 1 | cut -d '"' -f 8)
+    - echo $FILE | cut -d "_" -f 2 | cut -d "-" -f 1 > VERSION
+    - wget -c "http://www.unormal.org/bfo/$FILE" --trust-server-names
+
+script:
+  - ls
