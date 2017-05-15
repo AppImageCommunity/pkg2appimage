@@ -12,6 +12,7 @@ ingredients:
     - djcj/nightingale
 
 script:
+  - if [ -e usr/share/glib-2.0/schemas/ ] && [ "x$(which glib-compile-schemas)" != "x" ] ; then sudo apt-get install -y libglib2.0-bin ; fi
   - rm -rf usr/lib/x86_64-linux-gnu/x264-10bit/ usr/bin/nightingale
   - cat <<\EOF> usr/bin/nightingale
   - #!/bin/sh
