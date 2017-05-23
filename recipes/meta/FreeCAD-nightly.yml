@@ -21,7 +21,7 @@ script:
   - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
   - sed -i -e 's@/usr/bin/@@g' freecad-daily.desktop
   - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
-  - sed -i -e 's@Icon=freecad@Icon=freecad-daily@g' freecad-daily.desktop
+  # - sed -i -e 's@Icon=freecad@Icon=freecad-daily@g' freecad-daily.desktop
   - cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
   - # Dear upstream developers, please use relative rather than absolute paths
   - # then binary patching like this will become unneccessary
