@@ -120,6 +120,13 @@ libz.so.1
 libgobject-2.0.so.0
 
 # Workaround for:
+# Rectangles instead of fonts
+# https://github.com/probonopd/AppImages/issues/240
+libpangoft2-1.0.so.0
+libpangocairo-1.0.so.0
+libpango-1.0.so.0
+
+# Workaround for:
 # e.g., Spotify
 # relocation error: /lib/x86_64-linux-gnu/libgcrypt.so.20: 
 # symbol gpgrt_lock_lock, version GPG_ERROR_1.0 not defined
