@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# Halt on errors
+set -e
+
+# Be verbose
+set -x
+
+# TODO: move to a library function
+git_pull_rebase_helper()
+{
+git reset --hard HEAD
+git pull
+}
+
+# Determine which architecture should be built
+if [[ "$(/bin/arch)" = "i686" || "$(/bin/arch)" = "x86_64" ]] ; then
+ARCH=$(/bin/arch)
+else
+echo "Architecture could not be determined"
+exit 1
+fi
+
+# Now we are inside CentOS 6
+grep -r "CentOS release 6" /etc/redhat-release || exit 1
+
+cd /
+
+if [ ! -d AppImages ] ; then
+git clone https://github.com/probonopd/AppImages.git
+fi
+cd AppImages/
+git_pull_rebase_helper
+cd ..
+
+
+if [ -z "$NO_DOWNLOAD" ] ; then
+# Install AppImageKit build dependencies
+yum -y install binutils fuse glibc-devel glib2-devel fuse-devel gcc zlib-devel libpng12 cmake # Fedora, RHEL, CentOS
+
+# Build AppImageKit
+if [ ! -d AppImageKit ] ; then
+git clone https://github.com/probonopd/AppImageKit.git
+fi
+cd AppImageKit/
+git_pull_rebase_helper
+cmake .
+make clean
+make
+cd ..
+fi
+
+APP=VLC
+rm -rf /$APP/$APP.AppDir
+mkdir -p /$APP/$APP.AppDir
+cd /$APP
+
+wget http://mirror.yandex.ru/mirrors/alpine/latest-stable/main/x86_64/apk-tools-static-2.6.5-r1.apk
+tar xzf apk-tools-static-2.6.5-r1.apk
+
+mkdir rootdir
+./sbin/apk.static -X http://mirror.yandex.ru/mirrors/alpine/latest-stable/main -U --allow-untrusted --root rootdir --initdb add alpine-base vlc vlc-qt qt-x11 libcanberra-gtk2 libcanberra-gtk3 gtk-engines-clearlooks icu-libs qt-config
+
+cp -pr rootdir/usr /$APP/$APP.AppDir
+cp -pr rootdir/lib /$APP/$APP.AppDir
+
+cp -pr rootdir/usr/share/icons/hicolor/128x128/apps/vlc.png /$APP/$APP.AppDir
+
+# Bundle dependency libraries into the AppDir
+cd /$APP/$APP.AppDir/
+cp ../../AppImageKit/AppRun .
+chmod a+x AppRun
+
+#Desktop file
+cat > ./vlc.desktop <<\EOF
+[Desktop Entry]
+Name=VLC
+Type=Application
+Comment=Multimedia player
+Exec=/lib/ld-musl-x86_64.so.1 /usr/bin/vlc
+Categories=Audio;Video;
+Icon=vlc.png
+EOF
+
+VERSION=2.2.2-alpine
+
+cd ..
+find $APP.AppDir/
+
+if [[ "$ARCH" = "x86_64" ]] ; then
+APPIMAGE=$APP"-"$VERSION"-x86_64.AppImage"
+fi
+if [[ "$ARCH" = "i686" ]] ; then
+APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
+fi
+
+# Put this script into the AppImage for debugging
+# FIXME: The follwing line does not work
+# cp $(readlink --canonicalize $0) ./$APP.AppDir/$APP.recipe
+
+mkdir -p ../out
+
+rm -f ../out/*.AppImage || true
+
+# Convert the AppDir into an AppImage
+rm -rf $APPIMAGE
+../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
+
+chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
+ls -lh ../out/$APPIMAGE
