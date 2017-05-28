@@ -118,7 +118,7 @@ __NOTE:__ In the future, similar shortcuts for other types of personal repositor
 
 #### Excluding certain packages
 
-Some packages declare dependencies that are not necessarily required to run the software. The `.yml` format allow overriding these by pretending that the packages are installed already. To exclude these dependencies, the packages have to be added to the `exclude` key in the `ingredients` section:
+Some packages declare dependencies that are not necessarily required to run the software. The `.yml` format allow overriding these by pretending that the packages are installed already. To exclude these dependencies (and any dependencies they would otherwise pull in), the packages have to be added to the `exclude` key in the `ingredients` section:
 
 ```
 ingredients:
@@ -136,6 +136,7 @@ ingredients:
     - libwebkitgtk-3.0-0
     - dmsetup
 ```
+In this example, excluding `qemu` means that the qemu package and all of it dependencies that it would normally pull into the AppImage will be excluded from the AppImage (unless something else in the AppImage pulls in some of those depdencies already).
 
 #### Pretending certain versions of dependencies being installed
 
