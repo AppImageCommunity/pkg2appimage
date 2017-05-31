@@ -123,7 +123,7 @@ tar xf freedup-1.6-3-src.tar.bz2
 
 # Workaround for:
 # Installed Qt WebEngine locales directory not found
-ls /home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.9.0/5.9/
+find /home/travis/build/probonopd/AppImages/QtCreator/
 ( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
 # Qt WebEngine ICU data not found
 ( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/resources . )
