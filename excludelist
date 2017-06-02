@@ -64,7 +64,6 @@ libgio-2.0.so.0
 # Workaround for:
 # On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
 
-libgdk-x11-2.0.so.0
 libgtk-x11-2.0.so.0
 # Simply to reduce size - not known to cause issues
 
@@ -72,6 +71,8 @@ libasound.so.2
 # Workaround for:
 # No sound, e.g., in VLC.AppImage (does not find sound cards)
 
+# libgdk-x11-2.0.so.0, can't be listed here as on Fedora 24 GNOME edition it gives the error: 
+# /tmp/.mount_g5PgED/usr/bin/geany: symbol lookup error: /lib64/libgdk-x11-2.0.so.0: undefined symbol: XRRGetMonitors
 libgdk_pixbuf-2.0.so.0
 # Workaround for:
 # On Ubuntu, get (inkscape:25621): GdkPixbuf-WARNING **: Error loading XPM image loader: Image type 'xpm' is not supported
