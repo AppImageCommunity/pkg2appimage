@@ -106,7 +106,7 @@ libkrb5.so.26 # Disputed, seemingly needed by Arch Linux since Kerberos is named
 libkrb5.so.3 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 libkrb5support.so.0 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 libp11-kit.so.0
-# libpcre.so.3 # Missing on Fedora 24 and on SLED 12 SP1
+# libpcre.so.3 # Missing on Fedora 24, SLED 12 SP1, and openSUSE Leap 42.2
 libroken.so.18
 # libsasl2.so.2 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libSM.so.6
