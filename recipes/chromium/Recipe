@@ -45,7 +45,7 @@ cat > ./chromium.desktop <<\EOF
 [Desktop Entry]
 Name=Chromium
 Icon=chromium
-Exec=chromium %u
+Exec=chromium --password-store=basic %u
 Categories=Network;WebBrowser;
 StartupNotify=true
 EOF
