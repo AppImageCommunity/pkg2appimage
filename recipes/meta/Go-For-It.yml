@@ -2,9 +2,9 @@ app: Go-For-It
 union: true
 
 ingredients:
-  dist: precise
+  dist: trusty
   sources: 
-    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - mank319/go-for-it
 

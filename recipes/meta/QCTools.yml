@@ -2,11 +2,11 @@ app: QCTools
 binpatch: true
 
 ingredients:
-  dist: precise
+  dist: trusty
   packages:
     - qctools
     - libbz2-1.0
   sources:
-    - deb http://us.archive.ubuntu.com/ubuntu/ precise main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   script:
     - wget https://mediaarea.net/download/binary/qctools/0.7.3/qctools_0.7.3-1_amd64.xUbuntu_12.04.deb

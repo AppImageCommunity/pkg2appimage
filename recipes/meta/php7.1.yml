@@ -2,9 +2,9 @@ app: php7.1
 union: true
 
 ingredients:
-  dist: precise
+  dist: trusty
   sources:
-    - deb http://ftp.fau.de/ubuntu/ precise main universe
+    - deb http://ftp.fau.de/ubuntu/ trusty main universe
   ppas:
     - ondrej/php
   packages:
