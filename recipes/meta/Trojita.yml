@@ -9,6 +9,14 @@ ingredients:
 
 script:
   - mv usr/share/applications/org.kde.trojita.desktop usr/share/applications/trojita.desktop
-  - sed -i -e 's|^Name=.*|Name=Trojita|e' usr/share/applications/trojita.desktop
   - cp usr/share/icons/hicolor/scalable/apps/trojita.svg .
+  - cat > usr/share/applications/trojita.desktop <\EOF
+  - [Desktop Entry]
+  - Exec=trojita
+  - Terminal=false
+  - Type=Application
+  - Icon=trojita
+  - Name=Trojita
+  - Categories=Network;
+  - EOF
   - rm *.desktop ; cp usr/share/applications/trojita.desktop .
