@@ -10,7 +10,7 @@ ingredients:
 script:
   - mv usr/share/applications/org.kde.trojita.desktop usr/share/applications/trojita.desktop
   - cp usr/share/icons/hicolor/scalable/apps/trojita.svg .
-  - cat > usr/share/applications/trojita.desktop <\EOF
+  - cat > usr/share/applications/trojita.desktop <<\EOF
   - [Desktop Entry]
   - Exec=trojita
   - Terminal=false
