@@ -6,10 +6,9 @@ ingredients:
   sources:
     - deb http://deb.debian.org/debian jessie main
     - deb http://download.opensuse.org/repositories/home:/jkt-gentoo:/trojita/Debian_8.0/ /
-  script:
-    - ls trojita-nightly_*.deb | cut -d "_" -f 2 | cut -d "-" -f 1 > VERSION
 
 script:
+  - ls ../trojita-nightly_*.deb | cut -d "_" -f 2 | cut -d "-" -f 1 > ../VERSION
   - mv usr/share/applications/org.kde.trojita.desktop usr/share/applications/trojita.desktop
   - cp usr/share/icons/hicolor/scalable/apps/trojita.svg .
   - cat > usr/share/applications/trojita.desktop <<\EOF
