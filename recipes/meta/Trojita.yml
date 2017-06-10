@@ -1,0 +1,12 @@
+app: Trojita
+
+ingredients:
+  package: trojita-nightly
+  dist: jessie
+  sources: 
+    - deb http://deb.debian.org/debian jessie main
+    - deb http://download.opensuse.org/repositories/home:/jkt-gentoo:/trojita/Debian_8.0/ /
+
+script:
+  - mv org.kde.trojita.desktop trojita.desktop
+  - mv usr/share/applications/org.kde.trojita.desktop usr/share/applications/trojita.desktop
