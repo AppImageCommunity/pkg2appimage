@@ -1,0 +1,32 @@
+# Firefox 4 was the first one available for 64-bit Linux
+# Bundling Firefox 1 would be possible, but then we would
+# have to ship a private 32-bit loader and set of core libraries
+
+app: Firefox
+
+ingredients:
+  script:
+    - VERSION=4.0
+    - echo -n $VERSION > VERSION
+    - wget -c https://ftp.mozilla.org/pub/firefox/releases/$VERSION/linux-x86_64/en-US/firefox-$VERSION.tar.bz2
+    - tar xf firefox-*.tar.bz2
+
+script:
+  - mv ../firefox/* usr/bin
+  - mkdir -p usr/share/applications/
+  - cat > usr/share/applications/firefox.desktop <<\EOF
+  - [Desktop Entry]
+  - Categories=Network;WebBrowser;GTK;
+  - Encoding=UTF-8
+  - Name=Firefox
+  - GenericName=Web Browser
+  - Comment=Web Browser
+  - Exec=firefox %u
+  - Icon=firefox
+  - Terminal=false
+  - StartupNotify=true
+  - MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;application/x-xpinstall;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
+  - Type=Application
+  - EOF
+  - cp usr/share/applications/firefox.desktop .
+  - cp usr/bin/icons/mozicon128.png firefox.png
