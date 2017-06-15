@@ -1,0 +1,8 @@
+app: Kadu
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - mati75/kadu
