@@ -6,3 +6,6 @@ ingredients:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
     - mati75/kadu
+
+script:
+  - mv usr/lib/x86_64-linux-gnu/kadu/libkadu.so usr/lib/x86_64-linux-gnu/
