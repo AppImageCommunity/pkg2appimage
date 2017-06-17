@@ -1,0 +1,25 @@
+app: Calibre
+
+ingredients:
+  script:
+    - VERSION=$(wget -q http://code.calibre-ebook.com/latest -O -)
+    - wget -c https://calibre-ebook.com/dist/linux64 --trust-server-names
+    - echo $VERSION > VERSION
+
+script:
+  - ( cd usr/ ; tar xf ../../calibre-*.txz )
+  - mkdir -p ./usr/lib/qt5/
+  - mv ./usr/lib/qt_plugins ./usr/lib/qt5/plugins
+  - cp usr/resources/content-server/calibre.png .
+  - cat > calibre.desktop <<EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=Calibre
+  - GenericName=E-book library management
+  - Comment=E-book library management: Convert, view, share, catalog all your e-books
+  - Exec=calibre %F
+  - Icon=calibre
+  - Categories=Office;
+  - EOF
+
