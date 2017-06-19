@@ -1,5 +1,5 @@
 # ATTENTION: This is intended to be run on a trusty (14.04) machine
-# because it installs packages into the build machine
+# because it installs packages into the build machine and compiles code there
 # which needs to have universe enabled
 # https://github.com/alexrj/Slic3r/wiki/Running-Slic3r-from-git-on-GNU-Linux#installing-prerequsites
 # NOT WORKING YET (to be investigated)"
@@ -14,13 +14,13 @@ ingredients:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   script:
     - sudo apt-get update
-    - sudo apt-get -y install git build-essential libgtk2.0-dev libwxgtk2.8-dev libwx-perl libmodule-build-perl libnet-dbus-perl libexpat1-dev cpanminus liblocal-lib-perl libxmu-dev freeglut3-dev libwxgtk-media2.8-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev
+    - sudo apt-get -y install git build-essential libgtk2.0-dev libwxgtk2.8-dev libwx-perl libmodule-build-perl libnet-dbus-perl libexpat1-dev cpanminus liblocal-lib-perl libxmu-dev freeglut3-dev libwxgtk-media2.8-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev libboost-all-dev libtbb-dev
     - git clone https://github.com/prusa3d/Slic3r.git
     - cd Slic3r
     - export LDLOADLIBS=-lstdc++
     - export LANGUAGE=en
     - export LC_ALL=C
-    - sudo perl Build.PL
+    - sudo perl Build.PL --force  # Already there it uses WxGTK
     - sudo perl Build.PL --gui # What happens if I leave this away?
 
 script:
