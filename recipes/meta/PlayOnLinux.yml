@@ -1,12 +1,3 @@
-# Supposedly can run Word, Excel, and PowerPoint
-# https://www.youtube.com/watch?v=GVl9BuC6lHA
-#
-# Not working yet
-# Looking for python2... 2.7.11+ - Traceback (most recent call last):
-#  File "/home/me/PlayOnLinux/PlayOnLinux.AppDir/usr/share/playonlinux/python/check_python.py", line 1, in <module>
-#     import os, wxversion
-# ImportError: No module named wxversion
-
 app: PlayOnLinux
 binpatch: true
 
@@ -15,3 +6,7 @@ ingredients:
   sources:
     - deb http://ftp.us.debian.org/debian/ wheezy main contrib non-free
     - deb http://deb.playonlinux.com/ wheezy main
+
+script:
+  - mv ./usr/share/applications/PlayOnLinux.desktop playonlinux.desktop
+  - rm PlayOnLinux.desktop
