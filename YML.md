@@ -136,7 +136,7 @@ ingredients:
     - libwebkitgtk-3.0-0
     - dmsetup
 ```
-In this example, excluding `qemu` means that the qemu package and all of it dependencies that it would normally pull into the AppImage will be excluded from the AppImage (unless something else in the AppImage pulls in some of those depdencies already).
+In this example, excluding `qemu` means that the qemu package and all of its dependencies that it would normally pull into the AppImage will be excluded from the AppImage (unless something else in the AppImage pulls in some of those depdencies already).
 
 #### Pretending certain versions of dependencies being installed
 
