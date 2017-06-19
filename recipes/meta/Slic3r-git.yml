@@ -1,8 +1,7 @@
 # ATTENTION: This is intended to be run on a trusty (14.04) machine
 # because it installs packages into the build machine and compiles code there
 # which needs to have universe enabled
-# https://github.com/alexrj/Slic3r/wiki/Running-Slic3r-from-git-on-GNU-Linux#installing-prerequsites
-# NOT WORKING YET (to be investigated)"
+# NOT WORKING YET WITH THE prusa3d VERSION BUT WORKING WITH alexrj VERSION (to be investigated)
 # https://github.com/alexrj/Slic3r/issues/4036
 # Slic3r will not compile on the default compiler gcc-4.8. This will not change. Prusa3d's version doesn't build with gcc-4.8 either.
 
@@ -19,8 +18,8 @@ ingredients:
     - sudo apt-get update
     - sudo apt-get -y install git g++-4.9 build-essential libgtk2.0-dev libwxgtk2.8-dev libwx-perl libmodule-build-perl libnet-dbus-perl libexpat1-dev cpanminus liblocal-lib-perl libxmu-dev freeglut3-dev libwxgtk-media2.8-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev libboost-all-dev libtbb-dev
     - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-4.9
-    - git clone https://github.com/prusa3d/Slic3r.git
-    - # git clone https://github.com/alexrj/Slic3r.git
+    - # git clone https://github.com/prusa3d/Slic3r.git # FAILS
+    - git clone https://github.com/alexrj/Slic3r.git # WORKS
     - cd Slic3r
     - export LDLOADLIBS=-lstdc++
     - export LANGUAGE=en
