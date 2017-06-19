@@ -3,6 +3,8 @@
 # which needs to have universe enabled
 # https://github.com/alexrj/Slic3r/wiki/Running-Slic3r-from-git-on-GNU-Linux#installing-prerequsites
 # NOT WORKING YET (to be investigated)"
+# https://github.com/alexrj/Slic3r/issues/4036
+# Slic3r will not compile on the default compiler gcc-4.8. This will not change. Prusa3d's version doesn't build with gcc-4.8 either.
 
 app: Slic3r_PE
 
@@ -13,15 +15,14 @@ ingredients:
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   script:
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
     - sudo apt-get update
-    - sudo apt-get -y install git build-essential libgtk2.0-dev libwxgtk2.8-dev libwx-perl libmodule-build-perl libnet-dbus-perl libexpat1-dev cpanminus liblocal-lib-perl libxmu-dev freeglut3-dev libwxgtk-media2.8-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev libboost-all-dev libtbb-dev
+    - sudo apt-get -y install git g++-4.9 build-essential libgtk2.0-dev libwxgtk2.8-dev libwx-perl libmodule-build-perl libnet-dbus-perl libexpat1-dev cpanminus liblocal-lib-perl libxmu-dev freeglut3-dev libwxgtk-media2.8-dev libboost-thread-dev libboost-system-dev libboost-filesystem-dev libboost-all-dev libtbb-dev
     - git clone https://github.com/prusa3d/Slic3r.git
+    - # git clone https://github.com/alexrj/Slic3r.git
     - cd Slic3r
     - export LDLOADLIBS=-lstdc++
     - export LANGUAGE=en
     - export LC_ALL=C
     - sudo perl Build.PL --force  # Already there it uses WxGTK
     - sudo perl Build.PL --gui # What happens if I leave this away?
-
-script:
-  - ls
