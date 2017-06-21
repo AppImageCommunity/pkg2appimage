@@ -1,0 +1,71 @@
+app: PrusaControl
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  packages:
+    - python3-minimal
+    - python3-pyqt4.qtopengl
+  script:
+    - wget -c "https://github.com/prusa3d/PrusaControl/archive/master.tar.gz"
+    - sudo apt-get install -y python-virtualenv gcc python3-dev python3-minimal python3-pip libz-dev libjpeg-dev # Only on the build host
+    - virtualenv venv -p $(which python3) --always-copy
+    - venv/bin/pip  install numpy numpy-stl pyrr PyOpenGL PyOpenGL-accelerate Pillow # How would we do this on OBS?
+    - DLD=$(wget -q "https://github.com/prusa3d/Slic3r/releases" -O - | grep "/prusa3d/Slic3r/releases.*Slic3r.*AppImage" | head -n 1 |  cut -d '"' -f 2)
+    - wget -c "https://github.com$DLD"
+    - chmod +x *.AppImage
+
+script:
+  - tar xf ../master.tar.gz
+  - cp -Rf ../venv/lib/python3.*/site-packages/* usr/lib/python3/dist-packages/
+  - cat > prusacontrol.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=PrusaControl
+  - Icon=prusacontrol
+  - Exec=prusacontrol
+  - Categories=Graphics;
+  - Type=Application
+  - EOF
+  - cat > usr/bin/prusacontrol <<\EOF
+  - #!/bin/bash
+  - set +x
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - APPDIR=$(readlink -f "$HERE/../../")
+  - export PYTHONPATH="$APPDIR/usr"
+  - export PATH="$APPDIR/usr/bin":$PATH
+  - cd "$APPDIR/PrusaControl-master"
+  - exec "$APPDIR/usr/bin/python3" ./main.py
+  - EOF
+  - chmod a+x usr/bin/prusacontrol
+  - cp ./PrusaControl-master/data_dev/icon/favicon32.png ./usr/share/icons/hicolor/32x32/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data_dev/icon/favicon48.png ./usr/share/icons/hicolor/48x48/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data_dev/icon/favicon64.png ./usr/share/icons/hicolor/64x64/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data_dev/icon/favicon128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data_dev/icon/favicon256.png ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png
+  - cp ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png .
+  - cp PrusaControl-master/data/v.txt ../VERSION
+  - sed -i -e 's|v||g' ../VERSION
+  - find . -iname '*Tk*' -exec rm -rf {} \; || true
+  - find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
+  - find . -iname '*QtSql*' -exec rm -rf {} \; || true
+  - find . -iname '*QtSvg*' -exec rm -rf {} \; || true
+  - find . -iname '*QtXml*' -exec rm -rf {} \; || true
+  - find . -iname '*lib2to3*' -exec rm -rf {} \; || true
+  - find . -iname '*QtTest*' -exec rm {} \; || true
+  - find . -iname '*QtDesigner*' -exec rm {} \; || true
+  - find . -iname '*QtHelp*' -exec rm {} \; || true
+  - find . -iname '*QtScript*' -exec rm {} \; || true 
+  - find . -iname '*Webkit*' -exec rm -rf {} \; || true
+  - find . -iname '*QtAssistant*' -exec rm -rf {} \; || true
+  - find . -iname '*ucene*' -exec rm -rf {} \; || true
+  - find . -iname '*pip*' -exec rm -rf {} \; || true
+  - find . -iname '*setuptools*' -exec rm -rf {} \; || true
+  - find . -iname '*declarative*' -exec rm -rf {} \; || true
+  - rm -rf usr/share/locale/
+  - ../Slic3r-*.AppImage --appimage-extract
+  - mkdir -p PrusaControl-master/tools/Slic3r-Lite
+  - cp -Rf squashfs-root/usr/* PrusaControl-master/tools/Slic3r-Lite/
+  - rm -rf squashfs-root/
+  - rm -rf lib/x86_64-linux-gnu/libreadline.so.6
+  - sed -i -e "s@#self.slicer_place = './tools/Slic3r-Lite/slic3r'@self.slicer_place = [self.controller.app_config.local_path + 'tools/Slic3r-Lite/bin/slic3r']@g" ./PrusaControl-master/slicer.py
