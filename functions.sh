@@ -86,13 +86,7 @@ delete_blacklisted()
   for FILE in $BLACKLISTED_FILES ; do
     FILES="$(find . -name "${FILE}")"
     for FOUND in $FILES ; do
-      if [ -L "$FOUND" ] ; then
-        echo "Deleting blacklisted $FILE"
-        rm -f "$FOUND" "$(readlink -f "$FOUND")"
-      elif [ -f "$FOUND" ] ; then
-        echo "Deleting blacklisted $FILE"
-        rm -f "$FOUND"
-      fi
+      rm -vf "$FOUND" "$(readlink -f "$FOUND")"
     done
   done
 
