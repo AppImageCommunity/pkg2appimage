@@ -84,7 +84,7 @@ delete_blacklisted()
   BLACKLISTED_FILES=$(cat_file_from_url https://github.com/AppImage/AppImages/raw/master/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
-    FILES="$(find . -name "${FILE}")"
+    FILES="$(find . -name "${FILE}" -not -path "./usr/optional/*")"
     for FOUND in $FILES ; do
       rm -vf "$FOUND" "$(readlink -f "$FOUND")"
     done
