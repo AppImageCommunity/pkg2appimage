@@ -43,8 +43,9 @@ script:
   - cp ./PrusaControl-master/data/icon/favicon_128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
   - cp ./PrusaControl-master/data/icon/favicon_256.png ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png
   - cp ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png .
-  - cp PrusaControl-master/data/v.txt ../VERSION
-  - sed -i -e 's|v||g' ../VERSION
+  - # cp PrusaControl-master/data/v.txt ../VERSION
+  - # sed -i -e 's|v||g' ../VERSION
+  - echo $TRAVIS_BUILD_NUMBER > ../VERSION
   - find . -iname '*Tk*' -exec rm -rf {} \; || true
   - find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
   - find . -iname '*QtSql*' -exec rm -rf {} \; || true
