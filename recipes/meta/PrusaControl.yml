@@ -38,11 +38,11 @@ script:
   - exec "$APPDIR/usr/bin/python3" ./main.py
   - EOF
   - chmod a+x usr/bin/prusacontrol
-  - cp ./PrusaControl-master/data_dev/icon/favicon32.png ./usr/share/icons/hicolor/32x32/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data_dev/icon/favicon48.png ./usr/share/icons/hicolor/48x48/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data_dev/icon/favicon64.png ./usr/share/icons/hicolor/64x64/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data_dev/icon/favicon128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data_dev/icon/favicon256.png ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data/icon/favicon_32.png ./usr/share/icons/hicolor/32x32/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data/icon/favicon_48.png ./usr/share/icons/hicolor/48x48/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data/icon/favicon_64.png ./usr/share/icons/hicolor/64x64/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data/icon/favicon_128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
+  - cp ./PrusaControl-master/data/icon/favicon_256.png ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png
   - cp ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png .
   - cp PrusaControl-master/data/v.txt ../VERSION
   - sed -i -e 's|v||g' ../VERSION
