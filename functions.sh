@@ -84,11 +84,10 @@ delete_blacklisted()
   BLACKLISTED_FILES=$(cat_file_from_url https://github.com/AppImage/AppImages/raw/master/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
-    FOUND=$(find . -xtype f -name "${FILE}" 2>/dev/null)
-    if [ ! -z "$FOUND" ] ; then
-      echo "Deleting blacklisted ${FOUND}"
-      rm -f "${FOUND}"
-    fi
+    FILES="$(find . -name "${FILE}")"
+    for FOUND in $FILES ; do
+      rm -vf "$FOUND" "$(readlink -f "$FOUND")"
+    done
   done
 
   # Do not bundle developer stuff
