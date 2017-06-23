@@ -10,7 +10,7 @@ ingredients:
   script:
     - wget -c "https://github.com/prusa3d/PrusaControl/archive/master.tar.gz"
     - sudo apt-get install -y python-virtualenv gcc python3.4-dev python3.4-minimal python3-pip libz-dev libjpeg-dev # Only on the build host
-    - virtualenv venv -p $(which python3) --always-copy
+    - virtualenv venv -p $(which python3.4) --always-copy
     - venv/bin/pip  install numpy numpy-stl pyrr PyOpenGL PyOpenGL-accelerate Pillow # How would we do this on OBS?
     - DLD=$(wget -q "https://github.com/prusa3d/Slic3r/releases" -O - | grep "/prusa3d/Slic3r/releases.*Slic3r.*AppImage" | head -n 1 |  cut -d '"' -f 2)
     - wget -c "https://github.com$DLD"
