@@ -64,8 +64,9 @@ script:
   - find . -iname '*declarative*' -exec rm -rf {} \; || true
   - rm -rf usr/share/locale/
   - ../Slic3r-*.AppImage --appimage-extract
+  - rm ../Slic3r-*.AppImage
   - mkdir -p PrusaControl-master/tools/Slic3r-Lite
   - cp -Rf squashfs-root/usr/* PrusaControl-master/tools/Slic3r-Lite/
   - rm -rf squashfs-root/
   - rm -rf lib/x86_64-linux-gnu/libreadline.so.6
-  - sed -i -e "s@#self.slicer_place = './tools/Slic3r-Lite/slic3r'@self.slicer_place = [self.controller.app_config.local_path + 'tools/Slic3r-Lite/bin/slic3r']@g" ./PrusaControl-master/slicer.py
+  - # sed -i -e "s@#self.slicer_place = './tools/Slic3r-Lite/slic3r'@self.slicer_place = [self.controller.app_config.local_path + 'tools/Slic3r-Lite/bin/slic3r']@g" ./PrusaControl-master/slicer.py
