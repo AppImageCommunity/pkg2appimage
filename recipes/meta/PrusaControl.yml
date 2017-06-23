@@ -5,11 +5,11 @@ ingredients:
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   packages:
-    - python3-minimal
+    - python3.4-minimal
     - python3-pyqt4.qtopengl
   script:
     - wget -c "https://github.com/prusa3d/PrusaControl/archive/master.tar.gz"
-    - sudo apt-get install -y python-virtualenv gcc python3-dev python3-minimal python3-pip libz-dev libjpeg-dev # Only on the build host
+    - sudo apt-get install -y python-virtualenv gcc python3.4-dev python3.4-minimal python3-pip libz-dev libjpeg-dev # Only on the build host
     - virtualenv venv -p $(which python3) --always-copy
     - venv/bin/pip  install numpy numpy-stl pyrr PyOpenGL PyOpenGL-accelerate Pillow # How would we do this on OBS?
     - DLD=$(wget -q "https://github.com/prusa3d/Slic3r/releases" -O - | grep "/prusa3d/Slic3r/releases.*Slic3r.*AppImage" | head -n 1 |  cut -d '"' -f 2)
@@ -46,23 +46,23 @@ script:
   - # cp PrusaControl-master/data/v.txt ../VERSION
   - # sed -i -e 's|v||g' ../VERSION
   - echo $TRAVIS_BUILD_NUMBER > ../VERSION
-  - #find . -iname '*Tk*' -exec rm -rf {} \; || true
-  - #find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
-  - #find . -iname '*QtSql*' -exec rm -rf {} \; || true
-  - #find . -iname '*QtSvg*' -exec rm -rf {} \; || true
-  - #find . -iname '*QtXml*' -exec rm -rf {} \; || true
-  - #find . -iname '*lib2to3*' -exec rm -rf {} \; || true
-  - #find . -iname '*QtTest*' -exec rm {} \; || true
-  - #find . -iname '*QtDesigner*' -exec rm {} \; || true
-  - #find . -iname '*QtHelp*' -exec rm {} \; || true
-  - #find . -iname '*QtScript*' -exec rm {} \; || true 
-  - #find . -iname '*Webkit*' -exec rm -rf {} \; || true
-  - #find . -iname '*QtAssistant*' -exec rm -rf {} \; || true
-  - #find . -iname '*ucene*' -exec rm -rf {} \; || true
-  - #find . -iname '*pip*' -exec rm -rf {} \; || true
-  - #find . -iname '*setuptools*' -exec rm -rf {} \; || true
-  - #find . -iname '*declarative*' -exec rm -rf {} \; || true
-  - #rm -rf usr/share/locale/
+  - find . -iname '*Tk*' -exec rm -rf {} \; || true
+  - find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
+  - find . -iname '*QtSql*' -exec rm -rf {} \; || true
+  - find . -iname '*QtSvg*' -exec rm -rf {} \; || true
+  - find . -iname '*QtXml*' -exec rm -rf {} \; || true
+  - find . -iname '*lib2to3*' -exec rm -rf {} \; || true
+  - find . -iname '*QtTest*' -exec rm {} \; || true
+  - find . -iname '*QtDesigner*' -exec rm {} \; || true
+  - find . -iname '*QtHelp*' -exec rm {} \; || true
+  - find . -iname '*QtScript*' -exec rm {} \; || true 
+  - find . -iname '*Webkit*' -exec rm -rf {} \; || true
+  - find . -iname '*QtAssistant*' -exec rm -rf {} \; || true
+  - find . -iname '*ucene*' -exec rm -rf {} \; || true
+  - find . -iname '*pip*' -exec rm -rf {} \; || true
+  - find . -iname '*setuptools*' -exec rm -rf {} \; || true
+  - find . -iname '*declarative*' -exec rm -rf {} \; || true
+  - rm -rf usr/share/locale/
   - ../Slic3r-*.AppImage --appimage-extract
   - mkdir -p PrusaControl-master/tools/Slic3r-Lite
   - cp -Rf squashfs-root/usr/* PrusaControl-master/tools/Slic3r-Lite/
