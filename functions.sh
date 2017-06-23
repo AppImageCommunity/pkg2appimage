@@ -22,6 +22,23 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Suggests=0
 "
 
+# Detect system architecture to know which binaries of AppImage tools
+# should be downloaded and used.
+case "$(uname -i)" in
+  x86_64|amd64)
+#    echo "x86-64 system architecture"
+    SYSTEM_ARCH="x86_64";;
+  i?86)
+#    echo "x86 system architecture"
+    SYSTEM_ARCH="i686";;
+#  arm*)
+#    echo "ARM system architecture"
+#    SYSTEM_ARCH="";;
+  *)
+    echo "Unsupported system architecture"
+    exit 1;;
+esac
+
 # Either get the file from remote or from a static place.
 # critical for builds without network access like in Open Build Service
 cat_file_from_url()
@@ -48,8 +65,8 @@ patch_usr()
 # Download AppRun and make it executable
 get_apprun()
 {
-  # wget -c https://github.com/AppImage/AppImageKit/releases/download/5/AppRun -O ./AppRun # 64-bit
-  wget -c https://github.com/AppImage/AppImageKit/releases/download/continuous/AppRun-x86_64 -O AppRun # 64-bit
+  TARGET_ARCH=${ARCH:-$SYSTEM_ARCH}
+  wget -c https://github.com/AppImage/AppImageKit/releases/download/continuous/AppRun-${TARGET_ARCH} -O AppRun
   chmod a+x AppRun
 }
 
@@ -116,6 +133,11 @@ get_desktopintegration()
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
 generate_appimage()
 {
+  # Download AppImageAssistant
+  URL="https://github.com/AppImage/AppImageKit/releases/download/6/AppImageAssistant_6-${SYSTEM_ARCH}.AppImage"
+  wget -c "$URL" -O AppImageAssistant
+  chmod a+x ./AppImageAssistant
+
   # if [[ "$RECIPE" == *ecipe ]] ; then
   #   echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
   #   echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
@@ -141,10 +163,9 @@ generate_appimage()
      exit 1
     fi
   fi
-  wget -c "https://github.com/AppImage/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" -O  AppImageAssistant # (64-bit)
-  chmod a+x ./AppImageAssistant
+
   mkdir -p ../out || true
-  rm ../out/$APP"-"$VERSION"-x86_64.AppImage" 2>/dev/null || true
+  rm ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage" 2>/dev/null || true
   GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
 }
@@ -160,7 +181,7 @@ generate_type2_appimage()
   # if [ -z "$URL" ] ; then
   #   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+2))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
   # fi
-  URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+  URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${SYSTEM_ARCH}.AppImage"
   wget -c "$URL" -O appimagetool
   chmod a+x ./appimagetool
   set +x
