@@ -70,3 +70,4 @@ script:
   - rm -rf squashfs-root/
   - rm -rf lib/x86_64-linux-gnu/libreadline.so.6
   - # sed -i -e "s@#self.slicer_place = './tools/Slic3r-Lite/slic3r'@self.slicer_place = [self.controller.app_config.local_path + 'tools/Slic3r-Lite/bin/slic3r']@g" ./PrusaControl-master/slicer.py
+  - "$APPDIR/usr/bin/python3" -m compileall "$APPDIR"
