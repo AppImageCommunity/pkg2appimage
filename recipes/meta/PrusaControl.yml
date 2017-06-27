@@ -69,8 +69,8 @@ script:
   - cp -Rf squashfs-root/usr/* PrusaControl-master/tools/Slic3r-Lite/
   - rm -rf squashfs-root/
   - rm -rf lib/x86_64-linux-gnu/libreadline.so.6
-  - "$APPDIR/usr/bin/python3" -m compileall . -fqb
-  - find . -name '*.pyc' -exec rm -rf {} \; || true
+  - ./usr/bin/python3 -m compileall . -fqb # Compile all python code for speed
+  - find . -name '*.py' -exec rm -rf {} \; || true # Then remove the original python files for size
   - find . -name '*.spec' -exec rm -rf {} \; || true
   - rm -rf ./PrusaControl-master/ts || true
   - rm -rf ./PrusaControl-master/doc || true
