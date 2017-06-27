@@ -46,22 +46,22 @@ script:
   - # cp PrusaControl-master/data/v.txt ../VERSION
   - # sed -i -e 's|v||g' ../VERSION
   - echo $TRAVIS_BUILD_NUMBER > ../VERSION
-  - find . -iname '*Tk*' -delete || true
-  - find . -iname '*QtNetwork*' -delete || true
-  - find . -iname '*QtSql*' -delete || true
-  - find . -iname '*QtSvg*' -delete || true
-  - find . -iname '*QtXml*' -delete || true
-  - find . -iname '*lib2to3*' -delete || true
-  - find . -iname '*QtTest*' -delete || true
-  - find . -iname '*QtDesigner*' -delete || true
-  - find . -iname '*QtHelp*' -delete || true
-  - find . -iname '*QtScript*' -delete || true
-  - find . -iname '*Webkit*' -delete || true
-  - find . -iname '*QtAssistant*' -delete || true
-  - find . -iname '*ucene*' -delete || true
-  - find . -iname '*pip*' -delete || true
-  - find . -iname '*setuptools*' -delete || true
-  - find . -iname '*declarative*' -delete || true
+  - find . -iname '*Tk*' -exec rm -rf {} \; || true
+  - find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
+  - find . -iname '*QtSql*' -exec rm -rf {} \; || true
+  - find . -iname '*QtSvg*' -exec rm -rf {} \; || true
+  - find . -iname '*QtXml*' -exec rm -rf {} \; || true
+  - find . -iname '*lib2to3*' -exec rm -rf {} \; || true
+  - find . -iname '*QtTest*' -exec rm -rf {} \; || true
+  - find . -iname '*QtDesigner*' -exec rm -rf {} \; || true
+  - find . -iname '*QtHelp*' -exec rm -rf {} \; || true
+  - find . -iname '*QtScript*' -exec rm -rf {} \; || true
+  - find . -iname '*Webkit*' -exec rm -rf {} \; || true
+  - find . -iname '*QtAssistant*' -exec rm -rf {} \; || true
+  - find . -iname '*ucene*' -exec rm -rf {} \; || true
+  - find . -iname '*pip*' -exec rm -rf {} \; || true
+  - find . -iname '*setuptools*' -exec rm -rf {} \; || true
+  - find . -iname '*declarative*' -exec rm -rf {} \; || true
   - rm -rf usr/share/locale/
   - ../Slic3r-*.AppImage --appimage-extract
   - rm ../Slic3r-*.AppImage
@@ -69,12 +69,10 @@ script:
   - cp -Rf squashfs-root/usr/* PrusaControl-master/tools/Slic3r-Lite/
   - rm -rf squashfs-root/
   - rm -rf lib/x86_64-linux-gnu/libreadline.so.6
-  - # sed -i -e "s@#self.slicer_place = './tools/Slic3r-Lite/slic3r'@self.slicer_place = [self.controller.app_config.local_path + 'tools/Slic3r-Lite/bin/slic3r']@g" ./PrusaControl-master/slicer.py
-  - "$APPDIR/usr/bin/python3" -m compileall "$APPDIR" -fqb
-  - ls
-  - find . -name '*.pyc' -delete || true
-  - find . -name '*.spec' -delete || true
-  - find . -name 'ts' -delete || true
-  - find . -name 'doc' -delete || true
-  - find . -name '.git' -delete || true
-  - find . -name '.idea' -delete || true
+  - "$APPDIR/usr/bin/python3" -m compileall . -fqb
+  - find . -name '*.pyc' -exec rm -rf {} \; || true
+  - find . -name '*.spec' -exec rm -rf {} \; || true
+  - rm -rf ./PrusaControl-master/ts || true
+  - rm -rf ./PrusaControl-master/doc || true
+  - rm -rf ./PrusaControl-master/.git/ || true
+  - rm -rf ./PrusaControl-master/.idea/ || true
