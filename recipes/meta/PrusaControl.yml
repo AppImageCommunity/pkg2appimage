@@ -712,8 +712,6 @@ script:
   - rm -rf  ./PrusaControl-master/tools/Slic3r-Lite/share/X11/XErrorDB || true
   - rm -rf  ./PrusaControl-master/tools/Slic3r-Lite/src || true
   - rm -rf  ./PrusaControl-master/tools/Slic3r-Lite/src/libunionpreload.c || true
-  - rm -rf  ./PrusaControl-master/translation/cs_CZ.qm || true
-  - rm -rf  ./PrusaControl-master/translation/de_DE.qm || true
   - rm -rf  ./usr/bin/2to3-3.4 || true
   - rm -rf  ./usr/bin/assistant || true
   - rm -rf  ./usr/bin/designer || true
