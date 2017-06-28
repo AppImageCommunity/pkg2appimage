@@ -94,7 +94,7 @@ libglib-2.0.so.0
 libgpg-error.so.0
 libgssapi_krb5.so.2 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 # libgssapi.so.3 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
-libhcrypto.so.4
+# libhcrypto.so.4 # Missing on openSUSE LEAP 42.0
 # libheimbase.so.1 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 # libheimntlm.so.0 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libhx509.so.5
