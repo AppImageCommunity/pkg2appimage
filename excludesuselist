@@ -7,7 +7,7 @@
 Mesa-libGL1
 fontconfig
 glibc
-krb5
+# krb5 # openSUSE LEAP 42.0 has other .so filenames than other distributions 
 libICE6
 libSM6
 libX11-6
