@@ -97,7 +97,7 @@ libgssapi_krb5.so.2 # Disputed, seemingly needed by Arch Linux since Kerberos is
 # libhcrypto.so.4 # Missing on openSUSE LEAP 42.0
 # libheimbase.so.1 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 # libheimntlm.so.0 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
-libhx509.so.5
+# libhx509.so.5 # Missing on openSUSE LEAP 42.0
 libICE.so.6
 libidn.so.11
 libk5crypto.so.3
@@ -107,12 +107,12 @@ libkeyutils.so.1
 libkrb5support.so.0 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 libp11-kit.so.0
 # libpcre.so.3 # Missing on Fedora 24, SLED 12 SP1, and openSUSE Leap 42.2
-libroken.so.18
+# libroken.so.18 # Mission on openSUSE LEAP 42.0
 # libsasl2.so.2 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
 libSM.so.6
 libusb-1.0.so.0
 libuuid.so.1
-libwind.so.0
+# libwind.so.0 # Missing on openSUSE LEAP 42.0
 libz.so.1
 
 # Potentially dangerous libraries
