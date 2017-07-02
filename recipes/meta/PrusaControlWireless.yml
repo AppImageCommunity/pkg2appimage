@@ -34,16 +34,16 @@ script:
   - APPDIR=$(readlink -f "$HERE/../../")
   - export PYTHONPATH="$APPDIR/usr"
   - export PATH="$APPDIR/usr/bin":$PATH
-  - cd "$APPDIR/PrusaControl-master"
+  - cd $APPDIR/PrusaControl-*
   - exec "$APPDIR/usr/bin/python3" ./main.pyc
   - EOF
   - chmod a+x usr/bin/prusacontrol
-  - cp ./PrusaControl-master/data/icon/favicon_32.png ./usr/share/icons/hicolor/32x32/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data/icon/favicon_64.png ./usr/share/icons/hicolor/64x64/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data/icon/favicon_128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
-  - cp ./PrusaControl-master/data/icon/favicon_256.png ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png
+  - cp ./PrusaControl-*/data/icon/favicon_32.png ./usr/share/icons/hicolor/32x32/apps/prusacontrol.png
+  - cp ./PrusaControl-*/data/icon/favicon_64.png ./usr/share/icons/hicolor/64x64/apps/prusacontrol.png
+  - cp ./PrusaControl-*/data/icon/favicon_128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
+  - cp ./PrusaControl-*/data/icon/favicon_256.png ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png
   - cp ./usr/share/icons/hicolor/256x256/apps/prusacontrol.png .
-  - # cp PrusaControl-master/data/v.txt ../VERSION
+  - # cp PrusaControl-*/data/v.txt ../VERSION
   - # sed -i -e 's|v||g' ../VERSION
   - echo $TRAVIS_BUILD_NUMBER > ../VERSION
   - find . -iname '*Tk*' -exec rm -rf {} \; || true
@@ -65,15 +65,15 @@ script:
   - rm -rf usr/share/locale/
   - ../Slic3r-*.AppImage --appimage-extract
   - rm ../Slic3r-*.AppImage
-  - mkdir -p PrusaControl-master/tools/Slic3r-Lite
-  - cp -Rf squashfs-root/usr/* PrusaControl-master/tools/Slic3r-Lite/
+  - mkdir -p PrusaControl-*/tools/Slic3r-Lite
+  - cp -Rf squashfs-root/usr/* PrusaControl-*/tools/Slic3r-Lite/
   - rm -rf squashfs-root/
   - rm -rf lib/x86_64-linux-gnu/libreadline.so.6
   - ./usr/bin/python3 -m compileall . -fqb # Compile all python code for speed
   - find . -name '*.py' -exec rm -rf {} \; || true # Then remove the original python files for size
   - find . -name '*.spec' -exec rm -rf {} \; || true
-  - rm -rf ./PrusaControl-master/ts || true
-  - rm -rf ./PrusaControl-master/doc || true
-  - rm -rf ./PrusaControl-master/.git/ || true
-  - rm -rf ./PrusaControl-master/.idea/ || true
+  - rm -rf ./PrusaControl-*/ts || true
+  - rm -rf ./PrusaControl-*/doc || true
+  - rm -rf ./PrusaControl-*/.git/ || true
+  - rm -rf ./PrusaControl-*/.idea/ || true
   - ###########################
