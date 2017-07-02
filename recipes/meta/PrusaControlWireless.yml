@@ -21,7 +21,7 @@ script:
   - cp -Rf ../venv/lib/python3.*/site-packages/* usr/lib/python3/dist-packages/
   - cat > prusacontrol.desktop <<\EOF
   - [Desktop Entry]
-  - Name=PrusaControl
+  - Name=PrusaControl Wireless
   - Icon=prusacontrol
   - Exec=prusacontrol
   - Categories=Graphics;
