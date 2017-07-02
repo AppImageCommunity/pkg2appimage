@@ -34,6 +34,16 @@ case "$(uname -i)" in
 #  arm*)
 #    echo "ARM system architecture"
 #    SYSTEM_ARCH="";;
+  unknown)
+#         uname -i not answer on debian, then:
+    case "$(uname -m)" in
+      x86_64|amd64)
+#        echo "x86-64 system architecture"
+        SYSTEM_ARCH="x86_64";;
+      i?86)
+#        echo "x86 system architecture"
+        SYSTEM_ARCH="i686";;
+    esac ;;
   *)
     echo "Unsupported system architecture"
     exit 1;;
