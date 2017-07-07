@@ -33,3 +33,6 @@
 
 # Backup & Temporary files
 *~
+
+# Local Environment
+.env
