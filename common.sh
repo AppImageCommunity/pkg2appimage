@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # return true if the input command exists in $PATH
 cmdExists() {
   command -v $1 >/dev/null 2>/dev/null;
@@ -40,3 +42,7 @@ getDate() {
 getReadLink
 getSed
 getDate
+
+export READLINK
+export SED
+export DATE

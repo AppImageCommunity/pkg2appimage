@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # .env loading in the shell
 dotenv () {
   set -a
