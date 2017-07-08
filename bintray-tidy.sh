@@ -8,6 +8,13 @@
 set -e # exit on error - don't want to accidently delete the wrong version!
 #set -x
 
+. ./common.sh
+
+HERE="$(dirname "$($READLINK -f "${0}")")"
+
+# Load environments from .env if exist
+. ${HERE}/dotenv.sh
+
 function showHelp() {
 cat <<EOF
                             ~~~ bintray-tidy.sh ~~~
@@ -92,10 +99,14 @@ function initialize_variables() {
 }
 
 function get_remote_versions() {
-  readarray -t REMOTE_VERSIONS < <( \
-  curl -X GET "${PCK_URL}" \
-    | sed -nr 's|.*"versions":\["([^]]*)"\].*|\1|p' \
-    | sed 's|","|\n|g' )
+  versions=$(curl -X GET "${PCK_URL}" \
+    | $SED -nr 's|.*"versions":\["([^]]*)"\].*|\1|p' \
+    | $SED 's|","|\n|g')
+  read -r -a REMOTE_VERSIONS <<< $versions
+  #readarray -t REMOTE_VERSIONS < <( \
+  #curl -X GET "${PCK_URL}" \
+  #  | $SED -nr 's|.*"versions":\["([^]]*)"\].*|\1|p' \
+  #  | $SED 's|","|\n|g' )
   echo "$0: ${#REMOTE_VERSIONS[@]} versions found on the remote server."
 }
 
@@ -112,7 +123,7 @@ function max_versions() {
 
 function max_days() {
   # Delete versions that are more than ${max_days} days old:
-  cuttoff_date_YMD="$(date --utc -d "$max_days days ago" +%Y%m%d)" # YYYYMMDD
+  cuttoff_date_YMD="$($DATE --utc -d "$max_days days ago" +%Y%m%d)" # YYYYMMDD
   for ((i=0;i<${#REMOTE_VERSIONS[@]};i++)); do
     get_version_date "${REMOTE_VERSIONS[$i]}" || continue # skip version
 
@@ -134,19 +145,19 @@ function archive() {
   for ((i=0;i<${#REMOTE_VERSIONS[@]};i++)); do
     get_version_date "${REMOTE_VERSIONS[$i]}" || continue # skip version
 
-    [ "$version_date_YMD" -gt "$(date --utc -d "$algorithm_last_changed" +%Y%m%d)" ] || continue
+    [ "$version_date_YMD" -gt "$($DATE --utc -d "$algorithm_last_changed" +%Y%m%d)" ] || continue
 
-    if [ "$version_date_YMD" -ge "$(date --utc -d "7 days ago" +%Y%m%d)" ]; then
+    if [ "$version_date_YMD" -ge "$($DATE --utc -d "7 days ago" +%Y%m%d)" ]; then
       # Keep every version from last 7 days
       print_action "7D: Keeping" "${REMOTE_VERSIONS[$i]}" "$created"
-    elif [ "$version_date_YMD" -ge "$(date --utc -d "1 month ago" +%Y%m%d)" ]; then
+    elif [ "$version_date_YMD" -ge "$($DATE --utc -d "1 month ago" +%Y%m%d)" ]; then
       # Keep maximum one version per day for past month
       if [ "$version_date_YMD" != "$previous_version_date_YMD" ]; then
         print_action "1pD: Keeping" "${REMOTE_VERSIONS[$i]}" "$created"
       else
         delete_version "${REMOTE_VERSIONS[$i]}" "$created"
       fi
-    elif [ "$version_date_YMD" -ge "$(date --utc -d "3 months ago" +%Y%m%d)" ]; then
+    elif [ "$version_date_YMD" -ge "$($DATE --utc -d "3 months ago" +%Y%m%d)" ]; then
       # Keep maximum one version per week for past 3 months
       if [ "$version_date_Ywk" != "$previous_version_date_Ywk" ]; then
         print_action "1pW: Keeping" "${REMOTE_VERSIONS[$i]}" "$created"
@@ -156,7 +167,7 @@ function archive() {
     else
       if [ "${version_date_YMD:0:6}" != "${previous_version_date_YMD:0:6}" ]; then
         # Maximum one version per month...
-        if [ "$version_date_YMD" -ge "$(date --utc -d "1 year ago" +%Y%m%d)" ]; then
+        if [ "$version_date_YMD" -ge "$($DATE --utc -d "1 year ago" +%Y%m%d)" ]; then
           # Keep it if less than a year old
           print_action "1pM: Keeping" "${REMOTE_VERSIONS[$i]}" "$created"
         elif [ "$((${version_date_YMD:4:2}%3))" == "0" ]; then
@@ -175,17 +186,17 @@ function archive() {
 }
 
 function get_version_date() {
-  created="$(${CURL} -X GET "${PCK_URL}/versions/$1" 2>/dev/null | sed -nr \
+  created="$(${CURL} -X GET "${PCK_URL}/versions/$1" 2>/dev/null | $SED -nr \
 's|.*"created":"([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z)".*|\1|p' )"
   [ "$created" ] || return 1 # failed to fetch "created" field
-  version_date_YMD="$(date --utc -d "$created" +%Y%m%d)" # YYYYMMDD
-  version_date_Ywk="$(date --utc -d "$created" +%Y%V)" # YYYY<weeknum>
+  version_date_YMD="$($DATE --utc -d "$created" +%Y%m%d)" # YYYYMMDD
+  version_date_Ywk="$($DATE --utc -d "$created" +%Y%V)" # YYYY<weeknum>
   [ "$version_date_YMD" ] || return 1 # "created" field was wrong format
 }
 
 function print_action() {
   if [ "$3" ]; then
-    echo "$1 version $2 ($(date --utc -d "$3" "+%d-%b-%Y %T %Z"))"
+    echo "$1 version $2 ($($DATE --utc -d "$3" "+%d-%b-%Y %T %Z"))"
   else
     echo "$1 version $2"
   fi
@@ -246,9 +257,9 @@ esac
 
 # Get package (passed in on the command line)
 [ "$1" ] || fatal_error "missing package"
-package="$(sed -nr 's|^([^/]*/){0,2}([^/]*)$|\2|p' <<< "$1")" # required
-repo="$(sed -nr 's|^([^/]*/){0,1}([^/]*)/[^/]*$|\2|p' <<< "$1")" # optional
-owner="$(sed -nr 's|^([^/]*)/[^/]*/[^/]*$|\1|p' <<< "$1")" # optional
+package="$($SED -nr 's|^([^/]*/){0,2}([^/]*)$|\2|p' <<< "$1")" # required
+repo="$($SED -nr 's|^([^/]*/){0,1}([^/]*)/[^/]*$|\2|p' <<< "$1")" # optional
+owner="$($SED -nr 's|^([^/]*)/[^/]*/[^/]*$|\1|p' <<< "$1")" # optional
 [ "${package}" ] || fatal_error "package '$1' badly formed"
 [ "${repo}" ] && BINTRAY_REPO="${repo}" || true # override env
 [ "${owner}" ] && BINTRAY_REPO_OWNER="${owner}" || true # override env

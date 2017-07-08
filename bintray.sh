@@ -1,6 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 # Push AppImages and related metadata to Bintray
+# Make it generic for general consumption, I find it useful.
+. ./common.sh
+
+HERE="$(dirname "$($READLINK -f "${0}")")"
+
+# Load environments from .env if exist
+. ${HERE}/dotenv.sh
+
 # https://bintray.com/docs/api/
 
 set -e # Exit on errors
@@ -17,14 +27,41 @@ if [ "${BINTRAY_API_KEY}" == "" ] ; then
   exit 0
 fi
 
-PCK_NAME="$(basename "$1")"
 BINTRAY_USER="${BINTRAY_USER:-probono}"
 BINTRAY_API_KEY="$BINTRAY_API_KEY" # env
 BINTRAY_REPO="${BINTRAY_REPO:-AppImages}"
 BINTRAY_REPO_OWNER="${BINTRAY_REPO_OWNER:-$BINTRAY_USER}" # owner and user not always the same
+BINTRAY_PARAMETERS="${BINTRAY_PARAMETERS}"
+if [ "x${BINTRAY_PARAMETERS}" != "x" ]; then
+  BINTRAY_PARAMETERS=";${BINTRAY_PARAMETERS}"
+fi
 WEBSITE_URL="${WEBSITE_URL:-http://appimage.org}"
 ISSUE_TRACKER_URL="${ISSUE_TRACKER_URL:-https://github.com/probonopd/AppImages/issues}"
 VCS_URL="${VCS_URL:-https://github.com/probonopd/AppImages.git}" # Mandatory for packages in free Bintray repos
+if [ "x${LICENSES}" != "x" ]; then
+  IFS=',' read -r -a LIC <<< "${LICENSES}"
+  LICENSES=
+  for index in "${!LIC[@]}"
+  do
+    LICENSES=${LICENSES}_\"${LIC[index]}\"
+  done
+  LICENSES="@${LICENSES}@"
+  LICENSES=$(echo $LICENSES | $SED "s|\@_||" | $SED "s/_/, /g" | $SED "s/\@//")
+else
+  LICENSES="\"MIT\""
+fi
+if [ "x${LABELS}" != "x" ]; then
+  IFS=',' read -r -a LAB <<< "${LABELS}"
+  LABELS=
+  for index in "${!LAB[@]}"
+  do
+    LABELS=${LABELS}_\"${LAB[index]}\"
+  done
+  LABELS="@${LABELS}@"
+  LABELS=$(echo $LABELS | $SED "s|\@_||" | $SED "s/_/, /g" | $SED "s/\@//")
+else
+  LABELS="\"AppImage\", \"AppImageKit\""
+fi
 
 # Figure out whether we should use sudo
 SUDO=''
@@ -38,7 +75,7 @@ if [ -e /usr/bin/apt-get ] ; then
 fi
 
 if [ -e /usr/bin/yum ] ; then
-  $SUDO yum -y install install curl bsdtar zsync
+  $SUDO yum install -y curl bsdtar zsync
 fi
 
 if [ -e /usr/bin/pacman ] ; then
@@ -48,6 +85,14 @@ if [ -e /usr/bin/pacman ] ; then
       $SUDO pacman -S "$i"
     fi
   done
+fi
+
+if [ -e /usr/bin/zypper ] ; then
+  $SUDO zypper install -y curl bsdtar zsync
+fi
+
+if [ -e /usr/local/bin/brew ] ; then
+  brew install curl coreutils zsync #Mac comes with bsdtar
 fi
 
 which curl >/dev/null || exit 1
@@ -67,34 +112,37 @@ CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} -H Accept:application/json -w \n
 
 set -x # Be verbose from here on
 
+CONTENT_TYPE="Content-Type:application/octet-stream"
 IS_AN_APPIMAGE=$(file -kib "$FILE" | grep -q "application/x-executable" && file -kib "$FILE" | grep -q "application/x-iso9660-image" && echo 1 || true);
 if [ "$IS_AN_APPIMAGE" ] ; then
+  # Set content-type
+  CONTENT_TYPE="Content-Type:application/x-iso9660-appimage" 
   # Get metadata from the desktop file inside the AppImage
   DESKTOP=$(bsdtar -tf "$FILE" | grep '^./[^/]*.desktop$' | head -n 1)
   # Extract the description from the desktop file
 
   echo "* DESKTOP $DESKTOP"
-  
-  PCK_NAME=$(bsdtar -f "$FILE" -O -x ./"${DESKTOP}" | grep -e "^Name=" | head -n 1 | sed s/Name=//g | cut -d " " -f 1 | xargs)
+
+  PCK_NAME=$(bsdtar -f "$FILE" -O -x ./"${DESKTOP}" | grep -e "^Name=" | head -n 1 | $SED s/Name=//g | cut -d " " -f 1 | xargs)
   if [ "$PCK_NAME" == "" ] ; then
     bsdtar -f "$FILE" -O -x ./"${DESKTOP}"
     echo "PCK_NAME missing in ${DESKTOP}"
   fi
-  
-  DESCRIPTION=$(bsdtar -f "$FILE" -O -x ./"${DESKTOP}" | grep -e "^Comment=" | sed s/Comment=//g)
-  
+
+  DESCRIPTION=$(bsdtar -f "$FILE" -O -x ./"${DESKTOP}" | grep -e "^Comment=" | $SED s/Comment=//g)
+
   # Check if there is appstream data and use it
-  APPDATANAME=$(echo "${DESKTOP}" | sed 's/.desktop/.appdata.xml/g' | sed 's|./||'  )
+  APPDATANAME=$(echo "${DESKTOP}" | $SED 's/.desktop/.appdata.xml/g' | $SED 's|./||'  )
   APPDATAFILE=$(bsdtar -tf "$FILE" | grep "${APPDATANAME}$" | head -n 1 || true)
   APPDATA=$(bsdtar -f "$FILE" -O -x "${APPDATAFILE}" || true)
   if [ "$APPDATA" == "" ] ; then
     echo "* APPDATA missing"
   else
     echo "* APPDATA found"
-    DESCRIPTION=$(echo "$APPDATA" | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g')
+    DESCRIPTION=$(echo "$APPDATA" | grep -o -e "<description.*description>" | $SED -e 's/<[^>]*>//g')
     WEBSITE_URL=$(echo "$APPDATA" | grep "homepage" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
   fi
-  
+
   if [ "$DESCRIPTION" == "" ] ; then
     bsdtar -f "$FILE" -O -x ./"${DESKTOP}"
     echo "DESCRIPTION missing and no Comment= in ${DESKTOP}"
@@ -106,38 +154,40 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
   ./"$FILE" --appimage-mount &
   AIPID=$?
   echo Mounted with PID $AIPID
-  AIMOUNTPOINT=$(mount | grep "$(readlink -f "$FILE")" | cut -d " " -f 3)
+  AIMOUNTPOINT=$(mount | grep "$($READLINK -f "$FILE")" | cut -d " " -f 3)
   echo "$AIMOUNTPOINT"
 
   # Get metadata from the desktop file inside the AppImage
   DESKTOP=$(find "$AIMOUNTPOINT" -maxdepth 1 -name '*.desktop' | head -n 1)
   # Extract the description from the desktop file
   echo "* DESKTOP $DESKTOP"
-  
-  PCK_NAME=$(cat "${DESKTOP}" | grep -e "^Name=" | head -n 1 | sed s/Name=//g | cut -d " " -f 1 | xargs)
+
+  PCK_NAME=$(cat "${DESKTOP}" | grep -e "^Name=" | head -n 1 | $SED s/Name=//g | cut -d " " -f 1 | xargs)
   if [ "$PCK_NAME" == "" ] ; then
     echo "PCK_NAME missing in ${DESKTOP}"
   fi
   echo "* PCK_NAME PCK_NAME"
-  
-  DESCRIPTION=$(cat "${DESKTOP}" | grep -e "^Comment=" | sed s/Comment=//g)
+
+  DESCRIPTION=$(cat "${DESKTOP}" | grep -e "^Comment=" | $SED s/Comment=//g)
   echo "* DESCRIPTION $DESCRIPTION"
-  
+
   # Check if there is appstream data and use it
-  APPDATA=$(echo "${DESKTOP}" | sed 's/.desktop/.appdata.xml/g' | sed 's|./||')
+  APPDATA=$(echo "${DESKTOP}" | $SED 's/.desktop/.appdata.xml/g' | $SED 's|./||')
   if [ ! -e "$APPDATA" ] ; then
     echo "* APPDATA missing"
   else
     echo "* APPDATA found"
-    DESCRIPTION=$(cat "$APPDATA" | grep -o -e "<description.*description>" | sed -e 's/<[^>]*>//g')
+    DESCRIPTION=$(cat "$APPDATA" | grep -o -e "<description.*description>" | $SED -e 's/<[^>]*>//g')
     WEBSITE_URL=$(cat "$APPDATA" | grep "homepage" | head -n 1 | cut -d ">" -f 2 | cut -d "<" -f 1)
   fi
-  
+
   if [ "$DESCRIPTION" == "" ] ; then
     echo "No AppStream data and no Comment= in ${DESKTOP}"
   fi
 fi
 
+[ "$PCK_NAME" == "" ] && PCK_NAME=$(basename "$FILE" | cut -d "_" -f 1)
+[ "$VERSION" == "" ] && VERSION=$(basename "$FILE" | cut -d "_" -f 2)
 [ "$PCK_NAME" == "" ] && PCK_NAME=$(basename "$FILE" | cut -d "-" -f 1)
 [ "$VERSION" == "" ] && VERSION=$(basename "$FILE" | cut -d "-" -f 2)
 
@@ -161,6 +211,18 @@ else
   echo "* DESCRIPTION $DESCRIPTION"
 fi
 
+if [ "$LICENSES" == "" ] ; then
+  echo "* LICENSES <missing>"
+else
+  echo "* LICENSES $LICENSES"
+fi
+
+if [ "$LABELS" == "" ] ; then
+  echo "* LABELS <missing>"
+else
+  echo "* LABELS $LABELS"
+fi
+
 set +x # Do not be verbose from here on
 ##########
 
@@ -173,8 +235,8 @@ data="{
     \"website_url\": [\"${WEBSITE_URL}\"],
     \"vcs_url\": [\"${VCS_URL}\"],
     \"issue_tracker_url\": [\"${ISSUE_TRACKER_URL}\"],
-    \"licenses\": [\"MIT\"],
-    \"labels\": [\"AppImage\", \"AppImageKit\"]
+    \"licenses\": [${LICENSES}],
+    \"labels\": [${LABELS}]
     }"
 ${CURL} -H Content-Type:application/json -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}"
 
@@ -185,11 +247,11 @@ if [ "$IS_AN_APPIMAGE" ] ; then
   if which zsyncmake > /dev/null 2>&1; then
     echo ""
     echo "Embedding update information into ${FILE}..."
-    # Clear ISO 9660 Volume Descriptor #1 field "Application Used" 
+    # Clear ISO 9660 Volume Descriptor #1 field "Application Used"
     # (contents not defined by ISO 9660) and write URL there
     dd if=/dev/zero of="$FILE" bs=1 seek=33651 count=512 conv=notrunc
     # Example for next line: Subsurface-_latestVersion-x86_64.AppImage
-    NAMELATESTVERSION="$(basename "$FILE" | sed -e "s|${VERSION}|_latestVersion|g")"
+    NAMELATESTVERSION="$(basename "$FILE" | $SED -e "s|${VERSION}|_latestVersion|g")"
     # Example for next line: bintray-zsync|probono|AppImages|Subsurface|Subsurface-_latestVersion-x86_64.AppImage.zsync
     LINE="bintray-zsync|${BINTRAY_REPO_OWNER}|${BINTRAY_REPO}|${PCK_NAME}|${NAMELATESTVERSION}.zsync"
     echo "$LINE" | dd of="$FILE" bs=1 seek=33651 count=512 conv=notrunc
@@ -219,12 +281,7 @@ fi
 
 echo ""
 echo "Uploading and publishing ${FILE}..."
-if [ -z "$IS_TYPE2_APPIMAGE" ] ; then
-  ${CURL} -H Content-Type:application/x-iso9660-appimage -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
-else
-  ${CURL} -H Content-Type:application/octet-stream -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")?publish=1&override=1"
-fi
-
+${CURL} -H "$CONTENT_TYPE" -T "$FILE" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE")${BINTRAY_PARAMETERS}?publish=1&override=1"
 
 if [ "$TRAVIS_JOB_ID" ] ; then
 echo ""
@@ -239,18 +296,4 @@ BUILD_LOG="https://api.travis-ci.org/jobs/${TRAVIS_JOB_ID}/log.txt?deansi=true"
 ${CURL} -H Content-Type:application/json -X POST -d "${data}" "${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/versions/${VERSION}/release_notes"
 fi
 
-HERE="$(dirname "$(readlink -f "${0}")")"
 "${HERE}/bintray-tidy.sh" archive "${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}" # -s to simulate
-
-# Seemingly this works only after the second time running this script - thus disabling for now (FIXME)
-# echo ""
-# echo "Adding ${FILE} to download list..."
-# sleep 5 # Seemingly needed
-#     data="{
-#     \"list_in_downloads\": true
-#     }"
-# ${CURL} -H Content-Type:application/json -X PUT -d "${data}" ${API}/file_metadata/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename ${FILE})
-# echo "TODO: Remove earlier versions of the same architecture from the download list"
-
-# echo ""
-# echo "TODO: Uploading screenshot for ${FILE}..."
