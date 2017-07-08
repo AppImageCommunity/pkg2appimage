@@ -46,7 +46,7 @@ if [ "x${LICENSES}" != "x" ]; then
     LICENSES=${LICENSES}_\"${LIC[index]}\"
   done
   LICENSES="@${LICENSES}@"
-  LICENSES=$(echo $LICENSES | $SED "s|\@_||" | $SED "s/_/, /" | $SED "s/\@//")
+  LICENSES=$(echo $LICENSES | $SED "s|\@_||" | $SED "s/_/, /g" | $SED "s/\@//")
 else
   LICENSES="\"MIT\""
 fi
@@ -58,7 +58,7 @@ if [ "x${LABELS}" != "x" ]; then
     LABELS=${LABELS}_\"${LAB[index]}\"
   done
   LABELS="@${LABELS}@"
-  LABELS=$(echo $LABELS | $SED "s|\@_||" | $SED "s/_/, /" | $SED "s/\@//")
+  LABELS=$(echo $LABELS | $SED "s|\@_||" | $SED "s/_/, /g" | $SED "s/\@//")
 else
   LABELS="\"AppImage\", \"AppImageKit\""
 fi
