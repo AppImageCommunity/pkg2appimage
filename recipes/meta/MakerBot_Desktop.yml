@@ -2,6 +2,7 @@
 # MakerBot Desktop has limited support for Ubuntu 14.04 LTS and Ubuntu 16.04 LTS. Archived versions are also available for Fedora.  
 
 app: Makerware
+union: true
 
 ingredients:
   dist: trusty
