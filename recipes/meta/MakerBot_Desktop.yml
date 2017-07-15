@@ -7,4 +7,4 @@ ingredients:
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
-    - deb http://downloads.makerbot.com/makerware/ubuntu/ /
+    - deb http://downloads.makerbot.com/makerware/ubuntu trusty main
