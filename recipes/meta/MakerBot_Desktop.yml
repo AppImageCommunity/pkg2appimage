@@ -8,3 +8,5 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
     - deb http://downloads.makerbot.com/makerware/ubuntu trusty main
+  pretend:
+    - conveyor-ui 3.9.1
