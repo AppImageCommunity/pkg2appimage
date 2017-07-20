@@ -1,4 +1,4 @@
-app: Arduino_ESP32
+app: Arduino
 
 ingredients:
   dist: trusty
