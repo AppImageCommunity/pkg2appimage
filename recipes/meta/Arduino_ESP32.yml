@@ -21,6 +21,7 @@ script:
   - cp usr/share/icons/hicolor/256x256/apps/arduino.png .
   - mkdir -p usr/share/metainfo/
   - rm usr/share/metainfo/arduino.appdata.xml || true
+  - rm -rf usr/bin/hardware/arduino/ # 250 MB size limit on Bintray
   - # https://github.com/arduino/Arduino/issues/5890
   - # wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/metainfo/arduino.appdata.xml
   - mkdir -p usr/bin/hardware/espressif
@@ -29,5 +30,4 @@ script:
   - cd esp32/tools/
   - python get.py
   - cd ../../
-  - find . -type f -exec strip {} \;
   - rm -rf ./esp32/.git
