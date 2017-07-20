@@ -5,8 +5,8 @@ ingredients:
   sources:
     - deb http://europe-west1.gce.clouds.archive.ubuntu.com/ubuntu/ trusty main universe
   packages:
-    - python3-minimal
-    - python3-serial
+    - python-minimal
+    - python-serial
   script:
     - DLD=$(wget -q "https://www.arduino.cc/en/Main/Software" -O - | grep linux64.tar.xz | head -n 1 | grep -Poe "arduino-.*xz")
     - wget -c "https://downloads.arduino.cc/$DLD"
