@@ -31,4 +31,4 @@ script:
   - python get.py
   - cd ../../
   - find . -type f -exec strip {} \;
-- rm -rf ./esp32/.git
+  - rm -rf ./esp32/.git
