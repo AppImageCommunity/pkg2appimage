@@ -10,8 +10,7 @@ ingredients:
   script:
     - DLD=$(wget -q "https://www.arduino.cc/en/Main/Software" -O - | grep linux64.tar.xz | head -n 1 | grep -Poe "arduino-.*xz")
     - wget -c "https://downloads.arduino.cc/$DLD"
-    - echo -n $DLD | cut -d "-" -f 2 > VERSION
-    - echo -n "esp32" >> VERSION
+    - echo $(echo -n $DLD | cut -d "-" -f 2)$(echo "esp32") > VERSION
     
 script:
   - tar xf ../arduino-*.tar.xz --strip-components=1 -C usr/bin/
