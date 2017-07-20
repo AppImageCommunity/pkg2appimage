@@ -1,0 +1,34 @@
+app: Arduino_ESP32
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://europe-west1.gce.clouds.archive.ubuntu.com/ubuntu/ trusty main universe
+  packages:
+    - python3-minimal
+    - python3-serial
+  script:
+    - DLD=$(wget -q "https://www.arduino.cc/en/Main/Software" -O - | grep linux64.tar.xz | head -n 1 | grep -Poe "arduino-.*xz")
+    - wget -c "https://downloads.arduino.cc/$DLD"
+    - echo -n $DLD | cut -d "-" -f 2 > VERSION
+    - echo -n "esp32" >> VERSION
+    
+script:
+  - tar xf ../arduino-*.tar.xz --strip-components=1 -C usr/bin/
+  - cp -Rf usr/bin/lib/icons/* usr/share/icons/hicolor ; rm -r usr/bin/lib/icons/
+  - find . -name desktop.template -exec cp {} arduino.desktop \;
+  - sed -i -e 's|<.*>$|arduino|g' arduino.desktop
+  - sed -i -e 's|Arduino IDE|Arduino ESP32|g' arduino.desktop
+  - cp usr/share/icons/hicolor/256x256/apps/arduino.png .
+  - mkdir -p usr/share/metainfo/
+  - rm usr/share/metainfo/arduino.appdata.xml || true
+  - # https://github.com/arduino/Arduino/issues/5890
+  - # wget -c "https://github.com/arduino/Arduino/raw/master/build/linux/dist/appdata.xml" -O usr/share/metainfo/arduino.appdata.xml
+  - mkdir -p usr/bin/hardware/espressif
+  - cd usr/bin/hardware/espressif
+  - git clone https://github.com/espressif/arduino-esp32.git esp32
+  - cd esp32/tools/
+  - python get.py
+  - cd ../../
+  - find . -type f -exec strip {} \;
+- rm -rf ./esp32/.git
