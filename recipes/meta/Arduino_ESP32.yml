@@ -30,5 +30,5 @@ script:
   - cd esp32/tools/
   - python get.py
   - cd ../../
-  - find . -type f -exec strip {} \;
+  - # find . -type f -exec strip {} \;
   - rm -rf ./esp32/.git
