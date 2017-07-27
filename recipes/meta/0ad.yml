@@ -1,0 +1,12 @@
+app: 0ad
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://ftp.fau.de/ubuntu/ trusty main universe
+  ppas:
+    - wfg/0ad
+
+
+script:
+  - mv usr/games/* usr/bin/
