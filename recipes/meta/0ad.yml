@@ -9,4 +9,5 @@ ingredients:
 
 
 script:
+  - find usr/lib/games/0ad/ -type f -iname '*.so.*' -exec mv {} usr/lib/ \;
   - mv usr/games/* usr/bin/
