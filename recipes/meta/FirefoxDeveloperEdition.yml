@@ -2,7 +2,7 @@ app: FirefoxDeveloperEdition
 
 ingredients:
   script:
-    - wget -c --trust-server-names 'https://download.mozilla.org/?product=firefox-aurora-latest-l10n-ssl&os=linux64&lang=en-GB'
+    - wget -c --trust-server-names 'https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-GB'
     - ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g' > VERSION
 
 script:
