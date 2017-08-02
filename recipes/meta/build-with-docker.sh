@@ -72,14 +72,14 @@ if [ $CACHE -ne 0 ]; then
     ARGS="-v $(readlink -f $recipe_name):/workspace/$recipe_name"
 fi
 
-log  "Building $RECIPE in a container..."
+log "Building $RECIPE in a container..."
 
 randstr=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 8 | head -n 1)
 containerid=appimage-build-$randstr
 imageid=appimage-build-$(id -u)
 
 log "Building Docker container"
-(set -xe; docker build -t $imageid --build-arg UID=$(id -u) --build-arg GID=$(id -g) .)
+(set -xe; docker build -t $imageid .)
 
 log "Running container"
 mkdir -p out
