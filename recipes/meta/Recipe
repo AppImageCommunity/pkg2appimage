@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+env
+
 usage() {
   echo "usage:"
   echo "  $0 [--no-di] META-NAME|YAMLFILE"
@@ -36,7 +38,7 @@ which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
 if [ ! -f "${!#}" ] ; then
   YAMLFILE=/tmp/_recipe.yml
   rm -f "$YAMLFILE"
-  wget -q "https://github.com/probonopd/AppImages/raw/master/recipes/meta/${!#}.yml" -O "$YAMLFILE"
+  wget -q "https://github.com/AppImage/AppImages/raw/master/recipes/meta/${!#}.yml" -O "$YAMLFILE"
 else
   YAMLFILE=$(readlink -f "${!#}")
 fi
@@ -111,7 +113,7 @@ fi
 # variable FUNCTIONS_SH was set and the file exists
 if [ -z "$FUNCTIONS_SH" ] ; then
   if [ ! -e functions.sh ] ; then
-    wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+    wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
   fi
   . ./functions.sh
 else
@@ -394,7 +396,7 @@ sed -i -e 's|\.xpm||g' *.desktop || true
 
 # Setting PYTHONHOME instead
 # Fix Python imports,
-# https://github.com/probonopd/AppImages/issues/172
+# https://github.com/AppImage/AppImages/issues/172
 # SITECUSTOMIZEFILES=$(find . -name "sitecustomize.py")
 # for SITECUSTOMIZEFILE in $SITECUSTOMIZEFILES ; do
 # rm $SITECUSTOMIZEFILE # Remove symlinks, replace by files
