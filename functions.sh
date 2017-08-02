@@ -194,6 +194,13 @@ generate_type2_appimage()
   URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${SYSTEM_ARCH}.AppImage"
   wget -c "$URL" -O appimagetool
   chmod a+x ./appimagetool
+  if [ "$DOCKER_BUILD" ]; then
+    ./appimagetool --appimage-extract
+    alias appimagetool=$(readlink -f squashfs-root/AppRun)
+    rm appimagetool
+  else
+    alias appimagetool=$(readlink -f appimagetool)
+  fi
   set +x
   if ( [ ! -z "$KEY" ] ) && ( ! -z "$TRAVIS" ) ; then
     wget https://github.com/AppImage/AppImageKit/files/584665/data.zip -O data.tar.gz.gpg
@@ -202,10 +209,10 @@ generate_type2_appimage()
     sudo chown -R $USER .gnu*
     mv $HOME/.gnu* $HOME/.gnu_old ; mv .gnu* $HOME/
     GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
-    VERSION=$VERSION.glibc$GLIBC_NEEDED ./appimagetool -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    VERSION=$VERSION.glibc$GLIBC_NEEDED appimagetool -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   else
     GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
-    VERSION=$VERSION.glibc$GLIBC_NEEDED ./appimagetool -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    VERSION=$VERSION.glibc$GLIBC_NEEDED appimagetool -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
   set -x
   mkdir -p ../out/ || true
