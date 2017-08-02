@@ -197,9 +197,15 @@ generate_type2_appimage()
   appimagetool=$(readlink -f appimagetool)
 
   if [ "$DOCKER_BUILD" ]; then
+    appimagetool_tempdir=$(mktemp -d)
+    mv appimagetool "$appimagetool_tempdir"
+    pushd "$appimagetool_tempdir" &>/dev/null
     ./appimagetool --appimage-extract
-    appimagetool=$(readlink -f squashfs-root/AppRun)
     rm appimagetool
+    appimagetool=$(readlink -f squashfs-root/AppRun)
+    popd &>/dev/null
+    _appimagetool_cleanup() { [ -d "$appimagetool_tempdir" ] && rm -r "$appimagetool_tempdir"; }
+    trap _appimagetool_cleanup EXIT
   fi
 
   set +x
