@@ -355,6 +355,7 @@ fi
 if [[ "$ARCH" = "i686" ]] ; then
 APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
 fi
+echo $APPIMAGE
 
 # Put this script into the AppImage for debugging
 # FIXME: The follwing line does not work
@@ -366,7 +367,10 @@ rm -f ../out/*.AppImage || true
 
 # Convert the AppDir into an AppImage
 rm -rf $APPIMAGE
-../AppImageKit/AppImageAssistant.AppDir/package ./$APP.AppDir/ ../out/$APPIMAGE
+
+wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+chmod a+x ./appimagetool*
+./appimagetool* ./$APP.AppDir/ ../out/$APPIMAGE
 
 chmod a+rwx ../out/$APPIMAGE # So that we can edit the AppImage outside of the Docker container
 ls -lh ../out/$APPIMAGE
