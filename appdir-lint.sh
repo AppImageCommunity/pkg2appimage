@@ -75,7 +75,7 @@ if [ -z "$APPDATA" ] ; then
   APPDATA=$(ls "${APPDIR}"/usr/share/appdata/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
 fi
 if [ -z "$APPDATA" ] ; then
-  warn 'No appdata file present. Get one from upstream.'
+  warn 'No appdata file present. Please provide one in the AppImage as per the instructions on https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html#sect-Quickstart-DesktopApps'
 fi
 
 
