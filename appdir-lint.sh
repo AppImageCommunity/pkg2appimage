@@ -76,6 +76,8 @@ if [ -z "$APPDATA" ] ; then
 fi
 if [ -z "$APPDATA" ] ; then
   warn 'No appdata file present. Please provide one in the AppImage as per the instructions on https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html#sect-Quickstart-DesktopApps'
+else
+  appstreamcli validate-tree "${APPDIR}"
 fi
 
 
