@@ -80,7 +80,7 @@ else
   if [ ! -z $(which appstreamcli)] ; then
     appstreamcli validate-tree "${APPDIR}"
   else
-    echo "Skipping AppStream validation since appstreamcli is not on the $PATH"
+    echo "Skipping AppStream validation since appstreamcli is not on the \$PATH"
   fi
 fi
 
