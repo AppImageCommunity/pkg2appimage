@@ -79,10 +79,9 @@ if [ -z "$APPDATA" ] ; then
 fi
 
 BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
-BUNDLEDLIBS=$(ls "${APPDIR}"/usr/lib/)
 FOUND=""
-for FILE in $BLACKLISTED_FILES ; do
-  for LIB in $BUNDLEDLIBS ; do
+for LIB in $(find "$APPDIR" -exec basename {} \;); do
+  for FILE in $BLACKLISTED_FILES ; do
     if [ "${FILE}" == "${LIB}" ] ; then
       warn "Blacklisted library $LIB found"
     fi
