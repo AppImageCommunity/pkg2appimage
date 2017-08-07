@@ -78,12 +78,13 @@ if [ -z "$APPDATA" ] ; then
   warn 'No appdata file present. Get one from upstream.'
 fi
 
+
 BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
-FOUND=""
-for LIB in $(find "$APPDIR" -exec basename {} \;); do
-  for FILE in $BLACKLISTED_FILES ; do
-    if [ "${FILE}" == "${LIB}" ] ; then
-      warn "Blacklisted library $LIB found"
-    fi
-  done
+for FILE in $BLACKLISTED_FILES ; do
+  if [ ! -z $(find "${APPDIR}" -name $FILE) ] ; then
+    warn "Blacklisted file $FILE found"
+  fi
 done
+
+echo "Lint found no fatal issues"
+exit 0
