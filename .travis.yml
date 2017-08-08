@@ -9,6 +9,7 @@ addons:
     - zsync
     - squashfs-tools
     - aria2
+    - desktop-file-utils
 services:
 - docker
 
