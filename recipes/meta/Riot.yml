@@ -15,3 +15,4 @@ ingredients:
 script:
   - mv opt/Riot/* usr/bin/ ; rm -rf opt/
   - sed -i -e 's|Exec=.*|Exec=riot-web|g' usr/share/applications/riot-web.desktop
+  - sed -i -e 's|Exec=.*|Exec=riot-web|g' riot-web.desktop
