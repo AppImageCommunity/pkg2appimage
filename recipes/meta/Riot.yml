@@ -13,5 +13,5 @@ ingredients:
     - riot-web
 
 script:
-  - mkdir usr/bin ; mv opt/Riot/* usr/bin/ ; rm -rf opt/
+  - mv opt/Riot/* usr/bin/ ; rm -rf opt/
   - sed -i -e 's|Exec=.*|Exec=riot-web|g' usr/share/applications/riot-web.desktop
