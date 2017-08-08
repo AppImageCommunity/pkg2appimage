@@ -1,6 +1,6 @@
 # https://riot.im/desktop.html
 
-app: Riot
+app: Riot-Web
 binpatch: true
 
 ingredients:
