@@ -1,0 +1,16 @@
+# https://riot.im/desktop.html
+
+app: Riot
+binpatch: true
+
+ingredients:
+  dist: jessie
+  sources:
+    - deb http://ftp.us.debian.org/debian/ jessie main
+    - deb http://ftp.us.debian.org/debian/ jessie-backports main
+    - deb https://riot.im/packages/debian/ jessie main
+  packages:
+    - riot-web
+
+script:
+  - ls
