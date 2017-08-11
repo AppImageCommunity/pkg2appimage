@@ -62,11 +62,12 @@ num_keys_warn () {
   fi
 }
 
-num_keys_fatal Name
-num_keys_fatal Exec
+# num_keys_fatal Name # This is not a valid test since [Desktop Action ...] sections can also have Name=
+# num_keys_fatal Exec # This is not a valid test since [Desktop Action ...] sections can also have Name=
+# e.g, https://github.com/CDrummond/cantata/blob/master/cantata.desktop.cmake
 num_keys_fatal Icon
 num_keys_fatal Categories
-num_keys_warn Comment
+# num_keys_warn Comment
 
 # Find the relevant appdata.xml file;
 # according to ximion, usr/share/appdata is a legacy path replaced by usr/share/metainfo
