@@ -35,7 +35,7 @@ if [ ! -e "${APPDIR}/AppRun" ] ; then
 fi
 
 if [ ! -x "${APPDIR}/AppRun" ] ; then
-  fatal "AppRun is not executable" // This seems to generate fals alarms? https://travis-ci.org/AppImage/AppImageHub/builds/266084511#L539
+  fatal "AppRun is not executable" // This seems to generate false alarms? https://travis-ci.org/AppImage/AppImageHub/builds/266084511#L539
 fi
 
 NUM_DESKTOP=$(ls "${APPDIR}"/*.desktop 2>/dev/null | wc -l)
