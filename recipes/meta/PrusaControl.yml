@@ -6617,9 +6617,7 @@ script:
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/Image.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageDraw2.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageDraw.cpython-34.pyc || true
-  - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageEnhance.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageFile.cpython-34.pyc || true
-  - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageFilter.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageFont.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageGrab.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageMath.cpython-34.pyc || true
@@ -6631,7 +6629,6 @@ script:
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageQt.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageSequence.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageShow.cpython-34.pyc || true
-  - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageStat.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageTransform.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImageWin.cpython-34.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/__pycache__/ImImagePlugin.cpython-34.pyc || true
