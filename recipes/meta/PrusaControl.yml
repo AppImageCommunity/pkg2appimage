@@ -6546,7 +6546,6 @@ script:
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageCms.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageDraw2.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageDraw.pyc || true
-  - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageEnhance.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageFilter.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageFont.pyc || true
   - rm -rf  ./usr/lib/python3/dist-packages/PIL/ImageGrab.pyc || true
