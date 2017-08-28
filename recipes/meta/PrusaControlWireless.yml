@@ -49,7 +49,6 @@ script:
   - find . -iname '*Tk*' -exec rm -rf {} \; || true
   - find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
   - find . -iname '*QtSql*' -exec rm -rf {} \; || true
-  - find . -iname '*QtSvg*' -exec rm -rf {} \; || true
   - find . -iname '*QtXml*' -exec rm -rf {} \; || true
   - find . -iname '*lib2to3*' -exec rm -rf {} \; || true
   - find . -iname '*QtTest*' -exec rm -rf {} \; || true
