@@ -38,6 +38,7 @@ script:
   - exec "$APPDIR/usr/bin/python3" ./main.pyc
   - EOF
   - chmod a+x usr/bin/prusacontrol
+  - mkdir -p ./usr/lib/x86_64-linux-gnu/ ; cp /usr/lib/x86_64-linux-gnu/libQtSvg.so.4 ./usr/lib/x86_64-linux-gnu/ # https://github.com/prusa3d/PrusaControl/issues/23
   - cp ./PrusaControl-master/data/icon/favicon_32.png ./usr/share/icons/hicolor/32x32/apps/prusacontrol.png
   - cp ./PrusaControl-master/data/icon/favicon_64.png ./usr/share/icons/hicolor/64x64/apps/prusacontrol.png
   - cp ./PrusaControl-master/data/icon/favicon_128.png ./usr/share/icons/hicolor/128x128/apps/prusacontrol.png
