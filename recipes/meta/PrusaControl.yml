@@ -7,7 +7,6 @@ ingredients:
   packages:
     - python3.4-minimal
     - python3-pyqt4.qtopengl
-    - libqt4-svg
   script:
     - wget -c "https://github.com/prusa3d/PrusaControl/archive/master.tar.gz"
     - sudo apt-get install -y python-virtualenv gcc python3.4-dev python3.4-minimal python3-pip libz-dev libjpeg-dev # Only on the build host
@@ -50,7 +49,6 @@ script:
   - find . -iname '*Tk*' -exec rm -rf {} \; || true
   - find . -iname '*QtNetwork*' -exec rm -rf {} \; || true
   - find . -iname '*QtSql*' -exec rm -rf {} \; || true
-  - find . -iname '*QtSvg*' -exec rm -rf {} \; || true
   - find . -iname '*QtXml*' -exec rm -rf {} \; || true
   - find . -iname '*lib2to3*' -exec rm -rf {} \; || true
   - find . -iname '*QtTest*' -exec rm -rf {} \; || true
