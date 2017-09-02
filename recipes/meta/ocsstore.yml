@@ -1,0 +1,12 @@
+app: OCS-Store
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c https://dl.opendesktop.org/api/files/download/id/1502985368/ocsstore_2.2.0-0ubuntu1_amd64.deb
+    - # FIXME: Don't hardcode version
+
+script:
+  - ls
