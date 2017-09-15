@@ -24,6 +24,7 @@ script:
 
   # Temporary fix for PPA .desktop file not passing validation
   - echo '[Desktop Entry]' > freecad-daily.desktop
+  - echo 'Version=1.0' >> freecad-daily.desktop
   - echo 'Type=Application' >> freecad-daily.desktop
   - echo 'Name=FreeCAD Daily' >> freecad-daily.desktop
   - echo 'Comment=Feature based Parametric Modeler' >> freecad-daily.desktop
