@@ -2,6 +2,10 @@ app: SolveSpace
 binpatch: true
 
 ingredients:
+  packages:
+    - solvespace
+    - libspnav0
+    - libglew-1.13
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
