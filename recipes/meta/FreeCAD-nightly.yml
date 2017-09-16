@@ -16,27 +16,11 @@ ingredients:
 
 script:
   - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
-  # - cp ./usr/share/applications/freecad-daily.desktop .
-  # - ln -s freecad-daily.desktop freecad.desktop
-  # - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
-  # - sed -i -e 's@/usr/bin/@@g' freecad-daily.desktop
-  # - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
-
-  # Temporary fix for PPA .desktop file not passing validation
-  - echo '[Desktop Entry]' > freecad-daily.desktop
-  - echo 'Version=1.0' >> freecad-daily.desktop
-  - echo 'Type=Application' >> freecad-daily.desktop
-  - echo 'Name=FreeCAD Daily' >> freecad-daily.desktop
-  - echo 'Comment=Feature based Parametric Modeler' >> freecad-daily.desktop
-  - echo 'GenericName=CAD Application' >> freecad-daily.desktop
-  - echo 'Exec=freecad-daily' >> freecad-daily.desktop
-  - echo 'Icon=freecad-daily' >> freecad-daily.desktop
-  - echo 'Terminal=false' >> freecad-daily.desktop
-  - echo 'Categories=Graphics;Science;Engineering;' >> freecad-daily.desktop
-  - echo 'StartupNotify=true' >> freecad-daily.desktop
-  - echo 'MimeType=application/x-extension-fcstd;' >> freecad-daily.desktop
+  - cp ./usr/share/applications/freecad-daily.desktop .
   - ln -s freecad-daily.desktop freecad.desktop
-
+  - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
+  - sed -i -e 's@/usr/bin/@@g' freecad-daily.desktop
+  - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
   # - sed -i -e 's@Icon=freecad@Icon=freecad-daily@g' freecad-daily.desktop
   - cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
   - # Dear upstream developers, please use relative rather than absolute paths
