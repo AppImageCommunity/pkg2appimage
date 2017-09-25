@@ -27,7 +27,7 @@ app: (name of the application)
 
 ingredients:
   (instructions that describe from where to get
-  the binary ingedients used for the AppImage)
+  the binary ingredients used for the AppImage)
 
 script:
   (instuctions on how to convert these ingredients to an AppImage)
@@ -36,7 +36,7 @@ script:
 As you can see, the `.yml` file consists of three sections:
 
 1. The __overall section__ (containing the name of the application and optional flags)
-2. The __ingredients section__ (describing from where to get the binary ingedients used for the AppImage)
+2. The __ingredients section__ (describing from where to get the binary ingredients used for the AppImage)
 3. The __script section__ (describing how to convert these ingredients to an AppImage)
 
 Note that the sections may contain sub-sections. For example, the ingredients section can also have a script section containing instuctions on how to determine the most recent version of the ingredients and how to download them.
