@@ -17,5 +17,5 @@ Pin: release o=LP-PPA-djcj-gnutls-patched
 Pin-Priority: 9999
 EOF
 
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4BC359BE72
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 24A5F4FED4B4972B
 apt-get update
