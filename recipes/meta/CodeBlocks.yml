@@ -2,16 +2,20 @@ app: CodeBlocks
 binpatch: true
 
 ingredients:
-  dist: jessie
+  dist: precise
   sources:
-    - deb http://ftp.us.debian.org/debian/ jessie main
-    - deb http://ftp.us.debian.org/debian/ jessie-backports main
+    - deb http://archive.ubuntu.com/ubuntu precise main universe
+  ppas: 
+    - damien-moore/codeblocks-stable
+  packages:
+    - codeblocks
+    - codeblocks-contrib
 
 script:
   - cat > AppRun <<\EOF
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
-  - export LD_LIBRARY_PATH=${HERE}/usr/lib:${HERE}/usr/lib/x86_64-linux-gnu/:${HERE}/usr/lib/codeblocks:${HERE}/lib:${HERE}/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
-  - cd "${HERE}/usr"
+  - export LD_LIBRARY_PATH=${HERE}/usr/lib:${HERE}/usr/lib/x86_64-linux-gnu/:${HERE}/lib/x86_64-linux-gnu/:$LD_LIBRARY_PATH
   - CODEBLOCKS_DATA_DIR="${HERE}/usr" "${HERE}/usr/bin/codeblocks.wrapper" "$@"
   - EOF
+  - sed -i -e 's/:://g' codeblocks.desktop
