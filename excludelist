@@ -2,6 +2,9 @@
 # should NOT be bundled inside AppImages. This is a working document; expect it to change
 # over time. File format: one filename per line. Each entry should have a justification comment.
 
+# See the useful tool at https://abi-laboratory.pro/index.php?view=navigator&symbol=hb_buffer_set_cluster_level#result
+# to investigate issues with missing symbols.
+
 ld-linux.so.2
 ld-linux-x86-64.so.2
 libanl.so.1
