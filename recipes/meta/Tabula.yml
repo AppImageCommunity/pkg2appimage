@@ -23,6 +23,7 @@ script:
   - Name=Tabula
   - Exec=tabula
   - Icon=tabula
+  - Terminal=true
   - Type=Application
   - Categories=Graphics;
   - EOF
