@@ -1,0 +1,30 @@
+app: Tabula
+
+ingredients:
+  script:
+    - URL=$(wget -q "https://github.com/tabulapdf/tabula/releases" -O - | grep -oe 'tabula-jar.*zip' | head -n 1 | cut -d '"' -f 3)
+    - wget -c "$URL"
+    - ls tabula-jar-*.zip | cut -d - -f 3 | sed 's|.zip||g' > VERSION
+    - wget -c --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.tar.gz
+
+script:
+  - mkdir -p usr/lib/jvm/
+  - tar xf ../jre*.tar.gz -C usr/lib/jvm/
+  - unzip ../tabula-jar-*.zip
+  - mkdir -p usr/share ; mv tabula usr/share
+  - cat > usr/bin/tabula <<\EOF
+  - #!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - exec "$HERE"/../lib/jvm/jre*/bin/java -jar "$HERE/../share/tabula/tabula.jar" "$@"
+  - EOF
+  - chmod +x usr/bin/tabula
+  - cat > tabula.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=Tabula
+  - Exec=tabula
+  - Icon=tabula
+  - Type=Application
+  - Categories=Graphics;
+  - EOF
+  - wget -c -q 'https://avatars3.githubusercontent.com/u/8267906?s=256&v=4' -O usr/share/icons/hicolor/256x256/apps/tabula.png
+  - cp usr/share/icons/hicolor/256x256/apps/tabula.png . # Bug?
