@@ -142,6 +142,10 @@ libpango-1.0.so.0
 # in file libgpg-error.so.0 with link time reference
 libgpg-error.so.0
 
+libjack.so.0
+# it must match the ABI of the JACK server which is installed in the base system
+# rncbc confirmed this
+
 # Unsolved issue:
 # https://github.com/probonopd/linuxdeployqt/issues/35
 # Error initializing NSS with a persistent database (sql:/home/me/.pki/nssdb): libsoftokn3.so: cannot open shared object file: No such file or directory
