@@ -3,7 +3,7 @@
 # Probably Fedora, CentOS, OpenSUSE,... users would like to see an AppImage
 # and with this file you can produce one yourself until 
 # Autodesk no longer seems to care about Linux. Just download 
-# https://github.com/AppImage/AppImages/raw/master/recipes/meta/Recipe 
+# https://github.com/AppImage/AppImages/raw/master/pkg2appimage 
 # and this file, then run, on an Ubuntu machine, bash ./Recipe ./Meshmixer.yml.
 # The resulting AppImage should run on most distributions from 2014 and later.
 # Please open an issue if you experience any issues.

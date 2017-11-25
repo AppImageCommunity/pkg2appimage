@@ -1,4 +1,0 @@
-*.sh
-!build-with-docker.sh
-*.deb
-*/

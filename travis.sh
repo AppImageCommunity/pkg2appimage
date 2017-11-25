@@ -19,9 +19,9 @@ if [ -f recipes/$RECIPE/Dockerfile ] && [ -f recipes/$RECIPE/Recipe ] ; then
   mv recipes/$RECIPE/Recipe ./out/Recipe
   sed -i -e 's|sudo ||g' ./out/Recipe # For subsurface recipe
   docker run -i -v ${PWD}/out:/out probonopd/appimages:$DOCKER /bin/bash -ex /out/Recipe
-elif [ -f recipes/meta/$RECIPE.yml ] ; then  
+elif [ -f recipes/$RECIPE.yml ] ; then
   # There is no Dockerfile but a YAML file for the meta Recipe
-  bash -ex recipes/meta/Recipe recipes/meta/$RECIPE.yml
+  bash -ex pkg2appimage recipes/$RECIPE.yml
 elif [ -f recipes/$RECIPE/Recipe ] ; then
   # There is no Dockerfile but a Recipe, hence build without Docker
   bash -ex recipes/$RECIPE/Recipe
