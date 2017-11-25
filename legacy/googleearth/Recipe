@@ -2,7 +2,7 @@
 # The Google Earth license does not allow to redistribute it, but you can generate
 # your own Google Earth AppImage by running this script on a x86_64 Linux system:
 #
-# wget https://raw.githubusercontent.com/probonopd/AppImages/master/recipes/googleearth/Recipe
+# wget https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/googleearth/Recipe
 # bash -ex Recipe
 ################################################################################################
 
@@ -15,7 +15,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 wget -c https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb

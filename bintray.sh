@@ -23,8 +23,8 @@ BINTRAY_API_KEY="$BINTRAY_API_KEY" # env
 BINTRAY_REPO="${BINTRAY_REPO:-AppImages}"
 BINTRAY_REPO_OWNER="${BINTRAY_REPO_OWNER:-$BINTRAY_USER}" # owner and user not always the same
 WEBSITE_URL="${WEBSITE_URL:-http://appimage.org}"
-ISSUE_TRACKER_URL="${ISSUE_TRACKER_URL:-https://github.com/probonopd/AppImages/issues}"
-VCS_URL="${VCS_URL:-https://github.com/probonopd/AppImages.git}" # Mandatory for packages in free Bintray repos
+ISSUE_TRACKER_URL="${ISSUE_TRACKER_URL:-https://github.com/AppImage/AppImages/issues}"
+VCS_URL="${VCS_URL:-https://github.com/AppImage/AppImages.git}" # Mandatory for packages in free Bintray repos
 
 # Figure out whether we should use sudo
 SUDO=''

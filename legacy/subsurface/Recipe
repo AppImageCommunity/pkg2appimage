@@ -71,7 +71,7 @@ git_pull_rebase_helper()
 export PATH=/bin:/sbin:$PATH # For CentOS 6
 
 # Source helper functions
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 rm functions.sh
 
@@ -96,7 +96,7 @@ fi
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
 if [ ! -d AppImages ] ; then
-  git clone https://github.com/probonopd/AppImages.git
+  git clone https://github.com/AppImage/AppImages.git
 fi
 cd AppImages/
 git_pull_rebase_helper

@@ -10,7 +10,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
 # If you don't trust this, then you can mirror it in your own project, but then you need to keep it updated :)
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 # Pick best mirror (Travis CI can then download this in 9 seconds)
@@ -123,7 +123,7 @@ tar xf freedup-1.6-3-src.tar.bz2
 
 # Workaround for:
 # Installed Qt WebEngine locales directory not found
-find /home/travis/build/probonopd/AppImages/QtCreator/
+find /home/travis/build/AppImage/AppImages/QtCreator/
 ( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/translations . )
 # Qt WebEngine ICU data not found
 ( cd $TARGETDIR/Tools/QtCreator/lib/Qt/ ; ln -s ../../../../*/gcc_64/resources . )
@@ -162,7 +162,7 @@ VERSION=$(ls ../*.run | cut -d "-" -f 5 | sed -e 's|.run||g')
 
 # Qt Creator installer has placed hardcoded absolute paths to the installation location into the AppImage
 # which we need to patch away
-find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.9.0|/tmp/.mount_QtCreator-5.9.0-x86_64|g' {} \;
+find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/AppImage/AppImages/QtCreator/qt-opensource-linux-x64-5.9.0|/tmp/.mount_QtCreator-5.9.0-x86_64|g' {} \;
 
 # Patch qt_prfxpath in libQt5Core to hardcoded AppImage mountpoint
 # Without doing this correctly, it is impossible to build and run the Qml example project
@@ -179,7 +179,7 @@ cat > AppRun <<\EOF
 LINK="/tmp/.mount_QtCreator-5.9.0-x86_64"
 
 # QtCreator uses hardcoded paths. Hence we are using this workaround. At AppImage creation time, did:
-# find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/probonopd/AppImages/QtCreator/qt-opensource-linux-x64-5.9.0|/tmp/.mount_QtCreator-5.9.0-x86_64|g' {} \;
+# find . -type f -not -executable -exec sed -i -e 's|/home/travis/build/AppImage/AppImages/QtCreator/qt-opensource-linux-x64-5.9.0|/tmp/.mount_QtCreator-5.9.0-x86_64|g' {} \;
 
 HERE="$(dirname "$(readlink -f "${0}")")"
 

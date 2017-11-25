@@ -1,11 +1,11 @@
 # Octave recipe
 
-wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 #begin
 if [ ! -d AppImages ] ; then
-  git clone https://github.com/probonopd/AppImages.git
+  git clone https://github.com/AppImage/AppImages.git
 fi
 cd AppImages/
 git_pull_rebase_helper

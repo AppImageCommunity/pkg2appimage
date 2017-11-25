@@ -6,7 +6,7 @@ In https://github.com/AppImage/AppImages/commit/798093a8b2b41b8a32fb1cc5301bcab9
 * `recipes/meta` was moved to `recipes/`
 * Legacy recipes were moved to `legacy/`. They should be converted to `.yml` recipes
 
-# AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/AppImage/AppImages.svg)](https://travis-ci.org/AppImage/AppImages) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e7dd241a1bf44af9eebc80fd2c71763)](https://www.codacy.com/app/probonopd/AppImages?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppImage/AppImages&amp;utm_campaign=Badge_Grade) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
+# AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/AppImage/AppImages.svg)](https://travis-ci.org/AppImage/AppImages) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e7dd241a1bf44af9eebc80fd2c71763)](https://www.codacy.com/app/AppImage/AppImages?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppImage/AppImages&amp;utm_campaign=Badge_Grade) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
 Significant upstream projects have started providing their own AppImages of releases and/or nightly/continuous builds, see this [list of upstream-provided AppImages](https://github.com/probonopd/AppImageKit/wiki/AppImages#upstream-appimages).
  
@@ -18,7 +18,7 @@ This repository is intended to showcase the [AppImage](http://appimage.org) form
 
 ## Usage
 
-There are [multiple ways](https://github.com/probonopd/AppImageKit/wiki/Creating-AppImages) to generate AppImages. If you already have existing binaries (either in archive or `.deb` format or a ppa) then the recommended way to convert these to an AppImage is to write a [.yml description file](https://github.com/probonopd/AppImages/tree/master/recipes) and run it with [pkg2appimage](https://github.com/probonopd/AppImages/tree/master/pkg2appimage):
+There are [multiple ways](https://github.com/probonopd/AppImageKit/wiki/Creating-AppImages) to generate AppImages. If you already have existing binaries (either in archive or `.deb` format or a ppa) then the recommended way to convert these to an AppImage is to write a [.yml description file](https://github.com/AppImage/AppImages/tree/master/recipes) and run it with [pkg2appimage](https://github.com/AppImage/AppImages/tree/master/pkg2appimage):
 
 To build an AppImage from a `.yml` description file:
 
@@ -26,13 +26,13 @@ To build an AppImage from a `.yml` description file:
 bash -ex ./pkg2appimage recipes/XXX.yml
 ```
 
-`.yml` description files tell pkg2appimage where to get the ingredients from, and how to convert them to an AppImage (besides the general steps already included in pkg2appimage). Study some [examples](https://github.com/probonopd/AppImages/tree/master/recipes) to see how it works.
+`.yml` description files tell pkg2appimage where to get the ingredients from, and how to convert them to an AppImage (besides the general steps already included in pkg2appimage). Study some [examples](https://github.com/AppImage/AppImages/tree/master/recipes) to see how it works.
 
 ## Miscellaneous
 
 ### Uploading AppImages to Bintray
 
-The script [bintray.sh](https://github.com/probonopd/AppImages/blob/master/bintray.sh) can be used by anyone to upload AppImages to Bintray.
+The script [bintray.sh](https://github.com/AppImage/AppImages/blob/master/bintray.sh) can be used by anyone to upload AppImages to Bintray.
 
 The script will:
 
@@ -44,7 +44,7 @@ In order to use `bintray.sh` you must first define your Bintray credentials in t
 
 Example:
 ```
-wget https://raw.githubusercontent.com/probonopd/AppImages/master/bintray.sh
+wget https://raw.githubusercontent.com/AppImage/AppImages/master/bintray.sh
 export BINTRAY_USER=<Your Bintray username>
 export BINTRAY_REPO=<Your Bintray repository>
 export BINTRAY_REPO_OWNER=<Your bintray Organization (optional)>

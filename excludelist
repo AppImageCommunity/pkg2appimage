@@ -55,7 +55,7 @@ libxcb.so.1
 # Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
 # Fedora 25:
 # undefined symbol: xcb_send_request_with_fds
-# https://github.com/probonopd/AppImages/issues/128
+# https://github.com/AppImage/AppImages/issues/128
 
 libX11.so.6
 # Workaround for:
@@ -130,7 +130,7 @@ libgobject-2.0.so.0
 
 # Workaround for:
 # Rectangles instead of fonts
-# https://github.com/probonopd/AppImages/issues/240
+# https://github.com/AppImage/AppImages/issues/240
 libpangoft2-1.0.so.0
 libpangocairo-1.0.so.0
 libpango-1.0.so.0
@@ -149,11 +149,11 @@ libgpg-error.so.0
 # nss_error=-5925, os_error=0
 # libnss3.so should not be removed from the bundles, as this causes other issues, e.g.,
 # https://github.com/probonopd/linuxdeployqt/issues/35#issuecomment-256213517
-# and https://github.com/probonopd/AppImages/pull/114
+# and https://github.com/AppImage/AppImages/pull/114
 # libnss3.so
 
 # The following cannot be excluded, see
-# https://github.com/probonopd/AppImages/commit/6c7473d8cdaaa2572248dcc53d7f617a577ade6b
+# https://github.com/AppImage/AppImages/commit/6c7473d8cdaaa2572248dcc53d7f617a577ade6b
 # http://stackoverflow.com/questions/32644157/forcing-a-binary-to-use-a-specific-newer-version-of-a-shared-library-so
 # libssl.so.1
 # libssl.so.1.0.0
