@@ -1,3 +1,11 @@
+# :warning: IMPORTANT NOTICE
+
+In https://github.com/AppImage/AppImages/commit/798093a8b2b41b8a32fb1cc5301bcab9ed5f2cb8 we reorganized this repository to simplify its structure and make it easier to understand. Unfortunately this requires existing links to this repository to be updated. We apologize for the inconvenience caused.
+
+* `recipes/meta/Recipe` was renamed to `pkg2appimage` to better reflect its nature
+* `recipes/meta` was moved to `recipes/`
+* Legacy recipes were moved to `legacy/`. They should be converted to `.yml` recipes
+
 # AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/AppImage/AppImages.svg)](https://travis-ci.org/AppImage/AppImages) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e7dd241a1bf44af9eebc80fd2c71763)](https://www.codacy.com/app/probonopd/AppImages?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppImage/AppImages&amp;utm_campaign=Badge_Grade) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
 Significant upstream projects have started providing their own AppImages of releases and/or nightly/continuous builds, see this [list of upstream-provided AppImages](https://github.com/probonopd/AppImageKit/wiki/AppImages#upstream-appimages).
