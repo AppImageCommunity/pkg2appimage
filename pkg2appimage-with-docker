@@ -53,7 +53,7 @@ done
 if [ "$RECIPE" == "" ]; then
     log "usage: $0 [-c] name.yml"
     log ""
-    log "\t-c, --cache\tEnable Recipe's caching by mounting the build cache directory into the container"
+    log "\t-c, --cache\tEnable pkg2appimage's caching by mounting the build cache directory into the container"
     exit 1
 fi
 
@@ -61,9 +61,14 @@ if [ $(basename $RECIPE .yml) == "$RECIPE" ]; then
     RECIPE="$RECIPE.yml"
 fi
 
+
 if [ ! -f $RECIPE ]; then
-    log "error: no such file or directory: $RECIPE"
-    exit 1
+    if [ -f recipes/"$RECIPE" ]; then
+        RECIPE=recipes/"$RECIPE"
+    else
+        log "error: no such file or directory: $RECIPE"
+        exit 1
+    fi
 fi
 
 if [ $CACHE -ne 0 ]; then
@@ -91,8 +96,8 @@ docker run -it \
     --security-opt apparmor:unconfined \
     --user $(id -u):$(id -g) \
     -v "$(readlink -f out):/workspace/out" \
-    -v "$(readlink -f Recipe):/workspace/Recipe:ro" \
+    -v "$(readlink -f pkg2appimage):/workspace/pkg2appimage:ro" \
     -v "$(readlink -f $RECIPE):/workspace/$RECIPE:ro" \
     $ARGS \
     $imageid \
-    ./Recipe $RECIPE || cleanup error
+    ./pkg2appimage $RECIPE || cleanup error
