@@ -1,0 +1,25 @@
+app: ProcDump
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://security.ubuntu.com/ubuntu trusty-security main 
+  script:
+    - wget -c https://github.com/Microsoft/ProcDump-for-Linux/releases/download/1.0/procdump_1.0_amd64.deb
+
+script:
+  - mkdir -p usr/share/applications/
+  - cat > usr/share/applications/procdump.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=ProcDump
+  - Exec=procdump
+  - Icon=procdump
+  - Comment=A Linux version of the ProcDump Sysinternals tool
+  - Categories=Development;
+  - Type=Application
+  - Terminal=true
+  - EOF
+  - touch usr/share/icons/hicolor/512x512/apps/procdump.png # FIXME
+  - cp usr/share/icons/hicolor/512x512/apps/procdump.png .
+  - cp usr/share/applications/procdump.desktop .
