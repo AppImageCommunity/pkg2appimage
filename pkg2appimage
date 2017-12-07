@@ -231,8 +231,8 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     INSTALL=${_ingredients_packages[@]}
   fi
 
-  apt-get $OPTIONS update || true
-  URLS=$(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
+  apt-get -o Acquire::AllowInsecureRepositories=true -o Acquire::AllowDowngradeToInsecureRepositories=true $OPTIONS update || true
+  URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
   if which aria2c &>/dev/null; then
     dltool=aria2c
   else
