@@ -34,7 +34,7 @@ case "$(uname -i)" in
 #  arm*)
 #    echo "ARM system architecture"
 #    SYSTEM_ARCH="";;
-  unknown)
+  unknown|AuthenticAMD)
 #         uname -i not answer on debian, then:
     case "$(uname -m)" in
       x86_64|amd64)
