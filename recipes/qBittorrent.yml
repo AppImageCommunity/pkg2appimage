@@ -6,4 +6,4 @@ ingredients:
   sources:
     - deb http://cn.archive.ubuntu.com/ubuntu/ xenial main universe
   ppas:
-    - qbittorrent-team/qbittorrent-stable
+    - qbittorrent-team/qbittorrent-unstable
