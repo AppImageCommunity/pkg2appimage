@@ -2,8 +2,8 @@ app: qBittorrent
 
 ingredients:
   package: qbittorrent
-  dist:    trusty
+  dist:    xenial
   sources:
-    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://cn.archive.ubuntu.com/ubuntu/ xenial main universe
   ppas:
     - qbittorrent-team/qbittorrent-stable
