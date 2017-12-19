@@ -187,15 +187,15 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     echo "${SOURCE}" >> sources.list
   done
   for PPA in "${_ingredients_ppas[@]}" ; do
-    echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
+    echo "deb http://launchpad.proxy.ustclug.org/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
   done
   # Use libcurl-slim to reduce AppImage size, thanks darealshinji
   # Not really compiled on xenial but CentOS 6, https://github.com/AppImage/AppImages/issues/187
-  echo "deb http://ppa.launchpad.net/djcj/libcurl-slim/ubuntu xenial main" >> sources.list
+  echo "deb http://launchpad.proxy.ustclug.org/djcj/libcurl-slim/ubuntu xenial main" >> sources.list
   # Use gnutls-patched to have libgnutls look in various distributions' places for certificates,
   # https://github.com/darealshinji/vlc-AppImage/issues/1#issuecomment-321041496
   # echo "deb http://ppa.launchpad.net/djcj/gnutls-patched/ubuntu ${_ingredients_dist} main" >> sources.list
-  echo "deb http://ppa.launchpad.net/djcj/gnutls-patched/ubuntu trusty main" >> sources.list
+  echo "deb http://launchpad.proxy.ustclug.org/djcj/gnutls-patched/ubuntu trusty main" >> sources.list
 fi
 
 if [ ! -z "${_ingredients_script[0]}" ] ; then
