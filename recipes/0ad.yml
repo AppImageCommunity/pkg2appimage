@@ -3,7 +3,7 @@ app: 0ad
 ingredients:
   dist: trusty
   sources:
-    - deb http://ftp.fau.de/ubuntu/ trusty main universe
+    - deb https://mirrors.aliyun.com/ubuntu/ trusty main universe
   ppas:
     - wfg/0ad
 
