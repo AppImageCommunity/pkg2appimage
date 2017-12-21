@@ -172,6 +172,7 @@ This downloads the payload application, JabRef, and the required JRE which requi
 
 The script could also be used to fetch pre-built Debian packages from a GitHub release page, or to override the version of a package.
 
+Use `post_script:` instead of `script:` if you need this to run _after_ the other ingredient processing has taken place.
 
 ### Script section
 
