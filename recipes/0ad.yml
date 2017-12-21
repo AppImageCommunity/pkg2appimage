@@ -17,13 +17,13 @@ script:
   - rm usr/bin/0ad
   - cat > usr/bin/0ad <<EOF
   - #!/bin/sh
-  - HERE=\$(cd "\$(dirname "\$0")";pwd)
+  - HERE=\$(cd "$(dirname "$0")";pwd)
   - cd "$HERE"
   - pyrogenesis=\$(which pyrogenesis 2> /dev/null)
-  - if [ -x "\$pyrogenesis" ] ; then
-  -  "\$pyrogenesis" "\$@"
+  - if [ -x "$pyrogenesis" ] ; then
+  -  "$pyrogenesis" "$@"
   - else
-  -  echo "Error: pyrogenesis not found in (\$PATH)"
+  -  echo "Error: pyrogenesis not found in ($PATH)"
   -  exit 1
   - fi
   - EOF
