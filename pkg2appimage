@@ -242,6 +242,11 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   $dltool -c -i- <<<"$URLS"
 fi
 
+if [ ! -z "${_ingredients_post_script[0]}" ] ; then
+  # Execute extra steps defined in recipe
+  shell_execute $YAMLFILE _ingredients_post_script
+fi
+
 mkdir -p ./$APP.AppDir/
 cd ./$APP.AppDir/
 
