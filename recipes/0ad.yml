@@ -12,5 +12,5 @@ script:
   - find usr/lib/games/0ad/ -type f -iname '*.so.*' -exec mv {} usr/lib/ \;
   - mv usr/games/* usr/bin/
   - mkdir -p usr/bin/share
-  - mv usr/share/* usr/bin
+  - mv usr/share/* usr/bin/share
   - sed -i -e 's#/usr#././#g' usr/bin/pyrogenesis
