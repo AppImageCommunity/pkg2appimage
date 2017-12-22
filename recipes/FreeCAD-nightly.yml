@@ -23,6 +23,8 @@ script:
   - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
   # - sed -i -e 's@Icon=freecad@Icon=freecad-daily@g' freecad-daily.desktop
   - cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
+  - mv ./usr/lib/lapack/*.so* ./usr/lib/
+  - mv ./usr/lib/libblas/*.so* ./usr/lib/
   - # Dear upstream developers, please use relative rather than absolute paths
   - # then binary patching like this will become unneccessary
   - find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad-daily@././/lib/freecad-daily@g" {} \;
