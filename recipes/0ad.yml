@@ -15,3 +15,4 @@ script:
   - mv usr/share/games usr/bin/share
   - sed -i -e 's#/usr#././#g' usr/bin/pyrogenesis
   - sed -i '1a HERE=$(cd "$(dirname "$0")";pwd) && cd $HERE' usr/bin/0ad
+  - ln -s usr/lib/x86_64-linux-gnu/libmozjs-38.so.0.0.0 usr/lib/x86_64-linux-gnu/libjs.so.0
