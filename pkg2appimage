@@ -195,7 +195,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # Use gnutls-patched to have libgnutls look in various distributions' places for certificates,
   # https://github.com/darealshinji/vlc-AppImage/issues/1#issuecomment-321041496
   # echo "deb http://ppa.launchpad.net/djcj/gnutls-patched/ubuntu ${_ingredients_dist} main" >> sources.list
-  echo "deb http://download.opensuse.org/repositories/home:/TheAssassin:/AppImageLibraries/xUbuntu_14.04/ /" >> sources.list
+  echo "deb https://launchpad.proxy.ustclug.org/djcj/gnutls-patched/ubuntu trusty main" >> sources.list
 fi
 
 if [ ! -z "${_ingredients_script[0]}" ] ; then
