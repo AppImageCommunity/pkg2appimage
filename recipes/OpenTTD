@@ -1,0 +1,37 @@
+app: openttd
+
+ingredients:      
+  script:
+    - #如果openttd及插件版本更新，请修改下面的版本号
+    - DLD='http://binaries.openttd.org/releases/1.7.1/openttd-1.7.1-linux-generic-amd64.tar.gz'
+    - wget -c $DLD
+    - wget -c 'http://binaries.openttd.org/extra/opengfx/0.5.2/opengfx-0.5.2-all.zip'
+    - wget -c 'http://binaries.openttd.org/extra/opensfx/0.2.3/opensfx-0.2.3-all.zip'
+    - wget -c 'http://binaries.openttd.org/extra/openmsx/0.3.1/openmsx-0.3.1-all.zip'
+    - echo $DLD | cut -d '-' -f2 > VERSION
+    - tar -zxvf openttd*tar.gz
+    - find . -name '*.zip' -exec unzip {} \;
+    - find -maxdepth 1 -name "*.tar" | xargs -i tar xvf {} ;
+    - find -maxdepth 2 -name "*.txt" -exec rm {} \;
+    
+
+script:
+  - cp -r ../openttd-*/* usr/bin/
+  - cp -r ../opengfx-*/* ../opensfx-*/* ../openmsx-*/* usr/bin/baseset/
+  - find . -name openttd.128.png -exec cp {} openttd.png \;
+  - cat > usr/bin/OpenTTD <<"EOF"
+  - #!/bin/bash
+  - HERE=$(cd "$(dirname "$0")";pwd)
+  - cd "$HERE"
+  - "$HERE/openttd" "$@"
+  - EOF
+  - chmod +x usr/bin/OpenTTD
+  - cat > openttd.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=OpenTTD
+  - Icon=openttd
+  - Exec=OpenTTD
+  - Categories=Game;
+  - Comment=石油大亨开源复刻版
+  - EOF
