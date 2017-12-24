@@ -3,7 +3,7 @@ app: Tales-of-MajEyal
 ingredients:      
   script:
     - #please modify the game version if it well be updated by up-stream!
-    - DLD='http://te4.org/dl/t-engine/t-engine4-linux64-1.5.5.tar.bz2'
+    - DLD='https://te4.org/do-download/tome-1.5.5/t-engine4-linux64-1.5.5.tar.bz2'
     - wget -c $DLD
     - echo $DLD | cut -d '/' -f5 | cut -d '-' -f2 > VERSION
     - tar -jxvf t-engine4-*.tar.bz2
