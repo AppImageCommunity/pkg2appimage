@@ -34,3 +34,4 @@ script:
   - ( cd usr/share/icons/hicolor/24x24/apps/; mv spotify-linux-*.png spotify-linux.png )
   - ( cd usr/share/icons/hicolor/22x22/apps/; mv spotify-linux-*.png spotify-linux.png )
   - cp ./usr/share/spotify/icons/spotify-linux-256.png spotify-linux.png
+  - sed -i -e 's|3.26|3.00|g' usr/share/spotify/libcef.so # Workaround for: NSS_VersionCheck("3.26") failed
