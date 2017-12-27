@@ -1,0 +1,36 @@
+app: Tales-of-MajEyal
+
+ingredients:      
+  script:
+    - #please modify the game version if it well be updated by up-stream!
+    - DLD='https://te4.org/do-download/tome-1.5.5/t-engine4-linux64-1.5.5.tar.bz2'
+    - wget -c $DLD
+    - echo $DLD | cut -d '/' -f5 | cut -d '-' -f2 > VERSION
+    - tar -jxvf t-engine4-*.tar.bz2
+
+script:
+  - cp -r ../t-engine4-*/* usr/bin/
+  - wget -c 'https://te4.org/images/awards/voratun_donator.png' -O 'tales-of-majeyal.png'
+  - ln -s "/tmp/tmp.tales-of-majeyal.te4_log_web.txt" "usr/bin/te4_log_web.txt"
+  - cat > usr/bin/tales-of-majeyal <<"EOF"
+  - #!/bin/bash
+  - HERE=$(cd "$(dirname "$0")";pwd)
+  - cd "$HERE"
+  - if [ ! -f "$HOME/.t-engine/te4_log_web.txt" ];then
+  -   mkdir -p "$HOME/.t-engine/"
+  -   touch "$HOME/.t-engine/te4_log_web.txt"
+  -   ln -s "$HOME/.t-engine/te4_log_web.txt" "/tmp/tmp.tales-of-majeyal.te4_log_web.txt"
+  - fi
+  - "$HERE/t-engine" "$@"
+  - rm "/tmp/tmp.tales-of-majeyal.te4_log_web.txt"
+  - EOF
+  - chmod +x usr/bin/tales-of-majeyal
+  - cat > tales-of-majeyal.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Tales of MajEyal
+  - Icon=tales-of-majeyal
+  - Exec=tales-of-majeyal
+  - Categories=Game;
+  - Comment=An Open Source Roguelike game
+  - EOF
