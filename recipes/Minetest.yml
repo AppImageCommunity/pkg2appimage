@@ -1,0 +1,11 @@
+app: minetest
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://ftp.fau.de/ubuntu/ trusty main universe
+  ppas:
+    - minetestdevs/stable
+
+script:
+  - cp usr/share/applications/net.minetest.minetest.desktop minetest.desktop
