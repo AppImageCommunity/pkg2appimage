@@ -1,8 +1,8 @@
 # According to https://launchpad.net/~pmjdebruijn/+archive/ubuntu/darktable-release
-# it looks like a trusty version of Darktable 2.2.0 is not going to happen there unfortunately
+# it looks like a trusty version of darktable 2.2.0 is not going to happen there unfortunately
 # and the PPA author does not want to be bothered about supporting older target systems
 
-app: Darktable
+app: darktable
 binpatch: true
 
 ingredients:
