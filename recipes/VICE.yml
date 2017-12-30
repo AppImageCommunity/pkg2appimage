@@ -1,0 +1,18 @@
+app: VICE
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+  script:
+    - #wget -c "https://sourceforge.net/projects/vice-emu/files/releases/vice-3.1.tar.gz/download" --trust-server-names
+    - tar xf vice-*.tar.gz
+
+script:
+  - cp usr/share/applications/x64.desktop vice.desktop
+  - cp -rf ../vice-*/data/* usr/lib/vice/
+  - sed -i -e 's|/usr/share/pixmaps/||g' vice.desktop
+  - sed -i -e 's|/usr/bin/||g' vice.desktop
+  - sed -i -e 's|^Name=.*|Name=VICE|g' vice.desktop
+  - cp usr/share/pixmaps/c64icon-32x28.xpm .
