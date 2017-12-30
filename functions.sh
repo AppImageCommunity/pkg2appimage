@@ -177,7 +177,7 @@ generate_appimage()
 
   mkdir -p ../out || true
   rm ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage" 2>/dev/null || true
-  GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
+  GLIBC_NEEDED=$(glibc_needed)
   ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
 }
 
