@@ -283,7 +283,7 @@ get_version()
   if [ -z "$THEDEB" ] ; then
     echo "Version could not be determined from the .deb; you need to determine it manually"
   fi
-  VERSION=$(echo $THEDEB | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' | sed -e 's|+dfsg||g' )
+  VERSION=$(echo $THEDEB | cut -d "~" -f 1 | cut -d "_" -f 2 | cut -d "-" -f 1 | sed -e 's|1%3a||g' | sed -e 's|.dfsg||g' )
   echo $VERSION
 }
 
