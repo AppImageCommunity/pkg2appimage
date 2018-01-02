@@ -1,0 +1,21 @@
+app: deepin-screenshot
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://packages.deepin.com/deepin unstable main contrib non-free
+
+script:
+  - cat > deepin-screenshot.desktop <<\EOF
+  - [Desktop Entry]
+  - Categories=Graphics;GTK;
+  - Comment=Screen capturing application
+  - Exec=deepin-screenshot --icon
+  - Icon=deepin-screenshot
+  - Name=Deepin Screenshot
+  - StartupNotify=false
+  - Type=Application
+  - EOF
+  - cp usr/share/dman/deepin-screenshot/common/deepin-screenshot.svg .
