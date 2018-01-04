@@ -135,7 +135,7 @@ glibc_needed()
 get_desktopintegration()
 {
   REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
-  cat_file_from_url https://raw.githubusercontent.com/AppImage/AppImageKit/master/desktopintegration > ./usr/bin/$REALBIN.wrapper
+  cat_file_from_url https://github.com/AppImage/desktop-integration/releases/download/continuous/dialog-"$ARCH" > ./usr/bin/$REALBIN.wrapper
   chmod a+x ./usr/bin/$REALBIN.wrapper
 
   sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
