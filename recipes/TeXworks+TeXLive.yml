@@ -23,3 +23,4 @@ script:
   - exec texworks.wrapper "$@"
   - EOF
   - cp ./usr/share/pixmaps/TeXworks.png .
+  - export ARCH=x86_64
