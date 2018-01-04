@@ -23,4 +23,3 @@ script:
   - exec texworks.wrapper "$@"
   - EOF
   - cp ./usr/share/pixmaps/TeXworks.png .
-  - mv ./lib/x86_64-linux-gnu/* ./lib/
