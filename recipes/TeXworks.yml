@@ -1,0 +1,12 @@
+app: TeXworks
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - texworks/stable
+    
+script:
+  - cp ./usr/share/pixmaps/TeXworks.png .
