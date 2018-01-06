@@ -221,22 +221,22 @@ generate_type2_appimage()
   fi
 
   if [ -z ${NO_GLIBC_VERSION+true} ]; then
+    GLIBC_NEEDED=$(glibc_needed)
     VERSION_EXPANDED=$VERSION.glibc$GLIBC_NEEDED
   else
     VERSION_EXPANDED=$VERSION
   fi
 
   set +x
+  GLIBC_NEEDED=$(glibc_needed)
   if ( [ ! -z "$KEY" ] ) && ( ! -z "$TRAVIS" ) ; then
     wget https://github.com/AppImage/AppImageKit/files/584665/data.zip -O data.tar.gz.gpg
     ( set +x ; echo $KEY | gpg2 --batch --passphrase-fd 0 --no-tty --skip-verify --output data.tar.gz --decrypt data.tar.gz.gpg )
     tar xf data.tar.gz
     sudo chown -R $USER .gnu*
     mv $HOME/.gnu* $HOME/.gnu_old ; mv .gnu* $HOME/
-    GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
     VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   else
-    GLIBC_NEEDED=${GLIBC_NEEDED:=$(glibc_needed)}
     VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
   set -x
