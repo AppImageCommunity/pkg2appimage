@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 
-env
+# env
+
+# Specify a certain commit if you do not want to use master
+# by using:
+# export COMMIT=<git sha>
+if [ -z "$COMMIT" ] ; then
+  COMMIT=master
+fi
+
 
 usage() {
   echo "usage:"
@@ -38,7 +46,7 @@ which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
 if [ ! -f "${!#}" ] ; then
   YAMLFILE=/tmp/_recipe.yml
   rm -f "$YAMLFILE"
-  wget -q "https://github.com/AppImage/AppImages/raw/master/recipes/${!#}.yml" -O "$YAMLFILE"
+  wget -q "https://github.com/AppImage/AppImages/raw/${COMMIT}/recipes/${!#}.yml" -O "$YAMLFILE"
 else
   YAMLFILE=$(readlink -f "${!#}")
 fi
@@ -113,7 +121,7 @@ fi
 # variable FUNCTIONS_SH was set and the file exists
 if [ -z "$FUNCTIONS_SH" ] ; then
   if [ ! -e functions.sh ] ; then
-    wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+    wget -q https://github.com/AppImage/AppImages/raw/${COMMIT}/functions.sh -O ./functions.sh
   fi
   . ./functions.sh
 else
