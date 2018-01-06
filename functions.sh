@@ -124,8 +124,6 @@ delete_blacklisted()
   find . -name '*.la' | xargs -i rm {}
 }
 
-
-
 # Echo highest glibc version needed by the executable files in the current directory
 glibc_needed()
 {
@@ -137,23 +135,6 @@ glibc_needed()
 get_desktopintegration()
 {
   REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
-
-  BIN=usr/bin/$REALBIN
-  INFO=$(file "$BIN")
-  if [ -z $ARCH ] ; then
-    if [[ $INFO == *"x86-64"* ]] ; then
-      ARCH=x86_64
-    elif [[ $INFO == *"i686"* ]] ; then
-      ARCH=i686
-    elif [[ $INFO == *"armv6l"* ]] ; then
-      ARCH=armhf
-    else
-      echo "Could not automatically detect the architecture."
-      echo "Please set the \$ARCH environment variable."
-     exit 1
-    fi
-  fi
-
   cat_file_from_url https://github.com/AppImage/desktop-integration/releases/download/continuous/dialog-"$ARCH" > ./usr/bin/$REALBIN.wrapper
   chmod a+x ./usr/bin/$REALBIN.wrapper
 
