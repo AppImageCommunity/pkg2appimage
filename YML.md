@@ -139,12 +139,6 @@ And for all files in a directory (like local repository). Note that the end of t
 ```
 __Note:__ this is for personal use, if you use your recipe it will NOT work on another computer if the debs files are not in the specified directory
 
-Special dirs:
-```
-~/               ->        user home directory
-../              ->        parent directory of AppImage
-
-```
 
 #### Excluding certain packages
 
