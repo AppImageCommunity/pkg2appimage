@@ -71,7 +71,7 @@ parse_yaml() {
     local s
     local w
     local fs
-    s='[[:space:]]*'
+    s='[[:blank:]]*'
     w='[a-zA-Z0-9_]*'
     fs="$(echo @|tr @ '\034')"
     sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
