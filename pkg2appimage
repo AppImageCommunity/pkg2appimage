@@ -91,6 +91,10 @@ parse_yaml() {
 parse_yaml $YAMLFILE "_"
 eval $(parse_yaml $YAMLFILE "_")
 
+if [ ! -z $_enable_di ]; then
+    ENABLE_DI="$_enable_di"
+fi
+
 # Execute multiple script lines together as one
 # shell_execute filename key_of_group_of_commands
 shell_execute() {
