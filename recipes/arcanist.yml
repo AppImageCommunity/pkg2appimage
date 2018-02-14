@@ -1,0 +1,43 @@
+app: arcanist
+union: true
+enable_di: no
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://ftp.fau.de/ubuntu/ trusty main universe
+  ppas:
+    - ondrej/php
+  packages:
+    - php7.2
+    - php7.2-curl
+    - php7.2-json
+
+script:
+  - git clone https://github.com/phacility/arcanist.git
+  - (cd arcanist; git rev-parse --short HEAD) > ../VERSION
+  - cat ../VERSION
+  - git clone https://github.com/phacility/libphutil.git
+  - touch arcanist.png
+  - cat > arcanist.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=true
+  - Name=arcanist
+  - Exec=arc
+  - Categories=Development;
+  - Icon=arcanist
+  - EOF
+  - mkdir usr/bin/ -p
+  - cat > usr/bin/arc <<\EOF
+  - #! /bin/bash
+  - LD_PRELOAD="$APPDIR"/libunionpreload.so exec "$APPDIR"/usr/bin/php7.2 "$APPDIR"/arcanist/scripts/arcanist.php "$@"
+  - EOF
+  - chmod +x usr/bin/arc
+  - cat > etc/php/7.2/cli/php.ini <<\EOF
+  - etc/php/7.0/cli/php.ini
+  - [PHP]
+  - extension_dir=/usr/lib/php/20170718/;
+  - extension=curl.so
+  - extension=json.so
+  - EOF
