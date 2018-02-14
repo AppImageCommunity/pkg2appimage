@@ -98,6 +98,7 @@ docker run -it \
     -v "$(readlink -f out):/workspace/out" \
     -v "$(readlink -f pkg2appimage):/workspace/pkg2appimage:ro" \
     -v "$(readlink -f $RECIPE):/workspace/$RECIPE:ro" \
+    -e ENABLE_DI \
     $ARGS \
     $imageid \
     ./pkg2appimage $RECIPE || cleanup error
