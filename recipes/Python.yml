@@ -1,0 +1,21 @@
+app: python
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main
+
+script:
+  - cat > usr/share/applications/python.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=Python
+  - Exec=python2.7
+  - Icon=python
+  - Type=Application
+  - Categories=X-Utilities;
+  - Terminal=true
+  - EOF
+  - cp ./usr/share/applications/python.desktop .
+  - wget -c "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/256px-Python-logo-notext.svg.png" -O usr/share/icons/hicolor/256x256/apps/python.png
+  - cp usr/share/icons/hicolor/256x256/apps/python.png .
