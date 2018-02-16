@@ -13,7 +13,7 @@ script:
   - Exec=python2.7
   - Icon=python
   - Type=Application
-  - Categories=X-Utilities;
+  - Categories=Development;
   - Terminal=true
   - EOF
   - cp ./usr/share/applications/python.desktop .
