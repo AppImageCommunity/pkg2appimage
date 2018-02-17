@@ -78,7 +78,7 @@ fi
 if [ -z "$APPDATA" ] ; then
   warn 'No appdata file present. Please provide one in the AppImage as per the instructions on https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html#sect-Quickstart-DesktopApps'
 else
-  if [ ! -z $(which appstreamcli)] ; then
+  if [ ! -z $(which appstreamcli) ] ; then
     appstreamcli validate-tree "${APPDIR}"
   else
     echo "Skipping AppStream validation since appstreamcli is not on the \$PATH"
