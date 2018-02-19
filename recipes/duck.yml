@@ -1,0 +1,24 @@
+# CLI version of Cyberduck (known from macOS)
+
+app: duck
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main
+    - deb https://s3.amazonaws.com/repo.deb.cyberduck.io stable main
+  script:
+    - ls ./duck-*.amd64.deb | cut -d "-" -f 2 | sed -e 's|.amd64.deb||g' > VERSION
+
+script:
+  - mv opt/duck/duck.desktop .
+  - sed -i -e 's|/opt/duck/||g' duck.desktop
+  - sed -i -e 's|.png||g' duck.desktop
+  - sed -i -e 's|Terminal=false|Terminal=true|g' duck.desktop
+  - sed -i -e 's|^Categories=.*|Categories=Network;|g' duck.desktop
+  - mkdir -p usr/share/applications ; cp duck.desktop usr/share/applications/
+  - mv opt/duck/{app,duck,runtime} usr/bin/
+  - cp opt/duck/duck.png usr/share/icons/hicolor/512x512/apps/
+  - mv opt/duck/duck.png .
+  - rm -rf opt/
