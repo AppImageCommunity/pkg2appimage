@@ -1,0 +1,11 @@
+app: QGIS
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb https://qgis.org/ubuntugis-nightly main /
+
+script:
+  - mv ./usr/lib/libblas/* ./usr/lib/
+  - mv ./usr/lib/lapack/* ./usr/lib/
