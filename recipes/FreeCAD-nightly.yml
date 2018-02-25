@@ -9,6 +9,7 @@ ingredients:
     - freecad-maintainers/freecad-daily
   packages:
     - freecad-daily
+    - python-matplotlib
     # - calculix-ccx
     - appmenu-qt
   pretend:
