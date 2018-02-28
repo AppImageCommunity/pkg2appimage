@@ -6,6 +6,8 @@
 # For example, to build arduino:
 # bash <(curl -s https://raw.githubusercontent.com/AppImage/AppImages/master/trigger.sh) arduino
 
+[[ -z "$1" ]] && echo "Argument missing. Which AppImage do you want to build?" && exit 1
+
 set +e
 
 USERNAME=probonopd
