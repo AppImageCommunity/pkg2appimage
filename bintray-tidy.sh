@@ -49,10 +49,11 @@ main() {
   echo "$0"
   echo "Tidying package '${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${package}'."
 
+  set -x
   get_remote_versions
+  echo "$REMOTE_VERSIONS"
   
   # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
-  set -x
   get_version_date
   echo version_date_YMD="$version_date_YMD"
   echo version_date_Ywk="$version_date_Ywk"
