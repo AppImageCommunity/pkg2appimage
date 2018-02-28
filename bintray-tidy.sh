@@ -52,9 +52,11 @@ main() {
   get_remote_versions
   
   # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
+  set -x
   get_version_date
   echo version_date_YMD="$version_date_YMD"
   echo version_date_Ywk="$version_date_Ywk"
+  set +x
 
   [ "$arg_s" ] && echo "SIMULATION: No versions will actually be deleted from the server." || true
 
