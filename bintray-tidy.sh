@@ -94,14 +94,14 @@ function initialize_variables() {
 
   # Variables
   PCK_URL="${API}/packages/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${package}"
-  CURL="curl -u${BINTRAY_USER}:${BINTRAY_API_KEY} \
+  CURL="curl --silent --show-error -u${BINTRAY_USER}:${BINTRAY_API_KEY} \
          -H Content-Type:application/json \
          -H Accept:application/json"
 }
 
 function get_remote_versions() {
   readarray -t REMOTE_VERSIONS < <( \
-  curl -X GET "${PCK_URL}" \
+  curl --silent --show-error -X GET "${PCK_URL}" \
     | sed -nr 's|.*"versions":\["([^]]*)"\].*|\1|p' \
     | sed 's|","|\n|g' )
   echo "$0: ${#REMOTE_VERSIONS[@]} versions found on the remote server."
