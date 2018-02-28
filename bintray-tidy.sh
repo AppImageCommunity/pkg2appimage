@@ -50,6 +50,11 @@ main() {
   echo "Tidying package '${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${package}'."
 
   get_remote_versions
+  
+  # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
+  get_version_date
+  echo version_date_YMD="$version_date_YMD"
+  echo version_date_Ywk="$version_date_Ywk"
 
   [ "$arg_s" ] && echo "SIMULATION: No versions will actually be deleted from the server." || true
 
@@ -61,10 +66,6 @@ main() {
       max_days
       ;;
     archive )
-      # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
-      get_version_date
-      echo version_date_YMD="$version_date_YMD"
-      echo version_date_Ywk="$version_date_Ywk"
       archive  
       ;;
     * )
