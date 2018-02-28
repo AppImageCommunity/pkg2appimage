@@ -61,7 +61,10 @@ main() {
       max_days
       ;;
     archive )
-      archive
+      archive  
+      # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
+      echo version_date_YMD="$version_date_YMD"
+      echo version_date_Ywk="$version_date_Ywk"
       ;;
     * )
       fatal_error "invalid strategy '${strategy}'"
@@ -180,11 +183,6 @@ function get_version_date() {
   [ "$created" ] || return 1 # failed to fetch "created" field
   version_date_YMD="$(date --utc -d "$created" +%Y%m%d)" # YYYYMMDD
   version_date_Ywk="$(date --utc -d "$created" +%Y%V)" # YYYY<weeknum>
-  
-  # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
-  echo version_date_YMD="$version_date_YMD"
-  echo version_date_Ywk="$version_date_Ywk"
-  
   [ "$version_date_YMD" ] || return 1 # "created" field was wrong format
 }
 
