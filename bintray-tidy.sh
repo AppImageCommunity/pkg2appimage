@@ -61,10 +61,11 @@ main() {
       max_days
       ;;
     archive )
-      archive  
       # Debugging for https://travis-ci.org/AppImage/AppImages/jobs/347101634#L2574
+      get_version_date
       echo version_date_YMD="$version_date_YMD"
       echo version_date_Ywk="$version_date_Ywk"
+      archive  
       ;;
     * )
       fatal_error "invalid strategy '${strategy}'"
@@ -181,8 +182,8 @@ function get_version_date() {
   created="$(${CURL} -X GET "${PCK_URL}/versions/$1" 2>/dev/null | sed -nr \
 's|.*"created":"([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z)".*|\1|p' )"
   [ "$created" ] || return 1 # failed to fetch "created" field
-  version_date_YMD="$(date --utc -d "$created" +%Y%m%d)" # YYYYMMDD
-  version_date_Ywk="$(date --utc -d "$created" +%Y%V)" # YYYY<weeknum>
+  export version_date_YMD="$(date --utc -d "$created" +%Y%m%d)" # YYYYMMDD
+  export version_date_Ywk="$(date --utc -d "$created" +%Y%V)" # YYYY<weeknum>
   [ "$version_date_YMD" ] || return 1 # "created" field was wrong format
 }
 
