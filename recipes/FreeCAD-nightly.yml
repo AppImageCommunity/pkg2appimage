@@ -10,6 +10,7 @@ ingredients:
   packages:
     - freecad-daily
     - python-tk
+    - python-scipy
     # - calculix-ccx
     - appmenu-qt
   pretend:
