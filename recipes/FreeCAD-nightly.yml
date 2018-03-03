@@ -9,7 +9,8 @@ ingredients:
     - freecad-maintainers/freecad-daily
   packages:
     - freecad-daily
-    - python-matplotlib
+    - python-tk
+    - python-scipy
     # - calculix-ccx
     - appmenu-qt
   pretend:
@@ -26,6 +27,15 @@ script:
   - cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
   - mv ./usr/lib/lapack/*.so* ./usr/lib/
   - mv ./usr/lib/libblas/*.so* ./usr/lib/
+  - # Matplotlib start (not needed anymore on Ubuntu 16.04)
+  - mv ./usr/share/pyshared/matplotlib* ./usr/lib/python2.7/dist-packages/
+  - mv ./usr/share/pyshared/mpl_toolkits ./usr/lib/python2.7/dist-packages/
+  - mv ./usr/share/pyshared/pylab.py ./usr/lib/python2.7/dist-packages/
+  - touch ./usr/lib/python2.7/dist-packages/matplotlib/compat/__init__.py
+  - mv ./usr/lib/pyshared/python2.7/matplotlib/backends/*.so ./usr/lib/python2.7/dist-packages/matplotlib/backends/
+  - mv ./usr/lib/pyshared/python2.7/matplotlib/*.so ./usr/lib/python2.7/dist-packages/matplotlib/
+  - rm -rf ./usr/lib/pyshared/python2.7/matplotlib/
+  - # Matplotlib end
   - # Dear upstream developers, please use relative rather than absolute paths
   - # then binary patching like this will become unneccessary
   - find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad-daily@././/lib/freecad-daily@g" {} \;
