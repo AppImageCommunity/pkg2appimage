@@ -1,6 +1,9 @@
 # Firefox 4 was the first one available for 64-bit Linux
 # Bundling Firefox 1 would be possible, but then we would
 # have to ship a private 32-bit loader and set of core libraries
+# PLEASE NOTE: This is UNSUPPORTED and provided for demonstration purposes only.
+# If you would like to see an officially-supported Firefox AppImage, then please join the discussion on
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1249971
 
 app: Firefox
 
