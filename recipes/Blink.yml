@@ -1,0 +1,9 @@
+app: Blink
+binpatch: true
+
+ingredients:
+  package: blink
+  dist: stretch
+  sources:
+    - deb http://deb.debian.org/debian stretch main
+    - deb http://ag-projects.com/debian stretch main
