@@ -13,7 +13,7 @@ ingredients:
 
 script:
   - cp -r ../firefox/* usr/bin/
-  - find . -name mozicon128.png -exec cp {} firefox.png \;
+  - find . -name default128.png -exec cp {} firefox.png \;
   - # Workaround for:
   - # https://bugzilla.mozilla.org/show_bug.cgi?id=296568
   - cat > firefox.desktop <<EOF
