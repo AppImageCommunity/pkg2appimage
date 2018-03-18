@@ -42,7 +42,7 @@ case "$(uname -m)" in
 #    echo "ARM system architecture"
 #    SYSTEM_ARCH="";;
   *)
-    echo "Unsupported system architecture"
+    echo "Unsupported system architecture: $(uname -m)"
     exit 1;;
 esac
 
