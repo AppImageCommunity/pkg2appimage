@@ -13,8 +13,8 @@ ingredients:
     - python-scipy
     # - calculix-ccx
     - appmenu-qt
-  pretend:
-    - libfontconfig1 2.11.0-0ubuntu4
+  exclude:
+    - libfontconfig1-dev
 
 script:
   - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
