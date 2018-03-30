@@ -82,6 +82,12 @@ libfontconfig.so.1
 # Workaround for:
 # Application stalls when loading fonts during application launch; e.g., KiCad on ubuntu-mate
 
+# other "low-level" font rendering libraries
+# should fix https://github.com/probonopd/linuxdeployqt/issues/261#issuecomment-377522251
+# and https://github.com/probonopd/linuxdeployqt/issues/157#issuecomment-320755694
+libfreetype.so.6
+libharfbuzz.so.0
+
 # Note, after discussion we do not exlude this, but we can use a dummy library that just does nothing
 # libselinux.so.1
 # Workaround for:
