@@ -6,8 +6,8 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   debs: 
-    - https://fbreader.org/files/desktop/fbreader_0.99.4-1_amd64.deb
-    - https://fbreader.org/files/desktop/libunibreak1_1.0-1_amd64.deb
+    - https://fbreader.org/files/desktop/fbreader_0.99.4-1_amd64.deb # Does this work? May need "script:"
+    - https://fbreader.org/files/desktop/libunibreak1_1.0-1_amd64.deb # Does this work? May need "script:"
 
 script:
   - cp ./usr/share/applications/FBReader.desktop fbreader.desktop
