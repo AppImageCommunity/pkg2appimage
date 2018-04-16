@@ -48,6 +48,10 @@ libdrm.so.2
 # libGL error: failed to load driver: swrast
 # Unrecognized OpenGL version
 
+libglapi.so.0
+# Part of mesa
+# known to cause problems with graphics, see https://github.com/RPCS3/rpcs3/issues/4427#issuecomment-381674910
+
 libxcb.so.1
 # Workaround for:
 # Fedora 23
