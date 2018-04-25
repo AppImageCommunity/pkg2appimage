@@ -1,4 +1,4 @@
-app: FreeCAD
+app: FreeCAD-0.16
 binpatch: true
 
 ingredients:
@@ -6,25 +6,23 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
-    - freecad-maintainers/freecad-daily
+    - freecad-maintainers/freecad-legacy
   packages:
-    - freecad-daily
+    - freecad-0.16
     - python-tk
     - python-scipy
+    - python-numpy
+    - python-matplotlib
     # - calculix-ccx
     - appmenu-qt
   exclude:
     - libfontconfig1-dev
 
 script:
-  - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
-  - cp ./usr/share/applications/freecad-daily.desktop .
-  - ln -s freecad-daily.desktop freecad.desktop
-  - sed -i -e 's@FreeCAD Daily@FreeCAD@g' freecad-daily.desktop
-  - sed -i -e 's@/usr/bin/@@g' freecad-daily.desktop
-  - sed -i -e 's@Path=@# Path=@g' freecad-daily.desktop
-  # - sed -i -e 's@Icon=freecad@Icon=freecad-daily@g' freecad-daily.desktop
-  - cp ./usr/share/icons/hicolor/64x64/apps/freecad-daily.png .
+  - ls ../freecad-0.16*.deb | cut -d "." -f 6 | cut -d "-" -f 1 > ../VERSION
+  - sed -i -e 's@FreeCAD Legacy@FreeCAD-0.16@g' freecad-0.16.desktop
+  - sed -i -e 's@/usr/bin/@@g' freecad-0.16.desktop
+  - sed -i -e 's@Path=@# Path=@g' freecad-0.16.desktop
   - mv ./usr/lib/lapack/*.so* ./usr/lib/
   - mv ./usr/lib/libblas/*.so* ./usr/lib/
   - # Matplotlib start (not needed anymore on Ubuntu 16.04)
@@ -38,6 +36,6 @@ script:
   - # Matplotlib end
   - # Dear upstream developers, please use relative rather than absolute paths
   - # then binary patching like this will become unneccessary
-  - find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad-daily@././/lib/freecad-daily@g" {} \;
-  - find usr/ -type f -exec sed -i -e "s@/usr/share/freecad-daily@././/share/freecad-daily@g" {} \;
-  - ( cd ./usr/lib/freecad-daily/ ; ln -s ../../share/ . ) # Why?
+  - find usr/ -type f -exec sed -i -e "s@/usr/lib/freecad-0.16@././/lib/freecad-0.16@g" {} \;
+  - find usr/ -type f -exec sed -i -e "s@/usr/share/freecad-0.16@././/share/freecad-0.16@g" {} \;
+  - ( cd ./usr/lib/freecad-0.16/ ; ln -s ../../share/ . ) # Why?
