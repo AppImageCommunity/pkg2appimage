@@ -1,0 +1,25 @@
+app: dosbox
+binpatch: true
+
+ingredients:
+  packages:
+    - dosbox
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+  script:
+    - wget -c "https://github.com/BryanLunduke/Linux-Tycoon-DOS/files/1957529/LINUXT.EXE.zip"
+    - unzip -o "LINUXT.EXE.zip"
+script:
+  - cp ../LINUXT.EXE usr/
+  - cat > dosbox.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=Linux Tycoon in DOSBox
+  - Comment=DOS game
+  - Exec=dosbox.wrapper LINUXT.EXE -exit
+  - Icon=linuxtycoon
+  - Type=Application
+  - Categories=Game;
+  - EOF
+  - wget -c "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/linuxtycoon.png" -O usr/share/icons/hicolor/256x256/apps/linuxtycoon.png
+  - cp usr/share/icons/hicolor/256x256/apps/* .
