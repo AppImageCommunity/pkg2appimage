@@ -15,6 +15,9 @@ ingredients:
     - appmenu-qt
   exclude:
     - libfontconfig1-dev
+    - # Use the system provided version of libgomp
+    - # Version provided in Trusty does not work with new versions of CalculiX
+    - libgomp1
 
 script:
   - ls ../freecad-daily*.deb | cut -d "_" -f 2 | cut -d "~" -f 1-2 | sed -e 's|~.*+git|.git|g' > ../VERSION
