@@ -10,7 +10,7 @@ ingredients:
     - unzip artifacts.zip
     - unzip "grafx2-*-Linux.zip"
     - wget -c "https://gitlab.com/GrafX2/grafX2/raw/master/misc/unix/grafx2.desktop"
-    - ls "grafx2-*-Linux.zip" | cut -d "-" -f 2 > VERSION
+    - ls grafx2-*-Linux.zip | cut -d "-" -f 2 > VERSION
   packages:
     - libsdl-ttf2.0-0
     - libsdl-image1.2
