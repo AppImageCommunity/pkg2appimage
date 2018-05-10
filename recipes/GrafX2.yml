@@ -1,0 +1,26 @@
+app: GrafX2
+verbose: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://ftp.fau.de/ubuntu/ trusty main universe
+  script:
+    - wget -c "https://gitlab.com/GrafX2/grafX2/-/jobs/artifacts/master/download?job=job_linux" -O artifacts.zip
+    - unzip artifacts.zip
+    - unzip "grafx2-*-Linux.zip"
+    - wget -c "https://gitlab.com/GrafX2/grafX2/raw/master/misc/unix/grafx2.desktop"
+    - ls "grafx2-*-Linux.zip" | cut -d "-" -f 2 > VERSION
+  packages:
+    - libsdl-ttf2.0-0
+    - libsdl-image1.2
+    - liblua5.1-0
+
+script:
+  - cp -Rf ../bin ../doc ../share ./usr
+  - mkdir -p usr/share/applications
+  - cp ../grafx2.desktop usr/share/applications/
+  - cp ../grafx2.desktop .
+  - mkdir -p usr/share/icons/hicolor/scalable/apps
+  - mv usr/share/icons/grafx2.svg usr/share/icons/hicolor/scalable/apps/
+  - cp usr/share/icons/hicolor/scalable/apps/grafx2.svg .
