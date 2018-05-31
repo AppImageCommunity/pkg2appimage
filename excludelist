@@ -86,6 +86,11 @@ libfontconfig.so.1
 # Workaround for:
 # Application stalls when loading fonts during application launch; e.g., KiCad on ubuntu-mate
 
+libthai.so.0
+# Workaround for:
+# audacity: /tmp/.mount_AudaciUsFbON/usr/lib/libthai.so.0: version `LIBTHAI_0.1.25' not found (required by /usr/lib64/libpango-1.0.so.0)
+# on openSUSE Tumbleweed
+
 # other "low-level" font rendering libraries
 # should fix https://github.com/probonopd/linuxdeployqt/issues/261#issuecomment-377522251
 # and https://github.com/probonopd/linuxdeployqt/issues/157#issuecomment-320755694
