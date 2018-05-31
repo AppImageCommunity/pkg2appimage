@@ -333,7 +333,7 @@ if [ -e usr/lib/mono ] ; then
   done
   rm temp
   PATH_OF_THE_EXE="usr/lib/mono/exe"
-  mkdir -p "PATH_OF_THE_EXE"
+  mkdir -p "$PATH_OF_THE_EXE"
   # Force all dll files into PATH_OF_THE_EXE (or MONO_PATH which we would have to set)
   find . -name "*.dll" -and -not -name "mscorlib.dll" -exec mv {} "$PATH_OF_THE_EXE" \;
   # Edit all config files in place to remove absolute paths
