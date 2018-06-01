@@ -31,19 +31,33 @@ OPTIONS="-o Debug::NoLocking=1
 
 # Detect system architecture to know which binaries of AppImage tools
 # should be downloaded and used.
-case "$(uname -m)" in
+case "$(uname -i)" in
   x86_64|amd64)
 #    echo "x86-64 system architecture"
     SYSTEM_ARCH="x86_64";;
   i?86)
 #    echo "x86 system architecture"
     SYSTEM_ARCH="i686";;
-#  arm*|aarch*)
+#  arm*)
 #    echo "ARM system architecture"
 #    SYSTEM_ARCH="";;
   *)
-    echo "Unsupported system architecture: $(uname -m)"
-    exit 1;;
+    # uname '-i' isn't portable so when failing, fall back to uname's
+    # recommended switch '-m':
+    case "$(uname -m)" in
+      x86_64|amd64)
+#        echo "x86-64 system architecture"
+        SYSTEM_ARCH="x86_64";;
+      i?86)
+#        echo "x86 system architecture"
+        SYSTEM_ARCH="i686";;
+#      arm*|aarch*)
+#         echo "ARM system architecture"
+#        SYSTEM_ARCH="";;
+      *)
+        echo "Unsupported system architecture: $(uname -m)"
+        exit 1;;
+    esac ;;
 esac
 
 # Either get the file from remote or from a static place.
