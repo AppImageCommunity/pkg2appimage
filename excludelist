@@ -48,6 +48,10 @@ libdrm.so.2
 # libGL error: failed to load driver: swrast
 # Unrecognized OpenGL version
 
+# TODO:
+# Consider to blackilst also libEGL.so.1
+# see https://github.com/knapsu/plex-media-player-appimage/issues/11#issuecomment-394203370
+
 libglapi.so.0
 # Part of mesa
 # known to cause problems with graphics, see https://github.com/RPCS3/rpcs3/issues/4427#issuecomment-381674910
