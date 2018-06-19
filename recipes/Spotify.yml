@@ -11,14 +11,14 @@ ingredients:
   package: spotify-client
   dist: oldstable
   sources:
-    - deb http://ftp.de.debian.org/debian/ oldstable main
+    - deb http://deb.debian.org/debian/ oldstable main
   script:
     - DEB=$(wget http://repository.spotify.com/pool/non-free/s/spotify-client/ -O - | grep deb | cut -d ">" -f 2 | cut -d "<" -f 1 | grep amd64.deb | sort --version-sort -r | head -n 1)
     - URL="http://repository.spotify.com/pool/non-free/s/spotify-client/$DEB"
     - wget -c "$URL"
     - ls spotify-client*.deb | cut -d _ -f 2 | sed -e 's|-|.|g' > VERSION
-    - DEB=$(wget -q "http://ftp.us.debian.org/debian/pool/main/g/gconf/" -O - | grep "libgconf-2-4" | head -n 1 | cut -d '"' -f 2)
-    - wget -c "http://ftp.us.debian.org/debian/pool/main/g/gconf/$DEB"
+    - DEB=$(wget -q "http://deb.debian.org/debian/pool/main/g/gconf/" -O - | grep -o 'libgconf-2-4[^"]*_amd64\.deb' | head -n 1 | cut -d '"' -f 2)
+    - wget -c "http://deb.debian.org/debian/pool/main/g/gconf/$DEB"
 
 script:
   - cp ./usr/share/spotify/spotify.desktop .
