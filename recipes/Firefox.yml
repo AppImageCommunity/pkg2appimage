@@ -15,6 +15,22 @@ script:
   - cp -r ../firefox/* usr/bin/
   - find . -name mozicon128.png -exec cp {} firefox.png \;
   - find . -name default128.png -exec cp {} firefox.png \;
+  - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
+  - find . -name mozicon22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/firefox.png \;
+  - find . -name mozicon24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/firefox.png \;
+  - find . -name mozicon256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/firefox.png \;
+  - find . -name mozicon32.png -exec cp {} sr/share/icons/hicolor/32x32/apps/firefox.png \;
+  - find . -name mozicon48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
+  - find . -name mozicon512.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
+  - find . -name mozicon64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
+  - find . -name default128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
+  - find . -name default22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/firefox.png \;
+  - find . -name default24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/firefox.png \;
+  - find . -name default256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/firefox.png \;
+  - find . -name default32.png -exec cp {} usr/share/icons/hicolor/32x32/apps/firefox.png \;
+  - find . -name default48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
+  - find . -name default5128.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
+  - find . -name default64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
   - # Workaround for:
   - # https://bugzilla.mozilla.org/show_bug.cgi?id=296568
   - cat > firefox.desktop <<EOF
