@@ -1,0 +1,26 @@
+app: TeXworks
+union: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - texworks/stable
+  script:
+    - wget -c http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+
+script:
+  - tar xf ../install-tl-unx.tar.gz
+  - mv install-tl* install-tl
+  - echo "I" | TEXLIVE_INSTALL_PREFIX=./texlive ./install-tl/install-tl -portable -scheme basic
+  - cat > AppRun <<\EOF
+  - #!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - cd "${HERE}/usr/"
+  - export PATH=./bin/:./sbin/:./games/:../texlive/bin/x86_64-linux/:$PATH
+  - export LD_LIBRARY_PATH=${HERE}/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+  - exec texworks.wrapper "$@"
+  - EOF
+  - cp ./usr/share/pixmaps/TeXworks.png .
+  - export ARCH=x86_64
