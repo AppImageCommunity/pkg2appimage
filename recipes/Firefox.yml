@@ -10,9 +10,13 @@ ingredients:
     - wget -c $DLD --trust-server-names
     - ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g' > VERSION
     - tar xf firefox*.tar.bz2
+    - URL2=$(wget -c "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'firefox.signed.xpi"' | head -n 1 | cut -d '"' -f 4)
+    - wget -c "$URL2"
+    - # TODO: Install this xpi properly; see https://github.com/AppImage/AppImages/issues/337
 
 script:
   - cp -r ../firefox/* usr/bin/
+  - mkdir -p 
   - find . -name mozicon128.png -exec cp {} firefox.png \;
   - find . -name default128.png -exec cp {} firefox.png \;
   - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
@@ -31,6 +35,8 @@ script:
   - find . -name default48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
   - find . -name default5128.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
   - find . -name default64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
+  - # Clean up
+  - rm usr/bin/browser/features/{firefox@getpocket.com,onboarding@mozilla.org,activity-stream@mozilla.org,aushelper@mozilla.org,followonsearch@mozilla.com,formautofill@mozilla.org}.xpi || true
   - # Workaround for:
   - # https://bugzilla.mozilla.org/show_bug.cgi?id=296568
   - cat > firefox.desktop <<EOF
