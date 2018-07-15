@@ -1,0 +1,34 @@
+# We are not allowed to redistribute AppImages of Google Chrome,
+# but you can easily make your own using this recipe like this on a Debian/Ubuntu system:
+# wget -c "https://github.com/AppImage/AppImages/raw/master/pkg2appimage"
+# bash -ex pkg2appimage Google_Chrome
+
+app: google-chrome
+
+ingredients:
+  package: google-chrome-stable
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+
+script:
+  - mv ./opt/google/chrome/product_logo_64.png usr/share/icons/hicolor/64x64/apps/google-chrome.png
+  - mv ./opt/google/chrome/product_logo_22.png usr/share/icons/hicolor/22x22/apps/google-chrome.png
+  - mv ./opt/google/chrome/product_logo_32.png usr/share/icons/hicolor/32x32/apps/google-chrome.png
+  - mv ./opt/google/chrome/product_logo_256.png usr/share/icons/hicolor/256x256/apps/google-chrome.png
+  - mv ./opt/google/chrome/product_logo_24.png usr/share/icons/hicolor/24x24/apps/google-chrome.png
+  - mv ./opt/google/chrome/product_logo_128.png usr/share/icons/hicolor/128x128/apps/google-chrome.png
+  - mv ./opt/google/chrome/product_logo_48.png usr/share/icons/hicolor/48x48/apps/google-chrome.png
+  - cp usr/share/icons/hicolor/256x256/apps/google-chrome.png .
+  - sed -i -e 's|/usr/bin/google-chrome-stable %U|AppRun|g' google-chrome.desktop
+  - sed -i -e 's|3.26|3.00|g' opt/google/chrome/chrome
+  - cat > ./AppRun <<\EOF
+  - #!/bin/sh
+  - HERE=$(dirname $(readlink -f "${0}"))
+  - export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+  - "${HERE}"/opt/google/chrome/google-chrome --password-store=basic $@
+  - EOF
+  - chmod a+x ./AppRun
+  - ./opt/google/chrome/chrome --version | grep -Eo "[0-9.]+" | head -n 1 > ../VERSION
