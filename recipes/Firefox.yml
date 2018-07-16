@@ -12,7 +12,6 @@ ingredients:
     - tar xf firefox*.tar.bz2
     - URL2=$(wget -c "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'firefox.signed.xpi"' | head -n 1 | cut -d '"' -f 4)
     - wget -c "$URL2"
-    - # TODO: Install this xpi properly; see https://github.com/AppImage/AppImages/issues/337
 
 script:
   - cp -r ../firefox/* usr/bin/
