@@ -130,7 +130,7 @@ libgpg-error.so.0
 libICE.so.6
 # libidn.so.11 # Does not come with Solus by default
 # libk5crypto.so.3 # Runnning AppImage built on Debian 9 or Ubuntu 16.04 on an Archlinux fails otherwise; https://github.com/AppImage/AppImages/issues/301
-libkeyutils.so.1
+# libkeyutils.so.1 #
 # libkrb5.so.26 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there. Missing on openSUSE LEAP 42.0
 # libkrb5.so.3 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 # libkrb5support.so.0 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there

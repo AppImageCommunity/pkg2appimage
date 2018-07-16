@@ -49,7 +49,7 @@ libgl1-mesa
 libgl1-mesa-dri
 libgl1-mesa-glx
 # libglib2.0-0 # https://github.com/LibreCAD/LibreCAD/issues/858#issuecomment-345449318
-libglu1-mesa
+# libglu1-mesa #
 # libgnutls26 cannot be expected to be eveywhere, e.g., KDE neon
 # libgpg-error0 gives non-fatal errors on many systems and is low-level, can it be expected to be everywhere?
 libgpg-error0
