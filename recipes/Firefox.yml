@@ -16,7 +16,8 @@ ingredients:
 
 script:
   - cp -r ../firefox/* usr/bin/
-  - mkdir -p 
+  - mkdir -p usr/bin/browser/extensions/
+  - cp ../*firefox.signed.xpi "usr/bin/browser/extensions/uBlock0@raymondhill.net.xpi/uBlock0@raymondhill.net.xpi"
   - find . -name mozicon128.png -exec cp {} firefox.png \;
   - find . -name default128.png -exec cp {} firefox.png \;
   - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
