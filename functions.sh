@@ -212,6 +212,7 @@ generate_type2_appimage()
     appimagetool_tempdir=$(mktemp -d)
     mv appimagetool "$appimagetool_tempdir"
     pushd "$appimagetool_tempdir" &>/dev/null
+    ls -al
     ./appimagetool --appimage-extract
     rm appimagetool
     appimagetool=$(readlink -f squashfs-root/AppRun)
