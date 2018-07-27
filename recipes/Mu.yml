@@ -1,0 +1,39 @@
+# This is an example for making an AppImage from a python3 PyQt application
+# using virtualenv and pip3
+# TODO: Handle https://github.com/mu-editor/mu/blob/master/conf/90-usb-microbit.rules
+
+app: mu.codewith.editor
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty trusty-updates trusty-security main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty-security main universe
+  packages:
+    - python3.4-venv
+  script:
+    -  wget -c https://raw.githubusercontent.com/mu-editor/mu/master/conf/mu.codewith.editor.png
+    -  wget -c https://raw.githubusercontent.com/mu-editor/mu/master/conf/mu.appdata.xml
+
+script:
+  - cp ../mu.codewith.editor.png ./usr/share/icons/hicolor/256x256/
+  - cp ../mu.codewith.editor.png .
+  - mkdir -p usr/share/metainfo/ ; cp ../mu.appdata.xml usr/share/metainfo/
+  - virtualenv --python=python3 usr
+  - ./usr/bin/pip3 install mu-editor
+  - cat > usr/share/applications/mu.codewith.editor.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Mu
+  - Comment=A Python editor for beginner programmers
+  - Icon=mu.codewith.editor
+  - Exec=python3 bin/mu-editor %F
+  - Terminal=false
+  - Categories=Application;Development;
+  - Keywords=Python;Editor;microbit;micro:bit;
+  - StartupWMClass=mu
+  - MimeType=text/x-python3;text/x-python3;
+  - EOF
+  - cp usr/share/applications/mu.codewith.editor.desktop .
+  - usr/bin/pip3 freeze | grep "mu-editor" | cut -d "=" -f 3 >> ../VERSION
