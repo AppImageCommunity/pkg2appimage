@@ -7,7 +7,7 @@ ingredients:
     - python-lxml
     - python-numpy
     - python-scour
-  dist: bionic
+  dist: trusty
   sources:
     # - deb http://mirrors.aliyun.com/ubuntu/ bionic main universe
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
