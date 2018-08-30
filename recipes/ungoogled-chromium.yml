@@ -1,0 +1,44 @@
+# You can easily make your own using this recipe like this on a Debian/Ubuntu system:
+# wget -c "https://github.com/AppImage/AppImages/raw/master/pkg2appimage"
+# bash -ex pkg2appimage ungoogled-chromium
+
+app: ungoogled-chromium
+
+ingredients:
+  package: libgconf2-4
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - export VERSION=$(wget -q "https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/linux_portable/64bit/" -O - | grep "/64bit/" | head -n 1 | cut -d '"' -f 2 | cut -d "/" -f 6 )
+    - echo $VERSION > VERSION
+    - wget -c "https://github.com/Eloston/ungoogled-chromium-binaries/releases/download/${VERSION}/ungoogled-chromium_${VERSION}_linux.tar.xz"
+#    - URL2=$(wget -q "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'uBlock0.chromium.zip"' | head -n 1 | cut -d '"' -f 4)
+#    - wget -c "$URL2"
+#    - unzip uBlock0.chromium.zip
+#    - export cs_extension_version=$(grep -r '"version":'  uBlock0.chromium/manifest.json | cut -d '"' -f 4) # 1.16.13.101
+#    - export cs_extension_id=$(wget -q "https://raw.githubusercontent.com/gorhill/uBlock/master/dist/chromium/publish-beta.py" -O - | grep "cs_extension_id =" | head -n 1 | cut -d "'" -f 2) # cgbcahbpdhpcegmbfconppldiemgcoii
+
+script:
+  - mkdir -p ./opt/google/chrome/ ; tar xf ../ungoogled-chromium_*_linux.tar.xz --strip-components=1 -C ./opt/google/chrome/
+  - mkdir -p usr/share/icons/hicolor/48x48/apps/
+  - cp ./opt/google/chrome/product_logo_48.png usr/share/icons/hicolor/48x48/apps/chromium-browser.png
+  - cp usr/share/icons/hicolor/48x48/apps/chromium-browser.png .
+  - wget -c "https://raw.githubusercontent.com/Eloston/ungoogled-chromium/master/packaging/opensuse/sources_template/chromium-browser.desktop" -O ungoogled-chromium.desktop
+  - sed -i -e 's|Exec=chromium|Exec=AppRun|g' ungoogled-chromium.desktop
+  - sed -i -e 's|Chromium|Ungoogled Chromium|g' ungoogled-chromium.desktop
+  - sed -i -e 's|3.26|3.00|g' opt/google/chrome/chrome
+  - cat > ./AppRun <<\EOF
+  - #!/bin/sh
+  - HERE=$(dirname $(readlink -f "${0}"))
+  - export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+  - "${HERE}"/opt/google/chrome/chrome --password-store=basic $@
+  - EOF
+  - chmod a+x ./AppRun
+#  - mkdir -p opt/google/chrome/default_apps/
+#  - wget "https://raw.githubusercontent.com/chromium/chromium/2ca8c5037021c9d2ecc00b787d58a31ed8fc8bcb/chrome/browser/resources/default_apps/external_extensions.json" -O opt/google/chrome/default_apps/external_extensions.json
+#  - sed -i -e 's|// Drive extension|"cs_extension_id" : { "external_crx": "uBlock0.crx", "external_version": "cs_extension_version" },|g' opt/google/chrome/default_apps/external_extensions.json
+#  - sed -i -e 's|cs_extension_id|'"$cs_extension_id"'|g' opt/google/chrome/default_apps/external_extensions.json
+#  - sed -i -e 's|cs_extension_version|'"$cs_extension_version"'|g' opt/google/chrome/default_apps/external_extensions.json
+#  - cp ../uBlock0.chromium.zip ./opt/google/chrome/default_apps/uBlock0.crx
+
