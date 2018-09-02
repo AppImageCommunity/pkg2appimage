@@ -1,3 +1,5 @@
+# TODO: Add https://www.i-dont-care-about-cookies.eu/ - https://github.com/uBlockOrigin/uBlock-issues/issues/196#issuecomment-417963577
+#
 # We are not allowed to redistribute AppImages of Google Chrome,
 # but you can easily make your own using this recipe like this on a Debian/Ubuntu system:
 # wget -c "https://github.com/AppImage/AppImages/raw/master/pkg2appimage"
