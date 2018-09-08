@@ -12,9 +12,12 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   script:
-    - export VERSION=$(wget -q "https://ungoogled-software.github.io/ungoogled-chromium-binaries/releases/linux_portable/64bit/" -O - | grep "/64bit/" | head -n 1 | cut -d '"' -f 2 | cut -d "/" -f 6 )
+    - export VERSION=$(wget -q "https://raw.githubusercontent.com/ungoogled-software/ungoogled-chromium-binaries/master/releases/linux_portable/64bit/index.html" -O - | grep "linux_portable/64bit" | grep -v "Front page" | cut -d '"' -f 3 | cut -d ">" -f 2 | cut -d "<" -f 1 | head -n 1)
+    - INI=$(wget -q "https://github.com/ungoogled-software/ungoogled-chromium-binaries/tree/master/config/platforms/linux_portable/64bit" -O - | grep $VERSION | grep -oe "href.*" | cut -d '"' -f 2)
+    - INIURL=$(echo "https://raw.githubusercontent.com$INI" | sed -e 's|blob/||g')
+    - URL=$(wget -q "$INIURL" -O - | grep "url = " | cut -d ' ' -f 3 | head -n 1)
+    - wget -c "$URL"
     - echo $VERSION > VERSION
-    - wget -c "https://github.com/Eloston/ungoogled-chromium-binaries/releases/download/${VERSION}/ungoogled-chromium_${VERSION}_linux.tar.xz"
 #    - URL2=$(wget -q "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'uBlock0.chromium.zip"' | head -n 1 | cut -d '"' -f 4)
 #    - wget -c "$URL2"
 #    - unzip uBlock0.chromium.zip
