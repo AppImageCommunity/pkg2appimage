@@ -14,7 +14,8 @@ ingredients:
     - URL2=$(wget -c "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'firefox.signed.xpi"' | head -n 1 | cut -d '"' -f 4)
     # - URL3=https://www.eff.org/files/https-everywhere-latest.xpi
     # - URL4=https://www.eff.org/files/privacy-badger-latest.xpi
-    - wget -c "$URL2" # "$URL3" "$URL4"
+    - URL5=$(wget -q -c "https://addons.mozilla.org/en-US/firefox/addon/i-dont-care-about-cookies/" -O - | sed -e 's|\\\u002F|/|g' | grep -Po 'https://addons.mozilla.org/firefox/downloads/file/[0-9]*/.*?xpi' | head -n 1)
+    - wget -c "$URL2" "$URL5" # "$URL3" "$URL4"
 
 script:
   - cp -r ../firefox/* usr/bin/
@@ -26,6 +27,7 @@ script:
   # XPI filename: https://github.com/EFForg/https-everywhere/blob/8f6880cbe4d32349f915ad8f90255486910d140a/test/tor-browser.sh#L33
   # - cp ../https-everywhere-latest.xpi usr/bin/browser/extensions/https-everywhere-eff@eff.org.xpi
   # - cp ../privacy-badger-latest.xpi usr/bin/browser/extensions/jid1-MnnxcxisBPnSXQ-eff@jetpack.xpi
+  - cp ../i_dont_care_about_cookies-*.xpi usr/bin/browser/extensions/jid1-KKzOGWgsW3Ao4Q@jetpack.xpi
   - find . -name mozicon128.png -exec cp {} firefox.png \;
   - find . -name default128.png -exec cp {} firefox.png \;
   - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
