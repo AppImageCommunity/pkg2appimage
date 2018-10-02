@@ -5,15 +5,10 @@
 # AppImages and their building process.
 
 echo "deb http://ppa.launchpad.net/djcj/libcurl-slim/ubuntu xenial main" >> /etc/apt/sources.list
-echo "deb http://ppa.launchpad.net/djcj/gnutls-patched/ubuntu trusty main" >> /etc/apt/sources.list
 
 cat > /etc/apt/preferences.d/appimage-pin <<EOF
 Package: *
 Pin: release o=LP-PPA-djcj-libcurl-slim
-Pin-Priority: 9999
-
-Package: *
-Pin: release o=LP-PPA-djcj-gnutls-patched
 Pin-Priority: 9999
 EOF
 
