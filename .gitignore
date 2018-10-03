@@ -33,3 +33,6 @@
 
 # Backup & Temporary files
 *~
+
+# Build images
+out/
