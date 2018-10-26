@@ -2,7 +2,7 @@ app: Waterfox
 
 ingredients:
   script:
-    - URL=$(wget -O- https://www.waterfoxproject.org/downloads | grep linux64 | grep -oE 'https[^"]*')
+    - URL=$(wget -O- https://www.waterfoxproject.org/en-US/waterfox/new/?scene=1 | grep linux64 | grep -oE 'https[^"]*' | sort -u)
     - echo "$URL" | grep -oP 'waterfox-\K(.*)(?=.en-US)' > VERSION
     - wget -c --trust-server-names "$URL"
 
@@ -11,6 +11,13 @@ script:
   - mv waterfox/* usr/bin/
   - rm -r waterfox/
   - find . -name mozicon128.png -exec cp \{\} waterfox.png \;
+  - find . -name default16.png -exec cp {} usr/share/icons/hicolor/16x16/apps/waterfox.png \;
+  - find . -name default22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/waterfox.png \;
+  - find . -name default24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/waterfox.png \;
+  - find . -name default32.png -exec cp {} usr/share/icons/hicolor/32x32/apps/waterfox.png \;
+  - find . -name default48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/waterfox.png \;
+  - find . -name default256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/waterfox.png \;
+  - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/waterfox.png \;
   - cat > waterfox.desktop <<EOF
   - [Desktop Entry]
   - Type=Application
