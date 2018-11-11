@@ -13,7 +13,7 @@ script:
   - Type=Application
   - Name=Conky
   - Icon=conky
-  - Exec=conky --pause=5
+  - Exec=conky
   - StartupNotify=false
   - Terminal=false
   - EOF
@@ -23,3 +23,4 @@ script:
   - cp usr/share/icons/hicolor/256x256/apps/conky.png .
   - sed -i -e 's|/etc|./et|g' usr/bin/conky
   - ( cd usr/ ; ln -s ../etc et )
+  - ( cd etc/ ; ln -s /etc/mtab . )
