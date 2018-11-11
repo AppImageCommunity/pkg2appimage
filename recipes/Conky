@@ -1,0 +1,25 @@
+app: Conky
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+
+script:
+  - mkdir -p usr/share/applications/
+  - cat > usr/share/applications/conky.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Conky
+  - Icon=conky
+  - Exec=conky --pause=5
+  - StartupNotify=false
+  - Terminal=false
+  - EOF
+  - cp usr/share/applications/conky.desktop .
+  - wget -c "https://raw.githubusercontent.com/brndnmtthws/conky/master/logo/logomark-violet.png" -O usr/share/icons/hicolor/256x256/apps/conky.png
+  - mogrify -resize 256x256 usr/share/icons/hicolor/256x256/apps/conky.png
+  - cp usr/share/icons/hicolor/256x256/apps/conky.png .
+  - sed -i -e 's|/etc|./et|g' usr/bin/conky
+  - ( cd usr/ ; ln -s ../etc et )
