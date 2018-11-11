@@ -183,4 +183,7 @@ libjack.so.0
 # The following may be spefific to a particular GPU and may need to be excluded
 # according to https://github.com/RicardoEPRodrigues/3Engine/issues/4#issuecomment-402532194
 # libGLEW.so.2.0 # to be confirmed
+
 # libglut.so.3 # to be confirmed
+
+libxcb-dri3.so.0 # https://github.com/AppImage/AppImages/issues/348
