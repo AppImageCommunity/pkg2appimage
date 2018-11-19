@@ -5,3 +5,7 @@ ingredients:
   dist: trusty
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+
+script:
+  - sed -i -e 's|GTK;Application;Network;News|GTK;Application;Network;News;|g' usr/share/applications/xpn.desktop
+  - cp -f usr/share/applications/xpn.desktop .
