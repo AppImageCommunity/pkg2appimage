@@ -15,21 +15,21 @@ usage() {
   echo "  $0 [--no-di] META-NAME|YAMLFILE"
   echo ""
   echo "options:"
-  echo "  --no-di    disable desktop integration"
+  echo "  --di    enable legacy desktop integration (unsupported)"
   exit 1
 }
 
-if [ $# -eq 0 ] || [ "x${!#}" = "x--no-di" ] ; then
+if [ $# -eq 0 ] || [ "x${!#}" = "x--di" ] ; then
   usage
 fi
-if [ $# -eq 2 ] && [ "x$1" != "x--no-di" ] ; then
+if [ $# -eq 2 ] && [ "x$1" != "x--di" ] ; then
   usage
 fi
 
-if [ "x$1" = "x--no-di" ] ; then
-  ENABLE_DI="no"
-else
+if [ "x$1" = "x--di" ] ; then
   ENABLE_DI="yes"
+else
+  ENABLE_DI="no"
 fi
 
 # Halt on errors
