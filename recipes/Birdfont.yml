@@ -3,6 +3,9 @@ union: true
 
 ingredients:
   dist: trusty
+  packages:
+    - birdfont
+    - unicode-data
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   ppas:
