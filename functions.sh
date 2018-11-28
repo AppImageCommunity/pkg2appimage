@@ -141,11 +141,11 @@ glibc_needed()
 # Usage: get_desktopintegration name_of_desktop_file_and_exectuable
 get_desktopintegration()
 {
-  REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
-  cat_file_from_url https://raw.githubusercontent.com/AppImage/AppImageKit/master/desktopintegration > ./usr/bin/$REALBIN.wrapper
-  chmod a+x ./usr/bin/$REALBIN.wrapper
-
-  sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
+  # REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
+  # cat_file_from_url https://raw.githubusercontent.com/AppImage/AppImageKit/master/desktopintegration > ./usr/bin/$REALBIN.wrapper
+  # chmod a+x ./usr/bin/$REALBIN.wrapper
+  echo "The desktopintegration script is deprecated. Please advise users to use https://github.com/AppImage/appimaged instead."
+  # sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
 }
 
 # Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
