@@ -187,3 +187,4 @@ libjack.so.0
 # libglut.so.3 # to be confirmed
 
 libxcb-dri3.so.0 # https://github.com/AppImage/AppImages/issues/348
+libxcb-dri2.so.0 # https://github.com/probonopd/linuxdeployqt/issues/331#issuecomment-442276277
