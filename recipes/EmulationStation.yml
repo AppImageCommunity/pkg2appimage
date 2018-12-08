@@ -1,0 +1,30 @@
+app: EmulationStation
+binpatch: true
+
+ingredients:
+  packages:
+    - emulationstation
+    - libboost-system1.54.0
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c "https://emulationstation.org/downloads/releases/emulationstation_amd64_latest.deb"
+    - wget "https://raw.githubusercontent.com/dtgm/chocolatey-packages/8d5c35302c809d5371e2747e0f4cc67df4d60a43/icons/emulationstation.png"
+
+script:
+  - mkdir -p usr/share/applications/
+  - cat > usr/share/applications/emulationstation.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=EmulationStation
+  - Comment=Front-end for emulators
+  - Exec=emulationstation
+  - Icon=emulationstation
+  - Terminal=false
+  - Type=Application
+  - StartupNotify=false
+  - Categories=Game;Emulator;
+  - EOF
+  - cp usr/share/applications/emulationstation.desktop .
+  - cp ../emulationstation.png usr/share/icons/hicolor/256x256/apps/
+  - cp usr/share/icons/hicolor/256x256/apps/emulationstation.png .
