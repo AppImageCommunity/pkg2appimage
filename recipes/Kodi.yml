@@ -1,0 +1,24 @@
+# FIXME - help appreciated
+# Not finding its resources yet
+
+app: Kodi
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://security.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - team-xbmc/ppa
+    - team-xbmc/xbmc-nightly
+
+script:
+  - cat > ./usr/bin/kodi <<\EOF
+  - #!/bin/bash
+  - SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+  - export XBMC_HOME=${SCRIPT_PATH}/../share/kodi
+  - exec ${SCRIPT_PATH}/../lib/x86_64-linux-gnu/kodi/kodi.bin "$@"
+  - EOF
+  - chmod +x ./usr/bin/kodi
+  - mv ./usr/lib/x86_64-linux-gnu/samba/* ./usr/lib/x86_64-linux-gnu/
