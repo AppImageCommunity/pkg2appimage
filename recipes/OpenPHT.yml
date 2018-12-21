@@ -1,0 +1,25 @@
+# Based on https://github.com/DEAKSoftware/OpenPHT-AppImage
+# Thank you @DominikDeak
+
+app: OpenPHT
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://security.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - team-xbmc/ppa
+    - team-xbmc/xbmc-nightly
+  script:
+    - wget -c https://github.com/RasPlex/OpenPHT/releases/download/v1.8.0.148-573b6d73/openpht_1.8.0.148-573b6d73-trusty_amd64.deb
+
+script:
+  - cat > ./usr/bin/openpht <<\EOF
+  - #!/bin/bash
+  - SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+  - export LD_LIBRARY_PATH="${SCRIPT_PATH}/../lib/openpht/system/players/dvdplayer":$LD_LIBRARY_PATH
+  - export XBMC_HOME=${SCRIPT_PATH}/../share/openpht
+  - exec ${SCRIPT_PATH}/../lib/openpht/plexhometheater "$@"
+  - EOF
+  - chmod +x ./usr/bin/openpht
