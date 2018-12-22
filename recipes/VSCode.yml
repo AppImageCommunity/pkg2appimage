@@ -1,7 +1,10 @@
 # Please vote and comment on
 # https://github.com/Microsoft/vscode/issues/10857
 # if you would like to see an official AppImage to be released
-# by the VSCode team
+# by the VSCode team. In the meantime
+# you can easily make your own using this recipe like this on a Debian/Ubuntu system:
+# wget -c "https://github.com/AppImage/pkg2appimage/raw/master/pkg2appimage"
+# bash -ex pkg2appimage VSCode
 
 app: VSCode
 
