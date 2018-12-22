@@ -12,7 +12,7 @@ set +e
 
 USERNAME=probonopd
 ORGANIZATION=AppImage
-PROJECT=AppImages
+PROJECT=pkg2appimage
 
 USER_AGENT='Travis/1.8.0 (Compatible; curl '$(curl --version | head -n 1 | cut -d " " -f 1-4)')'
 
