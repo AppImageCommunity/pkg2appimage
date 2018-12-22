@@ -1,0 +1,28 @@
+# Please vote and comment on
+# https://github.com/Microsoft/vscode/issues/10857
+# if you would like to see an official AppImage to be released
+# by the VSCode team
+
+app: VSCode
+
+ingredients:
+  package: code
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c --trust-server-names "https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable"
+    - ls code_*.deb | cut -d _ -f 2 > VERSION
+
+script:
+  - cp usr/share/applications/code.desktop .
+  - cp usr/share/pixmaps/code.png .
+  - convert code.png -resize 512x512 usr/share/icons/hicolor/512x512/apps/code.png
+  - convert code.png -resize 256x256 usr/share/icons/hicolor/256x256/apps/code.png
+  - convert code.png -resize 128x128 usr/share/icons/hicolor/128x128/apps/code.png
+  - convert code.png -resize 64x64 usr/share/icons/hicolor/64x64/apps/code.png
+  - convert code.png -resize 48x48 usr/share/icons/hicolor/48x48/apps/code.png
+  - convert code.png -resize 32x32 usr/share/icons/hicolor/32x32/apps/code.png
+  - convert code.png -resize 24x24 usr/share/icons/hicolor/24x24/apps/code.png
+  - convert code.png -resize 22x22 usr/share/icons/hicolor/22x22/apps/code.png
+  - ( cd usr/bin/ ; ln -s ../share/code/code . )
