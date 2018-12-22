@@ -1,18 +1,18 @@
-# :warning: IMPORTANT NOTICE
-
-In https://github.com/AppImage/AppImages/commit/798093a8b2b41b8a32fb1cc5301bcab9ed5f2cb8 we reorganized this repository to simplify its structure and make it easier to understand. Unfortunately this requires existing links to this repository to be updated. We apologize for the inconvenience caused.
-
-* `recipes/meta/Recipe` was renamed to `pkg2appimage` to better reflect its nature
-* `recipes/meta` was moved to `recipes/`
-* Legacy recipes were moved to `legacy/`. They should be converted to `.yml` recipes
-
-# AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/AppImage/AppImages.svg)](https://travis-ci.org/AppImage/AppImages) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e7dd241a1bf44af9eebc80fd2c71763)](https://www.codacy.com/app/AppImage/AppImages?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppImage/AppImages&amp;utm_campaign=Badge_Grade) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/probonopd/AppImageKit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
+# AppImages [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/AppImage/pkg2appimage.svg)](https://travis-ci.org/AppImage/pkg2appimage) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e7dd241a1bf44af9eebc80fd2c71763)](https://www.codacy.com/app/AppImage/pkg2appimage?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppImage/pkg2appimage&amp;utm_campaign=Badge_Grade) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
  
 This repository contains the `pkg2appimage` tool and some recipes to generate __AppImages__ (portable Linux apps) using [AppImageKit](https://github.com/probonopd/appimagekit). See the [Bintray page](https://bintray.com/probono/AppImages) tab for downloads of the generated AppImages.
 
 __Recipes__ are the `.yml` files used to create the AppImages, and __Dockerfiles__ are used to build [Docker images on Docker Hub](https://hub.docker.com/r/probonopd/appimages/) (think of them as glorified `chroot` environments) in which the recipes can run. Finally, everything is tied together using travis-ci which uses Docker containers created by the Dockerfiles from this repository to generate AppImages using the recipes from this repository. The result are AppImages are uploaded to a Bintray repository and can run on most modern desktop Linux distributions.
 
 This repository is intended to showcase the [AppImage](http://appimage.org) format and [AppImageKit](https://github.com/probonopd/AppImageKit) software used to create AppImages. Upstream projects are encouraged to use this showcase to produce their own __upstream packaging__ AppImages, as some projects (like [Subsurface](https://subsurface-divelog.org) already do).
+
+## :warning: IMPORTANT NOTICE
+
+In https://github.com/AppImage/AppImages/commit/798093a8b2b41b8a32fb1cc5301bcab9ed5f2cb8 we reorganized this repository to simplify its structure and make it easier to understand. Unfortunately this requires existing links to this repository to be updated. We apologize for the inconvenience caused.
+
+* `recipes/meta/Recipe` was renamed to `pkg2appimage` to better reflect its nature
+* `recipes/meta` was moved to `recipes/`
+* Legacy recipes were moved to `legacy/`. They should be converted to `.yml` recipes
 
 ## Usage
 
