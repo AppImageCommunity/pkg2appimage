@@ -2,7 +2,7 @@
 #
 # We are not allowed to redistribute AppImages of Google Chrome,
 # but you can easily make your own using this recipe like this on a Debian/Ubuntu system:
-# wget -c "https://github.com/AppImage/AppImages/raw/master/pkg2appimage"
+# wget -c "https://github.com/AppImage/pkg2appimage/raw/master/pkg2appimage"
 # bash -ex pkg2appimage Google_Chrome
 
 app: google-chrome
