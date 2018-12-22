@@ -1,7 +1,7 @@
 # An example complex Mono application - not working yet
 # PRs welcome
 
-binpatch: true
+#binpatch: true
 
 app: MonoDevelop
 
@@ -22,10 +22,50 @@ ingredients:
     - libgtk2.0-0 2.24.10-2
 
 script:
-  - mv ./usr/lib/monodevelop/bin/MonoDevelop.exe usr/lib/mono/exe
-
-# need to change usr/bin/monodevelop to
-# mono ./bin/MonoDevelop.exe --config ../etc/mono/config
-# yet still getting
-# System.DllNotFoundException: libc
-# despite that strace shows that /lib/x86_64-linux-gnu/libc.so.6 is opened
+    - rm AppRun || true
+    - cat > AppRun <<\EOF
+    - #!/bin/bash
+    - # Based on
+    - # https://stackoverflow.com/a/15179369
+    - HERE="$(dirname "$(readlink -f "${0}")")"
+    - PKG_DIR=$HERE/usr
+    - set -x
+    - export LD_LIBRARY_PATH=$PKG_DIR/lib64:$PKG_DIR/lib:$LD_LIBRARY_PATH
+    - #export LD_RUN_PATH=$LD_LIBRARY_PATH
+    - export PKG_CONFIG_PATH=$PKG_DIR/lib64/pkgconfig:$PKG_CONFIG_PATH
+    - export MONO_GAC_PREFIX=${PKG_DIR}
+    - export MONO_PATH=${PKG_DIR}/lib/mono/4.0:\
+    - ${PKG_DIR}/lib/mono/fsharp:\
+    - ${PKG_DIR}/lib/mono/lldb:\
+    - ${PKG_DIR}/lib/mono/'Microsoft F#':\
+    - ${PKG_DIR}/lib/mono/'Microsoft SDKs':\
+    - ${PKG_DIR}/lib/mono/mono-configuration-crypto:\
+    - ${PKG_DIR}/lib/mono/monodoc:\
+    - ${PKG_DIR}/lib/mono/msbuild:\
+    - ${PKG_DIR}/lib/mono/xbuild:\
+    - ${PKG_DIR}/lib/mono/xbuild-frameworks:\
+    - ${PKG_DIR}/lib/mono/4.7-api:\
+    - ${PKG_DIR}/lib/mono/4.7.1-api:\
+    - ${PKG_DIR}/lib/mono/4.6-api:\
+    - ${PKG_DIR}/lib/mono/4.6.2-api:\
+    - ${PKG_DIR}/lib/mono/4.6.1-api:\
+    - ${PKG_DIR}/lib/mono/4.5-api:\
+    - ${PKG_DIR}/lib/mono/4.5.2-api:\
+    - ${PKG_DIR}/lib/mono/4.5.1-api:\
+    - ${PKG_DIR}/lib/mono/4.5:\
+    - ${PKG_DIR}/lib/mono/4.0-api:\
+    - ${PKG_DIR}/lib/mono/4.0:\
+    - ${PKG_DIR}/lib/mono/3.5-api:\
+    - ${PKG_DIR}/lib/mono/2.0-api:\
+    - ${PKG_DIR}/lib/monodevelop
+    - export MONO_CONFIG=${HERE}/etc/mono/config
+    - export MONO_CFG_DIR=${HERE}/etc
+    - export C_INCLUDE_PATH=${PKG_DIR}/include
+    - export ACLOCAL_PATH=${PKG_DIR}/share/aclocal
+    - export FONTCONFIG_PATH=${HERE}/etc/fonts
+    - export MONO_REGISTRY_PATH=~/.mono/registry
+    - export PATH=$HERE/bin:$PKG_DIR/bin:$PKG_DIR/lib/monodevelop/bin:$PATH
+    - export EXE_PATH=$PKG_DIR/lib/monodevelop/bin
+    - exec monodevelop "$@"
+    - EOF
+    - chmod +x AppRun
