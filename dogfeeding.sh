@@ -42,6 +42,8 @@ cp ../../pkg2appimage AppRun ; chmod + AppRun
 mkdir -p ./usr/share/pkg2appimage/
 cp ../../{functions.sh,excludelist,excludedeblist,appdir-lint.sh} ./usr/share/pkg2appimage/
 
+copy_deps
+move_lib
 delete_blacklisted
 
 cd ..
