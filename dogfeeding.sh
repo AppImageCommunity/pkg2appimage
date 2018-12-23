@@ -9,7 +9,7 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 mkdir -p build/
 
 cd build/
-apt download -y apt libapt-pkg4.12 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
+apt download -y apt libapt-pkg5.0 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
 wget -c "https://github.com/ImageMagick/ImageMagick/releases/download/7.0.8-17/ImageMagick-0b0ce48-gcc-$SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
