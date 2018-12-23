@@ -203,11 +203,14 @@ generate_type2_appimage()
   # if [ -z "$URL" ] ; then
   #   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+2))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
   # fi
-  URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${SYSTEM_ARCH}.AppImage"
-  wget -c "$URL" -O appimagetool
-  chmod a+x ./appimagetool
-  appimagetool=$(readlink -f appimagetool)
-
+  if [ -z "$(which appimagetool)" ] ; then
+    URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${SYSTEM_ARCH}.AppImage"
+    wget -c "$URL" -O appimagetool
+    chmod a+x ./appimagetool
+    appimagetool=$(readlink -f appimagetool)
+  else
+    appimagetool=$(which appimagetool)
+  fi
   if [ "$DOCKER_BUILD" ]; then
     appimagetool_tempdir=$(mktemp -d)
     mv appimagetool "$appimagetool_tempdir"
