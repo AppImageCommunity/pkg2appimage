@@ -22,6 +22,7 @@ mv ./usr/share/applications/appimagetool.desktop ./usr/share/applications/pkg2ap
 sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Comment=.*|Comment=Create AppImages from Debian/Ubuntu repositories|g' ./usr/share/applications/pkg2appimage.desktop
+cp ./usr/share/applications/pkg2appimage.desktop .
 
 cp ../ImageMagick-*.AppImage usr/bin/convert
 
@@ -41,4 +42,4 @@ cp ../../{functions.sh,excludelist,excludedeblist,appdir-lint.sh} ./usr/share/pk
 delete_blacklisted
 
 cd ..
-VERSION=continuous ./appimagetool-*.AppImage ./appdir/usr/share/applications/pkg2appimage.desktop
+VERSION=continuous ./appimagetool-*.AppImage -g -s ./pkg2appimage.AppDir
