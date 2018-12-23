@@ -6,7 +6,7 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 
 . ./functions.sh
 
-mkdir -p build/pkg2appimage.AppDir/
+mkdir -p build/
 
 cd build/
 apt download -y apt libapt-pkg4.12 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
@@ -17,8 +17,7 @@ chmod +x ./*.AppImage
 
 ./appimagetool-*.AppImage --appimage-extract && mv ./squashfs-root ./pkg2appimage.AppDir
 cd ./pkg2appimage.AppDir
-find . -type f
-rm *.desktop || true
+rm *.desktop
 mv ./usr/share/applications/appimagetool.desktop ./usr/share/applications/pkg2appimage.desktop 
 sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
