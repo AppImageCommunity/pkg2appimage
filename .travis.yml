@@ -16,7 +16,7 @@ services:
 script:
 - |
   if [ -z "$RECIPE" ] ; then
-    bash -e dogfeeding.sh 
+    bash -ex dogfeeding.sh 
   else
     bash -e travis.sh $RECIPE
     FILES=$(find out/ -name "*.AppImage")
