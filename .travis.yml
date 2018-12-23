@@ -10,8 +10,6 @@ addons:
     - squashfs-tools
     - aria2
     - desktop-file-utils
-services:
-# docker
 
 script:
 - |
