@@ -9,7 +9,9 @@
 app: VSCode
 
 ingredients:
-  package: code
+  packages:
+    - code
+    - libgconf2-4
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
