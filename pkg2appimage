@@ -132,9 +132,13 @@ if [ -d "./$APP.AppDir/" ] ; then
   rm -rf ./$APP.AppDir/
 fi
 
-# Source a user-provided functions.sh if the environment
+# Source the bundled functions.sh if it exists
+# in "${HERE}/usr/share/pkg2appimage/functions.sh"
+# or source a user-provided functions.sh if the environment
 # variable FUNCTIONS_SH was set and the file exists
-if [ -z "$FUNCTIONS_SH" ] ; then
+if [ -e "${HERE}/usr/share/pkg2appimage/functions.sh" ] ; then
+  . "${HERE}/usr/share/pkg2appimage/functions.sh"
+elif [ -z "$FUNCTIONS_SH" ] ; then
   if [ ! -e functions.sh ] ; then
     wget -q https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/functions.sh -O ./functions.sh
   fi
