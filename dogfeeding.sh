@@ -6,20 +6,22 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 
 . ./functions.sh
 
-mkdir -p pkg2appimage/pkg2appimage.AppDir
-cd pkg2appimage/
+mkdir -p build/pkg2appimage.AppDir/
+
+cd build/
 apt download -y apt libapt-pkg4.12 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
 
-wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" # FIXME: Make arch independent
-wget -c "https://github.com/ImageMagick/ImageMagick/releases/download/7.0.8-17/ImageMagick-0b0ce48-gcc-x86_64.AppImage" # FIXME: Make arch independent
+wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
+wget -c "https://github.com/ImageMagick/ImageMagick/releases/download/7.0.8-17/ImageMagick-0b0ce48-gcc-SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
 chmod +x ./*.AppImage
 
 cd pkg2appimage.AppDir/
 
 ../appimagetool-*.AppImage --appimage-extract ; mv appimagetool.desktop pkg2appimage.desktop
-sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./pkg2appimage.desktop
-sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./pkg2appimage.desktop
-sed -i -e 's|Comment=.*|Comment=Create AppImages from Debian/Ubuntu repositories|g' ./pkg2appimage.desktop
+mkdir -p usr/share/applications ; mv appimagetool.desktop ./usr/share/applications/pkg2appimage.desktop
+sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
+sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
+sed -i -e 's|Comment=.*|Comment=Create AppImages from Debian/Ubuntu repositories|g' ./usr/share/applications/pkg2appimage.desktop
 
 cp ../ImageMagick-*.AppImage usr/bin/convert
 
@@ -37,3 +39,6 @@ mkdir -p ./usr/share/pkg2appimage/
 cp ../../{functions.sh,excludelist,excludedeblist,appdir-lint.sh} ./usr/share/pkg2appimage/
 
 delete_blacklisted
+
+cd ..
+VERSION=continuous ./appimagetool-*.AppImage ./appdir/usr/share/applications/pkg2appimage.desktop
