@@ -13,13 +13,15 @@ addons:
 services:
 - docker
 
-env:
-  - RECIPE=leafpad
-
 script:
-- bash -e travis.sh $RECIPE
-- FILES=$(find out/ -name "*.AppImage")
-- bash -e bintray.sh $FILES 
+- |
+  if [ -z "RECIPE" ] ; then
+    bash -e dogfeeding.sh 
+  else
+    bash -e travis.sh $RECIPE
+    FILES=$(find out/ -name "*.AppImage")
+    bash -e bintray.sh $FILES
+  fi
 
 notifications:
   irc:
