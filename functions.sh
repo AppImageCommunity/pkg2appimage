@@ -115,7 +115,7 @@ move_lib()
 # Delete blacklisted files
 delete_blacklisted()
 {
-  BLACKLISTED_FILES=$(cat_file_from_url https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/excludelist | sed 's|#.*||g')
+  BLACKLISTED_FILES=$(cat_file_from_url https://github.com/AppImage/pkg2appimage/raw/${PKG2AICOMMIT}/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
     FILES="$(find . -name "${FILE}" -not -path "./usr/optional/*")"
@@ -142,7 +142,7 @@ glibc_needed()
 get_desktopintegration()
 {
   # REALBIN=$(grep -o "^Exec=.*" *.desktop | sed -e 's|Exec=||g' | cut -d " " -f 1 | head -n 1)
-  # cat_file_from_url https://raw.githubusercontent.com/AppImage/AppImageKit/master/desktopintegration > ./usr/bin/$REALBIN.wrapper
+  # cat_file_from_url https://raw.githubusercontent.com/AppImage/AppImageKit/deprecated/AppImageAssistant/desktopintegration > ./usr/bin/$REALBIN.wrapper
   # chmod a+x ./usr/bin/$REALBIN.wrapper
   echo "The desktopintegration script is deprecated. Please advise users to use https://github.com/AppImage/appimaged instead."
   # sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
