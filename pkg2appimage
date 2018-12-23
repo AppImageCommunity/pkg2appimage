@@ -231,7 +231,6 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   # https://github.com/darealshinji/vlc-AppImage/issues/1#issuecomment-321041496
   # echo "deb http://ppa.launchpad.net/djcj/gnutls-patched/ubuntu ${_ingredients_dist} main" >> sources.list
   ### echo "deb http://ppa.launchpad.net/djcj/gnutls-patched/ubuntu trusty main" >> sources.list # https://github.com/AppImage/pkg2appimage/issues/345
-  echo "deb http://ppa.launchpad.net/djcj/libcurl-slim/ubuntu xenial main" >> sources.list # https://github.com/AppImage/pkg2appimage/issues/345
 fi
 
 if [ ! -z "${_ingredients_script[0]}" ] ; then
