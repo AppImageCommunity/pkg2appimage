@@ -42,4 +42,4 @@ cp ../../{functions.sh,excludelist,excludedeblist,appdir-lint.sh} ./usr/share/pk
 delete_blacklisted
 
 cd ..
-VERSION=continuous ./appimagetool-*.AppImage -g -s ./pkg2appimage.AppDir
+APP=pkg2appimage VERSION=continuous generate_type2_appimage
