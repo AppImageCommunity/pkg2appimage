@@ -18,7 +18,8 @@ chmod +x ./*.AppImage
 ./appimagetool-*.AppImage --appimage-extract && mv squashfs-root pkg2appimage.AppDir
 cd pkg2appimage.AppDir/
 
-mkdir -p usr/share/applications ; mv appimagetool.desktop ./usr/share/applications/pkg2appimage.desktop
+rm appimagetool.desktop
+mv ./usr/share/applications/appimagetool.desktop /usr/share/applications/pkg2appimage.desktop 
 sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Comment=.*|Comment=Create AppImages from Debian/Ubuntu repositories|g' ./usr/share/applications/pkg2appimage.desktop
