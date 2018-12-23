@@ -11,7 +11,7 @@ addons:
     - aria2
     - desktop-file-utils
 services:
-- docker
+# docker
 
 script:
 - |
