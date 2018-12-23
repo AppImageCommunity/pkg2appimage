@@ -34,3 +34,8 @@ notifications:
       - "%{repository} build %{build_number}: %{result} %{build_url}"
     use_notice: true
     # skip_join: true
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)/
