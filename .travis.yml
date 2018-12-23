@@ -16,7 +16,9 @@ services:
 script:
 - |
   if [ -z "$RECIPE" ] ; then
-    bash -ex dogfeeding.sh 
+    bash -ex dogfeeding.sh
+    wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+    bash upload.sh ./out/pkg2appimage*.AppImage*
   else
     bash -e travis.sh $RECIPE
     FILES=$(find out/ -name "*.AppImage")
