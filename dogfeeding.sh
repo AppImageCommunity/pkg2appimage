@@ -7,7 +7,7 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 . ./functions.sh
 
 mkdir -p pkg2appimage/pkg2appimage.AppDir
-cd mkdir -p pkg2appimage/
+cd pkg2appimage/
 apt download -y apt libapt-pkg4.12 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" # FIXME: Make arch independent
