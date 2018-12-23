@@ -2,8 +2,9 @@
 
 # env
 
-# Use privately bundled apt-get and dpkg-deb if available, e.g., when running this from
-# inside an AppImage that bundles them; note to self: can be got on trusty using
+HERE="$(dirname "$(readlink -f "${0}")")"
+
+# Use privately bundled apt-get and dpkg-deb if available; can be got on trusty using
 # apt download apt libapt-pkg4.12 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
 if [ -e "${HERE}/libunionpreload.so" ] ; then
   export UNION_PRELOAD="${HERE}"
@@ -19,7 +20,6 @@ fi
 if [ -z "$PKG2AICOMMIT" ] ; then
   PKG2AICOMMIT=master
 fi
-
 
 usage() {
   echo "usage:"
@@ -278,6 +278,8 @@ cd ./$APP.AppDir/
 
 mkdir -p usr/bin usr/lib
 find ../*.deb -exec dpkg-deb -X {} . \; || true
+
+unset LD_PRELOAD
 
 # Try to copy icons to standard locations where appimaged can pick them up
 mkdir -p usr/share/icons/hicolor/{22x22,24x24,32x32,48x48,64x64,128x128,256x256,512x512}/apps/
