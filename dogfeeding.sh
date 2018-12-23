@@ -47,4 +47,4 @@ move_lib
 delete_blacklisted
 
 cd ..
-NO_GLIBC_VERSION=true APP=pkg2appimage VERSION=continuous generate_type2_appimage
+NO_GLIBC_VERSION=true APP=pkg2appimage VERSION=continuous generate_type2_appimage # FIXME: This embeds bintray-zsync
