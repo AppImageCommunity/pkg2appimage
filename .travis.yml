@@ -15,7 +15,7 @@ services:
 
 script:
 - |
-  if [ -z "RECIPE" ] ; then
+  if [ -z "$RECIPE" ] ; then
     bash -e dogfeeding.sh 
   else
     bash -e travis.sh $RECIPE
