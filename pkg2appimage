@@ -266,7 +266,7 @@ mkdir -p ./$APP.AppDir/
 cd ./$APP.AppDir/
 
 mkdir -p usr/bin usr/lib
-find ../*.deb -exec dpkg -x {} . \; || true
+find ../*.deb -exec dpkg-deb -X {} . \; || true
 
 # Try to copy icons to standard locations where appimaged can pick them up
 mkdir -p usr/share/icons/hicolor/{22x22,24x24,32x32,48x48,64x64,128x128,256x256,512x512}/apps/
