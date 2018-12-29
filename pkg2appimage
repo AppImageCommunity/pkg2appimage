@@ -349,10 +349,12 @@ if [ -e usr/lib/mono ] ; then
   find . -name "*.dll.config" -exec cat {} > temp \;
   # Remove all absolute paths
   sed -i -E 's|target=\"\/(.*\/)([a-z0-9].*?)>|target=\"\2>|g' temp
-  SONAMES=$(cat temp | cut -d '"' -f 4  | grep ".so")
-  for SONAME in $SONAMES; do
-    find . -name "$SONAME" -exec mv {} usr/lib \;
-  done
+  SONAMES=$(cat temp | cut -d '"' -f 4  | grep ".so" || true)
+  if [ "" != "$SONAMES" ] ; then
+    for SONAME in $SONAMES; do
+      find . -name "$SONAME" -exec mv {} usr/lib \;
+    done
+  fi
   rm temp
   PATH_OF_THE_EXE="usr/lib/mono/exe"
   mkdir -p "$PATH_OF_THE_EXE"
