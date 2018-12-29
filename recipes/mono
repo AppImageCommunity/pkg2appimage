@@ -1,0 +1,13 @@
+app: mono-runtime
+binpatch: true
+
+ingredients:
+  dist: jessie
+  sources: 
+    - deb http://ftp.us.debian.org/debian/ jessie main
+    - deb http://download.mono-project.com/repo/debian jessie main
+
+script:
+  # ( cd usr/lib/mono/ ; ln -s 4.5 2.0 ) # Why is this needed?
+  - cp ./usr/share/applications/mono-runtime-common.desktop .
+  - touch mono-runtime-common.svg # FIXME
