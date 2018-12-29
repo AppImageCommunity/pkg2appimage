@@ -3,6 +3,9 @@ binpatch: true
 
 ingredients:
   dist: jessie
+  packages:
+    - mono-runtime
+    - ca-certificates-mono
   sources: 
     - deb http://ftp.us.debian.org/debian/ jessie main
     - deb http://download.mono-project.com/repo/debian jessie main
