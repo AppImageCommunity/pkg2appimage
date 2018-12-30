@@ -188,3 +188,6 @@ libjack.so.0
 
 libxcb-dri3.so.0 # https://github.com/AppImage/AppImages/issues/348
 libxcb-dri2.so.0 # https://github.com/probonopd/linuxdeployqt/issues/331#issuecomment-442276277
+
+# If the next line turns out to cause issues, we will have to remove it again and find another solution
+libfribidi.so.0 # https://github.com/olive-editor/olive/issues/221 and https://github.com/knapsu/plex-media-player-appimage/issues/14
