@@ -11,7 +11,8 @@ ingredients:
   sources:
     - deb http://ftp.fau.de/ubuntu/ trusty main universe
   script:
-    - wget "https://s3.amazonaws.com/ideamaker/linux/ideaMaker_3.3.0.2343-ubuntu_amd64.deb"
+    - URL=$(wget -q "https://www.raise3d.com/pages/download" -O - | grep 64 | grep deb | cut -d '"' -f 2)
+    - wget "$URL"
     - ls ideaMaker*.deb | cut -d _ -f 2 | cut -d "-" -f 1 > VERSION
 
 script:
