@@ -1,0 +1,24 @@
+# Unclear whether ideaMaker may be redistributed by third-parties
+# as an AppImage. In the meantime, you can make your own using
+# this recipe
+# https://www.raise3d.com/pages/ideamaker
+
+app: ideaMaker
+binpatch: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://ftp.fau.de/ubuntu/ trusty main universe
+  script:
+    - wget "https://s3.amazonaws.com/ideamaker/linux/ideaMaker_3.3.0.2343-ubuntu_amd64.deb"
+    - ls ideaMaker*.deb | cut -d _ -f 2 | cut -d "-" -f 1 > VERSION
+
+script:
+  - sed -i -e 's|/usr/share/ideamaker/icons/||g' ideamaker.desktop
+  - ( cd usr/bin ; ln -s ../lib/x86_64-linux-gnu/ideamaker/ideamaker ideamaker )
+  - ( cd usr/ ; ln -s ./lib/x86_64-linux-gnu/ideamaker . )
+  - ( cd usr/lib/x86_64-linux-gnu ; ln -s ./ideamaker/*so* . )
+  - cp usr/share/ideamaker/icons/ideamaker-icon.png .
+  - mkdir -p usr/share/icons/hicolor/128x128/apps/
+  - cp ideamaker-icon.png usr/share/icons/hicolor/128x128/apps/
