@@ -1,0 +1,26 @@
+app: Blender
+
+ingredients:
+  script:
+    - wget -c https://builder.blender.org/download/blender-2.80-91a155833e59-linux-glibc224-x86_64.tar.bz2
+    - ls blender-*.tar.bz2 | cut -d - -f 2 | sed -e 's|.tar.bz2||g' > VERSION
+    - mkdir -p blender
+    - tar xf blender*.tar.bz2 -C ./blender --strip-components=1
+
+script:
+  - cp -r ../blender/* ./usr/bin/;
+  - cp ./usr/bin/icons/scalable/apps/blender.svg .
+  -
+  - cat > blender.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=Blender
+  - GenericName=3D modeler
+  - Comment=3D modeling, animation, rendering and post-production
+  - Keywords=3d;cg;modeling;animation;painting;sculpting;texturing;video editing;video tracking;rendering;render engine;cycles;game engine;python;
+  - Exec=blender %f
+  - Icon=blender
+  - Terminal=false
+  - Type=Application
+  - Categories=Graphics;3DGraphics;
+  - MimeType=application/x-blender;
+  - EOF
