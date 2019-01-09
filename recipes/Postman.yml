@@ -1,0 +1,20 @@
+app: Postman
+
+ingredients:
+  script:
+    - wget -c https://dl.pstmn.io/download/latest/linux64 -O postman.tar.gz
+    - tar zxvf postman.tar.gz
+    - cat Postman/app/version | sed 's/v//g' > VERSION
+
+script:
+  - cp -r ../Postman/app/* usr/bin/
+  - cp ../Postman/app/resources/app/assets/icon.png postman.png
+  - cat > postman.desktop << EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Postman
+  - Icon=postman
+  - Exec=Postman %u
+  - Categories=Development;
+  - Comment=Postman REST Client
+  - EOF
