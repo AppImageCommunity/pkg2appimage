@@ -2,8 +2,10 @@ app: Blender
 
 ingredients:
   script:
-    - wget -c https://builder.blender.org/download/blender-2.80-91a155833e59-linux-glibc224-x86_64.tar.bz2
-    - ls blender-*.tar.bz2 | cut -d - -f 2 | sed -e 's|.tar.bz2||g' > VERSION
+    - URL1=$(wget -q "https://www.blender.org/download/" -O - | grep linux-glibc | grep x86_64 | head -n 1 | cut -d '"' -f 4)
+    - URL=$(wget -q "$URL1" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
+    - echo "$URL" | cut -d "-" -f 3 > VERSION
+    - wget "$URL"
     - mkdir -p blender
     - tar xf blender*.tar.bz2 -C ./blender --strip-components=1
 
