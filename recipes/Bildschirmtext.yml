@@ -1,0 +1,49 @@
+# Bildschirmtext
+# NOT WORKING YET
+# FIXME:
+#
+# /home/me/.dosbox/dosbox-0.74.conf
+# serial3=directserial realport:../tmp/ttyV0
+# BTX.PRM to set modem to COM1 and 9600
+#
+# socat python encoding error when run from bash script, hence have to run by hand
+
+app: dosbox
+binpatch: true
+
+ingredients:
+  packages:
+    - dosbox
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+  script:
+    # wget -c "https://archive.org/download/BTXVTXManagerV1FrMS-DOS/disk1.img"
+    # wget -c "https://archive.org/download/BTXVTXManagerV1FrMS-DOS/disk2.img"
+    # ( mkdir -p disks ; cd disks ; 7z x ../disk1.img -aoa ; 7z x ../disk2.img -aoa )
+    - wget -c 'https://www.pagetable.com/docs/btx/decoder/PC%20online%201&1%20BTX-COM%20Version%204.34.img'
+    - ( mkdir -p disks ; cd disks ; 7z x ../PC*.img -aoa )
+    - wget -c "https://github.com/bildschirmtext/bildschirmtext/archive/master.zip"
+    - unzip -o "master.zip"
+
+script:
+  - cp -r ../disks/* usr/
+  - cp -r ../bildschirmtext-master/* .
+  - cat > dosbox.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=Bildschirmtext
+  - Comment=Bildschirmtext (BTX) emulator
+  - Exec=bildschirmtext
+  - Icon=bildschirmtext
+  - Type=Application
+  - Categories=Network;
+  - EOF
+  - wget -c "https://www.internetworld.de/img/1/7/6/3/4/6/0ed52cf0b8551571.jpeg" -O usr/share/icons/hicolor/256x256/apps/bildschirmtext.png
+  - mogrify -resize 256x256 usr/share/icons/hicolor/256x256/apps/bildschirmtext.png
+  - cp usr/share/icons/hicolor/256x256/apps/* .
+  - cat > usr/bin/bildschirmtext <<\EOF
+  - #!/bin/bash
+  - # socat -d -d exec:"python3 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
+  - dosbox BTX1.EXE -exit
+  - EOF
+  - chmod +x usr/bin/bildschirmtext
