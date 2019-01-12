@@ -39,7 +39,7 @@ post:
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - export PATH="${HERE}/usr/bin":$PATH
-  - socat -d -d exec:"python3 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
+  - socat -d -d exec:"python3.4 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
   - dosbox BTX1.EXE -exit -conf "${HERE}/usr/dosbox.conf"
   - EOF
   - chmod +x usr/bin/bildschirmtext
