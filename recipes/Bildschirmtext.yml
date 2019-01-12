@@ -6,7 +6,7 @@ ingredients:
     - dosbox
     - socat
     - python3.4-minimal
-    - python3.4-json
+    - libpython3.4-stdlib
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
