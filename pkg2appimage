@@ -457,7 +457,7 @@ sed -i -e 's|\.xpm||g' *.desktop || true
 # done
 
 # Execute extra steps defined in recipe
-if [ ! -z "${_post_script}" ] ; then
+if [ ! -z "${_post_script[0]}" ] ; then
   shell_execute $YAMLFILE _post_script
 fi
 
