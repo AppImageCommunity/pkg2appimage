@@ -47,6 +47,99 @@ script:
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - export PATH="${HERE}/usr/bin":$PATH
   - socat -d -d exec:"python3 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
-  - dosbox BTX1.EXE -exit
+  - dosbox BTX1.EXE -exit -conf "${HERE}/usr/dosbox.conf"
   - EOF
   - chmod +x usr/bin/bildschirmtext
+  - cat > usr/dosbox.conf <<\EOF
+  - [sdl]
+  - fullscreen=false
+  - fulldouble=false
+  - fullresolution=original
+  - windowresolution=original
+  - output=surface
+  - autolock=true
+  - sensitivity=100
+  - waitonerror=true
+  - priority=higher,normal
+  - mapperfile=mapper-0.74.map
+  - usescancodes=true
+  - 
+  - [dosbox]
+  - language=
+  - machine=svga_s3
+  - captures=capture
+  - memsize=16
+  - 
+  - [render]
+  - frameskip=0
+  - aspect=false
+  - scaler=normal2x
+  - 
+  - [cpu]
+  - core=auto
+  - cputype=auto
+  - cycles=auto
+  - cycleup=10
+  - cycledown=20
+  - 
+  - [mixer]
+  - nosound=false
+  - rate=44100
+  - blocksize=1024
+  - prebuffer=20
+  - 
+  - [midi]
+  - mpu401=intelligent
+  - mididevice=default
+  - midiconfig=
+  - 
+  - [sblaster]
+  - sbtype=sb16
+  - sbbase=220
+  - irq=7
+  - dma=1
+  - hdma=5
+  - sbmixer=true
+  - oplmode=auto
+  - oplemu=default
+  - oplrate=44100
+  - 
+  - [gus]
+  - gus=false
+  - gusrate=44100
+  - gusbase=240
+  - gusirq=5
+  - gusdma=3
+  - ultradir=C:\ULTRASND
+  - 
+  - [speaker]
+  - pcspeaker=true
+  - pcrate=44100
+  - tandy=auto
+  - tandyrate=44100
+  - disney=true
+  - 
+  - [joystick]
+  - joysticktype=auto
+  - timed=true
+  - autofire=false
+  - swap34=false
+  - buttonwrap=false
+  - 
+  - [serial]
+  - serial1=dummy
+  - serial2=dummy
+  - serial3=directserial realport:../tmp/ttyV0
+  - serial4=disabled
+  - 
+  - [dos]
+  - xms=true
+  - ems=true
+  - umb=true
+  - keyboardlayout=auto
+  - 
+  - [ipx]
+  - ipx=false
+  - 
+  - [autoexec]
+  - EOF
