@@ -457,8 +457,8 @@ sed -i -e 's|\.xpm||g' *.desktop || true
 # done
 
 # Execute extra steps defined in recipe
-if [ ! -z "${_post}" ] ; then
-  shell_execute $YAMLFILE _post
+if [ ! -z "${_post_script}" ] ; then
+  shell_execute $YAMLFILE _post_script
 fi
 
 # Go out of AppImage
