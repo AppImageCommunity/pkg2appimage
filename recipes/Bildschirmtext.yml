@@ -2,11 +2,8 @@
 # NOT WORKING YET
 # FIXME:
 #
-# /home/me/.dosbox/dosbox-0.74.conf
-# serial3=directserial realport:../tmp/ttyV0
-# BTX.PRM to set modem to COM1 and 9600
-#
-# socat python encoding error when run from bash script, hence have to run by hand
+# Fatal Python error: Py_Initialize: Unable to get the locale encoding
+# ModuleNotFoundError: No module named 'encodings'
 
 app: dosbox
 binpatch: true
