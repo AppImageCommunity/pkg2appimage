@@ -14,6 +14,7 @@ binpatch: true
 ingredients:
   packages:
     - dosbox
+    - socat
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
@@ -28,7 +29,7 @@ ingredients:
 
 script:
   - cp -r ../disks/* usr/
-  - cp -r ../bildschirmtext-master/* .
+  - cp -r ../bildschirmtext-master/* usr/
   - cat > dosbox.desktop <<\EOF
   - [Desktop Entry]
   - Name=Bildschirmtext
@@ -43,7 +44,9 @@ script:
   - cp usr/share/icons/hicolor/256x256/apps/* .
   - cat > usr/bin/bildschirmtext <<\EOF
   - #!/bin/bash
-  - # socat -d -d exec:"python3 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - export PATH="${HERE}/usr/bin":$PATH
+  - socat -d -d exec:"python3 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
   - dosbox BTX1.EXE -exit
   - EOF
   - chmod +x usr/bin/bildschirmtext
