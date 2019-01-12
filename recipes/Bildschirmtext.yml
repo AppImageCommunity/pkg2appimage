@@ -54,7 +54,7 @@ post_script:
   - fullresolution=original
   - windowresolution=original
   - output=surface
-  - autolock=true
+  - autolock=false
   - sensitivity=100
   - waitonerror=true
   - priority=higher,normal
