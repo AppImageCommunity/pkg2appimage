@@ -34,7 +34,7 @@ script:
   - mogrify -resize 256x256 usr/share/icons/hicolor/256x256/apps/bildschirmtext.png
   - cp usr/share/icons/hicolor/256x256/apps/* .
 
-post_script:
+post:
   - cat > usr/bin/bildschirmtext <<\EOF
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
