@@ -1,10 +1,3 @@
-# Bildschirmtext
-# NOT WORKING YET
-# FIXME:
-#
-# Fatal Python error: Py_Initialize: Unable to get the locale encoding
-# ModuleNotFoundError: No module named 'encodings'
-
 app: dosbox
 binpatch: true
 
@@ -12,6 +5,7 @@ ingredients:
   packages:
     - dosbox
     - socat
+    - python3
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
