@@ -22,7 +22,7 @@ ingredients:
 script:
   - cp -r ../disks/* usr/
   - cp -r ../bildschirmtext-master/* usr/
-  - rm usr/{messages,stats}
+  - rm -r usr/{messages,stats}
   - ( cd usr/ ; ln -s /tmp/{messages,stats} . )
   - cat > dosbox.desktop <<\EOF
   - [Desktop Entry]
