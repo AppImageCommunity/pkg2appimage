@@ -22,6 +22,8 @@ ingredients:
 script:
   - cp -r ../disks/* usr/
   - cp -r ../bildschirmtext-master/* usr/
+  - rm usr/{messages,stats}
+  - ( cd usr/ ; ln -s /tmp/{messages,stats} . )
   - cat > dosbox.desktop <<\EOF
   - [Desktop Entry]
   - Name=Bildschirmtext
@@ -39,6 +41,7 @@ post_script:
   - cat > usr/bin/bildschirmtext <<\EOF
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
+  - mkdir -p /tmp/{messages,stats}
   - export PATH="${HERE}/usr/bin":$PATH
   - socat -d -d exec:"python3.4 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
   - dosbox BTX1.EXE -exit -conf "${HERE}/usr/dosbox.conf"
