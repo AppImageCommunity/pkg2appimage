@@ -43,7 +43,7 @@ post_script:
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - mkdir -p /tmp/{messages,stats}
   - export PATH="${HERE}/usr/bin":$PATH
-  - socat -d -d exec:"python3.4 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 &
+  - ( cd server ; socat -d -d exec:"python3.4 neu-ulm.py --modem" pty,raw,echo=0,link=/tmp/ttyV0 & )
   - dosbox BTX1.EXE -exit -conf "${HERE}/usr/dosbox.conf"
   - EOF
   - chmod +x usr/bin/bildschirmtext
