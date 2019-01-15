@@ -7,7 +7,7 @@ ingredients:
     - socat
     - python3.4-minimal
     - libpython3.4-stdlib
-    - python-bs4
+    - python3-bs4
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
