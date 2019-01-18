@@ -40,6 +40,7 @@ script:
   - cp usr/share/icons/hicolor/256x256/apps/* .
 
 post_script:
+  - sed -i -e 's|Image.LANCZOS|Image.ANTIALIAS|g' usr/server/image.py
   - cat > usr/bin/bildschirmtext <<\EOF
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
