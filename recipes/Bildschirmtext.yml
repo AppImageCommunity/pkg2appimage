@@ -13,6 +13,7 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
   script:
+    - sudo apt-get -y install p7zip-full
     # wget -c "https://archive.org/download/BTXVTXManagerV1FrMS-DOS/disk1.img"
     # wget -c "https://archive.org/download/BTXVTXManagerV1FrMS-DOS/disk2.img"
     # ( mkdir -p disks ; cd disks ; 7z x ../disk1.img -aoa ; 7z x ../disk2.img -aoa )
