@@ -9,6 +9,7 @@ ingredients:
     - libpython3.4-stdlib
     - python3-bs4
     - python3-pil
+    - python-feedparser
   dist: trusty
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe multiverse
