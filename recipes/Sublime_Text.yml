@@ -1,0 +1,19 @@
+# You can easily make your own using this recipe like this on a Debian/Ubuntu system:
+# wget -c "https://github.com/AppImage/AppImages/raw/master/pkg2appimage"
+# bash -ex pkg2appimage sublime_text
+
+app: sublime_text
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb https://download.sublimetext.com/ apt/stable/
+script:
+  - cat > ./AppRun <<\EOF
+  - #!/bin/sh
+  - HERE=$(dirname $(readlink -f "${0}"))
+  - exec "${HERE}/opt/sublime_text/sublime_text" "$@"
+  - EOF
+  - chmod a+x ./AppRun
+  - cp ./usr/share/icons/hicolor/48x48/apps/sublime-text.png sublime-text.png
