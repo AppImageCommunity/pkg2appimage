@@ -1,3 +1,5 @@
+app: QGIS
+
 ingredients:
   dist: trusty
   sources:
