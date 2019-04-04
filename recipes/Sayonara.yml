@@ -3,10 +3,13 @@ binpatch: true
 
 ingredients:
   dist: trusty
-  sources: 
+  sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe multiverse
-  ppas: 
+  ppas:
     - lucioc/sayonara
-
-# App fails playing with
-# Error: Engine: src creation failed
+  script:
+    - URL1=$(wget -q "https://sayonara-player.com/downloads.php" -O - | grep amd64 | tail -n 1 | cut -d '"' -f 2 )
+    - echo "$URL1" | cut -d '_' -f 2 | cut -d '-' -f 1 > VERSION
+    - URL='https://sayonara-player.com/'
+    - URL+=$URL1
+    - wget -c "$URL"
