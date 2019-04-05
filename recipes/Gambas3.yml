@@ -1,0 +1,12 @@
+app: gambas3
+union: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe multiverse
+  ppas:
+    - gambas-team/gambas3
+
+script:
+  - cp ./usr/share/icons/hicolor/48x48/apps/gambas3.png .
