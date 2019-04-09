@@ -29,6 +29,9 @@ OPTIONS="-o Debug::NoLocking=1
 -o APT::Install-Suggests=0
 "
 
+# Detect if we are running inside Docker
+grep docker /proc/1/cgroup >/dev/null && export DOCKER_BUILD=1 || true
+
 # Detect system architecture to know which binaries of AppImage tools
 # should be downloaded and used.
 case "$(uname -i)" in
