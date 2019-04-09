@@ -1,0 +1,19 @@
+app: ZeroBraneStudio
+
+ingredients:
+  script:
+    - wget -c "https://download.zerobrane.com/ZeroBraneStudioEduPack-1.80-linux.sh"
+    - chmod +x ZeroBraneStudioEduPack-1.80-linux.sh
+    - ./ZeroBraneStudioEduPack-1.80-linux.sh --noexec --target .
+    - wget -c "https://raw.githubusercontent.com/pkulchenko/ZeroBraneStudio/master/zbstudio.sh"
+    - chmod +x zbstudio.sh
+    - rm app/zbstudio.sh
+    - mv zbstudio.sh app/zbstudio.sh
+
+script:
+  - mv ../app/* usr/bin
+  - rm -rfv ../app
+  - rm -rfv usr/bin/bin/linux/x86
+  - cp usr/bin/zbstudio/res/icons/256x256/apps/zbstudio.png .
+  - cp usr/bin/zbstudio/res/zbstudio.desktop .
+  - sed -i 's/Exec=zbstudio /Exec=zbstudio.sh /g' zbstudio.desktop
