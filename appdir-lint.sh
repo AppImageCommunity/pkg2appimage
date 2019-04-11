@@ -44,10 +44,20 @@ if [ ${NUM_DESKTOP} != 1 ] ; then
 fi
 
 num_keys_fatal () {
-  NUM_KEYS=$(grep -e "^${1}=.*" "${APPDIR}"/*.desktop | wc -l)
-  if [ ${NUM_KEYS} != 1 ] ; then
-    fatal "Key $1 is not in .desktop file exactly once"
-  fi
+  while IFS='=' read key val
+  do
+      if [[ $key == \[*\] ]] ; then
+        raw_section=$key
+        section="${key//[\[\]\- ]/_}"
+      elif [[ $key == "$1" ]] ; then
+        seen_key="seen__${section}__${key}"
+        if [[ "${!seen_key}" == "1" ]] ; then
+          fatal "Key $1 is not in .desktop file exactly once in section $raw_section"
+        else
+          printf -v "$seen_key" %s "1"
+        fi
+      fi
+  done < "${APPDIR}"/*.desktop
 }
 
 desktop-file-validate "${APPDIR}"/*.desktop
@@ -56,10 +66,20 @@ if [ ! $? -eq 0 ] ; then
 fi
 
 num_keys_warn () {
-  NUM_KEYS=$(grep -e "^${1}=.*" "${APPDIR}"/*.desktop | wc -l)
-  if [ ${NUM_KEYS} != 1 ] ; then
-    warn "Key $1 is not in .desktop file exactly once"
-  fi
+  while IFS='=' read key val
+  do
+      if [[ $key == \[*\] ]] ; then
+        raw_section=$key
+        section="${key//[\[\]\- ]/_}"
+      elif [[ $key == "$1" ]] ; then
+        seen_key="seen__${section}__${key}"
+        if [[ "${!seen_key}" == "1" ]] ; then
+          warn "Key $1 is not in .desktop file exactly once in section $raw_section"
+        else
+          printf -v "$seen_key" %s "1"
+        fi
+      fi
+  done < "${APPDIR}"/*.desktop
 }
 
 # num_keys_fatal Name # This is not a valid test since [Desktop Action ...] sections can also have Name=
