@@ -47,10 +47,12 @@ num_keys_fatal () {
   while IFS='=' read key val
   do
       if [[ $key == \[*\] ]] ; then
-        # in a new section; confirm we saw the key once in previous section
-        seen_key="seen__${section}__${1}"
-        if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
-          fatal "Key $1 is not in .desktop file exactly once in section $raw_section"
+        # in a new section; confirm we saw the key once in [Desktop Entry]
+        if [[ "${section}" == "[Desktop Entry]" ]] ; then
+          seen_key="seen__${section}__${1}"
+          if [[ "${!seen_key}" != "1" ]] ; then
+            fatal "Key $1 is not in .desktop file exactly once in section $raw_section"
+          fi
         fi
         raw_section=$key
         section="${key//[\[\]\- ]/_}"
@@ -63,9 +65,12 @@ num_keys_fatal () {
         fi
       fi
   done < "${APPDIR}"/*.desktop
-  # check in last section
+
+
+  # in case there is only one section
+  # check for existence of key in [Desktop Entry]
   seen_key="seen__${section}__${1}"
-  if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
+  if [[ "${section}" == "[Desktop Entry]" && "${!seen_key}" != "1" ]] ; then
     fatal "Key $1 is not in .desktop file exactly once in section $raw_section"
   fi
 }
@@ -79,10 +84,12 @@ num_keys_warn () {
   while IFS='=' read key val
   do
       if [[ $key == \[*\] ]] ; then
-        # in a new section; confirm we saw the key once in previous section
-        seen_key="seen__${section}__${1}"
-        if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
-          warn "Key $1 is not in .desktop file exactly once in section $raw_section"
+        # in a new section; confirm we saw the key once in [Desktop Entry]
+        if [[ "${section}" == "[Desktop Entry]" ]] ; then
+          seen_key="seen__${section}__${1}"
+          if [[ "${!seen_key}" != "1" ]] ; then
+            warn "Key $1 is not in .desktop file exactly once in section $raw_section"
+          fi
         fi
         raw_section=$key
         section="${key//[\[\]\- ]/_}"
@@ -95,9 +102,12 @@ num_keys_warn () {
         fi
       fi
   done < "${APPDIR}"/*.desktop
-  # check in last section
+
+
+  # in case there is only one section
+  # check for existence of key in [Desktop Entry]
   seen_key="seen__${section}__${1}"
-  if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
+  if [[ "${section}" == "[Desktop Entry]" && "${!seen_key}" != "1" ]] ; then
     warn "Key $1 is not in .desktop file exactly once in section $raw_section"
   fi
 }
