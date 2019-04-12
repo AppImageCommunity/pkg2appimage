@@ -47,6 +47,11 @@ num_keys_fatal () {
   while IFS='=' read key val
   do
       if [[ $key == \[*\] ]] ; then
+        # in a new section; confirm we saw the key once in previous section
+        seen_key="seen__${section}__${1}"
+        if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
+          fatal "Key $1 is not in .desktop file exactly once in section $raw_section"
+        fi
         raw_section=$key
         section="${key//[\[\]\- ]/_}"
       elif [[ $key == "$1" ]] ; then
@@ -58,6 +63,11 @@ num_keys_fatal () {
         fi
       fi
   done < "${APPDIR}"/*.desktop
+  # check in last section
+  seen_key="seen__${section}__${1}"
+  if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
+    fatal "Key $1 is not in .desktop file exactly once in section $raw_section"
+  fi
 }
 
 desktop-file-validate "${APPDIR}"/*.desktop
@@ -69,6 +79,11 @@ num_keys_warn () {
   while IFS='=' read key val
   do
       if [[ $key == \[*\] ]] ; then
+        # in a new section; confirm we saw the key once in previous section
+        seen_key="seen__${section}__${1}"
+        if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
+          warn "Key $1 is not in .desktop file exactly once in section $raw_section"
+        fi
         raw_section=$key
         section="${key//[\[\]\- ]/_}"
       elif [[ $key == "$1" ]] ; then
@@ -80,6 +95,11 @@ num_keys_warn () {
         fi
       fi
   done < "${APPDIR}"/*.desktop
+  # check in last section
+  seen_key="seen__${section}__${1}"
+  if [[ "${section}" != "" && "${!seen_key}" != "1" ]] ; then
+    warn "Key $1 is not in .desktop file exactly once in section $raw_section"
+  fi
 }
 
 # num_keys_fatal Name # This is not a valid test since [Desktop Action ...] sections can also have Name=
