@@ -10,7 +10,7 @@ ld-linux-x86-64.so.2
 libanl.so.1
 libBrokenLocale.so.1
 libcidn.so.1
-libcrypt.so.1
+# libcrypt.so.1 # Not part of glibc anymore as of Fedora 30. See https://github.com/slic3r/Slic3r/issues/4798 and https://pagure.io/fedora-docs/release-notes/c/01d74b33564faa42959c035e1eee286940e9170e?branch=f28
 libc.so.6
 libdl.so.2
 libm.so.6
