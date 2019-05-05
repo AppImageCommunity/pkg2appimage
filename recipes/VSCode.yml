@@ -21,13 +21,13 @@ ingredients:
 
 script:
   - cp usr/share/applications/code.desktop .
-  - cp usr/share/pixmaps/code.png .
-  - convert code.png -resize 512x512 usr/share/icons/hicolor/512x512/apps/code.png
-  - convert code.png -resize 256x256 usr/share/icons/hicolor/256x256/apps/code.png
-  - convert code.png -resize 128x128 usr/share/icons/hicolor/128x128/apps/code.png
-  - convert code.png -resize 64x64 usr/share/icons/hicolor/64x64/apps/code.png
-  - convert code.png -resize 48x48 usr/share/icons/hicolor/48x48/apps/code.png
-  - convert code.png -resize 32x32 usr/share/icons/hicolor/32x32/apps/code.png
-  - convert code.png -resize 24x24 usr/share/icons/hicolor/24x24/apps/code.png
-  - convert code.png -resize 22x22 usr/share/icons/hicolor/22x22/apps/code.png
+  - cp usr/share/pixmaps/com.visualstudio.code.png .
+  - convert com.visualstudio.code.png -resize 512x512 usr/share/icons/hicolor/512x512/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 256x256 usr/share/icons/hicolor/256x256/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 128x128 usr/share/icons/hicolor/128x128/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 64x64 usr/share/icons/hicolor/64x64/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 48x48 usr/share/icons/hicolor/48x48/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 32x32 usr/share/icons/hicolor/32x32/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 24x24 usr/share/icons/hicolor/24x24/apps/com.visualstudio.code.png
+  - convert com.visualstudio.code.png -resize 22x22 usr/share/icons/hicolor/22x22/apps/com.visualstudio.code.png
   - ( cd usr/bin/ ; ln -s ../share/code/code . )
