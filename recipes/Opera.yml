@@ -6,11 +6,6 @@ ingredients:
     - wget -c "https://get.geo.opera.com/pub/opera/desktop/$VERSION/linux/opera-stable_${VERSION}_amd64.deb"
 
 script:
-  - mv ./usr/share/icons/hicolor/16x16/apps/opera.png /usr/share/icons/hicolor/16x16/apps/opera.png
-  - mv ./usr/share/icons/hicolor/32x32/apps/opera.png /usr/share/icons/hicolor/32x32/apps/opera.png
-  - mv ./usr/share/icons/hicolor/48x48/apps/opera.png /usr/share/icons/hicolor/48x48/apps/opera.png
-  - mv ./usr/share/icons/hicolor/128x128/apps/opera.png /usr/share/icons/hicolor/128x128/apps/opera.png
-  - mv ./usr/share/icons/hicolor/256x256/apps/opera.png /usr/share/icons/hicolor/256x256/apps/opera.png
   - cp ./usr/share/applications/opera.desktop .
   - cp ./usr/share/icons/hicolor/256x256/apps/opera.png .
   - sed -i -e '/TargetEnvironment/d' opera.desktop
