@@ -2,7 +2,8 @@ app: opera
 
 ingredients:
   script:
-    - wget -c "https://download3.operacdn.com/pub/opera/desktop/60.0.3255.70/linux/opera-stable_60.0.3255.70_amd64.deb"
+    - VERSION=$(wget -q "https://get.geo.opera.com/pub/opera/desktop/" -O - | grep href | tail -n 1 | cut -d '"' -f 2 | cut -d / -f 1)
+    - wget -c "https://get.geo.opera.com/pub/opera/desktop/$VERSION/linux/opera-stable_${VERSION}_amd64.deb"
 
 script:
   - mv ./usr/share/icons/hicolor/16x16/apps/opera.png /usr/share/icons/hicolor/16x16/apps/opera.png
