@@ -13,4 +13,4 @@ script:
   - mv ./usr/share/icons/hicolor/256x256/apps/opera.png /usr/share/icons/hicolor/256x256/apps/opera.png
   - cp ./usr/share/applications/opera.desktop .
   - cp /usr/share/icons/hicolor/256x256/apps/opera.png .
-  - sed -i -e '/TargetEnvironment/d' opera.desktop 
+  - sed -i -e '/TargetEnvironment/d' opera.desktop
