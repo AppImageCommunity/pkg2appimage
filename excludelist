@@ -151,6 +151,10 @@ libpangoft2-1.0.so.0
 libpangocairo-1.0.so.0
 libpango-1.0.so.0
 
+# FIXME:
+# Can get symbol lookup error: /lib64/libpango-1.0.so.0: undefined symbol: g_log_structured_standard
+# if libcairo is bundled but libpango is not
+
 # Workaround for:
 # e.g., Spotify
 # relocation error: /lib/x86_64-linux-gnu/libgcrypt.so.20: 
