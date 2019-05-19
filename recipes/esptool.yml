@@ -1,0 +1,29 @@
+app: esptool
+
+ingredients:
+  packages:
+    - python-serial
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - DLD=$(wget -q "https://github.com/espressif/esptool/releases" -O - | grep "/espressif/esptool/archive/.*.zip" | head -n 1 | cut -d '"' -f 2)
+    - wget -c "https://github.com/$DLD"
+    - unzip -o v*.zip
+    - ls v*.zip | sed -e 's|v||g' | sed -e 's|.zip||g' > VERSION
+script:
+  - rm -rf usr/share/applications/py* usr/share/apps/konsole || true
+  - cp -r ../esptool-*/* ./usr/bin
+  - mkdir -p usr/share/applications/ usr/share/icons/hicolor/scalable/apps
+  - cat > usr/share/applications/esptool.desktop <<\EOF
+  - [Desktop Entry]
+  - Exec=esptool.py
+  - Terminal=true
+  - Type=Application
+  - Icon=esptool
+  - Name=esptool
+  - Categories=Development;
+  - EOF
+  - cp usr/share/applications/*.desktop .
+  - touch usr/share/icons/hicolor/scalable/apps/esptool.svg
+  - cp usr/share/icons/hicolor/scalable/apps/*.svg .
