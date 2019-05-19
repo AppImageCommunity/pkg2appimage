@@ -2,7 +2,8 @@ app: esptool
 
 ingredients:
   packages:
-    - python-serial
+    - python-minimal
+    - libpython-stdlib
   dist: trusty
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
@@ -11,9 +12,13 @@ ingredients:
     - wget -c "https://github.com/$DLD"
     - unzip -o v*.zip
     - ls v*.zip | sed -e 's|v||g' | sed -e 's|.zip||g' > VERSION
+    - wget "https://files.pythonhosted.org/packages/cc/74/11b04703ec416717b247d789103277269d567db575d2fd88f25d9767fe3d/pyserial-3.4.tar.gz"
+    - tar xf pyserial-3.4.tar.gz
+
 script:
   - rm -rf usr/share/applications/py* usr/share/apps/konsole || true
-  - cp -r ../esptool-*/* ./usr/bin
+  - cp -r ../esptool-*/* ./usr/bin/
+  - cp -r ../pyserial-*/serial ./usr/bin/
   - mkdir -p usr/share/applications/ usr/share/icons/hicolor/scalable/apps
   - cat > usr/share/applications/esptool.desktop <<\EOF
   - [Desktop Entry]
