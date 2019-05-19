@@ -2,15 +2,18 @@ app: Natron
 
 ingredients:
   script:
-    - URL=https://transfer.sh/10ukEx/natron-2.1.4-linux-x86-64bit-portable.tar.xz # Original hides behind login wall
+    - DLD=$(wget -q "https://github.com/NatronGitHub/Natron/releases" -O - | grep "/NatronGitHub.*Natron-.*x86_64bit-portable.tar.xz"  | head -n 1 | cut -d '"' -f 2)
+    - URL="https://github.com/$DLD"
     - wget -c "$URL"
     - ls *.tar.xz | cut -d "-" -f 2 > VERSION
 
 script:
-  - tar xf ../natron*.tar.xz
+  - tar xf ../Natron*.tar.xz
   - rm -r usr/* ; mv Natron-*/* usr/ ; rm -r Natron-*
-  - wget -c "https://raw.githubusercontent.com/MrKepzie/Natron/master/Gui/Resources/Applications/Natron.desktop" -O natron.desktop
+  - wget -c "https://raw.githubusercontent.com/NatronGitHub/Natron/master/Gui/Resources/Applications/fr.natron.Natron.desktop" -O natron.desktop
   - sed -i -e 's|Exec=Natron %U|Exec=natron %U|g' natron.desktop
   - sed -i -e 's|^Icon=.*|Icon=natron|g' natron.desktop
+  - mkdir -p usr/share/applications/ ; cp natron.desktop usr/share/applications/
   - cp usr/Resources/pixmaps/natronIcon256_linux.png natron.png
+  - mkdir -p usr/share/icons/hicolor/256x256/apps/ ; cp natron.png usr/share/icons/hicolor/256x256/apps/
   - ( cd usr/bin ; ln -s Natron natron )
