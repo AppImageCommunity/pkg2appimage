@@ -1,0 +1,12 @@
+app: signal-desktop
+
+ingredients:
+  dist: xenial
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
+    - deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main
+  package: signal-desktop
+
+script:
+  - mv opt/Signal/* usr/bin/; rm -r opt/
+  - sed -i -e 's|"/opt/Signal/signal-desktop"|signal-desktop|g' signal-desktop.desktop
