@@ -113,7 +113,6 @@ libharfbuzz.so.0
 # Removing these has worked e.g., for Krita. Feel free to report if
 # you think that some of these should go into AppImages and why.
 libcom_err.so.2
-libcrypt.so.1
 libexpat.so.1
 libgcc_s.so.1
 libglib-2.0.so.0
