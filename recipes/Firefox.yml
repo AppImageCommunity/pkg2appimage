@@ -7,7 +7,7 @@ app: Firefox
 
 ingredients:
   script:
-    - DLD=$(wget -q "https://www.mozilla.org/en-US/firefox/all/" -O - | grep -E "os=linux64&amp;lang=en-US" | cut -d'"' -f2)
+    - DLD=$(wget -q "https://www.mozilla.org/en-US/firefox/all/" -O - | grep -E "os=linux64&amp;lang=en-US" | cut -d'"' -f2 | head -n 1)
     - wget -c $DLD --trust-server-names
     - ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g' > VERSION
     - tar xf firefox*.tar.bz2
