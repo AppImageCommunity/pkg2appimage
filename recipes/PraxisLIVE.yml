@@ -1,0 +1,26 @@
+app: PraxisLIVE
+
+ingredients:
+  script:
+    - URL=$(wget -q "https://www.praxislive.org/download/" -O - | grep ".zip" | grep -v "macOS" | grep github | cut -d '"' -f 2)
+    - wget -c "$URL"
+    - echo $URL | cut -d / -f 8 | sed -e 's|v||g' > VERSION
+    - unzip -o *.zip
+  packages:
+    - openjdk-8-jdk
+  dist: xenial
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe multiverse
+
+script:
+  - cat > praxislive.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=PraxisLIVE
+  - Exec=praxislive
+  - Icon=openjdk-8
+  - Type=Application
+  - Categories=AudioVideo;
+  - EOF
+  - cp -Rf ../praxislive/* usr/
+  - cp usr/share/icons/hicolor/48x48/apps/openjdk-8.png .
+  - ( cd usr/bin/ ; ln -s ../lib/jvm/java-8-openjdk-amd64/jre/bin/* . )
