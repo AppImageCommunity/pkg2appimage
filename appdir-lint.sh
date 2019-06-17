@@ -34,6 +34,10 @@ if [ ! -e "${APPDIR}/AppRun" ] ; then
   fatal "AppRun is missing in ${APPDIR}"
 fi
 
+if [ ! -e "${APPDIR}/.DirIcon" ] ; then
+  fatal ".DirIcon is missing in ${APPDIR}"
+fi
+
 if [ ! -x "${APPDIR}/AppRun" ] ; then
   fatal "AppRun is not executable" // This seems to generate false alarms? https://travis-ci.org/AppImage/AppImageHub/builds/266084511#L539
 fi
