@@ -6,14 +6,6 @@ __Recipes__ are the `.yml` files used to create the AppImages, and __Dockerfiles
 
 This repository is intended to showcase the [AppImage](http://appimage.org) format and [AppImageKit](https://github.com/probonopd/AppImageKit) software used to create AppImages. Upstream projects are encouraged to use this showcase to produce their own __upstream packaging__ AppImages, as some projects (like [Subsurface](https://subsurface-divelog.org) already do).
 
-## :warning: IMPORTANT NOTICE
-
-In https://github.com/AppImage/AppImages/commit/798093a8b2b41b8a32fb1cc5301bcab9ed5f2cb8 we reorganized this repository to simplify its structure and make it easier to understand. Unfortunately this requires existing links to this repository to be updated. We apologize for the inconvenience caused.
-
-* `recipes/meta/Recipe` was renamed to `pkg2appimage` to better reflect its nature
-* `recipes/meta` was moved to `recipes/`
-* Legacy recipes were moved to `legacy/`. They should be converted to `.yml` recipes
-
 ## Usage
 
 There are [multiple ways](https://github.com/probonopd/AppImageKit/wiki/Creating-AppImages) to generate AppImages. If you already have existing binaries (either in archive or `.deb` format or a ppa) then the recommended way to convert these to an AppImage is to write a [.yml description file](https://github.com/AppImage/AppImages/tree/master/recipes) and run it with [pkg2appimage](https://github.com/AppImage/AppImages/tree/master/pkg2appimage):
