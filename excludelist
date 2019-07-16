@@ -183,9 +183,10 @@ libjack.so.0
 # libcrypto.so.1
 # libcrypto.so.1.0.0
 
-# The following may be spefific to a particular GPU and may need to be excluded
-# according to https://github.com/RicardoEPRodrigues/3Engine/issues/4#issuecomment-402532194
-# libGLEW.so.2.0 # to be confirmed
+# According to https://github.com/RicardoEPRodrigues/3Engine/issues/4#issuecomment-511598362
+# libGLEW is not tied to a specific GPU. It's linked against libGL.so.1 
+# and that one is different depending on the installed driver. 
+# In fact libGLEW is changing its soversion very often, so you should always bundle libGLEW.so.2.0
 
 # libglut.so.3 # to be confirmed
 
