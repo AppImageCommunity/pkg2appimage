@@ -6,21 +6,20 @@ ingredients:
     - wget -c "$URL"
     - echo $URL | cut -d / -f 8 | sed -e 's|v||g' > VERSION
     - unzip -o *.zip
-  packages:
-    - openjdk-8-jdk
-  dist: xenial
-  sources: 
-    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe multiverse
+    - wget -c https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.3%2B7_openj9-0.14.3/OpenJDK11U-jdk_x64_linux_openj9_11.0.3_7_openj9-0.14.3.tar.gz
+    - tar xf OpenJDK11U-jdk_x64_linux_openj9_11.0.3_7_openj9-0.14.3.tar.gz
 
 script:
   - cat > praxislive.desktop <<\EOF
   - [Desktop Entry]
   - Name=PraxisLIVE
   - Exec=praxislive
-  - Icon=openjdk-8
+  - StartupWMClass=PraxisLIVE
+  - Icon=praxislive
   - Type=Application
   - Categories=AudioVideo;
   - EOF
   - cp -Rf ../praxislive/* usr/
-  - cp usr/share/icons/hicolor/48x48/apps/openjdk-8.png .
-  - ( cd usr/bin/ ; ln -s ../lib/jvm/java-8-openjdk-amd64/jre/bin/* . )
+  - wget https://raw.githubusercontent.com/praxis-live/distribution/master/common/praxislive256.png -O praxislive.png
+  - mkdir -p usr/share/icons/hicolor/256x256/apps ; cp praxislive.png usr/share/icons/hicolor/256x256/apps/
+  - cp -Rf ../jdk-11.0.3+7/* usr/
