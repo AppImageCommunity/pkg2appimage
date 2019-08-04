@@ -1,6 +1,3 @@
-# NOTE: Currently broken because it needs the --player-operation-mode=pseudo-gui parameter to run
-# NOTE: More testing is needed since this bundles Samba wich is tricky, since Samba puts so files in unusual locations
-
 app: Mpv
 binpatch: true
 
@@ -17,4 +14,5 @@ script:
   - sed -i -e 's|TargetEnvironment|X-TargetEnvironment|g' mpv.desktop
   - sed -i -e 's|Desktop Action|X-Disabled Desktop Action|g' mpv.desktop
   - sed -i -e 's|^Actions=|X-Disabled-Actions=|g' mpv.desktop
-  - mv ./usr/lib/x86_64-linux-gnu/samba/*.so* ./usr/lib/x86_64-linux-gnu/
+  - sed -i -e 's|^TryExec=|X-Disabled-TryExec=|g' mpv.desktop
+  # mv ./usr/lib/x86_64-linux-gnu/samba/*.so* ./usr/lib/x86_64-linux-gnu/
