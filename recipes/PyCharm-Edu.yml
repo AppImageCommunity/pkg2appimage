@@ -1,0 +1,33 @@
+app: PyCharm-Edu
+
+ingredients:
+  script:
+    - DLD=$(curl -LIs -o /dev/null -w %{url_effective} 'https://data.services.jetbrains.com/products/download?code=PCE&platform=linux')
+    - wget --trust-server-names -c $DLD
+    - echo $DLD | cut -d/ -f5 | cut -d- -f3 | sed -e "s/.tar.gz//" > VERSION
+
+script:
+  - SHORTNAME=pycharm
+  - FULLNAME=pycharm-edu
+  - VERSION=$(cat ../VERSION || true)
+  - mkdir -p opt/$SHORTNAME
+  - tar zxvf ../$FULLNAME-$VERSION.tar.gz --directory opt/$SHORTNAME --strip-components=1
+  - ln -s ../../opt/$SHORTNAME/bin/$SHORTNAME.sh usr/bin/$SHORTNAME.sh
+  - cp opt/$SHORTNAME/bin/$SHORTNAME.png .
+  - cp opt/$SHORTNAME/bin/$SHORTNAME.svg .
+  - cat > $FULLNAME.desktop << EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=PyCharm Edu
+  - Icon=$SHORTNAME
+  - Exec=env PYTHONHOME= PYTHONPATH= $SHORTNAME.sh %f
+  - Comment=The Drive to Develop
+  - Categories=Development;IDE;
+  - Terminal=false
+  - StartupWMClass=jetbrains-pycharm-edu
+  - EOF
+  - rm -r opt/$SHORTNAME/jbr/legal/java.desktop
+  - rm opt/$SHORTNAME/bin/fsnotifier-arm
+  - rm opt/$SHORTNAME/bin/fsnotifier
+

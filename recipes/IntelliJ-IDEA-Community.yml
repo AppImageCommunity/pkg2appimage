@@ -1,0 +1,35 @@
+app: IntelliJ-IDEA-Community
+
+ingredients:
+  script:
+    - DLD=$(curl -LIs -o /dev/null -w %{url_effective} 'https://data.services.jetbrains.com/products/download?code=IIC&platform=linux')
+    - wget --trust-server-names -c $DLD
+    - echo $DLD | cut -d/ -f5 | cut -d- -f2 | sed -e "s/.tar.gz//" > VERSION
+
+
+script:
+  - SHORTNAME=intellij
+  - FULLNAME=ideaIC
+  - ALTNAME=idea
+  - VERSION=$(cat ../VERSION || true)
+  - mkdir -p opt/$SHORTNAME
+  - tar zxvf ../$FULLNAME-$VERSION.tar.gz --directory opt/$SHORTNAME --strip-components=1
+  - ln -s ../../opt/$SHORTNAME/bin/$ALTNAME.sh usr/bin/$ALTNAME.sh
+  - cp opt/$SHORTNAME/bin/$ALTNAME.png .
+  - cp opt/$SHORTNAME/bin/$ALTNAME.svg .
+  - cat > $FULLNAME.desktop << EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=IntelliJ IDEA Community Edition
+  - Icon=$ALTNAME
+  - Exec=$ALTNAME.sh
+  - Comment=Develop with pleasure!
+  - Categories=Development;IDE;
+  - Terminal=false
+  - EOF
+  - rm opt/$SHORTNAME/bin/fsnotifier-arm
+  - rm opt/$SHORTNAME/bin/fsnotifier
+
+
+
