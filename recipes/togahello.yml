@@ -1,0 +1,54 @@
+# This is an example for making an AppImage from a Toga application
+# using virtualenv and pip3
+# NOT WORKNIG YET. GIVES "AttributeError: module 'importlib._bootstrap' has no attribute 'SourceFileLoader'"
+
+app: togahello
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty trusty-updates trusty-security main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty-security main universe
+  packages:
+    - python3.4-venv
+  script:
+    - sudo apt-get -y install virtualenv python3-dev libgirepository1.0-dev libcairo2-dev libgirepository1.0-dev build-essential libbz2-dev libreadline-dev libssl-dev zlib1g-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libcairo2-dev
+
+script:
+  - mkdir -p ./usr/share/icons/hicolor/scalable/ ; touch ./usr/share/icons/hicolor/scalable/toga.svg # FIXME
+  - virtualenv --python=python3 usr
+  # wget https://bootstrap.pypa.io/ez_setup.py -O - | ./usr/bin/python3
+  - ./usr/bin/pip3 install -U --pre pip
+  - ./usr/bin/pip3 install --pre toga
+  - cat > usr/share/applications/toga.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=toga
+  - Comment=A toga hello world application
+  - Icon=toga
+  - Exec=python3 bin/togahello %F
+  - Terminal=false
+  - Categories=Application;Development;
+  - Keywords=Python;
+  - MimeType=text/x-python3;text/x-python3;
+  - EOF
+  - cp usr/share/applications/toga.desktop .
+  - usr/bin/pip3 freeze | grep "toga" | cut -d "=" -f 3 >> ../VERSION
+  - cat > usr/bin/togahello <<\EOF
+  - import toga
+  - def button_handler(widget):
+  -     print("hello")
+  - def build(app):
+  -     box = toga.Box()
+  -     button = toga.Button('Hello world', on_press=button_handler)
+  -     button.style.padding = 50
+  -     button.style.flex = 1
+  -     box.add(button)
+  -     return box
+  - def main():
+  -     return toga.App('First App', 'org.beeware.helloworld', startup=build)
+  - if __name__ == '__main__':
+  -     main().main_loop()
+  - EOF
+  - chmod +x usr/bin/togahello
