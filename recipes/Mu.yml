@@ -13,8 +13,9 @@ ingredients:
   packages:
     - python3.4-venv
   script:
-    -  wget -c https://raw.githubusercontent.com/mu-editor/mu/master/conf/mu.codewith.editor.png
-    -  wget -c https://raw.githubusercontent.com/mu-editor/mu/master/conf/mu.appdata.xml
+    - sudo apt install virtualenv
+    - wget -c https://raw.githubusercontent.com/mu-editor/mu/master/conf/mu.codewith.editor.png
+    - wget -c https://raw.githubusercontent.com/mu-editor/mu/master/conf/mu.appdata.xml
 
 script:
   - cp ../mu.codewith.editor.png ./usr/share/icons/hicolor/256x256/
