@@ -1,6 +1,14 @@
 app: Arduino_IDE
+# Including ESP8266 and ESP32
 # Note: "app:" must not be called "Arduino.yml" or else we get
 # "Your copy of the IDE is installed in a subfolder of your sketchbook."
+
+# TODO:
+# Arduino_IDE/Arduino_IDE.AppDir/usr/bin/hardware/esp32/1.0.2/platform.txt:compiler.path={runtime.tools.xtensa-esp32-elf-gcc.path}/bin/
+# is not being picked up yet
+# whereas
+# runtime.tools.xtensa-lx106-elf-gcc.path
+# is being picked up
 
 ingredients:
   script:
@@ -9,18 +17,22 @@ ingredients:
     - echo $DLD | cut -d "-" -f 2 > VERSION
     - DLD2=$(wget -q "https://github.com/esp8266/arduino-esp8266fs-plugin/releases/" -O - | grep ".zip" | head -n 1 | cut -d '"' -f 2)
     - wget -c "https://github.com/$DLD2" -O DLD2.zip
-    - unzip DLD2.zip
+    - unzip -o DLD2.zip
 
 script:
+  - wget "https://raw.githubusercontent.com/AppImage/pkg2appimage/master/recipes/Arduino_IDE.AppRun" -O AppRun
+  - chmod +x AppRun
   - tar xf ../arduino-*.tar.xz --strip-components=1 -C usr/bin/
   - cp -Rf usr/bin/lib/icons/* usr/share/icons/hicolor ; rm -r usr/bin/lib/icons/
   - find . -name desktop.template -exec cp {} arduino.desktop \;
   - sed -i -e 's|<.*>$|arduino|g' arduino.desktop
   - cp usr/share/icons/hicolor/256x256/apps/arduino.png .
-  - usr/bin/arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/staging/package_esp8266com_index.json" --save-prefs
+  - usr/bin/arduino --pref 'boardsmanager.additional.urls=https://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json' --save-prefs
   - usr/bin/arduino --install-boards esp8266:esp8266 || true
+  - usr/bin/arduino --install-boards esp32:esp32 || true
   - export APP=Arduino
   - cp -Rf "$HOME/.arduino15/packages/esp8266/"* ./usr/bin/
+  - cp -Rf "$HOME/.arduino15/packages/esp32/"* ./usr/bin/
   - cp "$HOME/.arduino15/"*.json ./usr/bin/hardware/ 
   - mkdir -p usr/bin/tools/ESP8266FS/tool/
   # TODO: Build upload tool in ../arduino-esp8266fs-plugin-*/
