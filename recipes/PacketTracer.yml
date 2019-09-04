@@ -1,0 +1,65 @@
+app: PacketTracer
+union: true
+
+ingredients:
+  dist: jessie
+  sources:
+    - deb http://deb.debian.org/debian jessie main
+  packages:
+    - libpng12-0
+    - libssl1.0.0
+    - python3
+  exclude:
+    - PacketTracer
+  script:
+    # Remove directory if already extracted
+    - rm -rf extracted
+    - mkdir -p extracted
+    - wget -c https://www.netacad.com/portal/sites/default/files/resources/PacketTracer/packet_tracer_7.2.1_for_linux_64_bit.tar.gz
+    - tar zxvf packet_tracer_7.2.1_for_linux_64_bit.tar.gz --directory extracted/
+    # Fix overly restrictive permissions - we should be able do delete directory
+    - find extracted/saves -type d -exec chmod +w {} +
+    # Copy helper script
+    - wget -c https://raw.githubusercontent.com/konradmb/PacketTracer-AppImage/master/etc/PacketTracerSettingsFix.py
+    - chmod +x PacketTracerSettingsFix.py
+
+    
+script:
+  # Copy helper script to bin
+  - cp ../PacketTracerSettingsFix.py usr/bin/
+  # Copy .desktop file, icon and libs from extracted archive
+  - cp ../extracted/bin/Cisco-PacketTracer.desktop ./PacketTracer.desktop
+  - cp ../extracted/art/app.png ./PacketTracer.png
+  - mkdir -p usr/lib/x86_64-linux-gnu/
+  - cp ../extracted/bin/*.so.* usr/lib/x86_64-linux-gnu/
+  # Copy all of the archive contents to its own directory
+  - mkdir -p usr/share/PacketTracer
+  - cp -r ../extracted/* usr/share/PacketTracer
+  # Remove libraries already copied to usr/lib/x86_64-linux-gnu
+  - rm usr/share/PacketTracer/bin/*.so.*
+  # Remove files needed for installation
+  - rm usr/share/PacketTracer/tpl.* usr/share/PacketTracer/set_* usr/share/PacketTracer/install
+  # Remove unused binaries
+  - rm usr/share/PacketTracer/bin/linguist usr/share/PacketTracer/bin/meta
+  # Fix wrong permissions - images shouldn't be executable. Cisco cannot into permissions. ;)
+  - chmod -x usr/share/PacketTracer/help/default/images/font*.png
+  - chmod -x usr/share/PacketTracer/art/ComponentBox/*.png
+  - chmod -x usr/share/PacketTracer/art/Toolbar/*.png
+  # Add wrapper
+  - cat > usr/bin/PacketTracerWrapper << EOF
+  - #!/bin/sh
+  # Fool PacketTracer into thinking that it's been already running from this directory
+  # Should think of a nicer solution
+  - bin/python3 bin/PacketTracerSettingsFix.py
+  - cd share/PacketTracer/bin
+  - ./PacketTracer7
+  - EOF
+  # Make it executable
+  - chmod +x usr/bin/PacketTracerWrapper
+  # Patch PT bin - change $HOME/.packettracer string to something else
+  # New file name must have the same length
+  - sed -i 's!/.packettracer!/.ptappimage00!g' usr/share/PacketTracer/bin/PacketTracer7
+  # Change icon and executable path
+  - sed -i 's!Icon=/opt/pt/art/app.png!Icon=PacketTracer.png!' PacketTracer.desktop
+  - sed -i 's!Exec=packettracer %F!Exec=PacketTracerWrapper!' PacketTracer.desktop
+  
