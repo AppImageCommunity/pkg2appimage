@@ -41,6 +41,11 @@ libEGL.so.1
 # desktop system, may also be provided by proprietary drivers.
 # Known to cause issues if it's bundled.
 
+libGLdispatch.so.0
+libGLX.so.0
+# reported to be superfluent and conflicting system libraries (graphics driver)
+# see https://github.com/linuxdeploy/linuxdeploy/issues/89
+
 libdrm.so.2
 # Workaround for:
 # Antergos Linux release 2015.11 (ISO-Rolling)
