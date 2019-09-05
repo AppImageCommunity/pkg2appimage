@@ -38,6 +38,12 @@ if [ ! -e "${APPDIR}/.DirIcon" ] ; then
   fatal ".DirIcon is missing in ${APPDIR}"
 fi
 
+DIR_ICON_MIME=$(mimetype $(readlink -f ${APPDIR}/.DirIcon) | awk '{print $2}')
+
+if [[  ! "$DIR_ICON_MIME" = "image/png"  ]] ; then
+  warn "Icon isn't a PNG file"
+fi
+
 if [ ! -x "${APPDIR}/AppRun" ] ; then
   fatal "AppRun is not executable" // This seems to generate false alarms? https://travis-ci.org/AppImage/AppImageHub/builds/266084511#L539
 fi
