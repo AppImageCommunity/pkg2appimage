@@ -41,7 +41,7 @@ fi
 DIR_ICON_MIME=$(mimetype $(readlink -f ${APPDIR}/.DirIcon) | awk '{print $2}')
 
 if [[  ! "$DIR_ICON_MIME" = "image/png"  ]] ; then
-  warn "Icon isn't a PNG file"
+  warn "Icon is not in PNG format. It should be so that it can be used as a thumbnail"
 fi
 
 if [ ! -x "${APPDIR}/AppRun" ] ; then
