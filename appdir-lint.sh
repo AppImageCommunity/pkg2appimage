@@ -138,7 +138,7 @@ else
 fi
 
 
-BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d' | sed '/^#.*$/d')
+BLACKLISTED_FILES=$(cat "${HERE}/excludelist" | sed '/^\s*$/d ; /^#.*$/d ; s/\s*#.*$//')
 for FILE in $BLACKLISTED_FILES ; do
   if [ ! -z $(find "${APPDIR}" -name $FILE) ] ; then
     warn "Blacklisted file $FILE found"
