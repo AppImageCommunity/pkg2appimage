@@ -58,6 +58,10 @@ libglapi.so.0
 # Part of mesa
 # known to cause problems with graphics, see https://github.com/RPCS3/rpcs3/issues/4427#issuecomment-381674910
 
+libgbm.so.1
+# Part of mesa
+# https://github.com/probonopd/linuxdeployqt/issues/390#issuecomment-529036305
+
 libxcb.so.1
 # Workaround for:
 # Fedora 23
