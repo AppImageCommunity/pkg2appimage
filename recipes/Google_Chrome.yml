@@ -14,9 +14,9 @@ ingredients:
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   script:
     - wget -c "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-    - URL2=$(wget -q "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'uBlock0.chromium.zip"' | head -n 1 | cut -d '"' -f 4)
+    - URL2=$(wget -q "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep '.chromium.zip"' | head -n 1 | cut -d '"' -f 4)
     - wget -c "$URL2"
-    - unzip uBlock0.chromium.zip
+    - unzip *.chromium.zip
     - export cs_extension_version=$(grep -r '"version":'  uBlock0.chromium/manifest.json | cut -d '"' -f 4) # 1.16.13.101
     - export cs_extension_id=$(wget -q "https://raw.githubusercontent.com/gorhill/uBlock/master/dist/chromium/publish-beta.py" -O - | grep "cs_extension_id =" | head -n 1 | cut -d "'" -f 2) # cgbcahbpdhpcegmbfconppldiemgcoii
 
