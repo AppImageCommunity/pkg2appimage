@@ -42,4 +42,4 @@ script:
   - sed -i -e 's|// Drive extension|"cs_extension_id" : { "external_crx": "uBlock0.crx", "external_version": "cs_extension_version" },|g' opt/google/chrome/default_apps/external_extensions.json
   - sed -i -e 's|cs_extension_id|'"$cs_extension_id"'|g' opt/google/chrome/default_apps/external_extensions.json
   - sed -i -e 's|cs_extension_version|'"$cs_extension_version"'|g' opt/google/chrome/default_apps/external_extensions.json
-  - cp ../uBlock0.chromium.zip ./opt/google/chrome/default_apps/uBlock0.crx
+  - cp ../*.chromium.zip ./opt/google/chrome/default_apps/uBlock0.crx
