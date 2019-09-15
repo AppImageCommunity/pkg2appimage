@@ -36,6 +36,7 @@ libstdc++.so.6
 # usr/lib/libstdc++.so.6: version `GLIBCXX_3.4.21' not found
 
 libGL.so.1
+# The above may be missing on Chrome OS, https://www.reddit.com/r/Crostini/comments/d1lp67/ultimaker_cura_no_longer_running_as_an_appimage/
 libEGL.so.1
 # Part of the video driver (OpenGL); present on any regular
 # desktop system, may also be provided by proprietary drivers.
