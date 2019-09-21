@@ -1,5 +1,10 @@
 #########################################################################################################################
 # We are not allowed to redistribute Spotify.AppImage
+#
+# To make your own, run (on any deb-based distribution):
+# wget https://raw.githubusercontent.com/AppImage/pkg2appimage/master/pkg2appimage
+# bash -ex pkg2appimage Spotify
+# 
 # If you would like to see an official Spotify AppImage, vote on
 # https://community.spotify.com/t5/Live-Ideas/Desktop-Other-Linux-Provide-Spotify-Desktop-Client-in-cross/idi-p/1337399
 # and let https://twitter.com/SpotifyCares know
