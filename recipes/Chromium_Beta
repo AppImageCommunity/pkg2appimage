@@ -1,0 +1,14 @@
+app: Chromium_Beta
+binpatch: true
+lowerapp: chromium-browser
+
+ingredients:
+  dist: xenial
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
+  ppas:
+    - saiarcot895/chromium-beta
+  package: chromium-browser
+
+script:
+  - cp /usr/lib/x86_64-linux-gnu/libnspr4.so usr/lib/x86_64-linux-gnu/
