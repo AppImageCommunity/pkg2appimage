@@ -1,3 +1,7 @@
+# To make your own, run (on any deb-based distribution):
+# wget https://raw.githubusercontent.com/AppImage/pkg2appimage/master/pkg2appimage
+# bash -ex pkg2appimage Brave
+#
 # Based on first draft by https://github.com/cmatomic
 # This is just a workaround. The proper action would be to build
 # a Brave AppImage from source as part of the Brave CI pipelines;
