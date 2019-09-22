@@ -27,6 +27,6 @@ script:
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - cd $HERE/usr
-  - $HERE/usr/bin/firefox.wrapper $@
+  - $HERE/usr/bin/firefox $@
   - EOF
   - chmod a+x AppRun
