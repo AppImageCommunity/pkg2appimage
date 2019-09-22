@@ -1,0 +1,28 @@
+# Based on first draft by https://github.com/cmatomic
+# This is just a workaround. The proper action would be to build
+# a Brave AppImage from source as part of the Brave CI pipelines;
+# see https://github.com/brave/brave-browser/issues/1060 and
+# https://github.com/brave/browser-laptop/issues/10250
+
+app: brave-browser
+
+ingredients:
+  package: brave-browser
+  dist: xenial
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+    - deb https://brave-browser-apt-release.s3.brave.com xenial main
+script:
+  - cat > brave-browser.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=brave-browser
+  - Exec=brave-browser %U
+  - StartupNotify=true
+  - Icon=brave-browser
+  - Categories=Network;WebBrowser;
+  - MimeType=text/html;text/xml;application/xhtml_xml;image/webp;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
+  - EOF
+  - mv opt/brave.com/brave/* usr/bin/ ; rm -rf opt/brave.com/brave
+  - cp usr/bin/product_logo_256.png usr/share/icons/hicolor/256x256/apps/brave-browser.png
+  - cp usr/share/icons/hicolor/256x256/apps/brave-browser.png .
