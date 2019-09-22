@@ -9,7 +9,10 @@ script:
   - tar xf ../firefox-*.tar.*
   - mv firefox/* usr/bin/
   - rm -r firefox/
+  - mkdir -p usr/share/icons/hicolor/128x128/apps/
   - find . -name mozicon128.png -exec cp \{\} firefox.png \;
+  - find . -name default128.png -exec cp \{\} firefox.png \;
+  - cp firefox.png ./usr/share/icons/hicolor/128x128/apps/
   - cat > firefoxdeveloperedition.desktop <<EOF
   - [Desktop Entry]
   - Type=Application
