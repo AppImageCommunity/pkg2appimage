@@ -27,6 +27,8 @@ script:
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - cd $HERE/usr
+  - export SNAP_NAME="firefox" # Prevent per installation profiles in ff = 67
+  - export MOZ_LEGACY_PROFILES=1 # Prevent per installation profiles in ff > 68
   - $HERE/usr/bin/firefox $@
   - EOF
   - chmod a+x AppRun
