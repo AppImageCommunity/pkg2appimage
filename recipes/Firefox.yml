@@ -63,6 +63,13 @@ script:
   - wget -c "https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/Firefox_mozilla.cfg" -O usr/bin/mozilla.cfg
   - wget -c "https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/Firefox_00_admin-prefs.js" -O usr/bin/defaults/pref/00_admin-prefs.js
   - rm usr/bin/browser/blocklist.xml # Contains app.update. settings; maybe this helps to disable the nag screens
-
+  - cat > AppRun <<\EOF
+  - #!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - export SNAP_NAME="firefox" # Prevent per installation profiles in ff = 67
+  - export MOZ_LEGACY_PROFILES=1 # Prevent per installation profiles in ff > 68
+  - "$HERE/usr/bin/firefox" "$@"
+  - EOF
+  - chmod a+x AppRun
 post:
   - cp ../firefox/libnss3.so usr/bin # Override excludelist
