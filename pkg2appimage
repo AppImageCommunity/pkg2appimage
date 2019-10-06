@@ -57,6 +57,7 @@ which wget >/dev/null 2>&1 || ( echo wget missing && exit 1 )
 which grep >/dev/null 2>&1 || ( echo grep missing && exit 1 )
 which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
 which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
+which desktop-file-validate >/dev/null 2>&1 || ( echo desktop-file-validate missing && exit 1 )
 
 # If the yaml file doesn't exist locally, get it from GitHub
 if [ ! -f "${!#}" ] ; then
