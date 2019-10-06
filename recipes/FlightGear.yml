@@ -1,0 +1,21 @@
+# Credits: enrogue, mirrored from
+# https://forum.flightgear.org/viewtopic.php?f=20&t=35362&sid=205e34c58253d9924b7dcb5c60ec94c2
+
+app: FlightGear
+binpatch: true
+
+ingredients:
+  dist: xenial
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe 
+  ppas:
+    - saiarcot895/flightgear
+  script:
+    - wget -c http://de.archive.ubuntu.com/ubuntu/pool/main/q/qtsvg-opensource-src/libqt5svg5_5.5.1-2build1_amd64.deb
+
+script:
+  - mv usr/games/* usr/bin/ ; rm -r usr/games/
+  - sed -i '/Keyword/d ; s/1\.1/1\.0/' org.flightgear.FlightGear.desktop
+  - touch usr/bin/qt.conf
+  - ln -s ../lib/x86_64-linux-gnu/qt5/plugins usr/bin
+  - ln -s ../lib/x86_64-linux-gnu/qt5/qml usr/bin
