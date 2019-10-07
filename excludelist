@@ -205,3 +205,9 @@ libxcb-dri2.so.0 # https://github.com/probonopd/linuxdeployqt/issues/331#issueco
 
 # If the next line turns out to cause issues, we will have to remove it again and find another solution
 libfribidi.so.0 # https://github.com/olive-editor/olive/issues/221 and https://github.com/knapsu/plex-media-player-appimage/issues/14
+
+# Workaround for:
+# symbol lookup error: /lib/x86_64-linux-gnu/libgnutls.so.30: undefined symbol: __gmpz_limbs_write
+# https://github.com/ONLYOFFICE/appimage-desktopeditors/issues/3
+# Apparently coreutils depends on it, so it should be safe to assume that it comes with every target system
+libgmp.so.10
