@@ -1,0 +1,26 @@
+# Until https://www.bluemail.me/ provides an official AppImage, you can make
+# your own using any deb-based distribution by running
+# wget -c "https://github.com/AppImage/pkg2appimage/raw/master/pkg2appimage"
+# bash -ex pkg2appimage BlueMail
+
+app: BlueMail
+
+ingredients:
+  script:
+    - URL="https://api.snapcraft.io/api/v1/snaps/download/ZVlj0qw0GOFd5JgTfL8kk2Y5eIG1IpiH_3.snap"
+    - wget -c "$URL"
+    - which unsquashfs >/dev/null 2>&1 || sudo apt-get -y install squashfs-tools
+    - which convert >/dev/null 2>&1 || sudo apt-get -y install imagemagick
+    - unsquashfs *.snap
+    - cat squashfs-root/meta/snap.yaml | grep "^version:" | cut -d " " -f 2 > VERSION
+
+script:
+  - find ../squashfs-root/ -maxdepth 1 -type f -exec cp {} usr/bin/ \;
+  - cp -r ../squashfs-root/usr/lib/* usr/lib/
+  - mkdir -p lib && cp -r ../squashfs-root/lib/* lib/
+  - mkdir -p usr/share/applications ; cp ../squashfs-root/meta/gui/bluemail.desktop usr/share/applications
+  - sed -i -e 's|Icon=${SNAP}/meta/gui/icon.png|Icon=bluemail|g' usr/share/applications/bluemail.desktop
+  - cp usr/share/applications/bluemail.desktop .
+  - convert -resize 512x512 ../squashfs-root/meta/gui/icon.png usr/share/icons/hicolor/512x512/apps/bluemail.png
+  - cp usr/share/icons/hicolor/512x512/apps/bluemail.png .
+  - cp -r ../squashfs-root/{resources,locales} usr/bin/
