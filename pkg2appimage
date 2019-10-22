@@ -467,4 +467,4 @@ fi
 cd ..
 
 generate_type2_appimage
-ls -lh ../out/*.AppImage
+ls -lh "$HOME/Applications"/*.AppImage
