@@ -185,10 +185,10 @@ generate_appimage()
     fi
   fi
 
-  mkdir -p ../out || true
-  rm ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage" 2>/dev/null || true
+  mkdir -p "$HOME/Applications" || true
+  rm "$HOME/Applications"/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage" 2>/dev/null || true
   GLIBC_NEEDED=$(glibc_needed)
-  ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
+  ./AppImageAssistant ./$APP.AppDir/ "$HOME/Applications"/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
 }
 
 # Generate AppImage type 2
@@ -247,8 +247,8 @@ generate_type2_appimage()
     VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
   fi
   set -x
-  mkdir -p ../out/ || true
-  mv *.AppImage* ../out/
+  mkdir -p "$HOME/Applications/" || true
+  mv *.AppImage* "$HOME/Applications/"
 }
 
 # Generate status file for use by apt-get; assuming that the recipe uses no newer
