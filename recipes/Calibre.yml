@@ -1,16 +1,19 @@
+# According to its author, Calibre 3.48.0 is the last version that runs
+# on older systems, too. The later ones require e.g., later libicu
+# then what is on Ubuntu trusty
+
 app: Calibre
 
 ingredients:
   script:
-    - VERSION=$(wget -q http://code.calibre-ebook.com/latest -O -)
-    - wget -c https://calibre-ebook.com/dist/linux64 --trust-server-names
+    - VERSION=3.48.0 # $(wget -q http://code.calibre-ebook.com/latest -O -)
+    - wget -c https://download.calibre-ebook.com/3.48.0/calibre-3.48.0-x86_64.txz
+    # wget -c https://calibre-ebook.com/dist/linux64 --trust-server-names
     - echo $VERSION > VERSION
 
 script:
-  - ( cd usr/ ; tar xf ../../calibre-*.txz )
-  - mkdir -p ./usr/lib/qt5/
-  - mv ./usr/lib/qt_plugins ./usr/lib/qt5/plugins
-  - cp usr/resources/content-server/calibre.png .
+  - ( cd usr/bin ; tar xf ../../../calibre-*.txz )
+  - cp usr/bin/resources/content-server/calibre.png .
   - cat > calibre.desktop <<EOF
   - [Desktop Entry]
   - Version=1.0
@@ -22,4 +25,3 @@ script:
   - Icon=calibre
   - Categories=Office;
   - EOF
-
