@@ -21,6 +21,10 @@ if [ -z "$PKG2AICOMMIT" ] ; then
   PKG2AICOMMIT=master
 fi
 
+if [ -z "$PKG2AIREPO" ] ; then
+  PKG2AIREPO=AppImage/AppImages
+fi
+
 usage() {
   if [ -z "$APPIMAGE" ]  ; then
     MYSELF="$0"
@@ -147,7 +151,7 @@ if [ -e "${HERE}/usr/share/pkg2appimage/functions.sh" ] ; then
   . "${HERE}/usr/share/pkg2appimage/functions.sh"
 elif [ -z "$FUNCTIONS_SH" ] ; then
   if [ ! -e functions.sh ] ; then
-    wget -q https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/functions.sh -O ./functions.sh
+    wget -q https://github.com/${PKG2AIREPO}/raw/${PKG2AICOMMIT}/functions.sh -O ./functions.sh
   fi
   . ./functions.sh
 else

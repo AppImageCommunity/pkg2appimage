@@ -13,6 +13,10 @@ if [ -z "$PKG2AICOMMIT" ] ; then
   PKG2AICOMMIT=master
 fi
 
+if [ -z "$PKG2AIREPO" ] ; then
+  PKG2AIREPO=AppImage/AppImages
+fi
+
 # Options for apt-get to use local files rather than the system ones
 OPTIONS="-o Debug::NoLocking=1
 -o APT::Cache-Limit=125829120
@@ -307,7 +311,7 @@ generate_status()
   if [ -e "${HERE}/usr/share/pkg2appimage/excludedeblist" ]  ; then
     EXCLUDEDEBLIST="${HERE}/usr/share/pkg2appimage/excludedeblist"
   else
-    wget -q -c "https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/excludedeblist"
+    wget -q -c "https://github.com/${PKG2AIREPO}/raw/${PKG2AICOMMIT}/excludedeblist"
     EXCLUDEDEBLIST=excludedeblist
   fi
   rm status 2>/dev/null || true
