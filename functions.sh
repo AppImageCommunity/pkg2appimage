@@ -115,17 +115,62 @@ move_lib()
   mkdir -p ./usr/lib ./lib64 && find ./lib64/ -exec cp -v --parents -rfL {} ./usr/ \; && rm -rf ./lib64
 }
 
+prepare_blacklisted_skip_args()
+{
+  local skip_args_list=()
+  local args=("$@")
+  for skip in "${args[@]}" ; do
+    skip_args_list+=("--skip ${skip}")
+  done;
+  local skip_args=$(join_by ' ' "${skip_args_list[@]}")
+  echo $skip_args;
+}
+
 # Delete blacklisted files
 delete_blacklisted()
 {
+  local skip_list=()
+  local args=("$@")
+
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case $key in
+      --skip)
+        skip_list+=($2)
+        shift # past value
+        ;;
+      *)    # unknown option
+        shift # past argument
+        ;;
+    esac
+  done
+  set -- "${args[@]}"
+
+  echo join_by ' ' "${skip_list[@]}"
+
   BLACKLISTED_FILES=$(cat_file_from_url https://github.com/AppImage/pkg2appimage/raw/${PKG2AICOMMIT}/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
-    FILES="$(find . -name "${FILE}" -not -path "./usr/optional/*")"
-    for FOUND in $FILES ; do
-      rm -vf "$FOUND" "$(readlink -f "$FOUND")"
-    done
-  done
+
+    echo "check ${FILE}"
+    local clear=true;
+    for skip in "${skip_list[@]}"; do
+      if [[ $skip == "${FILE}" ]]; then
+        clear=false
+        break
+      fi
+    done;
+
+    if [ $clear = true ] ; then
+      FILES="$(find . -name "${FILE}" -not -path "./usr/optional/*")"
+      for FOUND in $FILES ; do
+        rm -vf "$FOUND" "$(readlink -f "$FOUND")"
+      done
+    else
+      echo "skiping ${FILE}"
+    fi
+  done;
 
   # Do not bundle developer stuff
   rm -rf usr/include || true
@@ -348,3 +393,5 @@ patch_strings_in_file() {
         done
     fi
 }
+
+function join_by { local IFS="$1"; shift; echo "$*"; }

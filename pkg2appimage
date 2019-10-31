@@ -432,7 +432,16 @@ if [ ! -z "${_union}" ] ; then
   strip libunionpreload.so
 fi
 
-delete_blacklisted
+echo "prepare blacklist args"
+delete_blacklisted_args='';
+
+if [ ! -z "${_blacklisted_skip[0]}" ] ; then
+  blacklisted_skip_args=$(prepare_blacklisted_skip_args "${_blacklisted_skip[@]}")
+  echo "blacklisted_skip_args ${blacklisted_skip_args}"
+  delete_blacklisted_args="${delete_blacklisted_args} ${blacklisted_skip_args}"
+fi
+
+delete_blacklisted "${delete_blacklisted_args}"
 
 if [ "$ENABLE_DI" = "yes" ] ; then
   get_desktopintegration $LOWERAPP
