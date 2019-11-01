@@ -153,7 +153,7 @@ delete_blacklisted()
 
   echo join_by ' ' "${skip_list[@]}"
 
-  BLACKLISTED_FILES=$(cat_file_from_url https://github.com/AppImage/pkg2appimage/raw/${PKG2AICOMMIT}/excludelist | sed 's|#.*||g')
+  BLACKLISTED_FILES=$(cat_file_from_url https://github.com/${PKG2AIREPO}/raw/${PKG2AICOMMIT}/excludelist | sed 's|#.*||g')
   echo $BLACKLISTED_FILES
   for FILE in $BLACKLISTED_FILES ; do
 
@@ -166,7 +166,7 @@ delete_blacklisted()
       fi
     done;
 
-    if [ $clear = true ] ; then
+    if [[ $clear = true ]] ; then
       FILES="$(find . -name "${FILE}" -not -path "./usr/optional/*")"
       for FOUND in $FILES ; do
         rm -vf "$FOUND" "$(readlink -f "$FOUND")"

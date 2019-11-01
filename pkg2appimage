@@ -68,7 +68,7 @@ which desktop-file-validate >/dev/null 2>&1 || ( echo desktop-file-validate miss
 if [ ! -f "${!#}" ] ; then
   YAMLFILE=/tmp/_recipe.yml
   rm -f "$YAMLFILE"
-  wget -q "https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/recipes/${!#}.yml" -O "$YAMLFILE"
+  wget -q "https://github.com/${PKG2AIREPO}/raw/${PKG2AICOMMIT}/recipes/${!#}.yml" -O "$YAMLFILE"
 else
   YAMLFILE=$(readlink -f "${!#}")
 fi
