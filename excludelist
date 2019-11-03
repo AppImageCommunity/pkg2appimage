@@ -17,7 +17,7 @@ libm.so.6
 libmvec.so.1
 # libnsl.so.1 # Not part of glibc anymore as of Fedora 28. See https://github.com/RPCS3/rpcs3/issues/5224#issuecomment-434930594
 libnss_compat.so.2
-libnss_db.so.2
+# libnss_db.so.2 # Not part of neon-useredition-20190321-0530-amd64.iso
 libnss_dns.so.2
 libnss_files.so.2
 libnss_hesiod.so.2
