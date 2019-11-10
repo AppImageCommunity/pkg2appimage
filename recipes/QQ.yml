@@ -1,0 +1,32 @@
+# QQ Linux版，终于。但是没有手机，如何用用户名和密码登录呢？
+# 使用手机是不好的，因为它可以用来跟踪和监视人。避免使用手机登录。
+# QQ for Linux, finally. But how to log in with username and password, without mobile phone? 
+# It is not good to use a mobile phone because it can be used to track and spy on people. 
+# Avoid using mobile phone to log in.
+
+app: linuxqq
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c "https://qd.myapp.com/myapp/qqteam/linuxQQ/linuxqq_2.0.0-b1-1024_amd64.deb"
+    # https://im.qq.com/proxy/domain/qzonestyle.gtimg.cn/qzone/qzactStatics/configSystem/data/1435/config1.js
+
+script:
+  - cat > usr/share/applications/qq.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=QQ
+  - Comment=QQ Instant Messenger
+  - Exec=qq
+  - Icon=qq
+  - Terminal=false
+  - Type=Application
+  - Categories=Network;
+  - StartupNotify=true
+  - EOF
+  - cp usr/share/applications/qq.desktop .
+  - mv ./usr/share/tencent-qq/* usr/bin/
+  - mv ./usr/bin/qq.png ./usr/share/icons/hicolor/48x48/apps
+  - cp ./usr/share/icons/hicolor/48x48/apps/qq.png .
