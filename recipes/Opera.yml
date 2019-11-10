@@ -1,9 +1,12 @@
-app: opera
+app: opera-stable
 
 ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   script:
     - VERSION=$(wget -q "https://get.geo.opera.com/pub/opera/desktop/" -O - | grep href | tail -n 1 | cut -d '"' -f 2 | cut -d / -f 1)
-    - wget -c "https://get.geo.opera.com/pub/opera/desktop/$VERSION/linux/opera-stable_${VERSION}_amd64.deb"
+    - wget -nv -c "https://get.geo.opera.com/pub/opera/desktop/$VERSION/linux/opera-stable_${VERSION}_amd64.deb"
     - echo $VERSION > VERSION
 
 script:
