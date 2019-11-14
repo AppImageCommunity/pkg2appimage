@@ -1,0 +1,14 @@
+app: Zettlr
+
+ingredients:
+  dist: oldstable
+  sources:
+    - deb http://ftp.de.debian.org/debian/ oldstable main
+  script:
+    - DEB=$(wget -q https://github.com/Zettlr/Zettlr/releases -O - | grep '.deb' | head -n 1 | cut -d '"' -f 2)
+    - wget -c https://github.com/$DEB
+    - echo $DEB | cut -d "-" -f 4 | sed -e 's|.deb||g' > VERSION
+
+script:
+  - mv opt/Zettlr/* usr/bin/ ; rm -r opt/
+  - sed -i -e 's|/opt/Zettlr/||g' zettlr.desktop
