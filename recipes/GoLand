@@ -1,0 +1,30 @@
+app: GoLand
+
+ingredients:
+  script:
+    - APPCODE=GO
+    - SHORTNAME=goland
+    - wget -c 'https://data.services.jetbrains.com/products/download?code=$APPCODE&platform=linux' --trust-server-names
+    - ls *.tar.gz | cut -d- -f2 | sed -e "s/.tar.gz//" > VERSION
+
+script:
+  - mkdir -p opt/$SHORTNAME
+  - tar zxf ../$SHORTNAME-*.tar.gz --directory opt/$SHORTNAME --strip-components=1
+  - ln -s ../../opt/$SHORTNAME/bin/$SHORTNAME.sh usr/bin/$SHORTNAME.sh
+  - cp opt/$SHORTNAME/bin/$SHORTNAME.png .
+  - cp opt/$SHORTNAME/bin/$SHORTNAME.svg .
+  - cat > $SHORTNAME.desktop << EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=GoLand
+  - Icon=$SHORTNAME
+  - Exec=env PYTHONHOME= PYTHONPATH= $SHORTNAME.sh %f
+  - Comment=Go IDE for Professional Developers
+  - Categories=Development;IDE;
+  - Terminal=false
+  - StartupWMClass=jetbrains-$SHORTNAME
+  - EOF
+  - rm -r opt/$SHORTNAME/jbr/legal/java.desktop
+  - rm opt/$SHORTNAME/bin/fsnotifier-arm
+  - rm opt/$SHORTNAME/bin/fsnotifier
