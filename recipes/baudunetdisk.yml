@@ -1,0 +1,25 @@
+app: baidunetdisk
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://cn.archive.ubuntu.com/ubuntu/ xenial main universe
+  script:
+    - wget -c "http://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/2.0.2/baidunetdisk_linux_2.0.2.deb"
+
+script:
+  - rm -rf ./baidunetdisk.desktop
+  - cat > usr/share/applications/baidunetdisk.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=baidunetdisk
+  - Comment=百度网盘
+  - Exec=baidunetdisk %U
+  - Icon=baidunetdisk
+  - Terminal=false
+  - Type=Application
+  - Categories=Network;
+  - StartupWMClass=baidunetdisk
+  - MimeType=x-scheme-handler/baiduyunguanjia;
+  - EOF
+  - cp usr/share/applications/baidunetdisk.desktop .
+  - mv opt/baidunetdisk/* usr/bin/
