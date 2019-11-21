@@ -1,0 +1,9 @@
+app: anydesk
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://cn.archive.ubuntu.com/ubuntu/ xenial main universe
+  script:
+    - DLD=$(wget -q "https://download.anydesk.com/linux/" -O -| grep -E "anydesk.*amd64.deb" |cut -d'"' -f2|head -n1|cut -d'/' -f2)
+    - wget -c "https://download.anydesk.com/linux/$DLD"
