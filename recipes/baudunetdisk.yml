@@ -5,7 +5,7 @@ ingredients:
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
   script:
-    - wget -c "http://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/2.0.2/baidunetdisk_linux_2.0.2.deb"
+    - wget -c "http://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/3.0.1/baidunetdisk_linux_3.0.1.2.deb"
 
 script:
   - rm -rf ./baidunetdisk.desktop
