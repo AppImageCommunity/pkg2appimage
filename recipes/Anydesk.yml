@@ -1,4 +1,4 @@
-app: Anydesk
+app: AnyDesk
 
 ingredients:
   dist: trusty
