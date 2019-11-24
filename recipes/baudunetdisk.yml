@@ -5,7 +5,9 @@ ingredients:
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
   script:
-    - wget -c "http://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/3.0.1/baidunetdisk_linux_3.0.1.2.deb"
+    - URL=$(wget -q "https://pan.baidu.com/disk/cmsdata?do=client&t=&channel=chunlei&clienttype=0&web=1" -O - | egrep  -o  "http://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/[0-9\.]*?/baidunetdisk_linux_[0-9\.]*?deb")
+    - wget -c "$URL"
+    - echo $URL | cut -d _ -f 3 | sed -e 's|.deb||g' > VERSION
 
 script:
   - rm -rf ./baidunetdisk.desktop
