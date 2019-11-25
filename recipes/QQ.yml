@@ -11,7 +11,8 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
   script:
-    - wget -c "https://qd.myapp.com/myapp/qqteam/linuxQQ/linuxqq_2.0.0-b1-1024_amd64.deb"
+    - DLD=$(wget -q "https://im.qq.com/proxy/domain/qzonestyle.gtimg.cn/qzone/qzactStatics/configSystem/data/1435/config1.js" -O - |cut -d':' -f20 |head -n1|cut -d'"' -f1|cut -d'/' -f7)
+    - wget -c "https://qd.myapp.com/myapp/qqteam/linuxQQ/$DLD"
     # https://im.qq.com/proxy/domain/qzonestyle.gtimg.cn/qzone/qzactStatics/configSystem/data/1435/config1.js
 
 script:
