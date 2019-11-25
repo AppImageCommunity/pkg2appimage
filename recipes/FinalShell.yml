@@ -1,0 +1,24 @@
+app:  finalshell
+ingredients: 
+ dist: trusty 
+ sources: 
+   - deb http://ftp.de.debian.org/debian/ xenial main universe 
+ script: 
+   - wget http://dl.hostbuf.com/finalshell2/finalshell_linux.zip
+   - unzip finalshell_linux.zip
+   
+script:
+  - cp -r ../FinalShell/* ./usr/bin/ 
+  - cp -r ../FinalShell/app/img/finalshell.png . 
+  - chmod +x ./usr/bin/FinalShell
+  - cat > finalshell.desktop <<EOF 
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=false
+  - Name=FinalShell
+  - Icon=finalshell
+  - Exec=FinalShell %u
+  - Categories=Development;
+  - X-GNOME-Autostart-enabled=true
+  - Comment=一个跨平台的SSH链接工具
+  - EOF
