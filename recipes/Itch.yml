@@ -5,9 +5,8 @@ ingredients:
   sources:
     - deb http://ftp.de.debian.org/debian/ wheezy main
   script: 
-    - wget -c "http://nuts.itch.zone/download"
-    - mv download itch-setup
-    - chmod +x itch-setup && ./itch-setup
+    - wget -c "http://nuts.itch.zone/download" -O
+    - chmod +x itch-setup && ./itch-setup --silent # github.com/itchio/itch-setup
 script: 
   - cp -r ~/.itch/app-*/* ./usr/bin/
   - cp ~/.itch/icon.png ./itch.png
