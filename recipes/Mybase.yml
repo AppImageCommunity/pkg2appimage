@@ -1,0 +1,23 @@
+app: Mybase
+
+ingredients: 
+  dist: trusty
+  sources: 
+    - deb http://mirrors.aliyun.com/ubuntu/ xenial main universe
+  script: 
+    - wget -c "http://www.wjjsoft.com/downloads/myBase-Desktop-Ver734-Linux-amd64.tar.bz2"
+    #http://www.wjjsoft.com/download.html
+    - tar xvf myBase*.tar.bz2
+script: 
+  - cp ~/Downloads/software/Mybase.png .
+  - cp -r ../myBase7/* ./usr/bin/  
+  - cat > Mybase.desktop <<EOF 
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Mybase
+  - Icon=Mybase
+  - Exec=myBase %u
+  - Categories=Network;
+  - X-GNOME-Autostart-enabled=true
+  - Comment=个人知识库管理平台
+  - EOF
