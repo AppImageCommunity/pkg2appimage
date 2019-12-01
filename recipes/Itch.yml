@@ -5,7 +5,7 @@ ingredients:
   sources:	  sources:
     - deb http://ftp.de.debian.org/debian/ wheezy main	        	  
   script: 
-     - wget -c "http://nuts.itch.zone/download" -O
+     - wget -c "http://nuts.itch.zone/download" 
      - mv download itch-setup
      - chmod +x itch-setup && ./itch-setup
   
