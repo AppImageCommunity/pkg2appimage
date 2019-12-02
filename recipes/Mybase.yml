@@ -9,7 +9,7 @@ ingredients:
     #http://www.wjjsoft.com/download.html
     - tar xvf myBase*.tar.bz2
 script: 
-  - cp ~/Downloads/software/Mybase.png .
+  - cp -r ../myBase7/images/nyf_logo_128.png ./Mybase.png
   - cp -r ../myBase7/* ./usr/bin/  
   - cat > Mybase.desktop <<EOF 
   - [Desktop Entry]
