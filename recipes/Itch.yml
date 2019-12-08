@@ -2,7 +2,7 @@ app: Itch
 
 ingredients:
   dist: wheezy
-  sources:	  sources:
+  sources:	  
     - deb http://ftp.de.debian.org/debian/ wheezy main	        	  
   script: 
      - wget -c "http://nuts.itch.zone/download" 
