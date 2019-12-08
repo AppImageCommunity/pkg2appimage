@@ -4,5 +4,22 @@ ingredients:
   dist: trusty
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
-  debs:
-    - https://s3.amazonaws.com/lantern/lantern-installer-beta-64-bit.deb
+  script:
+    - DLD=$(wget -q "https://api.github.com/repos/getlantern/lantern/releases/latest" -O - |grep "https.*update_linux_amd64.bz2"|cut -d'"' -f4)
+    - wget -c $DLD 
+    - echo $DLD | cut -d/ -f8 > VERSION
+    - bzip2 -d update_linux_amd64.bz2
+    - chmod +x update_linux_amd64 
+script: 
+  - wget -c "https://static-s.aa-cdn.net/img/gp/20600005657479/e6IDrA5scUL51lxDW62YF1pyGNFg9v6oshYTYNt4KAl7CFh02ykY5EKqkttzdRU-w81A=s300?v=1" 
+  - mv e6IDrA5scUL51lxDW62YF1pyGNFg9v6oshYTYNt4KAl7CFh02ykY5EKqkttzdRU-w81A=s300?v=1 Lantern.png 
+  - cp -r ../update_linux_amd64 ./usr/bin/Lantern
+  - cat > Lantern.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Lantern
+  - Icon=Lantern
+  - Exec=Lantern %u
+  - Categories=Development;IDE;
+  - Comment=The hackable text editor
+  - EOF
