@@ -4,7 +4,7 @@ ingredients:
  sources: 
    - deb http://ftp.de.debian.org/debian/ xenial main universe 
  script: 
-   - wget http://dl.hostbuf.com/finalshell2/finalshell_linux.zip
+   - wget http://dl.hostbuf.com/finalshell[0-9]/finalshell_linux.zip
    #http://www.hostbuf.com/t/1059.html
    - unzip finalshell_linux.zip
    
