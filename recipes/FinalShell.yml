@@ -4,7 +4,9 @@ ingredients:
  sources: 
    - deb http://ftp.de.debian.org/debian/ xenial main universe 
  script: 
-   - wget http://dl.hostbuf.com/finalshell[0-9]/finalshell_linux.zip
+   - DLD=$(wget -q "www.hostbuf.com/downloads/finalshell_install_linux.sh" -O -|grep "^package_download_url"|cut -d'=' -f2|cut -d'?' -f1)   
+   - wget -c $DLD
+   - echo $(wget -q "http://www.hostbuf.com/" -O -|grep "版本"|cut -d',' -f7|sed -n '2,3p'|head -n1) > VERSION
    #http://www.hostbuf.com/t/1059.html
    - unzip finalshell_linux.zip
    
