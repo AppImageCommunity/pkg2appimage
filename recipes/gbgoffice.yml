@@ -1,0 +1,24 @@
+app: gbgoffice
+binpatch: true
+
+ingredients:
+  dist: xenial
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
+  packages:
+    - gbgoffice
+  script:
+    # Download gbgoffice dictionaries
+    # Original download link:
+    # http://sourceforge.net/projects/bgoffice/files/Full%20Pack%20of%20Dictionaries/1.0/full-pack.tar.bz2/download
+    # Direct download link:
+    - wget -c "https://netcologne.dl.sourceforge.net/project/bgoffice/Full%20Pack%20of%20Dictionaries/1.0/full-pack.tar.bz2"
+    - tar -xjf full-pack.tar.bz2
+
+script:
+  # We are in the gbgoffice.AppDir folder at this point
+  - DICTIONARIES_INSTALL_DIR="usr/local/share/bgoffice/"
+  - mkdir -p "$DICTIONARIES_INSTALL_DIR"
+  - cp ../full-pack/data/* "$DICTIONARIES_INSTALL_DIR"
+  - cp usr/share/pixmaps/gbgoffice-icon.png ./gbgoffice.png
+  - sed -i -e 's|Icon=.*|Icon=gbgoffice|g' gbgoffice.desktop
