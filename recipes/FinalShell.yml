@@ -1,0 +1,28 @@
+app:  finalshell
+
+ingredients: 
+  dist: trusty 
+  sources: 
+    - deb http://ftp.de.debian.org/debian/ xenial main universe 
+  script: 
+    - DLD=$(wget -q "www.hostbuf.com/downloads/finalshell_install_linux.sh" -O -|grep "^package_download_url"|cut -d'=' -f2|cut -d'?' -f1)   
+    - wget -c $DLD
+    - echo $(wget -q "http://www.hostbuf.com/" -O -|grep "版本"|cut -d',' -f7|sed -n '2,3p'|head -n1) > VERSION
+   #http://www.hostbuf.com/t/1059.html
+    - unzip finalshell_linux.zip
+   
+script:
+  - cp -r ../FinalShell/* ./usr/bin/ 
+  - cp -r ../FinalShell/app/img/finalshell.png . 
+  - chmod +x ./usr/bin/FinalShell
+  - cat > finalshell.desktop <<EOF 
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=false
+  - Name=FinalShell
+  - Icon=finalshell
+  - Exec=FinalShell %u
+  - Categories=Development;
+  - X-GNOME-Autostart-enabled=true
+  - Comment=一个跨平台的SSH链接工具
+  - EOF
