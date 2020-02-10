@@ -22,7 +22,6 @@ ingredients:
 
 script:
   - mv ./opt/google/chrome/product_logo_64.png usr/share/icons/hicolor/64x64/apps/google-chrome.png
-  - mv ./opt/google/chrome/product_logo_22.png usr/share/icons/hicolor/22x22/apps/google-chrome.png
   - mv ./opt/google/chrome/product_logo_32.png usr/share/icons/hicolor/32x32/apps/google-chrome.png
   - mv ./opt/google/chrome/product_logo_256.png usr/share/icons/hicolor/256x256/apps/google-chrome.png
   - mv ./opt/google/chrome/product_logo_24.png usr/share/icons/hicolor/24x24/apps/google-chrome.png
