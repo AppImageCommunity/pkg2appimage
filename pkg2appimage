@@ -59,6 +59,7 @@ which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
 which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
 which file >/dev/null 2>&1 || ( echo file missing && exit 1 )
 which desktop-file-validate >/dev/null 2>&1 || ( echo desktop-file-validate missing && exit 1 )
+which strings >/dev/null 2>&1 || ( echo strings missing && exit 1 )
 
 # If the yaml file doesn't exist locally, get it from GitHub
 if [ ! -f "${!#}" ] ; then
