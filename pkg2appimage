@@ -269,15 +269,13 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     INSTALL=${_ingredients_packages[@]}
   fi
 
-  apt-get -o Acquire::AllowInsecureRepositories=true -o Acquire::Languages="none" -o Acquire::AllowDowngradeToInsecureRepositories=true $OPTIONS update || true
-  URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http") || true
-  if which aria2c &>/dev/null; then
-    dltool=aria2c
-  else
-    dltool=wget
-  fi
-
-  $dltool -c -i- <<<"$URLS"
+  apt-get.update
+  
+  INSTALL=($(echo "${INSTALL}" | sed "s| |\n|g"))
+  
+  for pkg in "${INSTALL}"; do
+    apt-get.do-download ${pkg}
+  done
 fi
 
 if [ ! -z "${_ingredients_post_script[0]}" ] ; then
