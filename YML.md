@@ -115,6 +115,17 @@ The `ppas` section inside the `ingredients` section lets you specify one or more
 
 __NOTE:__ In the future, similar shortcuts for other types of personal repositories, such as projects on openSUSE build service, could also be included in the `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the [`pkg2appimage`](https://github.com/AppImage/AppImages/blob/master/pkg2appimage) script.
 
+#### Using deb files from a download page
+
+The following will fetch the first deb from https://www.bitwig.com/en/download.html:
+
+```
+  script:
+    - URL=$(wget -q "https://www.bitwig.com/en/download.html" -O - | grep -oP -m1 "(https)[^'\"]+?.deb" | head -n 1)
+    - wget -c "$URL"
+    - echo "$URL" | cut -d "/" -f 5 > VERSION
+```
+
 #### Using local deb files
 
 This allows the use of local deb files (rather than downloading the deb ingredients)
