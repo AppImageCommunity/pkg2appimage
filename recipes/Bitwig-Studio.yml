@@ -23,7 +23,7 @@ ingredients:
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   script:
-    - URL=$( wget -q "https://www.bitwig.com/en/download.html" -O - | grep deb | head -n 1 | cut -d '"' -f 12)
+    - URL=$(wget -q "https://www.bitwig.com/en/download.html" -O - | grep -oP -m1 "(https)[^'\"]+?.deb")
     - wget -c "$URL"
     - echo "$URL" | cut -d "/" -f 5 > VERSION
 
