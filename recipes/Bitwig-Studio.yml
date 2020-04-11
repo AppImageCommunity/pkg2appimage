@@ -31,3 +31,4 @@ script:
   - rm -rf usr/bin/bitwig-studio ; mv opt/bitwig-studio/* usr/bin/ ; rm -r opt/
   - cp ./usr/share/icons/hicolor/48x48/apps/bitwig-studio.png .
   - sed -i -e 's|^Exec=.*|Exec=bitwig-studio|g' bitwig-studio.desktop
+  - sed -i -e 's|^Categories=.*|Categories=AudioVideo;|g' bitwig-studio.desktop
