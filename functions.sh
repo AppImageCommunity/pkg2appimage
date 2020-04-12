@@ -358,3 +358,46 @@ patch_strings_in_file() {
         done
     fi
 }
+
+function apt-get.update(){
+  echo -n > cache.txt
+  while read line; do
+    local line=$(echo "${line}" | sed 's|[[:space:]]| |g')
+    local repo_info=($(echo ${line} | tr " " "\n"))
+    local base_url=${repo_info[1]}
+    local dist_name=${repo_info[2]}
+  
+    [ -f "Packages.gz" ] && {
+      cat Packages.gz | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}|g" >> cache.txt
+    }
+  
+    for i in $(seq 3 $((${#repo_info[@]} - 1))); do
+      echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
+      local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-amd64/Packages.gz"
+      wget -q ${repo_url} -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}|g" >> cache.txt
+    done
+  done <sources.list
+}
+
+function apt-get.do-download(){
+  [ -f "status" ] && {
+    grep -q ^"Package: ${1}"$ status && return
+  }
+  
+  echo "${already_downloaded_package[@]}"|grep -q ^"${1}"$ && return
+  
+  already_downloaded_package+=(${1})
+  
+  local dependencies=($(cat cache.txt | grep -A 2 -m 1 ^"Package: ${1}"$ | grep ^"Depends: " | cut -c 9-  | sed "s|([^)]*)||g;s|[[:space:]]||g" | sed "s|,|\n|g"))
+  local package_url=$(cat cache.txt | grep -A 3 -m 1 ^"Package: ${1}"$ | grep ^"Filename: " | cut -c 11-)
+  
+  [ "${dltool}" = "" ] && {
+    dltool=wget
+  }
+  
+  ${dltool} "${package_url}"
+  
+  for depend in "${dependencies[@]}"; do
+    apt-get.do-download ${depend}
+  done
+}
