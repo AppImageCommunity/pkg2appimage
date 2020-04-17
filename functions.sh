@@ -247,8 +247,9 @@ generate_type2_appimage()
   set +x
 
   GLIBC_NEEDED=$(glibc_needed)
-  _APP_DIR=$(readlink -f "./$APP.AppDir/")
-      
+  _APP_DIR="${PWD}/$APP.AppDir/"
+  export OWD="${PWD}"
+   
   if ( [ ! -z "$KEY" ] ) && ( ! -z "$TRAVIS" ) ; then
     wget https://github.com/AppImage/AppImageKit/files/584665/data.zip -O data.tar.gz.gpg
     ( set +x ; echo $KEY | gpg2 --batch --passphrase-fd 0 --no-tty --skip-verify --output data.tar.gz --decrypt data.tar.gz.gpg )
