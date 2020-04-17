@@ -363,15 +363,14 @@ patch_strings_in_file() {
 
 function apt-get.update(){
   echo -n > cache.txt
+  
+  cat Packages.gz | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" >> cache.txt || true
+  
   while read line; do
     local line=$(echo "${line}" | sed 's|[[:space:]]| |g')
     local repo_info=($(echo ${line} | tr " " "\n"))
     local base_url=${repo_info[1]}
     local dist_name=${repo_info[2]}
-  
-    [ -f "Packages.gz" ] && {
-      cat Packages.gz | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" >> cache.txt
-    }
   
     for i in $(seq 3 $((${#repo_info[@]} - 1))); do
       echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
