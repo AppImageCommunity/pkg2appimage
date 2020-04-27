@@ -278,6 +278,11 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   fi
 
   $dltool -c -i- <<<"$URLS"
+
+  FILES=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^file" | cut -d ':' -f 2) || true
+  echo $FILES | while read file ; do
+    cp -s $file .
+  done
 fi
 
 if [ ! -z "${_ingredients_post_script[0]}" ] ; then
