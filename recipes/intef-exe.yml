@@ -4,9 +4,9 @@ binpatch: true
 ingredients:
   packages:
     - intef-exe
-  dist: stable
+  dist: oldstable
   sources:
-    - deb http://ftp.debian.org/debian/ stable main
+    - deb http://ftp.debian.org/debian/ oldstable main
   exclude:
     - firefox-esr
     - iceweasel
