@@ -163,7 +163,7 @@ fi
 # and ingredients of that architecture. Debian packages
 # should be available for most architectures, e.g., oldstable
 # has "armhf"
-if [ ! -z $ARCH] ; then
+if [ ! -z "$ARCH" ] ; then
   OPTIONS="$OPTIONS -o APT::Architecture=$ARCH"
 fi
 
