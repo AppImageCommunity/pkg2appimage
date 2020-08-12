@@ -8,6 +8,12 @@ ingredients:
   packages:
     - libxcb-xtest0
     - libxcb-image0
+    - libxcb-keysyms1
+    - libxcb-xfixes0
+    - libxcb-shape0
+    - libxcb-shm0
+    - libxcb-randr0
+    - libxcb-util1
   script:
     - URL="https://zoom.us/client/latest/zoom_amd64.deb"
     - wget -c "$URL"
