@@ -7,6 +7,7 @@ ingredients:
   package: teamviewer_linux_x64
   packages:
     - libxcb-xtest0
+    - libxcb-image0
   script:
     - URL="https://zoom.us/client/latest/zoom_amd64.deb"
     - wget -c "$URL"
