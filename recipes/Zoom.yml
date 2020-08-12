@@ -3,7 +3,7 @@ app: Zoom
 ingredients:
   dist: xenial
   sources:
-    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
   package: teamviewer_linux_x64
   packages:
     - libxcb-xtest0
