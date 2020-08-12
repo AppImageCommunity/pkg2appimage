@@ -1,0 +1,26 @@
+# NOTE: THIS DOES NOT WORK YET DUE TO THE BUNDLED WINE
+# PROBABLY NOT USING THE WIN32 LIBS
+# ALSO SEE https://github.com/sudo-give-me-coffee/wine32-deploy/issues/18
+# 
+# TeamViewer version 9 is needed e.g., in order to be able to connect to
+# older Macs that cannot run the latest version of TeamViewer QuickSupport
+
+app: TeamViewer
+# union: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  package: teamviewer_linux_x64
+  script:
+    - URL="https://download.teamviewer.com/download/version_9x/teamviewer_linux_x64.deb"
+    - wget -c "$URL"
+    - echo 9 > VERSION
+
+script:
+  - cp opt/teamviewer9/tv_bin/desktop/teamviewer-teamviewer9.desktop .
+  - cp opt/teamviewer9/tv_bin/desktop/teamviewer.png .
+  - sed -i -e 's|/opt/teamviewer9/tv_bin/desktop/||g' teamviewer-teamviewer9.desktop 
+  - sed -i -e 's|/opt/teamviewer9/tv_bin/script/||g' teamviewer-teamviewer9.desktop 
+  - ( cd usr/bin ; rm -rf teamviewer ; ln -s ../../opt/teamviewer9/tv_bin/script/teamviewer . )
