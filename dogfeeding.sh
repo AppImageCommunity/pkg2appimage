@@ -42,6 +42,9 @@ cp ../../pkg2appimage AppRun ; chmod + AppRun
 
 mkdir -p ./usr/share/pkg2appimage/
 cp ../../{functions.sh,excludelist,excludedeblist,appdir-lint.sh} ./usr/share/pkg2appimage/
+rm -rf ./usr/share/metainfo/* || true
+mkdir -p ./usr/share/metainfo
+cp ../../pkg2appimage.appdata.xml ./usr/share/metainfo/
 
 copy_deps
 move_lib
