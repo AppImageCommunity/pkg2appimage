@@ -6,7 +6,7 @@ This repository is intended to showcase the [AppImage](http://appimage.org) form
 
 There are [multiple ways](https://github.com/probonopd/AppImageKit/wiki/Creating-AppImages) to generate AppImages.  Upstream projects are encouraged to produce their own __upstream packaging__ AppImages, like [many projects](https://appimage.github.io) already do.
 
-Some branded applications are unfortunately not provided in AppImage format by their authors yet, and are not allowed to be redistributed. However, if there are existing deb packages (either in archive or `.deb` format or a ppa) then once can to convert these to an AppImage using [pkg2appimage](../../releases/tag/continuous).
+Some branded applications are unfortunately not provided in AppImage format by their authors yet, and are not allowed to be redistributed. However, if there are suitable existing binary packages (either in archive or `.deb` format or a ppa) then once can to convert these to an AppImage using [pkg2appimage](../../releases/tag/continuous).
 
 ![image](https://user-images.githubusercontent.com/2480569/91085594-3aac8600-e63d-11ea-8c2e-a648e6ef3fdb.png)
 
