@@ -1,0 +1,30 @@
+app: Zoom
+
+ingredients:
+  dist: xenial
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+  package: teamviewer_linux_x64
+  packages:
+    - libxcb-xtest0
+    - libxcb-image0
+    - libxcb-keysyms1
+    - libxcb-xfixes0
+    - libxcb-shape0
+    - libxcb-shm0
+    - libxcb-randr0
+    - libxcb-util1
+  script:
+    - URL="https://zoom.us/client/latest/zoom_amd64.deb"
+    - wget -c "$URL"
+
+script:
+  - ( cd usr/bin/ ; rm -f * ; mv ../../opt/zoom/* . )
+  - sed -i -e 's|/usr/bin/zoom %U|ZoomLauncher %U|g' Zoom.desktop
+  - sed -i -e 's|/usr/bin/zoom %U|ZoomLauncher %U|g' usr/share/applications/Zoom.desktop
+  - ( cd usr/bin/ ; mv ../lib/x86_64-linux-gnu/* . )
+  - sed -i -e 's|^MimeType=.*$|MimeType=x-scheme-handler/zoommtg;x-scheme-handler/zoomus;x-scheme-handler/tel;|g' Zoom.desktop
+  - sed -i -e 's|^MimeType=.*$|MimeType=x-scheme-handler/zoommtg;x-scheme-handler/zoomus;x-scheme-handler/tel;|g' usr/share/applications/Zoom.desktop
+  - cp ./usr/bin/version.txt ../VERSION
+  - cp usr/share/pixmaps/Zoom.png usr/share/icons/hicolor/256x256/apps/
+  - cp usr/share/pixmaps/Zoom.png .

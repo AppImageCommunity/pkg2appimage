@@ -118,6 +118,8 @@ libharfbuzz.so.0
 # gcc -s -shared -o libselinux.so.1 -Wl,-soname,libselinux.so.1 selinux-mock.c 
 # strip libselinux.so.1
 # More information: https://github.com/AppImage/AppImages/issues/83
+# and https://github.com/AppImage/AppImageKit/issues/775#issuecomment-614954821
+# https://gitlab.com/sulinos/devel/libselinux-dummy
 
 # The following are assumed to be part of the base system
 # Removing these has worked e.g., for Krita. Feel free to report if

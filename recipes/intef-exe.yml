@@ -1,0 +1,22 @@
+app: intef-exe
+binpatch: true
+
+ingredients:
+  packages:
+    - intef-exe
+  dist: oldstable
+  sources:
+    - deb http://ftp.debian.org/debian/ oldstable main
+  exclude:
+    - firefox-esr
+    - iceweasel
+  script:
+    - DLD=$(wget -q "https://api.github.com/repos/exelearning/iteexe/releases/latest" -O - |grep "https.*all.deb"|cut -d'"' -f4)
+    - wget -c $DLD
+    - echo $DLD | cut -d "_" -f 2 > VERSION
+
+script:
+  - ln -s usr/share/applications/exe.desktop exe.desktop
+  - ln -s usr/share/icons/hicolor/48x48/apps/exe.png exe.png
+  - rm usr/lib/python2.7/sitecustomize.py
+  - mv etc/python2.7/sitecustomize.py usr/lib/python2.7/
