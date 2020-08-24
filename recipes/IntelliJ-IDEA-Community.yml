@@ -28,8 +28,4 @@ script:
   - Categories=Development;IDE;
   - Terminal=false
   - EOF
-  - rm opt/$SHORTNAME/bin/fsnotifier-arm
-  - rm opt/$SHORTNAME/bin/fsnotifier
-
-
-
+  - rm opt/$SHORTNAME/bin/fsnotifier* || true
