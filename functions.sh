@@ -256,9 +256,17 @@ generate_type2_appimage()
     tar xf data.tar.gz
     sudo chown -R $USER .gnu*
     mv $HOME/.gnu* $HOME/.gnu_old ; mv .gnu* $HOME/
-    VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v "${_APP_DIR}"
+    if [ -z "$RECIPE" ] ; then
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s -g -v "${_APP_DIR}"
+    else
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v "${_APP_DIR}"
+    fi
   else
-    VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v "${_APP_DIR}"
+    if [ -z "$RECIPE" ] ; then
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -g -v "${_APP_DIR}"
+    else
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v "${_APP_DIR}"
+    fi
   fi
   set -x
   mkdir -p ../out/ || true
