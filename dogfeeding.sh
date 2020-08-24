@@ -18,9 +18,9 @@ chmod +x ./*.AppImage
 ./appimagetool-*.AppImage --appimage-extract && mv ./squashfs-root ./pkg2appimage.AppDir
 cd ./pkg2appimage.AppDir
 
-find ../*.deb -exec dpkg-deb -x {} . \;
+find ../*.deb -exec dpkg-deb -x {} . \; || true
 
-rm *.desktop
+rm *.desktop || true
 mv ./usr/share/applications/appimagetool.desktop ./usr/share/applications/pkg2appimage.desktop 
 sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
