@@ -9,7 +9,7 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 mkdir -p build/
 
 cd build/
-apt download -y apt libapt-pkg5.0 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
+# apt download -y apt libapt-pkg5.0 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
 wget -c "https://github.com/ImageMagick/ImageMagick/releases/download/7.0.8-17/ImageMagick-0b0ce48-gcc-$SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
@@ -30,12 +30,12 @@ cp ./usr/share/applications/pkg2appimage.desktop .
 cp ../ImageMagick-*.AppImage usr/bin/convert
 
 # We don't suffer from NIH
-mkdir -p usr/src/
-wget -q "https://raw.githubusercontent.com/mikix/deb2snap/master/src/preload.c" -O - | \
-sed -e 's|SNAPPY|UNION|g' | sed -e 's|SNAPP|UNION|g' | sed  -e 's|SNAP|UNION|g' | \
-sed -e 's|snappy|union|g' > usr/src/libunionpreload.c
-gcc -shared -fPIC usr/src/libunionpreload.c -o libunionpreload.so -ldl -DUNION_LIBNAME=\"libunionpreload.so\"
-strip libunionpreload.so
+# mkdir -p usr/src/
+# wget -q "https://raw.githubusercontent.com/mikix/deb2snap/master/src/preload.c" -O - | \
+# sed -e 's|SNAPPY|UNION|g' | sed -e 's|SNAPP|UNION|g' | sed  -e 's|SNAP|UNION|g' | \
+# sed -e 's|snappy|union|g' > usr/src/libunionpreload.c
+# gcc -shared -fPIC usr/src/libunionpreload.c -o libunionpreload.so -ldl -DUNION_LIBNAME=\"libunionpreload.so\"
+# strip libunionpreload.so
 
 cp ../../pkg2appimage AppRun ; chmod + AppRun
 
