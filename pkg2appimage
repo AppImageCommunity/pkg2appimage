@@ -58,6 +58,7 @@ check_dependencies \
   dpkg \
   dpkg-deb \
   convert \
+  curl \
   wget \
   grep \
   sed \
