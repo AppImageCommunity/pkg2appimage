@@ -28,6 +28,14 @@ usage() {
   exit 1
 }
 
+check_dependencies() {
+  for executable in $@; do
+    which "${executable}" >/dev/null 2>&1 || {
+      (echo "${executable} missing"; exit 1)
+    }
+  done
+}
+
 if [ $# -eq 0 ] || [ "x${!#}" = "x--di" ] ; then
   usage
 fi
@@ -46,16 +54,17 @@ set -e
 set -x
 
 # Check dependencies
-which dpkg >/dev/null 2>&1 || ( echo dpkg missing && exit 1 )
-which dpkg-deb >/dev/null 2>&1 || ( echo dpkg-deb missing && exit 1 )
-which convert >/dev/null 2>&1 || ( echo convert missing && exit 1 )
-which wget >/dev/null 2>&1 || ( echo wget missing && exit 1 )
-which grep >/dev/null 2>&1 || ( echo grep missing && exit 1 )
-which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
-which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
-which file >/dev/null 2>&1 || ( echo file missing && exit 1 )
-which desktop-file-validate >/dev/null 2>&1 || ( echo desktop-file-validate missing && exit 1 )
-which strings >/dev/null 2>&1 || ( echo strings missing && exit 1 )
+check_dependencies \
+  dpkg \
+  dpkg-deb \
+  convert \
+  wget \
+  grep \
+  sed \
+  cut \
+  file \
+  desktop-file-validate \
+  strings
 
 # If the yaml file doesn't exist locally, get it from GitHub
 if [ ! -f "${!#}" ] ; then
@@ -276,9 +285,9 @@ if [ ! -z "${_ingredients_dist}" ] ; then
 #  $dltool -c -i- <<<"$URLS"
 
   apt-get.update
-  
+
   INSTALL=($(echo "${INSTALL}" | sed "s| |\n|g"))
-  
+
   for pkg in "${INSTALL}"; do
     apt-get.do-download ${pkg}
   done
