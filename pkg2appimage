@@ -286,7 +286,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
 
   apt-get.update
 
-  INSTALL=($(echo "${INSTALL}" | sed "s| |\n|g"))
+  INSTALL=$(echo "${INSTALL}" | sed "s| |\n|g")
 
   for pkg in "${INSTALL}"; do
     apt-get.do-download ${pkg}
