@@ -288,7 +288,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
 
   INSTALL=$(echo "${INSTALL}" | sed "s| |\n|g")
 
-  for pkg in "${INSTALL}"; do
+  for pkg in ${INSTALL}; do
     apt-get.do-download ${pkg}
   done
 
