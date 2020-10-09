@@ -47,6 +47,11 @@ libGLX.so.0
 # reported to be superfluent and conflicting system libraries (graphics driver)
 # see https://github.com/linuxdeploy/linuxdeploy/issues/89
 
+libOpenGL.so.0
+# Qt installed via install-qt.sh apparently links to this library
+# part of OpenGL like libGL/libEGL, so excluding it should not cause any problems
+# https://github.com/linuxdeploy/linuxdeploy/issues/152
+
 libdrm.so.2
 # Workaround for:
 # Antergos Linux release 2015.11 (ISO-Rolling)
