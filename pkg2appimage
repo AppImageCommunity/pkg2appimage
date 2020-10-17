@@ -493,5 +493,13 @@ fi
 # Go out of AppImage
 cd ..
 
+# The most used Microsoft Kernel doesn't come with FUSEFUSE
+# So, to avoid modify code used to generate AppImage
+# let's simulate that build is runnig on Docker
+
+if [ ! "$(uname -r | grep Microsoft$ )" = "" ]; then
+  export DOCKER_BUILD=Simulated
+fi
+
 generate_type2_appimage
 ls -lh ../out/*.AppImage
