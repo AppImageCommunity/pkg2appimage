@@ -71,7 +71,8 @@ check_dependencies \
   cut \
   file \
   desktop-file-validate \
-  strings
+  strings \
+  unzip
 
 # If the yaml file doesn't exist locally, get it from GitHub
 if [ ! -f "${!#}" ] ; then
