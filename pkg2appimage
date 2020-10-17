@@ -36,22 +36,29 @@ check_dependencies() {
   done
 }
 
-if [ $# -eq 0 ] || [ "x${!#}" = "x--di" ] ; then
-  usage
-fi
-if [ $# -eq 2 ] && [ "x$1" != "x--di" ] ; then
-  usage
-fi
+ENABLE_DI="no"
 
-if [ "x$1" = "x--di" ] ; then
-  ENABLE_DI="yes"
-else
-  ENABLE_DI="no"
-fi
+for arg in "${@}"; do
+  if [ "${arg}" = "--di" ]; then
+    ENABLE_DI="yes"
+    shift
+  fi
+  if [ "${arg}" = "-q" ]; then
+    QUIET_MODE="yes"
+    shift
+  fi
+done
 
 # Halt on errors
 set -e
-set -x
+
+if [ $# -eq 0 ] ; then
+  usage
+fi
+
+if [ ! "${QUIET_MODE}" = "yes" ]; then
+  set -x
+fi
 
 # Check dependencies
 check_dependencies \
@@ -112,7 +119,11 @@ parse_yaml() {
 }
 
 # Read yaml file
-parse_yaml $YAMLFILE "_"
+
+if [ ! "${QUIET_MODE}" = "yes" ]; then
+  parse_yaml $YAMLFILE "_"
+fi
+
 eval $(parse_yaml $YAMLFILE "_")
 
 if [ ! -z $_enable_di ]; then
