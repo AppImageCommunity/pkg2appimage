@@ -1,0 +1,31 @@
+# Credits Capezotte
+# https://plus.diolinux.com.br/t/microsoft-edge-developer-build-disponibilizado-para-linux/25530/16
+
+app: microsoft-edge-dev
+
+ingredients:
+  package: microsoft-edge-dev
+  dist: xenial
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+    - deb https://packages.microsoft.com/repos/edge/ stable main
+
+script:
+  - mv ./opt/microsoft/msedge-dev/product_logo_64_dev.png usr/share/icons/hicolor/64x64/apps/microsoft-edge-dev.png
+  - mv ./opt/microsoft/msedge-dev/product_logo_32_dev.png usr/share/icons/hicolor/32x32/apps/microsoft-edge-dev.png
+  - mv ./opt/microsoft/msedge-dev/product_logo_256_dev.png usr/share/icons/hicolor/256x256/apps/microsoft-edge-dev.png
+  - mv ./opt/microsoft/msedge-dev/product_logo_24_dev.png usr/share/icons/hicolor/24x24/apps/microsoft-edge-dev.png
+  - mv ./opt/microsoft/msedge-dev/product_logo_128_dev.png usr/share/icons/hicolor/128x128/apps/microsoft-edge-dev.png
+  - mv ./opt/microsoft/msedge-dev/product_logo_48_dev.png usr/share/icons/hicolor/48x48/apps/microsoft-edge-dev.png
+  - cp usr/share/icons/hicolor/256x256/apps/microsoft-edge-dev.png .
+  - cp usr/share/applications/microsoft-edge-dev.desktop .
+  - sed -i -e 's|/usr/bin/ms-edge-dev %U|AppRun|g' microsoft-edge-dev.desktop
+  
+  - cat > ./AppRun <<\EOF
+  - #!/bin/sh
+  - HERE=$(dirname $(readlink -f "${0}"))
+  - export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+  - "${HERE}"/opt/microsoft/msedge-dev/microsoft-edge-dev --password-store=basic $@
+  - EOF
+  - chmod a+x ./AppRun
+  - ./opt/microsoft/msedge-dev/microsoft-edge-dev --version | grep -Eo "[0-9.]+" | head -n 1 > ../VERSION
