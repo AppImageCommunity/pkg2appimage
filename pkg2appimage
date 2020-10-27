@@ -224,7 +224,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     rm sources.list
   fi
   for PPA in "${_ingredients_ppas[@]}" ; do
-    echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
+    echo "deb http://ppa.launchpad.net/${PPA}/ubuntu/ ${_ingredients_dist} main" >> sources.list
   done
   for SOURCE in "${_ingredients_sources[@]}" ; do
     echo "${SOURCE}" >> sources.list
