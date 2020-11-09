@@ -1,0 +1,48 @@
+#REFERENCE: PrusaControlWireless.yml
+app: impressive
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+  packages:
+    - mupdf-tools
+    - python2.7-minimal
+    - python-pygame
+    - python-pil
+    - python-opengl
+  script:
+    - # Fake user agent with -U so sourceforge gives us the smaller Linux download rather than the default big Win32 one with deps and whatnot
+    - VERSION=$(basename $(wget -U 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:24.0) Gecko/20100101 Firefox/24.0' https://sourceforge.net/projects/impressive/files/latest/download -O - | grep -o 'https://downloads.sourceforge.net/project/impressive/Impressive/.*/' -m1))
+    - echo $VERSION > VERSION
+    - wget -c "http://downloads.sourceforge.net/impressive/Impressive-${VERSION}.tar.gz"
+    - wget -c "https://a.fsdn.com/allura/p/impressive/icon" -O impressive.png
+    - tar xvf Impressive-*.tar.gz
+
+script:
+  - cp ../impressive.png usr/share/icons/hicolor/48x48/
+  - cp ../impressive.png .
+  - cp ../Impressive-*/impressive.py usr/bin/impressive
+  - cat > usr/bin/impressive-exec <<\EOF
+  - #!/bin/bash
+  - set +x
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - APPDIR=$(readlink -f "$HERE/../../")
+  - export PYTHONPATH="$APPDIR/usr"
+  - export PATH="$APPDIR/usr/bin":$PATH
+  - exec "$APPDIR/usr/bin/python2.7" "$HERE"/impressive "$@"
+  - EOF
+  - chmod +x usr/bin/impressive-exec
+  - cat > usr/share/applications/impressive.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Impressive
+  - Comment=Display PDF presentation slides with style. 
+  - Icon=impressive
+  - Exec=impressive-exec %F
+  - Terminal=false
+  - Categories=Office;
+  - Keywords=PDF;Presentation;
+  - MimeType=application/pdf;
+  - EOF
+  - cp usr/share/applications/impressive.desktop .
