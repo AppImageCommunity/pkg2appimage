@@ -4,7 +4,6 @@ ingredients:
   dist: xenial
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
-  package: teamviewer_linux_x64
   packages:
     - libxcb-xtest0
     - libxcb-image0
@@ -14,6 +13,7 @@ ingredients:
     - libxcb-shm0
     - libxcb-randr0
     - libxcb-util1
+    - libxkbcommon-x11-0
   script:
     - URL="https://zoom.us/client/latest/zoom_amd64.deb"
     - wget -c "$URL"
