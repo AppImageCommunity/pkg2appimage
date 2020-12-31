@@ -50,5 +50,7 @@ copy_deps
 move_lib
 delete_blacklisted
 
+rm usr/lib/*-gnu/liblzma.so.5
+
 cd ..
 NO_GLIBC_VERSION=true APP=pkg2appimage VERSION=$TRAVIS_BUILD_NUMBER generate_type2_appimage # FIXME: This embeds bintray-zsync
