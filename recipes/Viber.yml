@@ -3,14 +3,25 @@
 app: Viber
 
 ingredients:
-  dist: jessie
+  dist: stretch
   sources:
-    - deb http://ftp.de.debian.org/debian/ jessie main
+    - deb http://ftp.de.debian.org/debian/ stretch main
   script:
     - wget -c http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb
     - dpkg-deb -e viber.deb
     - cat DEBIAN/control | grep "^Version:" | cut -d " " -f 2 > VERSION
-
+  packages:
+    - libxcb1
+    - libxcb-glx0
+    - libxcb-keysyms1
+    - libxcb-image0
+    - libxcb-shm0
+    - libxcb-icccm4
+    - libxcb-sync0
+    - libxcb-xfixes0
+    - libxcb-shape0
+    - libxcb-randr0
+    - libxcb-render-util0
 script:
   - mv opt/viber/* usr/bin/
   - sed -i -e 's|/opt/viber/||g' viber.desktop
