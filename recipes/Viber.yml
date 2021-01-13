@@ -3,9 +3,9 @@
 app: Viber
 
 ingredients:
-  dist: stretch
+  dist: jessie
   sources:
-    - deb http://ftp.de.debian.org/debian/ stretch main
+    - deb http://ftp.de.debian.org/debian/ jessie main
   script:
     - wget -c http://download.cdn.viber.com/cdn/desktop/Linux/viber.deb
     - dpkg-deb -e viber.deb
