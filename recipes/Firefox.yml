@@ -1,75 +1,48 @@
-# TODO: Add https://www.i-dont-care-about-cookies.eu/ - https://github.com/uBlockOrigin/uBlock-issues/issues/196#issuecomment-417963577
-# Note that this file is for demonstration purposes only and is unsupported.
-# If you would like to see an officially-supported Firefox AppImage, then please join the discussion on
-# https://bugzilla.mozilla.org/show_bug.cgi?id=1249971
-
-app: Firefox
-
+# A sample application recipes used for building appimages.
+# For full documation please go to https://docs.appimage.org/packaging-guide/converting-binary-packages/pkg2appimage.html for more detail.
+#application name
+app: firefox
+# patch the binary 
+#binpatch: true
+#union: true 
+#packages and dependencies need to be downloaded
 ingredients:
-  script:
-    - DLD=$(wget -q "https://www.mozilla.org/en-US/firefox/all/" -O - | grep -E "os=linux64&amp;lang=en-US" | cut -d'"' -f2 | head -n 1)
-    - wget -c $DLD --trust-server-names
-    - ls firefox-*.tar.bz2 | cut -d "-" -f 2 | sed -e 's|.tar.bz2||g' > VERSION
-    - tar xf firefox*.tar.bz2
-    - URL2=$(wget -c "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep 'firefox.signed.xpi"' | head -n 1 | cut -d '"' -f 4)
-    # - URL3=https://www.eff.org/files/https-everywhere-latest.xpi
-    # - URL4=https://www.eff.org/files/privacy-badger-latest.xpi
-    - URL5=$(wget -q -c "https://addons.mozilla.org/en-US/firefox/addon/i-dont-care-about-cookies/" -O - | sed -e 's|\\\u002F|/|g' | grep -Po 'https://addons.mozilla.org/firefox/downloads/file/[0-9]*/.*?xpi' | head -n 1)
-    - wget -c "$URL2" "$URL5" # "$URL3" "$URL4"
+  packages:
+    - lsb-release 
+    - libatk1.0-0  
+    - libc6
+    - libcairo-gobject2
+    - libcairo2
+    - libdbus-1-3
+    - libdbus-glib-1-2
+    - libfontconfig1
+    - libfreetype6
+    - libgcc-s1
+    - libgdk-pixbuf2.0-0
+    - libglib2.0-0
+    - libgtk-3-0 
+    - libharfbuzz0b
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libstdc++6
+    - libx11-6
+    - libx11-xcb1
+    - libxcb-shm0
+    - libxcb1
+    - libxcomposite1
+    - libxcursor1
+    - libxdamage1
+    - libxext6
+    - libxfixe1s
+    - libxi6
+    - libxrender1
+    - libxt6
+  dist: focal
+  sources: 
+ #   - deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe 
+     - deb http://cn.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
 
 script:
-  - cp -r ../firefox/* usr/bin/
-  - mkdir -p usr/bin/browser/extensions/
-  # extensions must be renamed to <something>@<something else>.<some tld>.xpi
-  # the suitable names for this can be determined by extracting the xpi (using e.g., unzip) and using methods like, e.g., https://stackoverflow.com/a/23825825
-  # if such an ID has not been defined, the name will be <something>@jetpack.xpi, you can use e.g., grep -R jetpack.xpi to find this value in an extracted .xpi
-  - cp ../*firefox.signed.xpi "usr/bin/browser/extensions/uBlock0@raymondhill.net.xpi"
-  # XPI filename: https://github.com/EFForg/https-everywhere/blob/8f6880cbe4d32349f915ad8f90255486910d140a/test/tor-browser.sh#L33
-  # - cp ../https-everywhere-latest.xpi usr/bin/browser/extensions/https-everywhere-eff@eff.org.xpi
-  # - cp ../privacy-badger-latest.xpi usr/bin/browser/extensions/jid1-MnnxcxisBPnSXQ-eff@jetpack.xpi
-  - cp ../i_dont_care_about_cookies-*.xpi usr/bin/browser/extensions/jid1-KKzOGWgsW3Ao4Q@jetpack.xpi
-  - find . -name mozicon128.png -exec cp {} firefox.png \;
-  - find . -name default128.png -exec cp {} firefox.png \;
-  - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
-  - find . -name mozicon22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/firefox.png \;
-  - find . -name mozicon24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/firefox.png \;
-  - find . -name mozicon256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/firefox.png \;
-  - find . -name mozicon32.png -exec cp {} sr/share/icons/hicolor/32x32/apps/firefox.png \;
-  - find . -name mozicon48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
-  - find . -name mozicon512.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
-  - find . -name mozicon64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
-  - find . -name default128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
-  - find . -name default22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/firefox.png \;
-  - find . -name default24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/firefox.png \;
-  - find . -name default256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/firefox.png \;
-  - find . -name default32.png -exec cp {} usr/share/icons/hicolor/32x32/apps/firefox.png \;
-  - find . -name default48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
-  - find . -name default5128.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
-  - find . -name default64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
-  - # Clean up
-  - rm usr/bin/browser/features/{firefox@getpocket.com,onboarding@mozilla.org,activity-stream@mozilla.org,aushelper@mozilla.org,followonsearch@mozilla.com,formautofill@mozilla.org}.xpi || true
-  - # Workaround for:
-  - # https://bugzilla.mozilla.org/show_bug.cgi?id=296568
-  - cat > firefox.desktop <<EOF
-  - [Desktop Entry]
-  - Type=Application
-  - Name=Firefox
-  - Icon=firefox
-  - Exec=firefox %u
-  - Categories=GNOME;GTK;Network;WebBrowser;
-  - MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
-  - StartupNotify=true
-  - EOF
-  - wget -c "https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/Firefox_mozilla.cfg" -O usr/bin/mozilla.cfg
-  - wget -c "https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/Firefox_00_admin-prefs.js" -O usr/bin/defaults/pref/00_admin-prefs.js
-  - rm usr/bin/browser/blocklist.xml # Contains app.update. settings; maybe this helps to disable the nag screens
-  - cat > AppRun <<\EOF
-  - #!/bin/bash
-  - HERE="$(dirname "$(readlink -f "${0}")")"
-  - export SNAP_NAME="firefox" # Prevent per installation profiles in ff = 67
-  - export MOZ_LEGACY_PROFILES=1 # Prevent per installation profiles in ff > 68
-  - "$HERE/usr/bin/firefox" "$@"
-  - EOF
-  - chmod a+x AppRun
-post:
-  - cp ../firefox/libnss3.so usr/bin # Override excludelist
+  - cp ./usr/share/applications/firefox.desktop ./
+  #- cp ./usr/share/icons/hicolor/128x128/firefox.svg ./
