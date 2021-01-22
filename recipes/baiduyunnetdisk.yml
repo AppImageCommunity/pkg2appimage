@@ -1,0 +1,39 @@
+# A sample application recipes used for building appimages.
+# For full documation please go to https://docs.appimage.org/packaging-guide/converting-binary-packages/pkg2appimage.html for more detail.
+#application name
+app: BaiduyunNetdisk
+
+# patch the binary 
+#binpatch: true
+#union: true 
+#packages and dependencies need to be downloaded
+ingredients:
+  packages:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libuuid1
+    - libappindicator3-1
+    - libsecret-1-0
+    
+  dist: focal
+  sources: 
+    - deb http://cn.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+  script:
+    - wget https://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/3.5.0/baidunetdisk_3.5.0_amd64.deb
+
+script:
+  - cp ./usr/share/applications/baidunetdisk.desktop ./
+  - cp ./usr/share/icons/hicolor/scalable/apps/baidunetdisk.svg ./
+  -  echo  '#!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - 
+  - export LD_LIBRARY_PATH="$HERE/usr/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/usr/lib/i386-linux-gnu":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib/i386-linux-gnu":$LD_LIBRARY_PATH
+  - "$HERE/opt/baidunetdisk/baidunetdisk" "$@" | cat' > AppRun
