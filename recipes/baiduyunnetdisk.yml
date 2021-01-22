@@ -1,12 +1,8 @@
-# A sample application recipes used for building appimages.
-# For full documation please go to https://docs.appimage.org/packaging-guide/converting-binary-packages/pkg2appimage.html for more detail.
-#application name
+# BaiduyunNetdisk
+# Author linlinger
+# Date Fri Jan 22 2021
 app: BaiduyunNetdisk
 
-# patch the binary 
-#binpatch: true
-#union: true 
-#packages and dependencies need to be downloaded
 ingredients:
   packages:
     - libgtk-3-0
