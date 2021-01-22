@@ -1,11 +1,8 @@
-# A sample application recipes used for building appimages.
-# For full documation please go to https://docs.appimage.org/packaging-guide/converting-binary-packages/pkg2appimage.html for more detail.
-#application name
+# Recipe for building FireFox Current version 75.0
+# Author : linlinger 
+# Date Jan 22nd. 2021  
 app: firefox
-# patch the binary 
-#binpatch: true
-#union: true 
-#packages and dependencies need to be downloaded
+
 ingredients:
   packages:
     - lsb-release 
@@ -40,9 +37,8 @@ ingredients:
     - libxt6
   dist: focal
   sources: 
- #   - deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal main restricted universe 
      - deb http://cn.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
 
 script:
   - cp ./usr/share/applications/firefox.desktop ./
-  #- cp ./usr/share/icons/hicolor/128x128/firefox.svg ./
+
