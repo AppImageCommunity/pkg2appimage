@@ -1,0 +1,54 @@
+# Modified from Firefox.yml This version of Firefoxuses 火狐通行证 instead of firefox sync. This is for the Chinese users.Currently is Firefox 85.0
+# Author linlinger
+app: FirefoxCN
+
+ingredients:
+  script:
+    - version=85.0
+    - wget https://download-ssl.firefox.com.cn/releases/firefox/$version/zh-CN/Firefox-latest-x86_64.tar.bz2
+    - tar xf Firefox-latest-x86_64.tar.bz2
+
+script:
+  - cp -r ../firefox/* usr/bin/
+  - find . -name mozicon128.png -exec cp {} firefox.png \;
+  - find . -name default128.png -exec cp {} firefox.png \;
+  - find . -name mozicon128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
+  - find . -name mozicon22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/firefox.png \;
+  - find . -name mozicon24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/firefox.png \;
+  - find . -name mozicon256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/firefox.png \;
+  - find . -name mozicon32.png -exec cp {} sr/share/icons/hicolor/32x32/apps/firefox.png \;
+  - find . -name mozicon48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
+  - find . -name mozicon512.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
+  - find . -name mozicon64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
+  - find . -name default128.png -exec cp {} usr/share/icons/hicolor/128x128/apps/firefox.png \;
+  - find . -name default22.png -exec cp {} usr/share/icons/hicolor/22x22/apps/firefox.png \;
+  - find . -name default24.png -exec cp {} usr/share/icons/hicolor/24x24/apps/firefox.png \;
+  - find . -name default256.png -exec cp {} usr/share/icons/hicolor/256x256/apps/firefox.png \;
+  - find . -name default32.png -exec cp {} usr/share/icons/hicolor/32x32/apps/firefox.png \;
+  - find . -name default48.png -exec cp {} usr/share/icons/hicolor/48x48/apps/firefox.png \;
+  - find . -name default5128.png -exec cp {} usr/share/icons/hicolor/512x512/apps/firefox.png \;
+  - find . -name default64.png -exec cp {} usr/share/icons/hicolor/64x64/apps/firefox.png \;
+
+  - # Workaround for:
+  - # https://bugzilla.mozilla.org/show_bug.cgi?id=296568
+  - cat > firefox.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=FirefoxCN
+  - Name[zh_CN]=火狐浏览器
+  - Icon=firefox
+  - Exec=firefox %u
+  - Categories=GNOME;GTK;Network;WebBrowser;
+  - MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+  - StartupNotify=true
+  - EOF
+  - cat > AppRun <<\EOF
+  - #!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - export SNAP_NAME="firefox" # Prevent per installation profiles in ff = 67
+  - export MOZ_LEGACY_PROFILES=1 # Prevent per installation profiles in ff > 68
+  - "$HERE/usr/bin/firefox" "$@"
+  - EOF
+  - chmod a+x AppRun
+post:
+  - cp ../firefox/libnss3.so usr/bin # Override excludelist
