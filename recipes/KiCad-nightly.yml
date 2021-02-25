@@ -22,6 +22,6 @@ script:
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:$LD_LIBRARY_PATH
   - cd "${HERE}/usr"
-  - exec "./bin/kicad" "$@"
+  - exec "./lib/kicad-nightly/bin/kicad" "$@"
   - EOF
   - chmod a+x ./AppRun
