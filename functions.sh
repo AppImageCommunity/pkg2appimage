@@ -387,7 +387,7 @@ function apt-get.update(){
     for i in $(seq 3 $((${#repo_info[@]} - 1))); do
       echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
       local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-amd64/Packages.gz"
-      wget -q ${repo_url} -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}|g" >> cache.txt
+      wget -q "${repo_url}" -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}/|g" >> cache.txt
     done
   done <sources.list
 }
