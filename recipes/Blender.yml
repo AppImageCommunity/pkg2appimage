@@ -2,10 +2,10 @@ app: Blender
 
 ingredients:
   script:
-    - URL1=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 3 | head -n 1)
-    - URL=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 2 | head -n 1)
-    - echo "$URL" | cut -d "-" -f 3 > VERSION
-    - wget "https://ftp.nluug.nl/pub/graphics/blender/release/$URL/$URL1"
+    - FILENAME=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 3 | head -n 1)
+    - VERSION=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 2 | head -n 1)
+    - echo "$VERSION" > VERSION
+    - wget "https://ftp.nluug.nl/pub/graphics/blender/release/$VERSION/$FILENAME"
     - mkdir -p blender
     - tar xf blender*.tar.xz -C ./blender --strip-components=1
 
