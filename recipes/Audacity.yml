@@ -1,0 +1,14 @@
+app: Audacity
+union: true
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - ppa:ubuntuhandbook1/audacity
+  script:
+    - wget https://www.audacityteam.org/wp-content/themes/wp_audacity/img/logo.png
+    - mkdir Audacity.AppDir/
+    - mv ./logo.png Audacity.AppDir/audacity.png
+    
