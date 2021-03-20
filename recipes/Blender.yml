@@ -2,16 +2,16 @@ app: Blender
 
 ingredients:
   script:
-    - URL1=$(wget -q "https://www.blender.org/download/" -O - | grep linux-glibc | grep x86_64 | head -n 1 | cut -d '"' -f 94)
-    - URL=$(wget -q "$URL1" -O - | grep tar.bz2 | head -n 1 | cut -d '"' -f 2)
-    - echo "$URL" | cut -d "-" -f 3 > VERSION
-    - wget "$URL"
+    - FILENAME=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 3 | head -n 1)
+    - VERSION=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 2 | head -n 1)
+    - echo "$VERSION" > VERSION
+    - wget "https://ftp.nluug.nl/pub/graphics/blender/release/$VERSION/$FILENAME"
     - mkdir -p blender
-    - tar xf blender*.tar.bz2 -C ./blender --strip-components=1
+    - tar xf blender*.tar.xz -C ./blender --strip-components=1
 
 script:
   - cp -r ../blender/* ./usr/bin/;
-  - cp ./usr/bin/icons/scalable/apps/blender.svg .
+  - cp ./usr/bin/blender.svg .
   -
   - cat > blender.desktop <<\EOF
   - [Desktop Entry]
