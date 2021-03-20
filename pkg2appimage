@@ -385,6 +385,13 @@ if [ -e usr/lib/mono ] ; then
   rm -rf usr/lib/mono/gac/
 fi
 
+if [ -d "./usr/lib/jvm/java-11-openjdk-amd64/legal/java.desktop" ] ; then
+  mv ./usr/lib/jvm/java-11-openjdk-amd64/legal/java.desktop ./usr/lib/jvm/java-11-openjdk-amd64/legal/java_desktop
+fi
+if [ -d "./usr/lib/jvm/java-11-openjdk-amd64/legal/jdk.unsupported.desktop" ] ; then
+  mv ./usr/lib/jvm/java-11-openjdk-amd64/legal/jdk.unsupported.desktop ./usr/lib/jvm/java-11-openjdk-amd64/legal/jdk.unsupported_desktop
+fi
+
 if [ -d "./usr/lib/x86_64-linux-gnu/gstreamer-1.0/" ] ; then
   mv ./usr/lib/x86_64-linux-gnu/gstreamer-1.0/* ./usr/lib/x86_64-linux-gnu/
   rm -r ./usr/lib/x86_64-linux-gnu/gstreamer-1.0
@@ -451,6 +458,13 @@ delete_blacklisted
 
 if [ "$ENABLE_DI" = "yes" ] ; then
   get_desktopintegration $LOWERAPP
+fi
+
+if [ -d "./usr/lib/jvm/java-11-openjdk-amd64/legal/java_desktop" ] ; then
+  mv ./usr/lib/jvm/java-11-openjdk-amd64/legal/java_desktop ./usr/lib/jvm/java-11-openjdk-amd64/legal/java.desktop
+fi
+if [ -d "./usr/lib/jvm/java-11-openjdk-amd64/legal/jdk.unsupported_desktop" ] ; then
+  mv ./usr/lib/jvm/java-11-openjdk-amd64/legal/jdk.unsupported_desktop ./usr/lib/jvm/java-11-openjdk-amd64/legal/jdk.unsupported.desktop
 fi
 
 # Fix desktop files that have file endings for icons
