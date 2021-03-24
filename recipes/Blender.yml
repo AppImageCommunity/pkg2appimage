@@ -5,7 +5,7 @@ ingredients:
     - FILENAME=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 3 | head -n 1)
     - VERSION=$(wget -q "https://www.blender.org/download/" -O - | grep linux64 | cut -d '"' -f 6 | cut -d "/" -f 2 | head -n 1)
     - echo "$VERSION" > VERSION
-    - wget "https://ftp.nluug.nl/pub/graphics/blender/release/$VERSION/$FILENAME"
+    - wget "https://download.blender.org/release/$VERSION/$FILENAME"
     - mkdir -p blender
     - tar xf blender*.tar.xz -C ./blender --strip-components=1
 
