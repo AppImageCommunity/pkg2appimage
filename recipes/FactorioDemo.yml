@@ -6,7 +6,7 @@ ingredients:
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
   script:
-    - VERSION=1.1.30
+    - VERSION=1.0.0
     - wget --continue --content-disposition "https://factorio.com/get-download/$VERSION/demo/linux64"
     - tar -xf "factorio_demo_x64_$VERSION.tar.xz"
     - echo "$VERSION" > VERSION
