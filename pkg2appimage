@@ -283,7 +283,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
 #  fi
 
 #  $dltool -c -i- <<<"$URLS"
-
+  set +x
   apt-get.update
 
   INSTALL=$(echo "${INSTALL}" | sed "s| |\n|g")
@@ -291,7 +291,7 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   for pkg in ${INSTALL}; do
     apt-get.do-download ${pkg}
   done
-
+  set -x
 fi
 
 if [ ! -z "${_ingredients_post_script[0]}" ] ; then
