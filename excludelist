@@ -94,8 +94,9 @@ libasound.so.2
 # Workaround for:
 # No sound, e.g., in VLC.AppImage (does not find sound cards)
 
-libgdk_pixbuf-2.0.so.0
-# Workaround for:
+# https://github.com/AppImage/pkg2appimage/issues/475
+# libgdk_pixbuf-2.0.so.0
+# Was: Workaround for:
 # On Ubuntu, get (inkscape:25621): GdkPixbuf-WARNING **: Error loading XPM image loader: Image type 'xpm' is not supported
 
 libfontconfig.so.1
