@@ -1,0 +1,60 @@
+# Wps office appimage 
+# Author linlinger
+# Date Fri Jan 22 2021
+app: wps-office
+
+ingredients:
+  packages:
+    - libc6(>= 2.15)
+    - libc6.1
+    - libfreetype6(>= 2.4)
+    - libcups2
+    - libglib2.0-0
+    - libglu1-mesa
+    - libsm6
+    - libxrender1
+    - libfontconfig1
+    - libxext6
+    - libxcb1
+    - libbz2-1.0
+
+  dist: xenial
+  sources: 
+    - deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse
+  script:
+    - wget https://wdl1.cache.wps.cn/wps/download/ep/Linux2019/10161/wps-office_11.1.0.10161_amd64.deb
+
+script:
+  - cp ./usr/share/applications/wps-office-prometheus.desktop ./
+  - cp ./usr/share/icons/hicolor/256x256/mimetypes/wps-office2019-kprometheus.png ./
+  - echo '#!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - 
+  - export LD_LIBRARY_PATH="$HERE/usr/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/usr/lib/x86_64-linux-gnu":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib/x86_64-linux-gnu":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib64":$LD_LIBRARY_PATH
+  - "$HERE/usr/bin/wps" "$@" | cat' > AppRun
+  # Patch startup script to make sure it will start normally. Make the path be relative.
+  # patching et
+  - sed -i "2i#WPS startup script modified by linlinger " ./usr/bin/et
+  - sed -i '3i currdir="$(dirname "$(readlink -f "${0}")")" ' ./usr/bin/et
+  - sed -i '9,13d' ./usr/bin/et
+  - sed -i '9i gInstallPath=$currdir/../../opt/kingsoft/wps-office/' ./usr/bin/et
+  # patching wpp
+  - sed -i "2i#WPS startup script modified by linlinger " ./usr/bin/wpp
+  - sed -i '3i currdir="$(dirname "$(readlink -f "${0}")")" ' ./usr/bin/wpp
+  - sed -i '9,13d' ./usr/bin/wpp
+  - sed -i '9i gInstallPath=$currdir/../../opt/kingsoft/wps-office/' ./usr/bin/wpp
+  # patching wps
+  - sed -i "2i#WPS startup script modified by linlinger " ./usr/bin/wps
+  - sed -i '3i currdir="$(dirname "$(readlink -f "${0}")")" ' ./usr/bin/wps
+  - sed -i '9,13d' ./usr/bin/wps
+  - sed -i '9i gInstallPath=$currdir/../../opt/kingsoft/wps-office/' ./usr/bin/wps
+  # patching wpspdf
+  - sed -i "2i#WPS startup script modified by linlinger " ./usr/bin/wpspdf
+  - sed -i '3i currdir="$(dirname "$(readlink -f "${0}")")" ' ./usr/bin/wpspdf
+  - sed -i '6,10d' ./usr/bin/wpspdf
+  - sed -i '6i gInstallPath=$currdir/../../opt/kingsoft/wps-office/' ./usr/bin/wpspdf
+  
