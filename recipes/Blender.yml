@@ -2,8 +2,8 @@ app: Blender
 
 ingredients:
   script:
-    - VERSION=$(wget -q "https://download.blender.org/release/" -O - | cut -d '"' -f 2 | cut -d '/' -f 1 | egrep -o 'Blender+[0-9]+.+[0-9]?\w+' | sort -n | tail -1)
-    - FILENAME=$(wget -q "https://download.blender.org/release/$VERSION" -O - | grep linux64 | cut -d '"' -f 2 | sort -n | tail -1)
+    - VERSION=$(wget -q "https://download.blender.org/release/" -O - | cut -d '"' -f 2 | cut -d '/' -f 1 | egrep -o 'Blender+[0-9]+.+[0-9]?\w+' | sort -V | tail -1)
+    - FILENAME=$(wget -q "https://download.blender.org/release/$VERSION" -O - | grep linux64 | cut -d '"' -f 2 | sort -V | tail -1)
     - echo "$VERSION" > VERSION
     - wget "https://download.blender.org/release/$VERSION/$FILENAME" # $VERSION should look like 'Blender2.92' and $FILENAME should look like 'blender-2.92.0-linux64.tar.xz'
     - mkdir -p blender
