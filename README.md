@@ -36,7 +36,7 @@ You are invited to contribute to the AppImage format, the AppImageKit tools, and
 
 The preferred channel of communication for general questions and remarks is our forum and mailing list at http://discourse.appimage.org/.
 
-There is also the #AppImage IRC channel on irc.freenode.net - please stay in there for at least 48 hours because we are not all in the same timezone.
+There is also the #AppImage IRC channel on irc.libera.chat - please stay in there for at least 48 hours because we are not all in the same timezone.
 
 ## Donations
 
