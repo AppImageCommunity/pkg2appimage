@@ -5,7 +5,7 @@ ingredients:
     - VERSION=$(wget -q "https://download.blender.org/release/" -O - | cut -d '"' -f 2 | cut -d '/' -f 1 | egrep -o 'Blender+[0-9]+.+[0-9]?\w+' | sort -V | tail -1)
     - FILENAME=$(wget -q "https://download.blender.org/release/$VERSION" -O - | grep linux | cut -d '"' -f 2 | sort -V | tail -1)
     - echo "$FILENAME" | cut -d "-" -f 2 > VERSION
-    - wget "https://download.blender.org/release/$VERSION/$FILENAME" # $VERSION should look like 'Blender2.92' and $FILENAME should look like 'blender-2.92.0-linux64.tar.xz'
+    - wget "https://download.blender.org/release/$VERSION/$FILENAME" # $VERSION should look like 'Blender2.92' and $FILENAME should look like 'blender-2.93.0-linux-x64.tar.xz'
     - mkdir -p blender
     - tar xf blender*.tar.xz -C ./blender --strip-components=1
 
