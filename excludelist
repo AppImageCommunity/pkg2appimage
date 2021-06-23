@@ -114,14 +114,14 @@ libthai.so.0
 libfreetype.so.6
 libharfbuzz.so.0
 
-# Note, after discussion we do not exlude this, but we can use a dummy library that just does nothing
+# Note, after discussion we do not exclude this, but we can use a dummy library that just does nothing
 # libselinux.so.1
 # Workaround for:
 # sed: error while loading shared libraries: libpcre.so.3: cannot open shared object file: No such file or directory
 # Some distributions, such as Arch Linux, do not come with libselinux.so.1 by default.
 # The solution is to bundle a dummy mock library:
 # echo "extern int is_selinux_enabled(void){return 0;}" >> selinux-mock.c
-# gcc -s -shared -o libselinux.so.1 -Wl,-soname,libselinux.so.1 selinux-mock.c 
+# gcc -s -shared -o libselinux.so.1 -Wl,-soname,libselinux.so.1 selinux-mock.c
 # strip libselinux.so.1
 # More information: https://github.com/AppImage/AppImages/issues/83
 # and https://github.com/AppImage/AppImageKit/issues/775#issuecomment-614954821
@@ -143,7 +143,7 @@ libgpg-error.so.0
 # libhx509.so.5 # Missing on openSUSE LEAP 42.0
 libICE.so.6
 # libidn.so.11 # Does not come with Solus by default
-# libk5crypto.so.3 # Runnning AppImage built on Debian 9 or Ubuntu 16.04 on an Archlinux fails otherwise; https://github.com/AppImage/AppImages/issues/301
+# libk5crypto.so.3 # Running AppImage built on Debian 9 or Ubuntu 16.04 on an Archlinux fails otherwise; https://github.com/AppImage/AppImages/issues/301
 # libkeyutils.so.1 # Does not come with Void Linux by default; https://github.com/Subsurface-divelog/subsurface/issues/1971#issuecomment-466606834
 # libkrb5.so.26 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there. Missing on openSUSE LEAP 42.0
 # libkrb5.so.3 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
@@ -174,7 +174,7 @@ libpango-1.0.so.0
 
 # Workaround for:
 # e.g., Spotify
-# relocation error: /lib/x86_64-linux-gnu/libgcrypt.so.20: 
+# relocation error: /lib/x86_64-linux-gnu/libgcrypt.so.20:
 # symbol gpgrt_lock_lock, version GPG_ERROR_1.0 not defined
 # in file libgpg-error.so.0 with link time reference
 libgpg-error.so.0
@@ -204,8 +204,8 @@ libjack.so.0
 # libcrypto.so.1.0.0
 
 # According to https://github.com/RicardoEPRodrigues/3Engine/issues/4#issuecomment-511598362
-# libGLEW is not tied to a specific GPU. It's linked against libGL.so.1 
-# and that one is different depending on the installed driver. 
+# libGLEW is not tied to a specific GPU. It's linked against libGL.so.1
+# and that one is different depending on the installed driver.
 # In fact libGLEW is changing its soversion very often, so you should always bundle libGLEW.so.2.0
 
 # libglut.so.3 # to be confirmed
