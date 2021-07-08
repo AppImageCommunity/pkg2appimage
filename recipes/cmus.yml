@@ -1,0 +1,48 @@
+app: cmus
+union: true
+
+ingredients:
+  dist: buster
+  sources:
+    - deb http://deb.debian.org/debian buster main
+  packages:
+    - cmus
+    - libao4
+    - libasound2
+    - libc6
+    - libcddb2
+    - libcdio-cdda2
+    - libcdio18
+    - libcue2
+    - libdiscid0
+    - libfaad2
+    - libflac8
+    - libmad0
+    - libmodplug1
+    - libmpcdec6
+    - libncursesw6
+    - libopusfile0
+    - libtinfo6
+    - libvorbisfile3
+    - libwavpack1
+    - cmus-plugin-ffmpeg
+    - libjack-jackd2-0
+    - libjack-0.125
+    - libjack-jackd2-0
+    - libjack0
+    - libpulse0
+    - libroar2
+    - libsamplerate0
+
+script:
+  - dpkg -I cmus*.deb | grep "Version:" | cut -d':' -f2 | cut -d'+' -f1 | sed 's/^[ ]*//g' > VERSION
+  - wget -c -O cmus.png https://www.freepnglogos.com/uploads/music-logo-black-and-white-png-21.png
+  - cat > cmus.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=true
+  - Name=cmus
+  - Exec=cmus
+  - Categories=Audio;
+  - Icon=cmus
+  - EOF
