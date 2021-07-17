@@ -6,7 +6,7 @@ ingredients:
     - _snaprev="5"
     - source="https://api.snapcraft.io/api/v1/snaps/download/${_snapid}_${_snaprev}.snap"
     - wget $source -O authy.snap
-    - unsquashfs -q -f -d "authy" "authy.snap"
+    - unsquashfs -f -d "authy" "authy.snap"
 
 
 script:
