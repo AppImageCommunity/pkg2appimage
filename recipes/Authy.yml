@@ -1,0 +1,34 @@
+app: Authy
+
+ingredients:
+  script:
+    - _snapid="H8ZpNgIoPyvmkgxOWw5MSzsXK1wRZiHn"
+    - _snaprev="5"
+    - source="https://api.snapcraft.io/api/v1/snaps/download/${_snapid}_${_snaprev}.snap"
+    - wget $source -O authy.snap
+    - unsquashfs -q -f -d "authy" "authy.snap"
+
+
+script:
+#  - sed -i.bak '2i SNAP=./bin' ../authy/command.sh
+  - cp -r ../authy/* usr/bin/
+  - find . -name icon.png -exec cp {} authy.png \;
+  - convert authy.png -resize 512x512 usr/share/icons/hicolor/512x512/apps/authy.png
+  - convert authy.png -resize 256x256 usr/share/icons/hicolor/256x256/apps/authy.png
+  - convert authy.png -resize 128x128 usr/share/icons/hicolor/128x128/apps/authy.png
+  - convert authy.png -resize 64x64 usr/share/icons/hicolor/64x64/apps/authy.png
+  - convert authy.png -resize 48x48 usr/share/icons/hicolor/48x48/apps/authy.png
+  - convert authy.png -resize 32x32 usr/share/icons/hicolor/32x32/apps/authy.png
+  - convert authy.png -resize 24x24 usr/share/icons/hicolor/24x24/apps/authy.png
+  - convert authy.png -resize 22x22 usr/share/icons/hicolor/22x22/apps/authy.png
+  - cat > authy.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Authy Desktop
+  - Icon=authy
+  - Exec=authy %u
+  - Terminal=false
+  - StartupWMClass=Authy Desktop
+  - Categories=Utility;
+  - Comment=Twilio Authy two factor authentication desktop application
+  - EOF
