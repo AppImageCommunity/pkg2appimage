@@ -481,5 +481,10 @@ fi
 # Go out of AppImage
 cd ..
 
-generate_type2_appimage
+if [ -z "${_updateinformation}" ] ; then
+  generate_type2_appimage
+else
+  generate_type2_appimage -u "${_updateinformation}"
+fi
+
 ls -lh ../out/*.AppImage
