@@ -1,9 +1,7 @@
 app: AnyDesk
 
 ingredients:
-  dist: trusty
+  dist: focal
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
-  script:
-    - DLD=$(wget -q "https://download.anydesk.com/linux/" -O -| grep -E "anydesk.*amd64.deb" |cut -d'"' -f2|head -n1|cut -d'/' -f2)
-    - wget -c "https://download.anydesk.com/linux/$DLD"
+    - deb http://archive.ubuntu.com/ubuntu/ focal main universe
+    - deb http://deb.anydesk.com/ all main
