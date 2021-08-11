@@ -1,7 +1,7 @@
 app: AnyDesk
 
 ingredients:
-  dist: focal
+  dist: xenial
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ focal main universe
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
     - deb http://deb.anydesk.com/ all main
