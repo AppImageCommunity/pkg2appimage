@@ -1,0 +1,7 @@
+app: converseen
+binpatch: true
+
+ingredients:
+  dist: bullseye
+  sources:
+    - deb http://ftp.us.debian.org/debian/ bullseye main contrib non-free
