@@ -1,0 +1,10 @@
+app: audacity
+binpatch: true
+
+ingredients:
+  dist: bullseye
+  sources:
+    - deb http://ftp.us.debian.org/debian/ bullseye main contrib non-free
+
+script:
+  - cp ./usr/share/icons/hicolor/scalable/apps/*.svg ./
