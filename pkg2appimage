@@ -361,7 +361,7 @@ fi
 # main *.exe to usr/lib/mono/exe, because we move all "assemblies" (sic)
 # there in this script
 
-if [ -e usr/lib/mono ] ; then
+if [ -e usr/lib/mono -a ! -e ../mono_no_squash.flag ] ; then
   # Force all so files referenced in config files into LD_LIBRARY_PATH
   find . -name "*.dll.config" -exec cat {} > temp \;
   # Remove all absolute paths
