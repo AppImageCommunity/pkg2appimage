@@ -8,9 +8,9 @@ ingredients:
     - kicad-nightly
     - kicad-library-all
     - libcurl3
-  dist: focal
+  dist: bionic
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ focal main universe
+    - deb http://archive.ubuntu.com/ubuntu/ bionic main universe
   ppas:
     - kicad/kicad-dev-nightly
 
