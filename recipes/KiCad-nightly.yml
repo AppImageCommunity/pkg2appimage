@@ -1,18 +1,18 @@
 # Might be necessary to bundle Python - to be investigated
 
-app: KiCad
+app: KiCad-nightly
 binpatch: true
 
 ingredients:
   packages:
-    - kicad
-    - kicad-library
+    - kicad-nightly
+    - kicad-library-all
     - libcurl3
-  dist: trusty
+  dist: bionic
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ bionic main universe
   ppas:
-    - js-reynaud/ppa-kicad
+    - kicad/kicad-dev-nightly
 
 script:
   - # Workaround until
@@ -22,6 +22,6 @@ script:
   - HERE="$(dirname "$(readlink -f "${0}")")"
   - export LD_LIBRARY_PATH="${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib/:"${HERE}"/lib/:$LD_LIBRARY_PATH
   - cd "${HERE}/usr"
-  - exec "./bin/kicad" "$@"
+  - exec "./lib/kicad-nightly/bin/kicad" "$@"
   - EOF
   - chmod a+x ./AppRun
