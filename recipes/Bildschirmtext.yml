@@ -37,9 +37,8 @@ script:
   - Type=Application
   - Categories=Network;
   - EOF
-  - wget -c "https://www.internetworld.de/img/1/7/6/3/4/6/0ed52cf0b8551571.jpeg" -O usr/share/icons/hicolor/256x256/apps/bildschirmtext.png
-  - mogrify -resize 256x256 usr/share/icons/hicolor/256x256/apps/bildschirmtext.png
-  - cp usr/share/icons/hicolor/256x256/apps/* .
+  - wget -c "https://raw.githubusercontent.com/AppImage/pkg2appimage/master/recipes/Bildschirmtext.png" -O usr/share/icons/hicolor/128x128/apps/bildschirmtext.png
+  - cp usr/share/icons/hicolor/128x128/apps/* .
 
 post_script:
   - sed -i -e 's|Image.LANCZOS|Image.ANTIALIAS|g' usr/server/image.py
