@@ -87,6 +87,11 @@ libgio-2.0.so.0
 # Workaround for:
 # On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
 
+libgmodule-2.0.so.0
+# Workaround for:
+# On distros with libglib2.0-0 >= 2.70: "symbol lookup error: /lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full"
+# https://github.com/project-slippi/Ishiiruka/issues/323
+
 # libgdk-x11-2.0.so.0 # Missing on openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20170601-Media.iso
 # libgtk-x11-2.0.so.0 # Missing on openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20170601-Media.iso
 
