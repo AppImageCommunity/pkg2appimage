@@ -62,7 +62,7 @@ script:
   - EOF
   - wget -c "https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/Firefox_mozilla.cfg" -O usr/bin/mozilla.cfg
   - wget -c "https://raw.githubusercontent.com/AppImage/AppImages/master/recipes/Firefox_00_admin-prefs.js" -O usr/bin/defaults/pref/00_admin-prefs.js
-  - rm usr/bin/browser/blocklist.xml # Contains app.update. settings; maybe this helps to disable the nag screens
+  #- rm usr/bin/browser/blocklist.xml # Contains app.update. settings; maybe this helps to disable the nag screens
   - cat > AppRun <<\EOF
   - #!/bin/bash
   - HERE="$(dirname "$(readlink -f "${0}")")"
