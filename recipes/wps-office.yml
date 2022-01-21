@@ -2,6 +2,9 @@
 # Author linlinger
 # Date Fri Jan 22 2021
 # Updated on Thu Jan6 2022
+# Updated on Fri Jan21 2022
+# Known issue : WPS docer not working.
+
 app: wps-office
 
 ingredients:
@@ -24,7 +27,7 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ bionic  main restricted universe multiverse
   script:
-    - wget https://wdl1.cache.wps.cn/wps/download/ep/Linux2019/10702/wps-office_11.1.0.10702_amd64.deb
+    - wget https://wdl1.cache.wps.cn/wps/download/ep/Linux2019/10920/wps-office_11.1.0.10920_amd64.deb
 
 script:
   - cp ./usr/share/applications/wps-office-prometheus.desktop ./
