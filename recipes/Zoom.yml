@@ -20,6 +20,7 @@ ingredients:
 
 script:
   - ( cd usr/bin/ ; rm -f * ; mv ../../opt/zoom/* . )
+  - sed -i 's/\.\.\/zoom\/translations\//\.\/\.\/\.\/\.\/translations\//g' usr/bin/zoom
   - sed -i -e 's|/usr/bin/zoom %U|ZoomLauncher %U|g' Zoom.desktop
   - sed -i -e 's|/usr/bin/zoom %U|ZoomLauncher %U|g' usr/share/applications/Zoom.desktop
   - ( cd usr/bin/ ; mv ../lib/x86_64-linux-gnu/* . )
