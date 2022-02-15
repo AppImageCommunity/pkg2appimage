@@ -1,0 +1,38 @@
+app: google-chrome-beta
+
+ingredients:
+  package: google-chrome-beta
+  dist: trusty
+  sources: 
+    - deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe
+  script:
+    - wget -c "https://dl.google.com/linux/direct/google-chrome-beta_current_amd64.deb"
+    - URL2=$(wget -q "https://api.github.com/repos/gorhill/uBlock/releases" -O - | grep browser_download_url | grep '.chromium.zip"' | head -n 1 | cut -d '"' -f 4)
+    - wget -c "$URL2"
+    - unzip *.chromium.zip
+    - export cs_extension_version=$(grep -r '"version":'  uBlock0.chromium/manifest.json | cut -d '"' -f 4) # 1.16.13.101
+    - export cs_extension_id=$(wget -q "https://raw.githubusercontent.com/gorhill/uBlock/master/dist/chromium/publish-beta.py" -O - | grep "cs_extension_id =" | head -n 1 | cut -d "'" -f 2) # cgbcahbpdhpcegmbfconppldiemgcoii
+
+script:
+  - mv ./opt/google/chrome-beta/product_logo_64_beta.png usr/share/icons/hicolor/64x64/apps/google-chrome-beta.png
+  - mv ./opt/google/chrome-beta/product_logo_32_beta.png usr/share/icons/hicolor/32x32/apps/google-chrome-beta.png
+  - mv ./opt/google/chrome-beta/product_logo_256_beta.png usr/share/icons/hicolor/256x256/apps/google-chrome-beta.png
+  - mv ./opt/google/chrome-beta/product_logo_24_beta.png usr/share/icons/hicolor/24x24/apps/google-chrome-beta.png
+  - mv ./opt/google/chrome-beta/product_logo_128_beta.png usr/share/icons/hicolor/128x128/apps/google-chrome-beta.png
+  - mv ./opt/google/chrome-beta/product_logo_48_beta.png usr/share/icons/hicolor/48x48/apps/google-chrome-beta.png
+  - cp usr/share/icons/hicolor/256x256/apps/google-chrome-beta.png .
+  - cp usr/share/applications/google-chrome-beta.desktop .
+  - sed -i -e 's|/usr/bin/google-chrome-beta %U|AppRun|g' google-chrome-beta.desktop
+  - sed -i -e 's|3.26|3.00|g' opt/google/chrome-beta/chrome
+  - cat > ./AppRun <<\EOF
+  - #!/bin/sh
+  - HERE=$(dirname $(readlink -f "${0}"))
+  - export LD_LIBRARY_PATH="${HERE}"/usr/lib:$PATH
+  - "${HERE}"/opt/google/chrome-beta/google-chrome-beta --password-store=basic $@
+  - EOF
+  - chmod a+x ./AppRun
+  - ./opt/google/chrome-beta/chrome --version | grep -Eo "[0-9.]+" | head -n 1 > ../VERSION
+  - sed -i -e 's|// Drive extension|"cs_extension_id" : { "external_crx": "uBlock0.crx", "external_version": "cs_extension_version" },|g' opt/google/chrome-beta/default_apps/external_extensions.json
+  - sed -i -e 's|cs_extension_id|'"$cs_extension_id"'|g' opt/google/chrome-beta/default_apps/external_extensions.json
+  - sed -i -e 's|cs_extension_version|'"$cs_extension_version"'|g' opt/google/chrome-beta/default_apps/external_extensions.json
+  - cp ../*.chromium.zip ./opt/google/chrome-beta/default_apps/uBlock0.crx
