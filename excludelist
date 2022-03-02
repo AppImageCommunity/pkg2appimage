@@ -83,7 +83,18 @@ libX11.so.6
 # symbol lookup error: ./lib/libX11.so.6: undefined symbol: xcb_wait_for_reply64
 # Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
 
-libgio-2.0.so.0
+# The following libraries need to be privately bundled
+# Workaround for: /lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full
+# https://github.com/AppImage/pkg2appimage/pull/500#issuecomment-997183221
+# Workaround for: <AppDir>/usr/lib/x86_64-linux-gnu/libgnutls.so.30: version `GNUTLS_3_6_9' not found (required by /lib64/libglib-2.0.so.0)
+# https://github.com/probonopd/Emacs.AppImage/issues/16
+# libgio-2.0.so.0
+# libglib-2.0.so.0
+# libgmodule-2.0.so.0
+# libgobject-2.0.so.0
+# libgthread-2.0.so.0
+
+# libgio-2.0.so.0 # Commented out here due to the reason stated in the block above
 # Workaround for:
 # On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
 
@@ -133,7 +144,6 @@ libharfbuzz.so.0
 libcom_err.so.2
 libexpat.so.1
 libgcc_s.so.1
-libglib-2.0.so.0
 libgpg-error.so.0
 # libgssapi_krb5.so.2 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
 # libgssapi.so.3 # Seemingly needed when running Ubuntu 14.04 binaries on Fedora 23
