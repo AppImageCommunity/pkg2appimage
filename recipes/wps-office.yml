@@ -2,6 +2,8 @@
 # Author linlinger
 # Date Fri Jan 22 2021
 # Updated on Thu Jan6 2022
+# Updated on Tue Feb15 2022 by darekem73
+
 app: wps-office
 
 ingredients:
@@ -24,7 +26,9 @@ ingredients:
   sources: 
     - deb http://us.archive.ubuntu.com/ubuntu/ bionic  main restricted universe multiverse
   script:
-    - wget https://wdl1.cache.wps.cn/wps/download/ep/Linux2019/10702/wps-office_11.1.0.10702_amd64.deb
+    - links=$(curl "https://www.wps.com/" | egrep -o "https[^ ]+.js" | egrep -v "static|manifest" | sort -u)
+    - for s in $links; do url=$(curl $s 2>/dev/null | egrep -o 'linux_deb:"[^"]+"' | tr -d '"' | cut -d: -f2-); [ "$url" != "" ] && break; done
+    - wget "$url"
 
 script:
   - cp ./usr/share/applications/wps-office-prometheus.desktop ./
