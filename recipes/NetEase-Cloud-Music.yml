@@ -1,0 +1,55 @@
+app: netease-cloud-music
+
+ingredients:
+  packages:
+    - libc6
+    - libasound2
+    - libcom-err2
+    - libcrypt1
+    - libdrm2
+    - libexpat1
+    - libffi7
+    - libfontconfig1
+    - libfreetype6
+    - libfribidi0
+    - libgdk-pixbuf2.0-0
+    - libgl1
+    - libglib2.0-0
+    - libgmp10
+    - libgpg-error0
+    - libharfbuzz0b
+    - libice6
+    - libkeyutils1
+    - libp11-kit0
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libsm6
+    - libstdc++6
+    - libthai0
+    - libusb-1.0-0
+    - libuuid1
+    - libx11-6
+    - libxcb1
+    - zlib1g
+  dist: bionic
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu bionic main universe
+  script:
+    - wget https://d1.music.126.net/dmusic/netease-cloud-music_1.2.1_amd64_ubuntu_20190428.deb
+
+script:
+  - rm ./usr/bin/netease-cloud-music
+  - cp ./usr/share/applications/netease-cloud-music.desktop .
+  - convert ./usr/share/icons/hicolor/scalable/apps/netease-cloud-music.svg netease-cloud-music.png
+  - cat > ./AppRun << \EOF
+  - #!/bin/sh
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - CLOUD_MUSIC_HOME="${HERE}"/opt/netease/netease-cloud-music
+  - export LD_LIBRARY_PATH="${CLOUD_MUSIC_HOME}"/libs:"${HERE}"/usr/lib/x86_64-linux-gnu:"${HERE}"/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
+  - export QT_PLUGIN_PATH="${CLOUD_MUSIC_HOME}"/plugins:${QT_PLUGIN_PATH}
+  - export QT_QPA_PLATFORM_PLUGIN_PATH="${CLOUD_MUSIC_HOME}"/plugins/platforms:${QT_QPA_PLATFORM_PLUGIN_PATH}
+  - export QCEF_INSTALL_PATH="${CLOUD_MUSIC_HOME}"/libs/qcef
+  - exec "${CLOUD_MUSIC_HOME}"/netease-cloud-music "$@"
+  - EOF
+  - chmod a+x ./AppRun
