@@ -1,0 +1,67 @@
+app: owasp-zap
+
+ingredients:
+  script:
+    # Download ZAP release
+    - DLD=$(wget -q 'https://api.github.com/repos/zaproxy/zaproxy/releases/latest' -O - | grep 'download_url.*ZAP_.*_Linux.tar.gz' | cut -d'"' -f4)
+    - wget -cO ./zap.tar.gz $DLD
+    - tar zxvf ./zap.tar.gz
+    - ls -d ./ZAP_* | cut -d "_" -f 2 > VERSION
+    # Download OpenJDK JRE
+    - DLD=$(wget -q 'https://api.github.com/repos/AdoptOpenJDK/openjdk11-binaries/releases/latest' -O - | grep 'download_url.*jre_x64_linux_.*.tar.gz"' | cut -d'"' -f4)
+    - wget -cO ./openjdk-jre.tar.gz $DLD
+    - tar zxvf ./openjdk-jre.tar.gz
+    # Create custom JRE (saves ~10 MB [5%] in final AppImage)
+    # - DLD=$(wget -q 'https://api.github.com/repos/AdoptOpenJDK/openjdk11-binaries/releases/latest' -O - | grep 'download_url.*jdk_x64_linux_.*.tar.gz"' | cut -d'"' -f4)
+    # - wget -cO ./openjdk.tar.gz $DLD
+    # - tar zxvf ./openjdk.tar.gz
+    # - DEPS=$(./jdk-*/bin/jdeps --print-module-deps --multi-release base ./ZAP_*/zap-*.jar ./ZAP_*/lib/* | tee) # tee is required for pkg2appimage to work properly (?)
+    # - DEPS="$DEPS,jdk.crypto.ec,jdk.unsupported" # Necessary for SSL/TLS, graaljs addon support
+    # - ./jdk-*/bin/jlink --no-header-files --no-man-pages --compress=2 --strip-debug --add-modules $DEPS --output ./usr
+
+script:
+  # For OpenJDK JRE run:
+  - cp -rf ../jdk-*/* ./usr
+  # For custom JRE run:
+  # - cp -Rf ../usr .
+  # Create working directory
+  - mkdir -p ./usr/share/zaproxy/
+  - cp -r ../ZAP*/* ./usr/share/zaproxy/
+  # Clean up unused files
+  - rm ./usr/share/zaproxy/zap.bat
+  - rm ./usr/share/zaproxy/zap.ico
+  - rm ./usr/share/zaproxy/README
+  - rm -r ./usr/share/zaproxy/license
+  # Patch launch script
+  - mv ./usr/share/zaproxy/zap.sh ./usr/bin/zap
+  - sed -i '/BASEDIR=/ s|".*"|"../share/zaproxy"|' ./usr/bin/zap
+  - sed -i '/zap-.*.jar/ s|${BASEDIR}/||g' ./usr/bin/zap
+  # Download desktop icon
+  - wget https://github.com/flathub/org.zaproxy.ZAP/raw/master/org.zaproxy.ZAP.png
+  # Download desktop file
+  - wget -O ./owasp-zap.desktop https://github.com/flathub/org.zaproxy.ZAP/raw/master/org.zaproxy.ZAP.desktop
+  # Embed AppStream metadata
+  - mkdir -p ./usr/share/metainfo
+  - cat > ./usr/share/metainfo/owasp-zap.appdata.xml <<EOF
+  - <?xml version="1.0" encoding="UTF-8"?>
+  - <component type="desktop-application">
+  -   <id>owasp-zap</id>
+  -   <metadata_license>CC0-1.0</metadata_license>
+  -   <project_license>Apache-2.0</project_license>
+  -   <name>OWASP ZAP</name>
+  -   <summary>The OWASP Zed Attack Proxy</summary>
+  -   <description>
+  -     <p>Automatically find security vulnerabilities in your web applications while you are developing and testing.</p>
+  -   </description>
+  -   <launchable type="desktop-id">owasp-zap.desktop</launchable>
+  -   <url type="homepage">https://www.zaproxy.org</url>
+  -   <screenshots>
+  -     <screenshot type="default">
+  -       <image>https://raw.githubusercontent.com/wiki/zaproxy/zaproxy/images/zap1-3search.jpg</image>
+  -     </screenshot>
+  -   </screenshots>
+  -   <provides>
+  -     <id>owasp-zap.desktop</id>
+  -   </provides>
+  - </component>
+  - EOF
