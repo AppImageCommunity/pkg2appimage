@@ -168,12 +168,11 @@ libuuid.so.1
 # libwind.so.0 # Missing on openSUSE LEAP 42.0
 libz.so.1
 
-# Workaround for:
-# Rectangles instead of fonts
-# https://github.com/AppImage/AppImages/issues/240
-libpangoft2-1.0.so.0
-libpangocairo-1.0.so.0
-libpango-1.0.so.0
+# since we now bundle GLib again, we have to bundle pango as well to avoid undefined symbol: g_memdup2 etc.
+# see, e.g., https://github.com/TheAssassin/AppImageLauncher/issues/508
+#libpangoft2-1.0.so.0
+#libpangocairo-1.0.so.0
+#libpango-1.0.so.0
 
 # FIXME:
 # Can get symbol lookup error: /lib64/libpango-1.0.so.0: undefined symbol: g_log_structured_standard
