@@ -1,0 +1,11 @@
+app: Chromium-dev
+binpatch: true
+lowerapp: chromium-browser
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - saiarcot895/chromium-dev
+  package: chromium-browser
