@@ -88,6 +88,8 @@ libX11.so.6
 # https://github.com/AppImage/pkg2appimage/pull/500#issuecomment-997183221
 # Workaround for: <AppDir>/usr/lib/x86_64-linux-gnu/libgnutls.so.30: version `GNUTLS_3_6_9' not found (required by /lib64/libglib-2.0.so.0)
 # https://github.com/probonopd/Emacs.AppImage/issues/16
+# NOTE: Privately bundling libglib-2.0.so.0 and libgobject-2.0.so.0 may break https://wiki.gnome.org/Projects/Libsecret,
+# see https://github.com/probonopd/linuxdeployqt/issues/544 for details
 # libgio-2.0.so.0
 # libglib-2.0.so.0
 # libgmodule-2.0.so.0
