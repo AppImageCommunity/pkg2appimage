@@ -14,17 +14,5 @@ ingredients:
 script:
 #  - mv usr/games/* usr/bin/ ; rm -r usr/games/
   - ln -s ../lib/x86_64-linux-gnu/ usr/games/
-  - mv ./usr/share/games/sauerbraten/data ./data
-  - mv ./usr/share/games/sauerbraten/packages ./packages
-  - mv ./usr/games/sauerbraten ./sauerbraten
-  - rm sauerbraten.desktop
-  - cat > sauerbraten.desktop <<EOF
-  - [Desktop Entry]
-  - Type=Application
-  - Name=Sauerbraten
-  - Icon=sauerbraten
-  - Exec=./sauerbraten %u
-  - Terminal=false
-  - Categories=Game;
-  - Comment=FOSS Quake alternate with coop map editing
-  - EOF
+  - mv ./usr/share/games/sauerbraten/data ./usr/lib/cube2/data
+  - mv ./usr/share/games/sauerbraten/packages ./usr/lib/cube2/packages
