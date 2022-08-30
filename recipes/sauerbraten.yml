@@ -6,6 +6,8 @@ binpatch: true
 
 ingredients:
   dist: jellyfish
+  packages:
+    - libsdl2-2.0-0
   sources: 
     - deb http://archive.ubuntu.com/ubuntu/ jammy main universe 
   script:
