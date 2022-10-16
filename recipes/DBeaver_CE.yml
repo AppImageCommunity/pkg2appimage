@@ -1,0 +1,24 @@
+app: DBeaver-Community-Edition
+
+ingredients:
+  - wget -c "https://dbeaver.io/files/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz" -O /tmp/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz
+
+script:
+  - SHORTNAME=dbeaver
+  - FULLNAME=dbeaver-ce-latest-linux
+  - ALTNAME=dbeaver
+  - mkdir -p opt/$SHORTNAME
+  - tar zxvf /tmp/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz --directory opt/$SHORTNAME --strip-components=1
+  - ln -s ../../opt/$SHORTNAME/dbeaver usr/bin/$ALTNAME
+  - cp opt/$SHORTNAME/$ALTNAME.png .
+  - cat > $FULLNAME.desktop << EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=DBeaver Community Edition
+  - Icon=$ALTNAME
+  - Exec=$ALTNAME
+  - Comment=Free multi-platform database tool for developers, SQL programmers, database administrators and analysts. Supports all popular databases (MySQL, PostgreSQL, MariaDB, SQLite, Oracle, DB2, SQL Server, Sybase, MS Access, Teradata, Firebird, Derby, etc.)
+  - Categories=Development;Database;
+  - Terminal=false
+  - EOF
