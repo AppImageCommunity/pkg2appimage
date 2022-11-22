@@ -26,7 +26,7 @@ script:
 notifications:
   irc:
     channels: 
-      - "chat.freenode.net#AppImage"
+      - "irc.libera.chat#AppImage"
     on_success: always  # options: [always|never|change] default: always
     on_failure: always  # options: [always|never|change] default: always
     on_start: always     # options: [always|never|change] default: always

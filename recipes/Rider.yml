@@ -28,8 +28,4 @@ script:
   - Terminal=false
   - StartupWMClass=jetbrains-rider
   - EOF
-  - rm opt/$SHORTNAME/bin/fsnotifier-arm
-  - rm opt/$SHORTNAME/bin/fsnotifier
-
-
-
+  - rm opt/$SHORTNAME/bin/fsnotifier* || true

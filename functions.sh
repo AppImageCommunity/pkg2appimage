@@ -245,16 +245,28 @@ generate_type2_appimage()
   fi
 
   set +x
+
   GLIBC_NEEDED=$(glibc_needed)
+  _APP_DIR="${PWD}/$APP.AppDir/"
+  export OWD="${PWD}"
+   
   if ( [ ! -z "$KEY" ] ) && ( ! -z "$TRAVIS" ) ; then
     wget https://github.com/AppImage/AppImageKit/files/584665/data.zip -O data.tar.gz.gpg
     ( set +x ; echo $KEY | gpg2 --batch --passphrase-fd 0 --no-tty --skip-verify --output data.tar.gz --decrypt data.tar.gz.gpg )
     tar xf data.tar.gz
     sudo chown -R $USER .gnu*
     mv $HOME/.gnu* $HOME/.gnu_old ; mv .gnu* $HOME/
-    VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    if [ -z "$RECIPE" ] ; then
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s -g -v "${_APP_DIR}"
+    else
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -s --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v "${_APP_DIR}"
+    fi
   else
-    VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v ./$APP.AppDir/
+    if [ -z "$RECIPE" ] ; then
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n -g -v "${_APP_DIR}"
+    else
+      VERSION=$VERSION_EXPANDED "$appimagetool" $@ -n --bintray-user $BINTRAY_USER --bintray-repo $BINTRAY_REPO -v "${_APP_DIR}"
+    fi
   fi
   set -x
   mkdir -p ../out/ || true
@@ -357,4 +369,61 @@ patch_strings_in_file() {
             fi
         done
     fi
+}
+
+# Lightweight bash-only "apt update" and "apt download" replacement
+
+function apt-get.update(){
+  echo -n > cache.txt
+  
+  cat Packages.gz | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" >> cache.txt || true
+  
+  while read line; do
+    local line=$(echo "${line}" | sed 's|[[:space:]]| |g')
+    local repo_info=($(echo ${line} | tr " " "\n"))
+    local base_url=${repo_info[1]}
+    local dist_name=${repo_info[2]}
+  
+    for i in $(seq 3 $((${#repo_info[@]} - 1))); do
+      echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
+      local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-amd64/Packages.gz"
+      wget -q "${repo_url}" -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}/|g" >> cache.txt
+    done
+  done <sources.list
+}
+
+function apt-get.do-download(){
+  [ -f "status" ] && {
+    grep -q ^"Package: ${1}"$ status && return
+  }
+  
+  echo "${already_downloaded_package[@]}" | sed 's| |\n|g' | grep -q ^"${1}"$ && return
+  
+  already_downloaded_package+=(${1})
+   
+  local dependencies=($(cat cache.txt | grep -A 2 -m 1 ^"Package: ${1}"$    \
+                                      | grep ^"Depends: "                   \
+                                      | cut -c 9-                           \
+                                      | sed "s|([^)]*)||g;s|[[:space:]]||g" \
+                                      | sed "s|,|\n|g"                      \
+                                      | cut -d"|" -f1 ))
+
+  local package_url=$(cat cache.txt | grep -A 3 -m 1 ^"Package: ${1}"$ \
+                                    | grep ^"Filename: "               \
+                                    | cut -c 11-)
+  
+   
+  [ ! -f "${package_url}" ] && {
+    [ ! "${package_url}" = "" ] && {
+      wget -c "${package_url}"
+    } || {
+      echo ${1} >> teste_123
+    }
+  }
+  
+  unset package_url
+  
+  for depend in "${dependencies[@]}"; do
+    apt-get.do-download ${depend}
+  done
 }

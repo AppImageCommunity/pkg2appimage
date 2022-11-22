@@ -1,18 +1,11 @@
 #!/usr/bin/env bash
 
-# env
-
 HERE="$(dirname "$(readlink -f "${0}")")"
 
-# Use privately bundled apt-get and dpkg-deb if available; can be got on trusty using
-# apt download apt libapt-pkg4.12 libbz2-1.0 liblzma5 multiarch-support zlib1g dpkg
-if [ -e "${HERE}/libunionpreload.so" ] ; then
-  export UNION_PRELOAD="${HERE}"
-  export LD_PRELOAD="${HERE}/libunionpreload.so"
-  export PATH="${HERE}"/usr/bin/:"${HERE}"/usr/sbin/:"${HERE}"/usr/games/:"${HERE}"/bin/:"${HERE}"/sbin/:"${PATH}"
-  export LD_LIBRARY_PATH="${HERE}"/usr/lib/:"${HERE}"/usr/lib/i386-linux-gnu/:"${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib32/:"${HERE}"/usr/lib64/:"${HERE}"/lib/:"${HERE}"/lib/i386-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/lib32/:"${HERE}"/lib64/:"${LD_LIBRARY_PATH}"
-  export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
-fi
+export PATH="${HERE}"/usr/bin/:"${HERE}"/usr/sbin/:"${HERE}"/usr/games/:"${HERE}"/bin/:"${HERE}"/sbin/:"${PATH}"
+export LD_LIBRARY_PATH="${HERE}"/usr/lib/:"${HERE}"/usr/lib/i386-linux-gnu/:"${HERE}"/usr/lib/x86_64-linux-gnu/:"${HERE}"/usr/lib32/:"${HERE}"/usr/lib64/:"${HERE}"/lib/:"${HERE}"/lib/i386-linux-gnu/:"${HERE}"/lib/x86_64-linux-gnu/:"${HERE}"/lib32/:"${HERE}"/lib64/:"${LD_LIBRARY_PATH}"
+export XDG_DATA_DIRS="${HERE}"/usr/share/:"${XDG_DATA_DIRS}"
+
 
 # Specify a certain commit if you do not want to use master
 # by using:
@@ -28,11 +21,19 @@ usage() {
     MYSELF="$APPIMAGE"
   fi
   echo "usage:"
-  echo "  $MYSELF [--no-di] META-NAME|YAMLFILE"
+  echo "  $MYSELF [--di] META-NAME|YAMLFILE"
   echo ""
   echo "options:"
   echo "  --di    enable legacy desktop integration (unsupported)"
   exit 1
+}
+
+check_dependencies() {
+  for executable in $@; do
+    which "${executable}" >/dev/null 2>&1 || {
+      (echo "${executable} missing"; exit 1)
+    }
+  done
 }
 
 if [ $# -eq 0 ] || [ "x${!#}" = "x--di" ] ; then
@@ -53,13 +54,17 @@ set -e
 set -x
 
 # Check dependencies
-which wget >/dev/null 2>&1 || ( echo wget missing && exit 1 )
-which grep >/dev/null 2>&1 || ( echo grep missing && exit 1 )
-which sed >/dev/null 2>&1 || ( echo sed missing && exit 1 )
-which cut >/dev/null 2>&1 || ( echo cut missing && exit 1 )
-which file >/dev/null 2>&1 || ( echo file missing && exit 1 )
-which desktop-file-validate >/dev/null 2>&1 || ( echo desktop-file-validate missing && exit 1 )
-which strings >/dev/null 2>&1 || ( echo strings missing && exit 1 )
+check_dependencies \
+  dpkg \
+  dpkg-deb \
+  convert \
+  wget \
+  grep \
+  sed \
+  cut \
+  file \
+  desktop-file-validate \
+  strings
 
 # If the yaml file doesn't exist locally, get it from GitHub
 if [ ! -f "${!#}" ] ; then
@@ -163,7 +168,7 @@ fi
 # and ingredients of that architecture. Debian packages
 # should be available for most architectures, e.g., oldstable
 # has "armhf"
-if [ ! -z $ARCH] ; then
+if [ ! -z "$ARCH" ] ; then
   OPTIONS="$OPTIONS -o APT::Architecture=$ARCH"
 fi
 
@@ -218,11 +223,11 @@ if [ ! -z "${_ingredients_dist}" ] ; then
   if [ -e sources.list ] ; then
     rm sources.list
   fi
+  for PPA in "${_ingredients_ppas[@]}" ; do
+    echo "deb http://ppa.launchpad.net/${PPA}/ubuntu/ ${_ingredients_dist} main" >> sources.list
+  done
   for SOURCE in "${_ingredients_sources[@]}" ; do
     echo "${SOURCE}" >> sources.list
-  done
-  for PPA in "${_ingredients_ppas[@]}" ; do
-    echo "deb http://ppa.launchpad.net/${PPA}/ubuntu ${_ingredients_dist} main" >> sources.list
   done
   for DEBFILE in "${_ingredients_debs[@]}" ; do
     cp ${DEBFILE} .
@@ -269,15 +274,24 @@ if [ ! -z "${_ingredients_dist}" ] ; then
     INSTALL=${_ingredients_packages[@]}
   fi
 
-  apt-get -o Acquire::AllowInsecureRepositories=true -o Acquire::Languages="none" -o Acquire::AllowDowngradeToInsecureRepositories=true $OPTIONS update || true
-  URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http") || true
-  if which aria2c &>/dev/null; then
-    dltool=aria2c
-  else
-    dltool=wget
-  fi
+#  apt-get -o Acquire::AllowInsecureRepositories=true -o Acquire::Languages="none" -o Acquire::AllowDowngradeToInsecureRepositories=true $OPTIONS update || true
+#  URLS=$(apt-get --allow-unauthenticated -o Apt::Get::AllowUnauthenticated=true $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http") || true
+#  if which aria2c &>/dev/null; then
+#    dltool=aria2c
+#  else
+#    dltool=wget
+#  fi
 
-  $dltool -c -i- <<<"$URLS"
+#  $dltool -c -i- <<<"$URLS"
+  set +x
+  apt-get.update
+
+  INSTALL=$(echo "${INSTALL}" | sed "s| |\n|g")
+
+  for pkg in ${INSTALL}; do
+    apt-get.do-download ${pkg}
+  done
+  set -x
 fi
 
 if [ ! -z "${_ingredients_post_script[0]}" ] ; then
@@ -467,5 +481,10 @@ fi
 # Go out of AppImage
 cd ..
 
-generate_type2_appimage
+if [ -z "${_updateinformation}" ] ; then
+  generate_type2_appimage
+else
+  generate_type2_appimage -u "${_updateinformation}"
+fi
+
 ls -lh ../out/*.AppImage

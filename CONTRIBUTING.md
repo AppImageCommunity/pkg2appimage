@@ -16,4 +16,4 @@ Please see the [AppImageHub Readme](https://github.com/AppImage/appimage.github.
 
 ### I would like to contribute to AppImageKit development
 
-If you would like to report issues with AppImageKit itself, or would like to contribute to its development, please see our [list of issues](https://github.com/AppImage/AppImageKit/issues) and get in touch with us in `#AppImage` on `irc.freenode.net`. We welcome pull requests addressing any of the open issues and/or other bugfixes and/or feature additions. In the case of complex feature additions, it is best to contact us first, before you spend much time.
+If you would like to report issues with AppImageKit itself, or would like to contribute to its development, please see our [list of issues](https://github.com/AppImage/AppImageKit/issues) and get in touch with us in `#AppImage` on `irc.libera.chat`. We welcome pull requests addressing any of the open issues and/or other bugfixes and/or feature additions. In the case of complex feature additions, it is best to contact us first, before you spend much time.

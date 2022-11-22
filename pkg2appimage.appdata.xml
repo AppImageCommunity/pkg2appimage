@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>pkg2appimage.desktop</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <name>pkg2appimage</name>
+  <summary>Convert existing binary packages into AppImaegs</summary>
+  <description>
+    <p>
+      pkg2appimage is a tool that lets you generate AppImage files from existing packages. An AppImage
+      is a self-running bundle that contains an application and everything
+      it needs to run that cannot reasonably expected to be part of each target system.
+    </p>
+    <p>
+      This can include libraries that are not commonly available on target systems,
+      resources such as translations, icons, fonts, and other auxiliary files.
+      pkg2appimage makes it easy to take an existing package (e.g., a deb)
+      and turn it into an AppImage.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/AppImage/pkg2appimage</url>
+  <project_group>AppImage</project_group>
+  <provides>
+    <binary>pkg2appimage</binary>
+  </provides>
+</component>

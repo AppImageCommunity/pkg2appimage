@@ -1,0 +1,29 @@
+app: BlueGriffon
+
+ingredients:
+  dist: xenial
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+  script:
+    - VERSION=$(wget -c "http://bluegriffon.org/freshmeat/?C=M;O=D" -O - | grep href | head -n 2 | tail -n 1 | cut -d '"' -f 2 | cut -d / -f 1)
+    - FILE=$(wget "http://bluegriffon.org/freshmeat/$VERSION/" -O - | grep deb | head -n 1 | cut -d '"' -f 2)
+    - URL="http://bluegriffon.org/freshmeat/$VERSION/$FILE"
+    - wget -c "$URL"
+    - echo "$VERSION" > VERSION
+
+script:
+  - wget -c "http://sources.disruptive-innovations.com/bluegriffon/branches/multichar/branding/mozicon128.png" -O bluegriffon.png
+  - mkdir -p usr/share/icons/128x128/apps/
+  - cp bluegriffon.png usr/share/icons/128x128/apps/
+  - cat > bluegriffon.desktop <<EOF
+  - [Desktop Entry]
+  - Name=BlueGriffon
+  - Type=Application
+  - Comment=The next-generation Web Editor
+  - Exec=bluegriffon
+  - Icon=bluegriffon
+  - Categories=Development;
+  - EOF
+  - mkdir -p usr/share/applications
+  - cp bluegriffon.desktop usr/share/applications
+  - mv opt/bluegriffon/* usr/bin && rm -rf opt/

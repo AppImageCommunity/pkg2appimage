@@ -26,5 +26,4 @@ script:
   - StartupWMClass=jetbrains-$SHORTNAME
   - EOF
   - rm -r opt/$SHORTNAME/jbr/legal/java.desktop
-  - rm opt/$SHORTNAME/bin/fsnotifier-arm
-  - rm opt/$SHORTNAME/bin/fsnotifier
+  - rm opt/$SHORTNAME/bin/fsnotifier* || true

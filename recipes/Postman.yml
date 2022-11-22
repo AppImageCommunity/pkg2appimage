@@ -15,6 +15,7 @@ script:
   - Name=Postman
   - Icon=postman
   - Exec=Postman %u
+  - StartupWMClass=Postman
   - Categories=Development;
   - Comment=Postman REST Client
   - EOF

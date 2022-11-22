@@ -1,0 +1,27 @@
+app: FactorioDemo
+binpatch: true
+
+ingredients:
+  dist: xenial
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ xenial main universe
+  script:
+    - VERSION=1.0.0
+    - wget --continue --content-disposition "https://factorio.com/get-download/$VERSION/demo/linux64"
+    - tar -xf "factorio_demo_x64_$VERSION.tar.xz"
+    - echo "$VERSION" > VERSION
+
+script:
+  - mv ../factorio/bin/x64/factorio usr/bin/
+  - mv ../factorio/data usr/share/factorio
+  - cp usr/share/factorio/core/graphics/factorio.png factorio.png
+
+  - cat > Factorio.desktop <<EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=Factorio (demo)
+  - Comment=A game in which you build and maintain factories
+  - Exec=factorio
+  - Icon=factorio.png
+  - Categories=Game;
+  - EOF
