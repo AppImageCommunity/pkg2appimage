@@ -125,7 +125,7 @@ libthai.so.0
 # should fix https://github.com/probonopd/linuxdeployqt/issues/261#issuecomment-377522251
 # and https://github.com/probonopd/linuxdeployqt/issues/157#issuecomment-320755694
 libfreetype.so.6
-libharfbuzz.so.0
+# libharfbuzz.so.0 # https://github.com/AppImageCommunity/pkg2appimage/issues/528
 
 # Note, after discussion we do not exclude this, but we can use a dummy library that just does nothing
 # libselinux.so.1
