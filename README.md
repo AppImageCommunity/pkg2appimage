@@ -15,7 +15,7 @@ Some branded applications are unfortunately not provided in AppImage format by t
 For applications for which there is already an existing [`.yml` recipe file](../../tree/master/recipes), you can simply use the name of the application (without `.yml`) as an argument. For example, to produce a Spotify AppImage, it is sufficient to do:
 
 ```
-wget -c https://github.com/$(wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+wget -c $(wget -q https://api.github.com/repos/AppImageCommunity/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
 chmod +x ./pkg2appimage-*.AppImage
 ./pkg2appimage-*.AppImage Spotify
 ```
@@ -25,7 +25,7 @@ chmod +x ./pkg2appimage-*.AppImage
 To build an AppImage from a local `.yml` recipe (e.g., during development):
 
 ```
-wget -c https://github.com/$(wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+wget -c $(wget -q https://api.github.com/repos/AppImageCommunity/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
 chmod +x ./pkg2appimage-*.AppImage
 ./pkg2appimage-*.AppImage recipes/XXX.yml
 ```
