@@ -1,5 +1,5 @@
 # Create an Appimage for Mozilla Thunderbird. 
-# To select your preferred version of Thunderbird, go to https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/ copy the link to your preferred version/language/cpu-architecture, and replace the wget link below with the one you grabbedapp: Thunderbird
+# To select your preferred version of Thunderbird, go to https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/ copy the link to your preferred version/language/cpu-architecture, and replace the wget link below with the one you grabbed.
 
 app: Thunderbird
 
