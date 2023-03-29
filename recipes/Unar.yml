@@ -1,0 +1,20 @@
+app: Unar
+
+ingredients:
+  dist: trusty
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+script:
+  - wget https://cdn.theunarchiver.com/img/command-line-tools.png -O unar.png
+  - cat > unar.desktop <<\EOF
+  - [Desktop Entry]
+  - Name=Unar
+  - Comment=Extract archives
+  - Exec=unar %f
+  - Terminal=true
+  - Type=Application
+  - Icon=unar
+  - Categories=Utility;Archiving;
+  - MimeType=application/x-rar-compressed;application/x-rar;application/x-cbr;application/x-cbz;application/x-7z-compressed;application/x-ace;application/x-alz;application/x-arj;application/x-bzip-compressed-tar;application/x-bzip1-compressed-tar;application/x-cd-image;application/x-compress;application/x-compressed-tar;application/x-cpio-compressed;application/x-deb;application/x-iso9660-image;application/x-lha;application/x-lhz;application/x-lzma-compressed-tar;application/x-lzop-compressed-tar;application/x-ms-wim;application/x-rpm;application/x-tzo;application/x-tarz;application/x-xz-compressed-tar;
+  - EOF
+
