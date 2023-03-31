@@ -1,9 +1,9 @@
 app: Unar
 
 ingredients:
-  dist: trusty
+  dist: jammy
   sources:
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ jammy main universe multiverse
 script:
   - wget https://cdn.theunarchiver.com/img/command-line-tools.png -O unar.png
   - cat > unar.desktop <<\EOF
