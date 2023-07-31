@@ -15,7 +15,7 @@ ingredients:
     - libgl-dev
     - libjpeg8
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ jammy main universe 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe 
   script:
     - wget -c http://archive.ubuntu.com/ubuntu/pool/multiverse/s/sauerbraten/sauerbraten_0.0.20201227-1_all.deb
 
