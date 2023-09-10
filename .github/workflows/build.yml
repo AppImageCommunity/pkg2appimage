@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y bsdtar curl zsync squashfs-tools aria2 desktop-file-utils
+        sudo apt-get install -y libarchive-tools curl zsync squashfs-tools aria2 desktop-file-utils
 
     - name: Build and Release
       run: |
