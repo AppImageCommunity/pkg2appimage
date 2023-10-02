@@ -83,6 +83,10 @@ libX11.so.6
 # symbol lookup error: ./lib/libX11.so.6: undefined symbol: xcb_wait_for_reply64
 # Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
 
+libX11-xcb.so.1
+# https://github.com/probonopd/linuxdeployqt/issues/582
+# Uncertain if this is required to be bundled for some distributions - if so, please let us know
+
 # The following libraries need to be privately bundled
 # Workaround for: /lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full
 # https://github.com/AppImage/pkg2appimage/pull/500#issuecomment-997183221
