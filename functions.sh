@@ -226,7 +226,7 @@ generate_type2_appimage()
   fi
   if [ "$DOCKER_BUILD" ]; then
     appimagetool_tempdir=$(mktemp -d)
-    mv appimagetool "$appimagetool_tempdir"
+    mv "$appimagetool" "$appimagetool_tempdir"
     pushd "$appimagetool_tempdir" &>/dev/null
     ls -al
     ./appimagetool --appimage-extract
