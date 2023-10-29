@@ -1,0 +1,8 @@
+app: Bouml
+union: true
+
+ingredients:
+  dist: stretch 
+  sources:
+    - deb https://www.bouml.fr/apt/stretch stretch free
+    - deb https://archive.debian.org/debian stretch main
