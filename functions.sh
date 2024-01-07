@@ -383,12 +383,19 @@ function apt-get.update(){
     local repo_info=($(echo ${line} | tr " " "\n"))
     local base_url=${repo_info[1]}
     local dist_name=${repo_info[2]}
-  
-    for i in $(seq 3 $((${#repo_info[@]} - 1))); do
-      echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
-      local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-amd64/Packages.gz"
+
+    # detect opensuze build service repositories, which are listed using a single / at the end (according to pkg2appimage documentation)
+    if test "${dist_name}" = "/" ; then
+      echo "Caching ${base_url} ${dist_name}..."
+      local repo_url="${base_url}/Packages.gz"
       wget -q "${repo_url}" -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}/|g" >> cache.txt
-    done
+    else
+      for i in $(seq 3 $((${#repo_info[@]} - 1))); do
+        echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
+        local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-amd64/Packages.gz"
+        wget -q "${repo_url}" -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}/|g" >> cache.txt
+      done
+    fi
   done <sources.list
 }
 
