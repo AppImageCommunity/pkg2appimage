@@ -378,11 +378,17 @@ function apt-get.update(){
   
   cat Packages.gz | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" >> cache.txt || true
   
+  echo APT_GET_UPDATE
   while read line; do
     local line=$(echo "${line}" | sed 's|[[:space:]]| |g')
     local repo_info=($(echo ${line} | tr " " "\n"))
     local base_url=${repo_info[1]}
     local dist_name=${repo_info[2]}
+  
+    echo line=${line}
+    echo repo_info=${repo_info}
+    echo base_url=${base_url}
+    echo dist_name=${dist_name}
 
     # Detect openSUSE Build Service (OBS) repositories, which are listed using a single / at the end (according to pkg2appimage documentation)
     if test "${dist_name}" = "/" ; then
@@ -404,21 +410,36 @@ function apt-get.do-download(){
     grep -q ^"Package: ${1}"$ status && return
   }
   
-  echo "${already_downloaded_package[@]}" | sed 's| |\n|g' | grep -q ^"${1}"$ && return
+  local package_name=$(echo ${1} | cut -d= -f1)
+  local package_version=`echo ${1} | cut -s -d= -f2-`
+
+  echo "${already_downloaded_package[@]}" | sed 's| |\n|g' | grep -q ^"${package_name}"$ && return
   
-  already_downloaded_package+=(${1})
+  if ! test -z "${package_version}" ; then
+	  local package_url=`cat cache.txt | grep -v ^"Depends: "  \
+	                                   | grep -A 3 ^"Package: ${package_name}"$  \
+				           | grep -A 2 ^"Version: ${package_version}"  \
+					   | grep ^"Filename: "  \
+					   | cut -c 11-` 
+  else
+	  local package_url=`cat cache.txt | grep -v ^"Depends: " \
+		                           | grep -A 3 -m 1 ^"Package: ${package_name}"$ \
+					   | grep ^"Filename: " \
+					   | cut -c 11-`
+  fi
+
+  already_downloaded_package+=(${package_name})
    
-  local dependencies=($(cat cache.txt | grep -A 2 -m 1 ^"Package: ${1}"$    \
+  local dependencies=($(cat cache.txt | grep -A 2 -m 1 ^"Package: ${package_name}"$    \
                                       | grep ^"Depends: "                   \
                                       | cut -c 9-                           \
                                       | sed "s|([^)]*)||g;s|[[:space:]]||g" \
                                       | sed "s|,|\n|g"                      \
                                       | cut -d"|" -f1 ))
 
-  local package_url=$(cat cache.txt | grep -A 3 -m 1 ^"Package: ${1}"$ \
-                                    | grep ^"Filename: "               \
-                                    | cut -c 11-)
-  
+  echo PACKAGE NAME: ${package_name}
+  echo PACKAGE_VERSION: ${package_version}
+  echo PACKAGE_URL: ${package_url}
    
   [ ! -f "${package_url}" ] && {
     [ ! "${package_url}" = "" ] && {
