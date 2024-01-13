@@ -384,7 +384,7 @@ function apt-get.update(){
     local base_url=${repo_info[1]}
     local dist_name=${repo_info[2]}
 
-    # detect opensuze build service repositories, which are listed using a single / at the end (according to pkg2appimage documentation)
+    # Detect openSUSE Build Service (OBS) repositories, which are listed using a single / at the end (according to pkg2appimage documentation)
     if test "${dist_name}" = "/" ; then
       echo "Caching ${base_url} ${dist_name}..."
       local repo_url="${base_url}/Packages.gz"
