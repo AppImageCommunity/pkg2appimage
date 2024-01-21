@@ -4,6 +4,9 @@ binpatch: true
 ingredients:
   packages:
     - intef-exe
+    - python-cffi-backend
+    - python-minimal
+    - python-zope.interface
   dist: oldstable
   sources:
     - deb http://ftp.debian.org/debian/ oldstable main
