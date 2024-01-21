@@ -1,15 +1,21 @@
-app: RetroShare06
+app: RetroShare
 union: true
 
 ingredients:
-  dist: trusty
-  sources: 
-    - deb http://archive.ubuntu.com/ubuntu trusty main restricted universe multiverse
-    - deb http://archive.ubuntu.com/ubuntu trusty-updates main restricted universe multiverse
-  ppas:
-    - retroshare/unstable
+  dist: focal
+  packages:
+    - retroshare-common=0.6.7-1
+    - retroshare-gui=0.6.7-1
+    - tor
+    - libqt5svg5
+    - libupnp13
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ focal main universe
+    - deb https://download.opensuse.org/repositories/network:/retroshare/xUbuntu_20.04/ /
 
 script:
+  - cp usr/share/applications/retroshare.desktop retroshare.desktop
+  - cp usr/share/pixmaps/retroshare.xpm retroshare.xpm 
+  - sed -i -e 's|/usr/share/pixmaps/||g' retroshare.desktop
+  - sed -i -e 's|/usr/bin/||g' retroshare.desktop
   - rm -rf usr/share/glib-2.0/schemas/
-  - sed -i -e 's|/usr/share/pixmaps/||g' retroshare06.desktop
-  - sed -i -e 's|/usr/bin/||g' retroshare06.desktop
