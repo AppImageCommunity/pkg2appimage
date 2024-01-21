@@ -2,13 +2,11 @@ app: MongoDB_Compass_Community
 lowerapp: mongodb-compass-community
 
 ingredients:
-  dist: trusty
-  sources:
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
   script:
-    - DEB=$(wget -q "https://www.mongodb.com/download-center/compass?jmp=docs" -O - | sed -e 's|,|,\n|g' | grep -e "https://downloads.mongodb.com/compass/.*mongodb-.*_amd64.deb" | cut -d '"' -f 4 | grep community | head -n 1)
-    - wget -c "$DEB"
-    - ls mongo*.deb | cut -d _ -f 2 | sed -e 's|.deb||g' > VERSION
+    - DLD=$(curl https://www.mongodb.com/docs/compass/current/page-data/install/page-data.json | jq | grep -E "https.*amd64.deb" | cut -d'"' -f4 | cut -d' ' -f2)
+    - wget -c $DLD
+    - echo $DLD | cut -d/ -f8 > VERSION
 
 script:
-  - ls
+  - cp usr/share/applications/mongodb-compass.desktop .
+  - cp usr/share/pixmaps/mongodb-compass.png .
