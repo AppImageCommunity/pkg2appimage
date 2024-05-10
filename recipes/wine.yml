@@ -1,0 +1,42 @@
+app: Wine
+binpatch: true
+ingredients:
+  dist: buster
+  packages: 
+    - wine
+  sources:
+    - deb http://deb.debian.org/debian buster main contrib non-free    
+  script:
+    - mkdir -p ./Wine.AppDir/usr/share/applications/ 
+  
+    - wget -N https://source.winehq.org/git/wine.git/blob_plain/HEAD:/loader/wine.desktop
+    
+    - sed -i -e 's|Icon=wine.*|Icon=wine|g' wine.desktop
+    - sed -i -e 's|Name=Wine.*|Name=Wine|g' wine.desktop
+    - sed -i -e '/Name\[.*/d' wine.desktop
+    - sed -i -e 's|Exec=wine.*|Exec=wine|g' wine.desktop
+    - echo 'Categories=Utility;Settings;' >> wine.desktop
+    
+    - cp ./wine.desktop ./Wine.AppDir/usr/share/applications/wine.desktop
+
+    - wget -N https://source.winehq.org/git/wine.git/blob_plain/HEAD:/dlls/wineandroid.drv/wine.svg
+    - cp wine.svg ./Wine.AppDir/
+    
+    - cat > ./Wine.AppDir/AppRun << 'EOF'
+    - #!/bin/sh
+    - SELF=$(readlink -f "$0")
+    - HERE=${SELF%/*}
+    - 
+    - export PATH="${HERE}/usr/bin/:${HERE}/usr/sbin/:${HERE}/sbin/${PATH:+:$PATH}"
+    - 
+    - export LD_LIBRARY_PATH="${HERE}/usr/lib/:${HERE}/usr/lib/x86_64-linux-gnu/:${HERE}/usr/wine/:${HERE}/usr/sasl2/:${HERE}/lib/:${HERE}/lib/x86_64-linux-gnu:${HERE}/lib/udev/${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    - 
+    - export XDG_DATA_DIRS="${HERE}/usr/share/${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
+    - 
+    - export GSETTINGS_SCHEMA_DIR="${HERE}/usr/share/glib-2.0/schemas/${GSETTINGS_SCHEMA_DIR:+:$GSETTINGS_SCHEMA_DIR}"
+    - 
+    - EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
+    - 
+    - WINEVERSION=$(wine --version | sed "s/ .*//g")
+    - WINEPREFIX=~/.${WINEVERSION}-AppImage exec "${EXEC}" "$@"
+    - EOF
