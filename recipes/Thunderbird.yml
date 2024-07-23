@@ -1,0 +1,29 @@
+# Create an Appimage for Mozilla Thunderbird. 
+# To select your preferred version of Thunderbird, go to https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/ copy the link to your preferred version/language/cpu-architecture, and replace the wget link below with the one you grabbed.
+
+app: Thunderbird
+
+ingredients:
+  script:
+    - wget -c https://download-installer.cdn.mozilla.net/pub/thunderbird/releases/102.8.0/linux-x86_64/en-US/thunderbird-102.8.0.tar.bz2
+    - tar xf thunderbird-*tar.bz2
+
+script:
+  - mv ../thunderbird/* usr/bin
+  - mkdir -p usr/share/applications/
+  - cat > usr/share/applications/thunderbird.desktop <<\EOF
+  - [Desktop Entry]
+  - Categories=Network;Office;
+  - Encoding=UTF-8
+  - Name=Thunderbird
+  - GenericName=Email
+  - Comment=Email RSS Chat
+  - Exec=thunderbird %u
+  - Icon=thunderbird
+  - Terminal=false
+  - StartupNotify=true
+  - MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;application/x-xpinstall;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
+  - Type=Application
+  - EOF
+  - cp usr/share/applications/thunderbird.desktop .
+  - cp usr/bin/chrome/icons/default/default256.png thunderbird.png
