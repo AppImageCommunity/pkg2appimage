@@ -87,22 +87,39 @@ libX11-xcb.so.1
 # https://github.com/probonopd/linuxdeployqt/issues/582
 # Uncertain if this is required to be bundled for some distributions - if so, please let us know
 
-# The following libraries need to be privately bundled
-# Workaround for: /lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full
-# https://github.com/AppImage/pkg2appimage/pull/500#issuecomment-997183221
-# Workaround for: <AppDir>/usr/lib/x86_64-linux-gnu/libgnutls.so.30: version `GNUTLS_3_6_9' not found (required by /lib64/libglib-2.0.so.0)
-# https://github.com/probonopd/Emacs.AppImage/issues/16
-# NOTE: Privately bundling libglib-2.0.so.0 and libgobject-2.0.so.0 may break https://wiki.gnome.org/Projects/Libsecret,
-# see https://github.com/probonopd/linuxdeployqt/issues/544 for details
+# --- Bundling GLib and its consequences ---
+# The following libraries need to be privately bundled, otherwise this error can happen:
+# - <AppDir>/usr/lib/x86_64-linux-gnu/libgnutls.so.30: version `GNUTLS_3_6_9' not found (required by /lib64/libglib-2.0.so.0)
+# See https://github.com/probonopd/Emacs.AppImage/issues/16
+# - /lib/x86_64-linux-gnu/libgio-2.0.so.0: undefined symbol: g_module_open_full
+# See https://github.com/AppImage/pkg2appimage/pull/500#issuecomment-997183221
 # libgio-2.0.so.0
 # libglib-2.0.so.0
 # libgmodule-2.0.so.0
 # libgobject-2.0.so.0
 # libgthread-2.0.so.0
+# NOTE: Privately bundling libglib-2.0.so.0 and libgobject-2.0.so.0 may break https://wiki.gnome.org/Projects/Libsecret,
+# see https://github.com/probonopd/linuxdeployqt/issues/544 for details
+# NOTE: Privately bundling libgio-2.0.so.0 can lead to this error on Ubuntu:
+# symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new
 
-# libgio-2.0.so.0 # Commented out here due to the reason stated in the block above
-# Workaround for:
-# On Ubuntu, "symbol lookup error: /usr/lib/x86_64-linux-gnu/gtk-2.0/modules/liboverlay-scrollbar.so: undefined symbol: g_settings_new"
+# Since we bundle GLib (again), we have to bundle libpango to avoid undefined symbol: g_memdup2 etc.
+# see, e.g., https://github.com/TheAssassin/AppImageLauncher/issues/508
+# libpangoft2-1.0.so.0
+# libpangocairo-1.0.so.0
+# libpango-1.0.so.0
+# NOTE: Pango requires libharfbuzz >= 2.6.0 which isn't available on some older systems, so this error can happen:
+# libpango-1.0.so.0: undefined symbol: hb_ot_layout_get_horizontal_baseline_tag_for_script
+# See https://github.com/AppImageCommunity/pkg2appimage/issues/528
+
+# Commented as we currently bundle libpango
+# If libthai is bundled but libpango is not, this error can happen:
+# audacity: /tmp/.mount_AudaciUsFbON/usr/lib/libthai.so.0: version `LIBTHAI_0.1.25' not found (required by /usr/lib64/libpango-1.0.so.0)
+# on openSUSE Tumbleweed
+# libthai.so.0
+# If libcairo is bundled but libpango is not, this error can happen:
+# Can get symbol lookup error: /lib64/libpango-1.0.so.0: undefined symbol: g_log_structured_standard
+# --- Bundling GLib and its consequences ---
 
 # libgdk-x11-2.0.so.0 # Missing on openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20170601-Media.iso
 # libgtk-x11-2.0.so.0 # Missing on openSUSE-Tumbleweed-KDE-Live-x86_64-Snapshot20170601-Media.iso
@@ -119,11 +136,6 @@ libasound.so.2
 libfontconfig.so.1
 # Workaround for:
 # Application stalls when loading fonts during application launch; e.g., KiCad on ubuntu-mate
-
-libthai.so.0
-# Workaround for:
-# audacity: /tmp/.mount_AudaciUsFbON/usr/lib/libthai.so.0: version `LIBTHAI_0.1.25' not found (required by /usr/lib64/libpango-1.0.so.0)
-# on openSUSE Tumbleweed
 
 # other "low-level" font rendering libraries
 # should fix https://github.com/probonopd/linuxdeployqt/issues/261#issuecomment-377522251
@@ -173,16 +185,6 @@ libusb-1.0.so.0
 libuuid.so.1
 # libwind.so.0 # Missing on openSUSE LEAP 42.0
 libz.so.1
-
-# since we now bundle GLib again, we have to bundle pango as well to avoid undefined symbol: g_memdup2 etc.
-# see, e.g., https://github.com/TheAssassin/AppImageLauncher/issues/508
-#libpangoft2-1.0.so.0
-#libpangocairo-1.0.so.0
-#libpango-1.0.so.0
-
-# FIXME:
-# Can get symbol lookup error: /lib64/libpango-1.0.so.0: undefined symbol: g_log_structured_standard
-# if libcairo is bundled but libpango is not
 
 # Workaround for:
 # e.g., Spotify
