@@ -1,0 +1,11 @@
+app: Chromium-beta
+binpatch: true
+lowerapp: chromium-browser
+
+ingredients:
+  dist: trusty
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+  ppas:
+    - saiarcot895/chromium-beta
+  package: chromium-browser
