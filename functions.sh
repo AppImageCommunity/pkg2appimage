@@ -113,6 +113,9 @@ move_lib()
 {
   mkdir -p ./usr/lib ./lib && find ./lib/ -exec cp -v --parents -rfL {} ./usr/ \; && rm -rf ./lib
   mkdir -p ./usr/lib ./lib64 && find ./lib64/ -exec cp -v --parents -rfL {} ./usr/ \; && rm -rf ./lib64
+  # Move libs from subdirs of usr/lib64 into usr/lib64 and delete those subdirs
+  find usr/lib64 -mindepth 2 -type f -name '*.so*' -exec mv {} usr/lib64 \;
+  find usr/lib64 -mindepth 1 -type d -delete
 }
 
 # Delete blacklisted files
