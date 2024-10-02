@@ -87,6 +87,10 @@ libX11-xcb.so.1
 # https://github.com/probonopd/linuxdeployqt/issues/582
 # Uncertain if this is required to be bundled for some distributions - if so, please let us know
 
+libwayland-client.so.0
+# https://gitlab.freedesktop.org/mesa/mesa/-/issues/11316
+# New version of Mesa has some dependency issues with libwayland-client if it is bundled
+
 # --- Bundling GLib and its consequences ---
 # The following libraries need to be privately bundled, otherwise this error can happen:
 # - <AppDir>/usr/lib/x86_64-linux-gnu/libgnutls.so.30: version `GNUTLS_3_6_9' not found (required by /lib64/libglib-2.0.so.0)
