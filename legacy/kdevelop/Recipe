@@ -6,7 +6,7 @@
 # sudo yum -y install docker
 # sudo service docker start
 # sudo docker run -i -t scummos/centos6.8-qt5.7
-# wget -c https://github.com/AppImage/AppImages/raw/master/recipes/kdevelop/Recipe
+# wget -c https://github.com/AppImageCommunity/pkg2appimage/raw/master/recipes/kdevelop/Recipe
 # bash -ex Recipe
 
 # Halt on errors
@@ -19,7 +19,7 @@ set -x
 grep -r "CentOS release 6" /etc/redhat-release || exit 1
 
 # Get helper functions
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 rm -f functions.sh
 

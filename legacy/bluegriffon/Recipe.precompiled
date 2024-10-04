@@ -5,7 +5,7 @@ mkdir -p ./$APP/$APP.AppDir/usr
 
 cd ./$APP
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 VERSION=$(wget -c "http://bluegriffon.org/freshmeat/?C=M;O=D" -O - | grep href | head -n 2 | tail -n 1 | cut -d '"' -f 2 | cut -d / -f 1)

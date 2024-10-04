@@ -313,7 +313,7 @@ chmod a+x ./usr/bin/$XAPP.wrapper
 sed -i -e "s|Exec=$XAPP|Exec=$XAPP.wrapper|g" $XAPP.desktop
 
 # Delete blacklisted files; TODO: Move to a library function
-BLACKLISTED_FILES=$(wget -q https://github.com/AppImage/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+BLACKLISTED_FILES=$(wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
 echo $BLACKLISTED_FILES
 for FILE in $BLACKLISTED_FILES ; do
   FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)

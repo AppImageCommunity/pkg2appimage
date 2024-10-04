@@ -10,7 +10,7 @@ OOODOWNLOADLINK="http://download.documentfoundation.org/libreoffice/stable/"$VER
 mkdir -p ./$APP/$APP.AppDir
 cd ./$APP
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 
 # OpenOffice 5.3 is too large to fit into the 250 MB limit using gzip squashfs compression
 sed -i -e 's|VERSION ./appimagetool|VERSION ./appimagetool --comp xz|g' ./functions.sh
