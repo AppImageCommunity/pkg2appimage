@@ -30,8 +30,8 @@ echo ""
 
 # Install prerequisites
 
-ls appdir-lint.sh >/dev/null || wget -c https://github.com/AppImage/AppImages/raw/master/appdir-lint.sh
-ls excludelist >/dev/null || wget -c https://github.com/AppImage/AppImages/raw/master/excludelist
+ls appdir-lint.sh >/dev/null || wget -c https://github.com/AppImageCommunity/pkg2appimage/raw/master/appdir-lint.sh
+ls excludelist >/dev/null || wget -c https://github.com/AppImageCommunity/pkg2appimage/raw/master/excludelist
 
 # Make sure we always use http because httpfs2 doesn't like https
 APPIMAGEURL=$(echo "${APPIMAGEURL}" | sed -e 's|https://|http://|g')

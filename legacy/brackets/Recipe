@@ -13,7 +13,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 # We get this app and almost all its dependencies via apt-get

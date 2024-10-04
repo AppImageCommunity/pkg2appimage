@@ -2,7 +2,7 @@
 # which we are not bundling here (e.g., GTK3 and VTE). Do not expect this to run on 
 # distributions before 2015-16ish.
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 APP=Terminix

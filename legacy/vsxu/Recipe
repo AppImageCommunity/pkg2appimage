@@ -3,7 +3,7 @@
 # As a result, the AppImage will not be compatible with distributions
 # older than trusty. To achieve that, we could compile e.g., on CentOS 6.
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 APP=VSXu

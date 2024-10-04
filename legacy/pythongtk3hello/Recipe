@@ -14,7 +14,7 @@ sudo apt-get -y install python-virtualenv
 # Source some helper functions
 ########################################################################
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 ########################################################################

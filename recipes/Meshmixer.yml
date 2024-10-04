@@ -3,7 +3,7 @@
 # Probably Fedora, CentOS, OpenSUSE,... users would like to see an AppImage
 # and with this file you can produce one yourself until 
 # Autodesk no longer seems to care about Linux. Just download 
-# https://github.com/AppImage/AppImages/raw/master/pkg2appimage 
+# https://github.com/AppImageCommunity/pkg2appimage/raw/master/pkg2appimage 
 # and this file, then run, on an Ubuntu machine, bash ./Recipe ./Meshmixer.yml.
 # The resulting AppImage should run on most distributions from 2014 and later.
 # Please open an issue if you experience any issues.
@@ -28,7 +28,7 @@ script:
   - mv ./usr/lib/libblas/*.so* ./usr/lib/
   - ( cd usr/lib/ ; ln -s libblas.so.3 libblas.so.3gf )
   - ( cd usr/lib/ ; ln -s liblapack.so.3 liblapack.so.3gf )
-  - sed -i -e '/^Version=.*/d' meshmixer.desktop # Dear upstream developers, see https://github.com/AppImage/AppImages/issues/166
-  - sed -i -e 's|^Comment=.*|Comment=The ultimate tool for 3D mashups and remixes|g' meshmixer.desktop # Dear upstream developers, see https://github.com/AppImage/AppImages/issues/166
-  - sed -i -e '/^Action Bar/d' meshmixer.desktop # Dear upstream developers, see https://github.com/AppImage/AppImages/issues/166
+  - sed -i -e '/^Version=.*/d' meshmixer.desktop # Dear upstream developers, see https://github.com/AppImageCommunity/pkg2appimage/issues/166
+  - sed -i -e 's|^Comment=.*|Comment=The ultimate tool for 3D mashups and remixes|g' meshmixer.desktop # Dear upstream developers, see https://github.com/AppImageCommunity/pkg2appimage/issues/166
+  - sed -i -e '/^Action Bar/d' meshmixer.desktop # Dear upstream developers, see https://github.com/AppImageCommunity/pkg2appimage/issues/166
   - cp usr/share/pixmaps/meshmixer.png usr/share/icons/hicolor/128x128/apps # So that desktopintegration has something to work with

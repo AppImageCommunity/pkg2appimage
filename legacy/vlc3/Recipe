@@ -18,7 +18,7 @@
 # c3.2xlarge = 8 CPUs
 # Run there with:
 # sudo su
-# wget -c https://github.com/AppImage/AppImages/raw/master/recipes/vlc3/Recipe
+# wget -c https://github.com/AppImageCommunity/pkg2appimage/raw/master/recipes/vlc3/Recipe
 # bash -ex Recipe
 # Make sure to delete the cloud instance after building in order not to incur additional cost
 
@@ -284,7 +284,7 @@ make install DESTDIR=/$APP/$APP.AppDir
 LOWERAPP=${APP,,}
 cd /$APP/
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 cd $APP.AppDir

@@ -5,7 +5,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
-ls ./functions.sh || wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+ls ./functions.sh || wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 generate_status

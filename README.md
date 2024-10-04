@@ -20,7 +20,7 @@ chmod +x ./pkg2appimage-*.AppImage
 ./pkg2appimage-*.AppImage Spotify
 ```
 
-`.yml` recipes tell pkg2appimage where to get the ingredients from, and how to convert them to an AppImage. Study some [examples](https://github.com/AppImage/AppImages/tree/master/recipes) to see how it works.
+`.yml` recipes tell pkg2appimage where to get the ingredients from, and how to convert them to an AppImage. Study some [examples](https://github.com/AppImageCommunity/pkg2appimage/tree/master/recipes) to see how it works.
 
 To build an AppImage from a local `.yml` recipe (e.g., during development):
 

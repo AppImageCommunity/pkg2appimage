@@ -1,7 +1,7 @@
 # Scilab provides binary builds that are very compatible,
 # so we use those binaries and encapsulate them in an AppImage
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 APP=Scilab

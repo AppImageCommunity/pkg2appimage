@@ -10,7 +10,7 @@
 # Software settings is done at any time, including but not limited
 # to after the Software is installed.
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 REDIR=$(wget -U x86_64 -q -O - "http://www.opera.com/download/get/?partner=www&opsys=Linux&product=Opera%20developer" | grep download/get | head -n 1 | grep -Poe "href.*?\ " | cut -d '"' -f 2)

@@ -11,7 +11,7 @@ APP=QGroundControl
 mkdir -p $APP/$APP.AppDir
 cd $APP/
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 wget -c "http://qgroundcontrol.s3.amazonaws.com/master/qgroundcontrol.tar.bz2"

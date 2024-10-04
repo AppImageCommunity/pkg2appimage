@@ -1,5 +1,5 @@
 # You can easily make your own using this recipe like this on a Debian/Ubuntu system:
-# wget -c "https://github.com/AppImage/AppImages/raw/master/pkg2appimage"
+# wget -c "https://github.com/AppImageCommunity/pkg2appimage/raw/master/pkg2appimage"
 # bash -ex pkg2appimage sublime_text
 
 app: sublime_text

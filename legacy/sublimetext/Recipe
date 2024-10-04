@@ -5,7 +5,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 DEB=$(wget -q "https://www.sublimetext.com/3" -O - | grep dl_linux_64 | cut -d '"' -f 4 | tail -n 1)

@@ -5,7 +5,7 @@ mkdir -p ./$APP/$APP.AppDir/usr/lib
 
 cd ./$APP/
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 URL=$(wget -q "http://www.peazip.org/peazip-linux-64.html" -O - | grep portable | grep "LINUX.x86_64.GTK2.tar.gz" | head -n 1 | cut -d '"' -f 2)
