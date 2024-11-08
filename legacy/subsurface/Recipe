@@ -71,7 +71,7 @@ git_pull_rebase_helper()
 export PATH=/bin:/sbin:$PATH # For CentOS 6
 
 # Source helper functions
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 rm functions.sh
 

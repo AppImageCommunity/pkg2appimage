@@ -8,7 +8,7 @@
 #
 # wget https://github.com/probonopd/AppImageKit/raw/master/AppImageAssistant.AppDir/testappimage
 # sudo bash testappimage CentOS-6.7-x86_64-LiveCD.iso bash
-# wget https://github.com/AppImage/AppImages/raw/master/recipes/inkscape/Recipe
+# wget https://github.com/AppImageCommunity/pkg2appimage/raw/master/recipes/inkscape/Recipe
 # bash -ex Recipe
 
 ###########################################
@@ -272,7 +272,7 @@ mkdir -p ./usr/lib
 ldd usr/bin/inkscape | grep "=>" | awk '{print $3}' | xargs -I '{}' cp -v '{}' ./usr/lib || true
 
 # Delete blacklisted files; TODO: Move to a library function
-BLACKLISTED_FILES=$(wget -q https://github.com/AppImage/AppImages/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
+BLACKLISTED_FILES=$(wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/excludelist -O - | sed '/^\s*$/d' | sed '/^#.*$/d')
 echo $BLACKLISTED_FILES
 for FILE in $BLACKLISTED_FILES ; do
   FOUND=$(find . -type f -name "${FILE}" 2>/dev/null)

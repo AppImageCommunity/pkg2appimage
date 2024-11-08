@@ -1,7 +1,7 @@
 # This file is supposed to be sourced by each Recipe
 # that wants to use the functions contained herein
 # like so:
-# wget -q https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/functions.sh -O ./functions.sh
+# wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/${PKG2AICOMMIT}/functions.sh -O ./functions.sh
 # . ./functions.sh
 
 # RECIPE=$(realpath "$0")
@@ -161,46 +161,6 @@ get_desktopintegration()
   # sed -i -e "s|^Exec=$REALBIN|Exec=$REALBIN.wrapper|g" $1.desktop
 }
 
-# Generate AppImage; this expects $ARCH, $APP and $VERSION to be set
-generate_appimage()
-{
-  # Download AppImageAssistant
-  URL="https://github.com/AppImage/AppImageKit/releases/download/6/AppImageAssistant_6-${SYSTEM_ARCH}.AppImage"
-  wget -c "$URL" -O AppImageAssistant
-  chmod a+x ./AppImageAssistant
-
-  # if [[ "$RECIPE" == *ecipe ]] ; then
-  #   echo "#!/bin/bash -ex" > ./$APP.AppDir/Recipe
-  #   echo "# This recipe was used to generate this AppImage." >> ./$APP.AppDir/Recipe
-  #   echo "# See http://appimage.org for more information." >> ./$APP.AppDir/Recipe
-  #   echo "" >> ./$APP.AppDir/Recipe
-  #   cat $RECIPE >> ./$APP.AppDir/Recipe
-  # fi
-  #
-  # Detect the architecture of what we are packaging.
-  # The main binary could be a script, so let's use a .so library
-  BIN=$(find . -name *.so* -type f | head -n 1)
-  INFO=$(file "$BIN")
-  if [ -z $ARCH ] ; then
-    if [[ $INFO == *"x86-64"* ]] ; then
-      ARCH=x86_64
-    elif [[ $INFO == *"i686"* ]] ; then
-      ARCH=i686
-    elif [[ $INFO == *"armv6l"* ]] ; then
-      ARCH=armhf
-    else
-      echo "Could not automatically detect the architecture."
-      echo "Please set the \$ARCH environment variable."
-     exit 1
-    fi
-  fi
-
-  mkdir -p ../out || true
-  rm ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage" 2>/dev/null || true
-  GLIBC_NEEDED=$(glibc_needed)
-  ./AppImageAssistant ./$APP.AppDir/ ../out/$APP"-"$VERSION".glibc"$GLIBC_NEEDED"-"$ARCH".AppImage"
-}
-
 # Generate AppImage type 2
 # Additional parameters given to this routine will be passed on to appimagetool
 #
@@ -217,7 +177,7 @@ generate_type2_appimage()
   #   URL=$(wget -q "https://s3.amazonaws.com/archive.travis-ci.org/jobs/$((ID+2))/log.txt" -O - | grep "https://transfer.sh/.*/appimagetool" | tail -n 1 | sed -e 's|\r||g')
   # fi
   if [ -z "$(which appimagetool)" ] ; then
-    URL="https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-${SYSTEM_ARCH}.AppImage"
+    URL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${SYSTEM_ARCH}.AppImage"
     wget -c "$URL" -O appimagetool
     chmod a+x ./appimagetool
     appimagetool=$(readlink -f appimagetool)
@@ -284,7 +244,7 @@ generate_status()
   if [ -e "${HERE}/usr/share/pkg2appimage/excludedeblist" ]  ; then
     EXCLUDEDEBLIST="${HERE}/usr/share/pkg2appimage/excludedeblist"
   else
-    wget -q -c "https://github.com/AppImage/AppImages/raw/${PKG2AICOMMIT}/excludedeblist"
+    wget -q -c "https://github.com/AppImageCommunity/pkg2appimage/raw/${PKG2AICOMMIT}/excludedeblist"
     EXCLUDEDEBLIST=excludedeblist
   fi
   rm status 2>/dev/null || true

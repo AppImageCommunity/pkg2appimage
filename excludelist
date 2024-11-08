@@ -75,7 +75,7 @@ libxcb.so.1
 # Uncertain if this is required to be bundled for some distributions - if so we need to write a version check script and use LD_PRELOAD to load the system version if it is newer
 # Fedora 25:
 # undefined symbol: xcb_send_request_with_fds
-# https://github.com/AppImage/AppImages/issues/128
+# https://github.com/AppImageCommunity/pkg2appimage/issues/128
 
 libX11.so.6
 # Workaround for:
@@ -157,7 +157,7 @@ libharfbuzz.so.0
 # echo "extern int is_selinux_enabled(void){return 0;}" >> selinux-mock.c
 # gcc -s -shared -o libselinux.so.1 -Wl,-soname,libselinux.so.1 selinux-mock.c
 # strip libselinux.so.1
-# More information: https://github.com/AppImage/AppImages/issues/83
+# More information: https://github.com/AppImageCommunity/pkg2appimage/issues/83
 # and https://github.com/AppImage/AppImageKit/issues/775#issuecomment-614954821
 # https://gitlab.com/sulinos/devel/libselinux-dummy
 
@@ -176,7 +176,7 @@ libgpg-error.so.0
 # libhx509.so.5 # Missing on openSUSE LEAP 42.0
 libICE.so.6
 # libidn.so.11 # Does not come with Solus by default
-# libk5crypto.so.3 # Running AppImage built on Debian 9 or Ubuntu 16.04 on an Archlinux fails otherwise; https://github.com/AppImage/AppImages/issues/301
+# libk5crypto.so.3 # Running AppImage built on Debian 9 or Ubuntu 16.04 on an Archlinux fails otherwise; https://github.com/AppImageCommunity/pkg2appimage/issues/301
 # libkeyutils.so.1 # Does not come with Void Linux by default; https://github.com/Subsurface-divelog/subsurface/issues/1971#issuecomment-466606834
 # libkrb5.so.26 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there. Missing on openSUSE LEAP 42.0
 # libkrb5.so.3 # Disputed, seemingly needed by Arch Linux since Kerberos is named differently there
@@ -215,11 +215,11 @@ libpipewire-0.3.so.0
 # nss_error=-5925, os_error=0
 # libnss3.so should not be removed from the bundles, as this causes other issues, e.g.,
 # https://github.com/probonopd/linuxdeployqt/issues/35#issuecomment-256213517
-# and https://github.com/AppImage/AppImages/pull/114
+# and https://github.com/AppImageCommunity/pkg2appimage/pull/114
 # libnss3.so
 
 # The following cannot be excluded, see
-# https://github.com/AppImage/AppImages/commit/6c7473d8cdaaa2572248dcc53d7f617a577ade6b
+# https://github.com/AppImageCommunity/pkg2appimage/commit/6c7473d8cdaaa2572248dcc53d7f617a577ade6b
 # http://stackoverflow.com/questions/32644157/forcing-a-binary-to-use-a-specific-newer-version-of-a-shared-library-so
 # libssl.so.1
 # libssl.so.1.0.0
@@ -233,7 +233,7 @@ libpipewire-0.3.so.0
 
 # libglut.so.3 # to be confirmed
 
-libxcb-dri3.so.0 # https://github.com/AppImage/AppImages/issues/348
+libxcb-dri3.so.0 # https://github.com/AppImageCommunity/pkg2appimage/issues/348
 libxcb-dri2.so.0 # https://github.com/probonopd/linuxdeployqt/issues/331#issuecomment-442276277
 
 # If the next line turns out to cause issues, we will have to remove it again and find another solution

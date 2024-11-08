@@ -11,5 +11,5 @@ RUN yum -y install devtoolset-2-gcc devtoolset-2-gcc-c++ devtoolset-2-binutils \
 # everything up to here Docker should cache, so we don't need to reinstall
 # all of these huge packages every time.
 
-ADD https://github.com/AppImage/AppImages/raw/master/recipes/subsurface/Recipe /Recipe
+ADD https://github.com/AppImageCommunity/pkg2appimage/raw/master/recipes/subsurface/Recipe /Recipe
 RUN sed -i -e 's|sudo ||g' Recipe && bash -ex Recipe && yum clean all && rm -rf /Subsurface/Subsurface* && rm -rf /out

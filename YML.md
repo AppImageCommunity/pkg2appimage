@@ -11,7 +11,7 @@ This document provides an introduction to the `.yml` files' purpose, their struc
 
 YAML's approach to describing data is to combine associative lists (known as `dict`s in Python or `object literal`s in JavaScript, for example), lists (arrays) and scalar values. This results in an easy to parse and also easy to read format.
 
-The `.yml` files are used by [`pkg2appimage`](https://github.com/AppImage/AppImages/blob/master/pkg2appimage) which is used in the _AppImages_ project to convert binary _ingredients_ into AppImages for demonstration purposes. Their primary objective is to make it very simple to convert pre-existing binaries into the AppImage format. If you can build your software from source, you may generate AppImages directly as part of your build workflow; in this case you may not need a `.yml` file (but a Travis CI `.travis.yml` and/or a `Makefile`, etc.).
+The `.yml` files are used by [`pkg2appimage`](https://github.com/AppImageCommunity/pkg2appimage/blob/master/pkg2appimage) which is used in the _AppImages_ project to convert binary _ingredients_ into AppImages for demonstration purposes. Their primary objective is to make it very simple to convert pre-existing binaries into the AppImage format. If you can build your software from source, you may generate AppImages directly as part of your build workflow; in this case you may not need a `.yml` file (but a Travis CI `.travis.yml` and/or a `Makefile`, etc.).
 
 The `.yml` file format is not part of the AppImage standard, which just describes the AppImage container format and is agnostic as to how the payload inside an AppImage gets generated. Neither it is part of AppImageKit, because AppImageKit is only concerned with taking a pre-existing _AppDir_ and converting that into an AppImage. Such an AppDir is created from the instructions stored in the `.yml` files, and converted to an AppImage using _AppImageKit_.
 
@@ -95,7 +95,7 @@ ingredients:
 
 The `dist` section inside the `ingredients` section defines which Debian distribution should be used as a base. The `sources` section inside the `ingredients` section describes the repositories from which the package should be pulled. The entries are in the same format as lines in a debian `sources.list` file. Note that the `http://download.opensuse.org/repositories/isv:/KDAB/xUbuntu_14.04` repository needs the `http://archive.ubuntu.com/ubuntu/` repository so that the dependencies can be resolved.
 
-__NOTE:__ In the future, other types of packages like `.rpm` could also be included in the  `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the [`pkg2appimage`](https://github.com/AppImage/AppImages/blob/master/pkg2appimage) script.
+__NOTE:__ In the future, other types of packages like `.rpm` could also be included in the  `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the [`pkg2appimage`](https://github.com/AppImageCommunity/pkg2appimage/blob/master/pkg2appimage) script.
 
 
 #### Using ingredients from an Ubuntu PPA
@@ -113,7 +113,7 @@ ingredients:
 
 The `ppas` section inside the `ingredients` section lets you specify one or more Ubuntu PPAs. This is equivalent to, but more elegant than, adding the corresponding `sources.list` entries to the `sources` section inside the `ingredients` section.
 
-__NOTE:__ In the future, similar shortcuts for other types of personal repositories, such as projects on openSUSE build service, could also be included in the `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the [`pkg2appimage`](https://github.com/AppImage/AppImages/blob/master/pkg2appimage) script.
+__NOTE:__ In the future, similar shortcuts for other types of personal repositories, such as projects on openSUSE build service, could also be included in the `.yml` file definition. Proposals for this are welcome if the proposer also implements support for this in the [`pkg2appimage`](https://github.com/AppImageCommunity/pkg2appimage/blob/master/pkg2appimage) script.
 
 #### Using deb files from a download page
 

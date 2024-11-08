@@ -34,7 +34,7 @@ libc6-dev
 libcairo2
 libcups2
 # libcurl3 # Does draw in a lot of libs including security relevant ones; e.g., in supertux2; but otherwise get ../lib/x86_64-linux-gnu/libssl.so.1.0.0: version `OPENSSL_1.0.2' not found (required by /usr/lib/x86_64-linux-gnu/libcurl.so.4)
-# libcurl3-gnutls # https://github.com/AppImage/AppImages/issues/120#issuecomment-261749714
+# libcurl3-gnutls # https://github.com/AppImageCommunity/pkg2appimage/issues/120#issuecomment-261749714
 # libdbm2 # seems not to exist
 libdbus-1-3
 libdrm2
@@ -65,7 +65,7 @@ libstdc++6
 libtasn1-6
 libwayland-egl1-mesa # e.g., OpenRA
 lsb-base
-libxcb1 # Workaround for: Fedora 25: undefined symbol: xcb_send_request_with_fds, https://github.com/AppImage/AppImages/issues/128 
+libxcb1 # Workaround for: Fedora 25: undefined symbol: xcb_send_request_with_fds, https://github.com/AppImageCommunity/pkg2appimage/issues/128 
 mime-support
 passwd
 udev

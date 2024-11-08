@@ -11,7 +11,7 @@ sudo apt-get -y install xvfb rpm2cpio
 mkdir -p ./$APP/$APP.AppDir/usr/bin
 cd ./$APP
 
-wget -q https://github.com/AppImage/AppImages/raw/master/functions.sh -O ./functions.sh
+wget -q https://github.com/AppImageCommunity/pkg2appimage/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 
 FILEPATH=$(wget -q "https://github.com/LazyT/obpm/releases" -O - | grep lin.run | grep href | head -n 1 | cut -d '"' -f 2)
