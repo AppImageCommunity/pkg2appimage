@@ -29,4 +29,3 @@ script:
   - EOF
   - rm -r opt/$SHORTNAME/jbr/legal/java.desktop
   - rm -r opt/$SHORTNAME/jbr/legal/jdk.unsupported.desktop
-  - rm opt/$SHORTNAME/bin/fsnotifier* || true
