@@ -13,7 +13,6 @@ cd build/
 apt download -y dpkg # We are still using dpkg-deb to extract debs, so we need to bundle it
 
 wget -c "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-$SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
-wget -c "https://github.com/ImageMagick/ImageMagick/releases/download/7.0.8-17/ImageMagick-0b0ce48-gcc-$SYSTEM_ARCH.AppImage" # FIXME: Make arch independent
 chmod +x ./*.AppImage
 
 ./appimagetool-*.AppImage --appimage-extract && mv ./squashfs-root ./pkg2appimage.AppDir
@@ -22,13 +21,11 @@ cd ./pkg2appimage.AppDir
 find ../*.deb -exec dpkg-deb -x {} . \; || true
 
 rm *.desktop || true
-mv ./usr/share/applications/appimagetool.desktop ./usr/share/applications/pkg2appimage.desktop 
+mv ./usr/share/applications/appimagetool.desktop ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Name=appimagetool|Name=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Exec=appimagetool|Exec=pkg2appimage|g' ./usr/share/applications/pkg2appimage.desktop
 sed -i -e 's|Comment=.*|Comment=Create AppImages from Debian/Ubuntu repositories|g' ./usr/share/applications/pkg2appimage.desktop
 cp ./usr/share/applications/pkg2appimage.desktop .
-
-cp ../ImageMagick-*.AppImage usr/bin/convert
 
 # We don't suffer from NIH
 # mkdir -p usr/src/
