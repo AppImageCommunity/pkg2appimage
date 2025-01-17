@@ -13,13 +13,23 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.config.runner }}
+    strategy:
+      matrix:
+        config:
+          - runner: ubuntu-20.04
+            image: ubuntu:20.04
+          - runner: ubuntu-22.04-arm
+            image: ubuntu:22.04
     container:
-      image: ubuntu:20.04
+      image: ${{ matrix.config.image }}
       options: --privileged
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Print configuration
+      run: echo "Running build on ${{ matrix.config }}"
 
     - name: Install dependencies
       run: |
