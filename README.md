@@ -1,4 +1,4 @@
-# pkg2appimage [![discourse](https://img.shields.io/badge/forum-discourse-orange.svg)](http://discourse.appimage.org) [![Build Status](https://travis-ci.org/AppImage/pkg2appimage.svg)](https://travis-ci.org/AppImage/pkg2appimage) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0e7dd241a1bf44af9eebc80fd2c71763)](https://www.codacy.com/app/AppImage/pkg2appimage?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AppImage/pkg2appimage&amp;utm_campaign=Badge_Grade) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
+# pkg2appimage [![Build Status](https://travis-ci.org/AppImage/pkg2appimage.svg)](https://travis-ci.org/AppImage/pkg2appimage) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
 [Download as an AppImage](../../releases/tag/continuous)
  
@@ -20,7 +20,7 @@ chmod +x ./pkg2appimage-*.AppImage
 ./pkg2appimage-*.AppImage Spotify
 ```
 
-`.yml` recipes tell pkg2appimage where to get the ingredients from, and how to convert them to an AppImage. Study some [examples](https://github.com/AppImage/AppImages/tree/master/recipes) to see how it works.
+`.yml` recipes tell pkg2appimage where to get the ingredients from, and how to convert them to an AppImage. Study some [examples](https://github.com/AppImages/tree/master/recipes) to see how it works.
 
 To build an AppImage from a local `.yml` recipe (e.g., during development):
 
