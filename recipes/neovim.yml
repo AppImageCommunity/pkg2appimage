@@ -1,0 +1,23 @@
+app: neovim
+union: true
+
+ingredients:
+  dist: noble
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ focal main universe # works for amd64
+    - deb http://ports.ubuntu.com/ubuntu-ports/ focal main universe # works for arm64
+
+script:
+  - ls
+  - cat > neovim.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=neovim
+  - Exec=nvim
+  - Icon=neovim
+  - Categories=Development;TextEditor;
+  - Comment=Vim-fork focused on extensibility and usability
+  - EOF
+  - wget -c https://raw.githubusercontent.com/neovim/neovim.github.io/master/logos/neovim-logo-300x87.png -O neovim.png
+  - mkdir -p usr/share/icons/hicolor/256x256/apps/
+  - cp neovim.png usr/share/icons/hicolor/256x256/apps/neovim.png
