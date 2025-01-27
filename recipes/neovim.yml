@@ -2,7 +2,7 @@ app: neovim
 union: true
 
 ingredients:
-  dist: noble
+  dist: focal
   sources:
     - deb http://us.archive.ubuntu.com/ubuntu/ focal main universe # works for amd64
     - deb http://ports.ubuntu.com/ubuntu-ports/ focal main universe # works for arm64
