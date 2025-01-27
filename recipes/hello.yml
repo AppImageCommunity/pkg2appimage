@@ -1,0 +1,23 @@
+app: hello
+union: true
+
+ingredients:
+  dist: focal
+  sources:
+    - deb http://us.archive.ubuntu.com/ubuntu/ focal main # works for amd64
+    - deb http://ports.ubuntu.com/ubuntu-ports/ focal main # works for arm64
+
+script:
+  - ls
+  - cat > hello.desktop <<\EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Name=hello
+  - Exec=hello
+  - Icon=hello
+  - Categories=Utility
+  - Comment=Example package based on GNU hello
+  - EOF
+  - wget -c https://github.com/iconoir-icons/iconoir/blob/main/icons/regular/spock-hand-gesture.svg -o hello.svg
+  - mkdir -p usr/share/icons/hicolor/scalable/apps/
+  - cp hello.svg usr/share/icons/hicolor/scalable/apps/hello.svg

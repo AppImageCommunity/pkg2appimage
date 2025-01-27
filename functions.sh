@@ -35,6 +35,9 @@ grep docker /proc/1/cgroup >/dev/null && export DOCKER_BUILD=1 || true
 # Detect system architecture to know which binaries of AppImage tools
 # should be downloaded and used.
 case "$(uname -i)" in
+  aarch64|arm64)
+#    echo "aarch64 system architecture"
+    SYSTEM_ARCH="aarch64";;
   x86_64|amd64)
 #    echo "x86-64 system architecture"
     SYSTEM_ARCH="x86_64";;
@@ -47,6 +50,9 @@ case "$(uname -i)" in
   unknown|AuthenticAMD|GenuineIntel)
 #         uname -i not answer on debian, then:
     case "$(uname -m)" in
+      aarch64|arm64)
+#        echo "aarch64 system architecture"
+         SYSTEM_ARCH="aarch64";;
       x86_64|amd64)
 #        echo "x86-64 system architecture"
         SYSTEM_ARCH="x86_64";;
@@ -249,7 +255,7 @@ generate_type2_appimage()
   GLIBC_NEEDED=$(glibc_needed)
   _APP_DIR="${PWD}/$APP.AppDir/"
   export OWD="${PWD}"
-   
+
   if ( [ ! -z "$KEY" ] ) && ( ! -z "$TRAVIS" ) ; then
     wget https://github.com/AppImage/AppImageKit/files/584665/data.zip -O data.tar.gz.gpg
     ( set +x ; echo $KEY | gpg2 --batch --passphrase-fd 0 --no-tty --skip-verify --output data.tar.gz --decrypt data.tar.gz.gpg )
@@ -375,16 +381,29 @@ patch_strings_in_file() {
 
 function apt-get.update(){
   echo -n > cache.txt
-  
+
   cat Packages.gz | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" >> cache.txt || true
-  
+
+  local arch=$SYSTEM_ARCH
+  case "$SYSTEM_ARCH" in
+  x86_64)
+    arch="amd64";;
+  aarch64)
+    arch="arm64";;
+  i686)
+    arch="i386";;
+  *)
+    echo "Unsupported system architecture"
+    exit 1;;
+  esac
+
   echo APT_GET_UPDATE
   while read line; do
     local line=$(echo "${line}" | sed 's|[[:space:]]| |g')
     local repo_info=($(echo ${line} | tr " " "\n"))
     local base_url=${repo_info[1]}
     local dist_name=${repo_info[2]}
-  
+
     echo line=${line}
     echo repo_info=${repo_info}
     echo base_url=${base_url}
@@ -398,7 +417,7 @@ function apt-get.update(){
     else
       for i in $(seq 3 $((${#repo_info[@]} - 1))); do
         echo "Caching ${base_url} ${dist_name} ${repo_info[${i}]}..."
-        local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-amd64/Packages.gz"
+        local repo_url="${base_url}/dists/${dist_name}/${repo_info[${i}]}/binary-${arch}/Packages.gz"
         wget -q "${repo_url}" -O - | gunzip -c | grep -E "^Package:|^Filename:|^Depends:|^Version:" | sed "s|^Filename: |Filename: ${base_url}/|g" >> cache.txt
       done
     fi
@@ -409,18 +428,18 @@ function apt-get.do-download(){
   [ -f "status" ] && {
     grep -q ^"Package: ${1}"$ status && return
   }
-  
+
   local package_name=$(echo ${1} | cut -d= -f1)
   local package_version=`echo ${1} | cut -s -d= -f2-`
 
   echo "${already_downloaded_package[@]}" | sed 's| |\n|g' | grep -q ^"${package_name}"$ && return
-  
+
   if ! test -z "${package_version}" ; then
 	  local package_url=`cat cache.txt | grep -v ^"Depends: "  \
 	                                   | grep -A 3 ^"Package: ${package_name}"$  \
 				           | grep -A 2 ^"Version: ${package_version}"  \
 					   | grep ^"Filename: "  \
-					   | cut -c 11-` 
+					   | cut -c 11-`
   else
 	  local package_url=`cat cache.txt | grep -v ^"Depends: " \
 		                           | grep -A 3 -m 1 ^"Package: ${package_name}"$ \
@@ -429,7 +448,7 @@ function apt-get.do-download(){
   fi
 
   already_downloaded_package+=(${package_name})
-   
+
   local dependencies=($(cat cache.txt | grep -A 2 -m 1 ^"Package: ${package_name}"$    \
                                       | grep ^"Depends: "                   \
                                       | cut -c 9-                           \
@@ -440,7 +459,7 @@ function apt-get.do-download(){
   echo PACKAGE NAME: ${package_name}
   echo PACKAGE_VERSION: ${package_version}
   echo PACKAGE_URL: ${package_url}
-   
+
   [ ! -f "${package_url}" ] && {
     [ ! "${package_url}" = "" ] && {
       wget -c "${package_url}"
@@ -448,9 +467,9 @@ function apt-get.do-download(){
       echo ${1} >> teste_123
     }
   }
-  
+
   unset package_url
-  
+
   for depend in "${dependencies[@]}"; do
     apt-get.do-download ${depend}
   done

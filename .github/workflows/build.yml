@@ -10,24 +10,59 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.config.runner }}
+    strategy:
+      matrix:
+        config:
+          - runner: ubuntu-20.04
+            image: ubuntu:20.04
+          - runner: ubuntu-22.04-arm
+            image: ubuntu:22.04
     container:
-      image: ubuntu:20.04
+      image: ${{ matrix.config.image }}
       options: --privileged
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Print configuration
+      run: echo "Running build on ${{ matrix.config }}"
+
     - name: Install dependencies
       run: |
+        export DEBIAN_FRONTEND="noninteractive"
         apt-get update
-        apt-get install -y sudo libarchive-tools curl zsync squashfs-tools aria2 desktop-file-utils wget fuse binutils file
+        apt-get install -y sudo libarchive-tools curl zsync squashfs-tools aria2 desktop-file-utils wget fuse binutils file imagemagick gcc
 
-    - name: Build and Release
+    - name: Build pkg2appimage
       run: |
-           bash -ex dogfeeding.sh
-           wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-           bash upload.sh ./out/pkg2appimage*.AppImage*
+        bash -ex dogfeeding.sh
+
+    - name: Test to create Hello AppImage
+      run: |
+        chmod +x ./out/pkg2appimage*.AppImage*
+        ./out/pkg2appimage*.AppImage* recipes/hello.yml
+
+    - name: Verify AppImage Creation and Test
+      run: |
+        if ls out/hello-*.AppImage 1> /dev/null 2>&1; then
+          echo "hello AppImage successfully created."
+          ./out/hello-*.AppImage | tee output.txt
+          if grep -q "Hello, world!" output.txt; then
+            echo "hello AppImage test passed."
+          else
+            echo "hello AppImage test failed." >&2
+            exit 1
+          fi
+        else
+          echo "Failed to create hello AppImage." >&2
+          exit 1
+        fi
+
+    - name: Release
+      run: |
+        wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+        bash upload.sh ./out/pkg2appimage*.AppImage*
