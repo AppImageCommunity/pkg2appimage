@@ -1,4 +1,4 @@
-# pkg2appimage [![Build Status](https://travis-ci.org/AppImage/pkg2appimage.svg)](https://travis-ci.org/AppImage/pkg2appimage) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
+# pkg2appimage [![Build Status](https://github.com/AppImageCommunity/pkg2appimage/actions/workflows/build.yml/badge.svg)](https://github.com/AppImageCommunity/pkg2appimage/actions/workflows/build.yml) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZT9CL8M5TJU72)
 
 [Download as an AppImage](../../releases/tag/continuous)
  

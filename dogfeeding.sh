@@ -4,6 +4,9 @@
 
 HERE="$(dirname "$(readlink -f "${0}")")"
 
+GIT_SHORT_REV=$(git rev-parse --short HEAD)
+echo "Using git short revision: $GIT_SHORT_REV"
+
 . ./functions.sh
 
 mkdir -p build/
@@ -50,4 +53,4 @@ delete_blacklisted
 rm usr/lib/*-gnu/liblzma.so.5
 
 cd ..
-NO_GLIBC_VERSION=true APP=pkg2appimage VERSION=$(git rev-parse --short HEAD) generate_type2_appimage # FIXME: This embeds bintray-zsync
+NO_GLIBC_VERSION=true APP=pkg2appimage VERSION=$GIT_SHORT_REV generate_type2_appimage # FIXME: This embeds bintray-zsync
