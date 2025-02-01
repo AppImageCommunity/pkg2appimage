@@ -41,24 +41,24 @@ jobs:
       run: |
         bash -ex dogfeeding.sh
 
-    - name: Test to create Hello AppImage
+    - name: Test to create neovim AppImage
       run: |
         chmod +x ./out/pkg2appimage*.AppImage*
-        ./out/pkg2appimage*.AppImage* recipes/hello.yml
+        ./out/pkg2appimage*.AppImage* recipes/neovim.yml
 
     - name: Verify AppImage Creation and Test
       run: |
-        if ls out/hello-*.AppImage 1> /dev/null 2>&1; then
-          echo "hello AppImage successfully created."
-          ./out/hello-*.AppImage | tee output.txt
-          if grep -q "Hello, world!" output.txt; then
-            echo "hello AppImage test passed."
+        if ls out/neovim-*.AppImage 1> /dev/null 2>&1; then
+          echo "neovim AppImage successfully created."
+          ./out/neovim-*.AppImage -v | tee output.txt
+          if grep -q "Build type: Release" output.txt; then
+            echo "neovim AppImage test passed."
           else
-            echo "hello AppImage test failed." >&2
+            echo "neovim AppImage test failed." >&2
             exit 1
           fi
         else
-          echo "Failed to create hello AppImage." >&2
+          echo "Failed to create neovim AppImage." >&2
           exit 1
         fi
 
