@@ -25,17 +25,20 @@ jobs:
       image: ${{ matrix.config.image }}
       options: --privileged
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Print configuration
-      run: echo "Running build on ${{ matrix.config }}"
-
     - name: Install dependencies
       run: |
         export DEBIAN_FRONTEND="noninteractive"
         apt-get update
-        apt-get install -y sudo libarchive-tools curl zsync squashfs-tools aria2 desktop-file-utils wget fuse binutils file imagemagick gcc
+        apt-get install -y sudo libarchive-tools curl zsync squashfs-tools aria2 desktop-file-utils wget fuse binutils file imagemagick gcc git
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Print configuration
+      run: echo "Running build on ${{ matrix.config }}"
 
     - name: Build pkg2appimage
       run: |

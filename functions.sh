@@ -252,6 +252,8 @@ generate_type2_appimage()
 
   set +x
 
+  echo "Using version $VERSION_EXPANDED for pkg2appimage"
+
   GLIBC_NEEDED=$(glibc_needed)
   _APP_DIR="${PWD}/$APP.AppDir/"
   export OWD="${PWD}"
