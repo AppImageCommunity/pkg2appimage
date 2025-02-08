@@ -1,0 +1,16 @@
+app: Blink
+binpatch: true
+
+ingredients:
+  package: blink
+  dist: xenial
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu xenial main universe
+    - deb http://ag-projects.com/ubuntu xenial main
+
+script:
+  - wget -P usr/share/metainfo https://github.com/shvchk/blink-appimage/raw/master/blink.appdata.xml
+  - ( cd usr/share/icons/hicolor/48x48/apps/; mv blink48.png blink.png )
+  - ( cd usr/share/icons/hicolor/64x64/apps/; mv blink64.png blink.png )
+  - sed -i -e 's|^Icon=.*|Icon=blink|g' blink.desktop
+  - cp usr/share/icons/hicolor/64x64/apps/blink.png .
