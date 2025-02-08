@@ -1,0 +1,26 @@
+# Initial upload, everything should work.
+# Hercules#3665 on discord for more info.
+# Thank to Q009 on the Sauer discord for a few tips.
+# Added in a few more packages required to run on just about any supported system.
+app: Sauerbraten
+binpatch: true
+
+ingredients:
+  dist: jellyfish
+  packages:
+    - libsdl2-2.0-0
+    - libsdl2-image-2.0-0
+    - zlib1g-dev
+    - libpng16-16
+    - libgl-dev
+    - libjpeg8
+  sources: 
+    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe 
+  script:
+    - wget -c http://archive.ubuntu.com/ubuntu/pool/multiverse/s/sauerbraten/sauerbraten_0.0.20201227-1_all.deb
+
+script:
+#  - mv usr/games/* usr/bin/ ; rm -r usr/games/
+  - ln -s ../lib/x86_64-linux-gnu/ usr/games/
+  - mv ./usr/share/games/sauerbraten/data ./usr/lib/cube2/data
+  - mv ./usr/share/games/sauerbraten/packages ./usr/lib/cube2/packages
