@@ -1,0 +1,23 @@
+app: openboard
+union: true
+
+ingredients:
+  packages:
+    - openboard
+  dist: xenial
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
+    - deb http://archive.ubuntu.com/ubuntu/ xenial-updates main universe
+  script:
+    - DLD=$(wget -q "https://api.github.com/repos/OpenBoard-org/OpenBoard/releases/latest" -O - |grep "https.*amd64.deb"|cut -d'"' -f4)
+    - wget -c $DLD 
+    - echo $DLD | cut -d/ -f9 | cut -d_ -f4 > VERSION
+script:
+  - sed -i -e '/Version=/d' usr/share/applications/openboard.desktop
+  - sed -i -e '/Encoding=/d' usr/share/applications/openboard.desktop
+  - sed -i -e 's|MimeType=application/ubz|MimeType=application/ubz;|g' usr/share/applications/openboard.desktop
+  - rm openboard.desktop
+  - ln -s usr/share/applications/openboard.desktop openboard.desktop
+  - ln -s opt/openboard/OpenBoard.png OpenBoard.png
+  - ln -s ../../opt/openboard/OpenBoard usr/bin/openboard  
+
