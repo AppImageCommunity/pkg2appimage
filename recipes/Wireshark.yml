@@ -1,9 +1,9 @@
 app: Wireshark
 
 ingredients:
-  dist: trusty
+  dist: focal
   sources: 
-    - deb http://archive.ubuntu.com/ubuntu/ trusty main universe
+    - deb http://archive.ubuntu.com/ubuntu/ focal main universe
   ppas: 
     - wireshark-dev/stable
 
