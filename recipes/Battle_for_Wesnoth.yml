@@ -1,0 +1,21 @@
+app: Battle_for_Wesnoth
+
+ingredients:
+  packages:
+    - wesnoth
+    - wesnoth-music
+  dist: xenial
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ xenial main universe security
+  ppas:
+    #- vincent-c/wesnoth
+    - pkg-games/wesnoth-devel
+
+script:
+  - mv usr/share/applications/wesnoth-?.??.desktop wesnoth.desktop
+  - mv usr/share/icons/hicolor/512x512/apps/wesnoth-icon.png wesnoth.png
+  - sed -i "s/^Icon=.*/Icon=wesnoth.png/" wesnoth.desktop
+  - sed -i "/^Exec=/s/-nolog//" wesnoth.desktop
+  - sed -i 's#/usr#././#g' usr/games/wesnoth-*
+  - for i in $(find usr/share/games/wesnoth/*/fonts/ -type l); do mv "$(readlink "$i" | sed "s|^/||")" "$i"; done
+  - rm -r etc usr/share/man usr/share/X11 usr/share/icons/hicolor usr/share/applications
