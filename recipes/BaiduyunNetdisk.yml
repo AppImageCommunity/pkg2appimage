@@ -1,0 +1,37 @@
+# BaiduyunNetDisk
+# Warning: This application currently cannot run on ubuntu 16.04.7 LTS and lower.ONLY ubuntu 18.04LTS and up are supported. Working hard to fix it.
+# More detail:This application require 3.3.0 of the Protocal Buffer runtime libary to run. however ubuntu 16.04.7LTS came with 2.6.1 version. I'm trying to ask the software developer for help. When there's a fix I will patch it.
+#Author: linlinger
+app: BaiduyunNetdisk
+
+ingredients:
+  packages:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libuuid1
+    - libappindicator3-1
+    - libsecret-1-0
+    
+  dist: bionic
+  sources: 
+    - deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+    #- deb http://cn.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse
+  script:
+    - wget https://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/3.5.0/baidunetdisk_3.5.0_amd64.deb
+
+script:
+  - cp ./usr/share/applications/baidunetdisk.desktop ./
+  - cp ./usr/share/icons/hicolor/scalable/apps/baidunetdisk.svg ./
+  -  echo  '#!/bin/bash
+  - HERE="$(dirname "$(readlink -f "${0}")")"
+  - 
+  - export LD_LIBRARY_PATH="$HERE/usr/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/usr/lib/i386-linux-gnu":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib":$LD_LIBRARY_PATH
+  - export LD_LIBRARY_PATH="$HERE/lib/i386-linux-gnu":$LD_LIBRARY_PATH
+  - "$HERE/opt/baidunetdisk/baidunetdisk" "$@" | cat' > AppRun
