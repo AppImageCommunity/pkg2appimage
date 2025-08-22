@@ -1,0 +1,31 @@
+app: RustRover
+
+ingredients:
+  script:
+    - DLD=$(curl -LIs -o /dev/null -w %{url_effective} 'https://data.services.jetbrains.com/products/download?code=RR&platform=linux')
+    - wget --trust-server-names -c $DLD
+    - echo $DLD | cut -d/ -f5 | cut -d- -f2 | sed -e "s/.tar.gz//" > VERSION
+
+script:
+  - SHORTNAME=rustrover
+  - FULLNAME=RustRover
+  - VERSION=$(cat ../VERSION || true)
+  - mkdir -p opt/$SHORTNAME
+  - tar zxvf ../$FULLNAME-$VERSION.tar.gz --directory opt/$SHORTNAME --strip-components=1
+  - ln -s ../../opt/$SHORTNAME/bin/$SHORTNAME usr/bin/$SHORTNAME
+  - cp opt/$SHORTNAME/bin/$SHORTNAME.png .
+  - cp opt/$SHORTNAME/bin/$SHORTNAME.svg .
+  - cat > $FULLNAME.desktop << EOF
+  - [Desktop Entry]
+  - Version=1.0
+  - Type=Application
+  - Name=RustRover
+  - Icon=$SHORTNAME
+  - Exec=$SHORTNAME %f
+  - Comment=A powerhouse IDE for Rust developers
+  - Categories=Development;IDE;
+  - Terminal=false
+  - StartupWMClass=jetbrains-rustrover
+  - EOF
+  - rm -r opt/$SHORTNAME/jbr/legal/java.desktop
+  - rm -r opt/$SHORTNAME/jbr/legal/jdk.unsupported.desktop
