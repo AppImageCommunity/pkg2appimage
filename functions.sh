@@ -47,8 +47,9 @@ case "$(uname -i)" in
 #  arm*)
 #    echo "ARM system architecture"
 #    SYSTEM_ARCH="";;
-  unknown|AuthenticAMD|GenuineIntel)
-#         uname -i not answer on debian, then:
+  *)
+    # uname '-i' isn't portable so when failing, fall back to uname's
+    # recommended switch '-m':
     case "$(uname -m)" in
       aarch64|arm64)
 #        echo "aarch64 system architecture"
@@ -59,10 +60,13 @@ case "$(uname -i)" in
       i?86)
 #        echo "x86 system architecture"
         SYSTEM_ARCH="i686";;
+#      arm*|aarch*)
+#         echo "ARM system architecture"
+#        SYSTEM_ARCH="";;
+      *)
+        echo "Unsupported system architecture: $(uname -m)"
+        exit 1;;
     esac ;;
-  *)
-    echo "Unsupported system architecture"
-    exit 1;;
 esac
 
 # Either get the file from remote or from a static place.
