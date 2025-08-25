@@ -11,3 +11,8 @@ ingredients:
 script:
   - find usr/lib/games/0ad/ -type f -iname '*.so.*' -exec mv {} usr/lib/ \;
   - mv usr/games/* usr/bin/
+  - mkdir -p usr/bin/share
+  - mv usr/share/games usr/bin/share
+  - sed -i 's#/usr#././#g' usr/bin/pyrogenesis
+  - sed -i '1a HERE=$(cd "$(dirname "$0")";pwd) && cd $HERE' usr/bin/0ad
+  - cp usr/lib/x86_64-linux-gnu/libmozjs-38.so.0.0.0 usr/lib/x86_64-linux-gnu/libjs.so.0
