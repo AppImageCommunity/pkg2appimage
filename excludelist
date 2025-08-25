@@ -244,3 +244,7 @@ libfribidi.so.0 # https://github.com/olive-editor/olive/issues/221 and https://g
 # https://github.com/ONLYOFFICE/appimage-desktopeditors/issues/3
 # Apparently coreutils depends on it, so it should be safe to assume that it comes with every target system
 libgmp.so.10
+
+# PAM libraries are distro specific and should not be bundled even though they share a large part of public API
+libpam.so.0
+libpam_misc.so.0
