@@ -1,0 +1,26 @@
+app: DBeaver
+
+ingredients:
+  script:
+    - wget -c https://dbeaver.io/files/dbeaver-ce-latest-linux.gtk.x86_64.tar.gz
+    - tar zxvf dbeaver-ce-latest-linux.gtk.x86_64.tar.gz
+    - cat dbeaver/readme.txt | sed -n 3p > VERSION
+
+script:
+  - cp -r ../dbeaver/* usr/bin/
+  - cp ../dbeaver/icon.xpm dbeaver.xpm
+  - cat > dbeaver.desktop << EOF
+  - [Desktop Entry]
+  - Type=Application
+  - Terminal=false
+  - Name=DBeaver
+  - Icon=dbeaver.xpm
+  - Exec=dbeaver %u
+  - GenericName=Universal Database Manager
+  - Comment=Universal Database Manager and SQL Client.
+  - Categories=IDE;Development
+  - StartupWMClass=DBeaver
+  - StartupNotify=true
+  - Keywords=Database;SQL;IDE;JDBC;ODBC;MySQL;PostgreSQL;Oracle;DB2;MariaDB
+  - MimeType=application/sql
+  - EOF
