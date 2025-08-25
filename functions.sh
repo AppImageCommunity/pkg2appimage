@@ -101,7 +101,7 @@ get_apprun()
 copy_deps()
 {
   PWD=$(readlink -f .)
-  FILES=$(find . -type f -executable -or -name *.so.* -or -name *.so | sort | uniq )
+  FILES=$(find . -type f -executable -or -name "*.so.*" -or -name "*.so" | sort | uniq )
   for FILE in $FILES ; do
     ldd "${FILE}" | grep "=>" | awk '{print $3}' | xargs -I '{}' echo '{}' >> DEPSFILE
   done
