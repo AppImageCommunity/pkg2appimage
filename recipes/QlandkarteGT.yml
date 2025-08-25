@@ -1,0 +1,16 @@
+app: QlandkarteGT
+union: true
+
+ingredients:
+  dist: bionic
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse
+    - deb http://archive.ubuntu.com/ubuntu bionic-updates main restricted universe multiverse
+    - deb http://archive.ubuntu.com/ubuntu bionic-backports main restricted universe multiverse
+
+  ppas:
+    - tomtomtom/qlandkartegt
+
+script:
+  - mv ./usr/lib/x86_64-linux-gnu/blas/* ./usr/lib/x86_64-linux-gnu/
+  - mv ./usr/lib/x86_64-linux-gnu/lapack/* ./usr/lib/x86_64-linux-gnu/
