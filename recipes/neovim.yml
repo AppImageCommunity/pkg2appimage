@@ -18,6 +18,6 @@ script:
   - Categories=Development;TextEditor;
   - Comment=Vim-fork focused on extensibility and usability
   - EOF
-  - wget -c https://raw.githubusercontent.com/neovim/neovim.github.io/master/logos/neovim-logo-300x87.png -O neovim.png
+  - wget -c https://raw.githubusercontent.com/neovim/neovim.github.io/master/static/logos/neovim-logo-300x87.png -O neovim.png
   - mkdir -p usr/share/icons/hicolor/256x256/apps/
   - cp neovim.png usr/share/icons/hicolor/256x256/apps/neovim.png
