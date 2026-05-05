@@ -17,9 +17,14 @@ warn () {
   echo "WARNING: $1"
 }
 
-if ! which desktop-file-validate >/dev/null; then
-  fatal "desktop-file-validate is missing, please install it"
-fi
+depends () {
+  if ! which "$1" >/dev/null; then
+    fatal "$1 is missing, please install it"
+  fi
+}
+
+depends desktop-file-validate
+depends mimetype
 
 if [ ! -e "${HERE}/excludelist" ] ; then
   fatal "excludelist missing, please install it"
