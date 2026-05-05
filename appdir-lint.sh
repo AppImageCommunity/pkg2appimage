@@ -25,6 +25,7 @@ depends () {
 
 depends desktop-file-validate
 depends mimetype
+depends appstreamcli
 
 if [ ! -e "${HERE}/excludelist" ] ; then
   fatal "excludelist missing, please install it"
@@ -134,11 +135,7 @@ fi
 if [ -z "$APPDATA" ] ; then
   warn 'No appdata file present. Please provide one in the AppImage as per the instructions on https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html#sect-Quickstart-DesktopApps'
 else
-  if [ ! -z $(which appstreamcli) ] ; then
-    appstreamcli validate-tree "${APPDIR}"
-  else
-    echo "Skipping AppStream validation since appstreamcli is not on the \$PATH"
-  fi
+  appstreamcli validate-tree "${APPDIR}"
 fi
 
 
