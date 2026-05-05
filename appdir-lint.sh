@@ -17,8 +17,7 @@ warn () {
   echo "WARNING: $1"
 }
 
-which desktop-file-validate >/dev/null
-if [ ! $? -eq 0 ] ; then
+if ! which desktop-file-validate >/dev/null; then
   fatal "desktop-file-validate is missing, please install it"
 fi
 
