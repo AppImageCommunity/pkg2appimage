@@ -123,7 +123,7 @@ num_keys_fatal Categories
 
 # Find the relevant appdata.xml file;
 # according to ximion, usr/share/appdata is a legacy path replaced by usr/share/metainfo
-APPDATA=$(ls "${APPDIR}"/usr/share/metainfo/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
+APPDATA=$(ls "${APPDIR}"/usr/share/metainfo/*.metainfo.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
 if [ -z "$APPDATA" ] ; then
   APPDATA=$(ls "${APPDIR}"/usr/share/appdata/*appdata.xml 2>/dev/null | head -n 1) # TODO: Handle more than one better
 fi
