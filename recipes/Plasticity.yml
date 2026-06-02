@@ -1,0 +1,10 @@
+app: Plasticity
+
+ingredients:
+  script:
+    - URL=$(wget -q "https://api.github.com/repos/nkallen/plasticity/releases/latest"  -O - | grep -E "https.*_amd64.deb" | cut -d'"' -f4)
+    - VERSION=$(echo $URL | grep -o '[^\/]*\.deb' | cut -d_ -f2)
+    - wget -c $URL
+
+script:
+  - mv usr/share/applications/plasticity.desktop .
