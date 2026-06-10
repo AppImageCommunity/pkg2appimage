@@ -17,8 +17,8 @@ jobs:
     strategy:
       matrix:
         config:
-          - runner: ubuntu-20.04
-            image: ubuntu:20.04
+          - runner: ubuntu-22.04
+            image: ubuntu:22.04
           - runner: ubuntu-22.04-arm
             image: ubuntu:22.04
     container:
@@ -46,8 +46,8 @@ jobs:
 
     - name: Test to create neovim AppImage
       run: |
-        chmod +x ./out/pkg2appimage*.AppImage*
-        ./out/pkg2appimage*.AppImage* recipes/neovim.yml
+        chmod +x ./out/pkg2appimage*.AppImage
+        ./out/pkg2appimage*.AppImage recipes/neovim.yml
 
     - name: Verify AppImage Creation and Test
       run: |
